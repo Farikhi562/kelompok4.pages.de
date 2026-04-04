@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Komponen Footer (Web Component)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #0f172a; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
+        .content-dummy { flex: 1; padding: 50px; color: white; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="content-dummy">
+        <h1>Area Konten Website Kalian</h1>
+        <p>Scroll ke bawah untuk melihat keajaiban Custom Element Footer.</p>
+    </div>
+
+    <k4-footer></k4-footer>
+
+    <script>
+        class K4Footer extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+            }
+
+            connectedCallback() {
+                // Render HTML & CSS ke Shadow DOM
+                this.shadowRoot.innerHTML = `
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                    <style>
+                        :host {
+                            display: block;
+                            font-family: 'Poppins', sans-serif;
+                            --primary: #064e3b;
+                            --secondary: #047857;
+                            --accent: #d97706;
+                            --bg-glass: rgba(15, 23, 42, 0.85);
+                            --text-main: #f8fafc;
+                            --text-muted: #94a3b8;
+                            --border-color: rgba(255, 255, 255, 0.1);
+                        }
+
+                        .footer-wrapper {
+                            position: relative;
+                            background: var(--bg-glass);
+                            backdrop-filter: blur(20px);
+                            -webkit-backdrop-filter: blur(20px);
+                            border-top: 1px solid var(--border-color);
+                            color: var(--text-main);
+                            overflow: hidden;
+                            margin-top: 50px;
+                        }
+
+                        /* Efek Cahaya Ambien di Footer */
+                        .footer-wrapper::before {
+                            content: '';
+                            position: absolute;
+                            top: -50px; left: 50%;
+                            transform: translateX(-50%);
+                            width: 600px; height: 100px;
+                            background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+                            pointer-events: none;
+                        }
+
+                        /* Container Utama Grid */
+                        .footer-container {
+                            max-width: 1200px;
+                            margin: 0 auto;
+                            padding: 60px 5% 30px;
+                            display: grid;
+                            grid-template-columns: 2fr 1fr 1fr;
+                            gap: 40px;
+                        }
+
+                        @media (max-width: 768px) {
+                            .footer-container {
+                                grid-template-columns: 1fr;
+                                text-align: center;
+                            }
+                        }
+
+                        /* --- Kolom 1: Identitas Kelompok & Kampus --- */
+                        .brand-section h2 {
+                            color: var(--primary);
+                            font-size: 1.8rem;
+                            margin: 0 0 10px 0;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            color: #10b981;
+                        }
+                        @media (max-width: 768px) { .brand-section h2 { justify-content: center; } }
+                        
+                        .brand-desc {
+                            color: var(--text-muted);
+                            font-size: 0.95rem;
+                            line-height: 1.6;
+                            margin-bottom: 20px;
+                        }
+
+                        .campus-info {
+                            display: flex;
+                            align-items: center;
+                            gap: 15px;
+                            padding: 15px;
+                            background: rgba(255,255,255,0.03);
+                            border-radius: 12px;
+                            border: 1px solid var(--border-color);
+                        }
+                        @media (max-width: 768px) { .campus-info { justify-content: center; text-align: left; } }
+                        
+                        .campus-info img {
+                            width: 50px;
+                            height: 50px;
+                            object-fit: contain;
+                            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+                        }
+                        .campus-text h4 { margin: 0 0 3px 0; color: #f8fafc; font-size: 1rem; }
+                        .campus-text p { margin: 0; font-size: 0.8rem; color: var(--accent); font-weight: 600; }
+
+                        /* --- Kolom 2 & 3: Tautan --- */
+                        .link-section h3 {
+                            font-size: 1.1rem;
+                            color: #f8fafc;
+                            margin: 0 0 20px 0;
+                            position: relative;
+                            padding-bottom: 10px;
+                        }
+                        .link-section h3::after {
+                            content: '';
+                            position: absolute;
+                            bottom: 0; left: 0;
+                            width: 40px; height: 3px;
+                            background: var(--accent);
+                            border-radius: 2px;
+                        }
+                        @media (max-width: 768px) { .link-section h3::after { left: 50%; transform: translateX(-50%); } }
+
+                        .footer-links {
+                            list-style: none;
+                            padding: 0; margin: 0;
+                        }
+                        .footer-links li {
+                            margin-bottom: 12px;
+                        }
+                        .footer-links a {
+                            color: var(--text-muted);
+                            text-decoration: none;
+                            transition: 0.3s;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                        }
+                        .footer-links a:hover {
+                            color: var(--accent);
+                            transform: translateX(5px);
+                        }
+
+                        /* --- Bottom Bar: Copyright & Jam --- */
+                        .bottom-bar {
+                            max-width: 1200px;
+                            margin: 0 auto;
+                            padding: 20px 5%;
+                            border-top: 1px dashed var(--border-color);
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            font-size: 0.85rem;
+                            color: var(--text-muted);
+                            flex-wrap: wrap;
+                            gap: 15px;
+                        }
+                        @media (max-width: 768px) {
+                            .bottom-bar { justify-content: center; text-align: center; flex-direction: column; }
+                        }
+
+                        .live-stats {
+                            display: flex;
+                            gap: 20px;
+                            background: rgba(0,0,0,0.2);
+                            padding: 8px 15px;
+                            border-radius: 20px;
+                            border: 1px solid var(--border-color);
+                        }
+                        .stat-item {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            font-weight: 600;
+                        }
+                        .stat-item i { color: var(--accent); }
+
+                        /* Tombol Scroll to Top */
+                        .btn-top {
+                            position: absolute;
+                            top: -20px;
+                            right: 5%;
+                            width: 40px; height: 40px;
+                            background: var(--primary);
+                            color: white;
+                            border: none;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+                            transition: 0.3s;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        .btn-top:hover {
+                            transform: translateY(-5px);
+                            background: var(--accent);
+                            box-shadow: 0 5px 15px rgba(217, 119, 6, 0.4);
+                        }
+                    </style>
+
+                    <footer class="footer-wrapper">
+                        <button class="btn-top" id="btnScrollTop" title="Kembali ke atas"><i class="fa-solid fa-arrow-up"></i></button>
+                        
+                        <div class="footer-container">
+                            <div class="brand-section">
+                                <h2><i class="fa-solid fa-kaaba"></i> Kelompok IV</h2>
+                                <p class="brand-desc">
+                                    Membangun jembatan antara rasionalitas dan wahyu. Menjelajahi historiografi filsafat Islam tanpa celah dari era klasik hingga kontemporer.
+                                </p>
+                                <div class="campus-info">
+                                    <img src="assets/images/brand/gunadarma-logo.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/200px-Logo_Universitas_Gunadarma.svg.png'" alt="Logo Gunadarma">
+                                    <div class="campus-text">
+                                        <h4>Universitas Gunadarma</h4>
+                                        <p>Mata Kuliah Agama Islam</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="link-section">
+                                <h3>Navigasi Cepat</h3>
+                                <ul class="footer-links">
+                                    <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> Beranda Utama</a></li>
+                                    <li><a href="tim.html"><i class="fa-solid fa-chevron-right"></i> Profil Tim Penyusun</a></li>
+                                    <li><a href="tokoh.html"><i class="fa-solid fa-chevron-right"></i> Ensiklopedia Tokoh</a></li>
+                                    <li><a href="timeline.html"><i class="fa-solid fa-chevron-right"></i> Garis Waktu Sejarah</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="link-section">
+                                <h3>Interaktif & Referensi</h3>
+                                <ul class="footer-links">
+                                    <li><a href="kuis.html"><i class="fa-solid fa-chevron-right"></i> Ujian Evaluasi (Kuis)</a></li>
+                                    <li><a href="referensi.html"><i class="fa-solid fa-chevron-right"></i> Daftar Pustaka</a></li>
+                                    <li><a href="#" onclick="alert('Tekan Ctrl+K / Cmd+K untuk mencari data!')"><i class="fa-solid fa-chevron-right"></i> Pencarian Global</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bottom-bar">
+                            <div>
+                                &copy; 2026 <strong>Kelompok IV</strong>. Disusun untuk memenuhi tugas Bapak Mulyadi.
+                            </div>
+                            
+                            <div class="live-stats">
+                                <div class="stat-item" id="hijri-date">
+                                    <i class="fa-solid fa-moon"></i> --
+                                </div>
+                                <div class="stat-item" id="live-clock">
+                                    <i class="fa-regular fa-clock"></i> --:-- WIB
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fa-solid fa-eye"></i> <span id="visitor-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                `;
+
+                this.initEngines();
+            }
+
+            initEngines() {
+                // 1. Scroll to Top Logic
+                const btnTop = this.shadowRoot.getElementById('btnScrollTop');
+                btnTop.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+
+                // 2. Real-time Clock & Hijri Calendar
+                const updateTime = () => {
+                    const now = new Date();
+                    
+                    // WIB Time
+                    const clockEl = this.shadowRoot.getElementById('live-clock');
+                    if(clockEl) {
+                        clockEl.innerHTML = `<i class="fa-regular fa-clock"></i> ${now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit', second:'2-digit'})} WIB`;
+                    }
+
+                    // Hijri Date (menggunakan Intl API)
+                    const hijriEl = this.shadowRoot.getElementById('hijri-date');
+                    if(hijriEl) {
+                        const hijriFormat = new Intl.DateTimeFormat('id-ID-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(now);
+                        hijriEl.innerHTML = `<i class="fa-solid fa-moon"></i> ${hijriFormat}`;
+                    }
+                };
+                setInterval(updateTime, 1000);
+                updateTime();
+
+                // 3. Visitor Counter Logic (Isolasi dalam Shadow DOM)
+                const visitorEl = this.shadowRoot.getElementById('visitor-count');
+                if(visitorEl) {
+                    let visits = localStorage.getItem('k4_global_visits') || 0;
+                    // Hanya tambah visit jika tidak di-refresh dalam waktu dekat (simple session logic)
+                    if(!sessionStorage.getItem('k4_session_active')) {
+                        visits++;
+                        localStorage.setItem('k4_global_visits', visits);
+                        sessionStorage.setItem('k4_session_active', 'true');
+                    }
+                    visitorEl.innerText = visits;
+                }
+            }
+        }
+
+        // Mendaftarkan Custom Element ke Browser
+        customElements.define('k4-footer', K4Footer);
+    </script>
+</body>
+</html>

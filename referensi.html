@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pusat Referensi & Mesin Sitasi - Proyek Akhir Agama Islam Kelompok IV">
+    <title>Pusat Referensi | Kelompok IV</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Space+Mono:wght@400;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="animations.css">
+
+    <style>
+        /* --- GLOBAL OVERRIDES --- */
+        body { background-color: var(--bg-body, #f8fafc); overflow-x: hidden; scroll-behavior: smooth; }
+
+        /* --- HERO SECTION FOR REFERENCES --- */
+        .ref-hero {
+            position: relative; padding: 150px 5% 80px; text-align: center;
+            background: linear-gradient(135deg, var(--clr-primary-900, #022c22), var(--bg-body, #0f172a));
+            color: white; overflow: hidden; border-bottom: 1px solid var(--border-strong, rgba(255,255,255,0.1));
+        }
+        .ref-hero::before {
+            content: ''; position: absolute; inset: 0; background: url('https://www.transparenttextures.com/patterns/stardust.png'); opacity: 0.3; animation: slideBg 100s linear infinite; pointer-events: none;
+        }
+        @keyframes slideBg { 0% { background-position: 0 0; } 100% { background-position: 1000px 1000px; } }
+        
+        .ref-title { font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; color: var(--clr-primary-300, #6ee7b7); margin-bottom: 15px; letter-spacing: 2px; text-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; z-index: 2; }
+        .ref-subtitle { font-size: 1.1rem; color: var(--text-muted, #94a3b8); max-width: 700px; margin: 0 auto; line-height: 1.8; position: relative; z-index: 2; }
+
+        /* --- MAIN LAYOUT --- */
+        .ref-container { display: flex; max-width: 1400px; margin: -40px auto 100px; padding: 0 5%; gap: 40px; position: relative; z-index: 10; align-items: flex-start; }
+        @media (max-width: 992px) { .ref-container { flex-direction: column; margin-top: 20px; } }
+
+        /* --- SMART SIDEBAR --- */
+        .ref-sidebar {
+            width: 320px; background: var(--bg-surface, #ffffff); border-radius: 24px; padding: 30px 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid var(--border-light, #e2e8f0);
+            position: sticky; top: 100px; flex-shrink: 0; transition: 0.3s;
+        }
+        [data-theme="dark"] .ref-sidebar { background: #1e293b; border-color: #334155; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        
+        .sidebar-header { font-size: 0.85rem; font-weight: 800; color: var(--clr-accent-500, #d97706); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; padding-left: 15px; display: flex; align-items: center; gap: 10px; }
+        
+        .ref-tab-btn {
+            width: 100%; text-align: left; padding: 18px 20px; margin-bottom: 12px; border-radius: 16px;
+            border: 1px solid transparent; background: transparent; font-size: 1.05rem; font-weight: 600;
+            color: var(--text-main, #1e293b); cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden;
+        }
+        [data-theme="dark"] .ref-tab-btn { color: #f8fafc; }
+        
+        .ref-tab-btn i { font-size: 1.3rem; color: var(--text-muted, #94a3b8); transition: 0.3s; width: 25px; text-align: center; }
+        .ref-tab-btn::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(90deg, rgba(16,185,129,0.1), transparent); transition: 0.4s; z-index: 0; }
+        
+        .ref-tab-btn:hover { border-color: var(--border-strong, #cbd5e1); transform: translateX(5px); }
+        [data-theme="dark"] .ref-tab-btn:hover { border-color: #475569; }
+        
+        .ref-tab-btn.active { background: var(--clr-primary-500, #10b981); color: white; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transform: translateX(10px); }
+        .ref-tab-btn.active i { color: white; }
+        .ref-tab-btn span { position: relative; z-index: 1; }
+
+        /* --- CONTENT AREA --- */
+        .ref-content-area {
+            flex: 1; background: var(--bg-surface, #ffffff); border-radius: 30px; padding: 50px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); border: 1px solid var(--border-light, #e2e8f0);
+            min-height: 800px; position: relative; overflow: hidden; width: 100%;
+        }
+        [data-theme="dark"] .ref-content-area { background: #0f172a; border-color: #1e293b; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6); }
+
+        .ref-pane { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .ref-pane.active { display: block; opacity: 1; transform: translateY(0); animation: paneEnter 0.6s forwards; }
+        @keyframes paneEnter { to { opacity: 1; transform: translateY(0); } }
+
+        /* --- 3D BOOK SHOWCASE (GOD MODE) --- */
+        .showcase-header { display: flex; gap: 40px; margin-bottom: 40px; border-bottom: 2px dashed var(--border-light, #e2e8f0); padding-bottom: 40px; align-items: center; }
+        @media (max-width: 768px) { .showcase-header { flex-direction: column; text-align: center; } }
+
+        /* The 3D Book Engine */
+        .book-3d-wrapper { perspective: 1000px; width: 200px; height: 300px; flex-shrink: 0; }
+        .book-3d-object {
+            width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
+            transition: transform 0.1s ease; transform: rotateY(-15deg) rotateX(5deg);
+            box-shadow: -10px 20px 30px rgba(0,0,0,0.3); border-radius: 5px 15px 15px 5px;
+        }
+        .book-front {
+            position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, var(--book-c1), var(--book-c2));
+            border-radius: 5px 15px 15px 5px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; text-align: center; padding: 20px; transform: translateZ(15px); border: 1px solid rgba(255,255,255,0.1);
+        }
+        .book-front::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0.2) 0%, transparent 20%); border-radius: inherit; }
+        .book-spine {
+            position: absolute; width: 30px; height: 100%; background: var(--book-c2);
+            transform: rotateY(-90deg) translateZ(15px); transform-origin: left; border-radius: 10px 0 0 10px;
+        }
+        .book-pages {
+            position: absolute; width: 190px; height: 290px; background: #fdf6e3; top: 5px; left: 10px;
+            transform: translateZ(-15px); border-radius: 0 10px 10px 0;
+            background-image: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.05) 3px);
+        }
+        .b-icon { font-size: 3rem; margin-bottom: 15px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
+        .b-title { font-family: 'Amiri', serif; font-size: 1.5rem; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+
+        .book-meta { flex: 1; }
+        .meta-title { font-size: 2.2rem; font-weight: 800; color: var(--text-main, #0f172a); line-height: 1.2; margin-bottom: 10px; }
+        [data-theme="dark"] .meta-title { color: white; }
+        .meta-author { font-size: 1.2rem; color: var(--clr-primary-500, #10b981); font-weight: 700; margin-bottom: 20px; font-family: 'Space Mono', monospace; }
+        .badges-wrapper { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
+        .data-badge { background: var(--bg-body, #f1f5f9); border: 1px solid var(--border-strong, #cbd5e1); color: var(--text-muted, #64748b); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        [data-theme="dark"] .data-badge { background: #1e293b; border-color: #334155; color: #cbd5e1; }
+
+        /* --- DYNAMIC CITATION MACHINE --- */
+        .citation-box {
+            background: rgba(217, 119, 6, 0.05); border: 1px solid rgba(217, 119, 6, 0.2);
+            border-radius: 15px; padding: 20px; position: relative; margin-top: 20px;
+        }
+        .citation-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(217, 119, 6, 0.2); padding-bottom: 10px; }
+        .citation-title { font-weight: 800; color: var(--clr-accent-500, #d97706); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .citation-select { background: var(--bg-surface, white); border: 1px solid var(--border-strong, #cbd5e1); color: var(--text-main, #0f172a); padding: 5px 10px; border-radius: 8px; font-weight: 600; font-family: 'Space Mono', monospace; cursor: pointer; outline: none; }
+        [data-theme="dark"] .citation-select { background: #0f172a; border-color: #334155; color: white; }
+        .citation-text { font-family: 'Times New Roman', serif; font-size: 1.1rem; line-height: 1.6; color: var(--text-main, #1e293b); margin-bottom: 15px; padding: 10px; background: var(--bg-surface, white); border-radius: 8px; }
+        [data-theme="dark"] .citation-text { background: #1e293b; color: #cbd5e1; }
+        .btn-copy { background: var(--clr-accent-500, #d97706); color: white; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-copy:hover { background: var(--clr-accent-700, #b45309); transform: translateY(-2px); }
+
+        /* --- TYPOGRAPHY & CONTENT --- */
+        .academic-content h3 { color: var(--clr-primary-700, #047857); font-size: 1.4rem; font-weight: 800; margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
+        [data-theme="dark"] .academic-content h3 { color: #10b981; }
+        .academic-content p { color: var(--text-muted, #475569); font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; text-align: justify; }
+        [data-theme="dark"] .academic-content p { color: #94a3b8; }
+        .academic-content ul { padding-left: 20px; color: var(--text-muted, #475569); margin-bottom: 20px; }
+        .academic-content li { margin-bottom: 10px; line-height: 1.7; font-size: 1.05rem; }
+        [data-theme="dark"] .academic-content ul { color: #94a3b8; }
+
+        /* --- QURANIC EXPLORER UI --- */
+        .quran-header { text-align: center; margin-bottom: 50px; }
+        .quran-header h2 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--clr-primary-700, #047857); margin-bottom: 10px; }
+        [data-theme="dark"] .quran-header h2 { color: #10b981; }
+        .quran-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        .verse-card {
+            background: var(--bg-body, #f1f5f9); border-radius: 20px; padding: 40px; margin-bottom: 40px;
+            position: relative; border-left: 5px solid var(--clr-accent-500, #d97706); box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
+            transition: 0.3s;
+        }
+        [data-theme="dark"] .verse-card { background: #020617; border-left-color: #d97706; box-shadow: inset 0 0 20px rgba(0,0,0,0.2); }
+        .verse-card:hover { transform: translateX(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+
+        .verse-badge { position: absolute; top: -15px; left: 30px; background: var(--clr-primary-500, #10b981); color: white; padding: 5px 20px; border-radius: 20px; font-weight: 800; font-family: 'Space Mono', monospace; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); }
+        
+        .verse-arabic { font-family: 'Amiri', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--text-main, #0f172a); text-align: right; line-height: 2; margin-bottom: 20px; direction: rtl; }
+        [data-theme="dark"] .verse-arabic { color: #f8fafc; }
+        
+        .verse-translation { font-size: 1.15rem; color: var(--text-muted, #475569); line-height: 1.8; font-style: italic; margin-bottom: 25px; padding-right: 10%; }
+        [data-theme="dark"] .verse-translation { color: #94a3b8; }
+
+        .tafsir-box { background: rgba(16, 185, 129, 0.05); border: 1px dashed rgba(16, 185, 129, 0.3); border-radius: 15px; padding: 25px; display: none; animation: fadeUp 0.4s; }
+        .tafsir-box.show { display: block; }
+        .tafsir-title { font-weight: 800; color: var(--clr-primary-700, #047857); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        [data-theme="dark"] .tafsir-title { color: #10b981; }
+
+        .verse-controls { display: flex; gap: 15px; }
+        .btn-audio, .btn-tafsir { background: var(--bg-surface, white); border: 1px solid var(--border-strong, #cbd5e1); padding: 10px 20px; border-radius: 12px; font-weight: 700; color: var(--text-main, #1e293b); cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        [data-theme="dark"] .btn-audio, [data-theme="dark"] .btn-tafsir { background: #1e293b; border-color: #334155; color: white; }
+        .btn-audio:hover { background: var(--clr-primary-500, #10b981); color: white; border-color: var(--clr-primary-500, #10b981); }
+        .btn-tafsir:hover { background: var(--clr-accent-500, #d97706); color: white; border-color: var(--clr-accent-500, #d97706); }
+        .btn-audio.playing { background: var(--clr-primary-500, #10b981); color: white; animation: pulseGlow 1.5s infinite; }
+
+        /* --- TOAST NOTIFICATION --- */
+        #smartToast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--text-main, #0f172a); color: white; padding: 15px 30px; border-radius: 50px; font-weight: 700; display: flex; align-items: center; gap: 12px; z-index: 100000; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        #smartToast.show { bottom: 40px; }
+        [data-theme="dark"] #smartToast { background: white; color: #0f172a; }
+
+        /* --- GUNADARMA MEGA BRANDING --- */
+        .ug-mega-section { padding: 80px 5%; text-align: center; background: var(--bg-body, #f8fafc); border-top: 1px solid var(--border-light, #e2e8f0); position: relative; z-index: 5; }
+        [data-theme="dark"] .ug-mega-section { background: #020617; border-color: #1e293b; }
+        .ug-logo { width: 120px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 20px; transition: 0.5s; }
+        .ug-logo:hover { transform: scale(1.1); }
+        .ug-title { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--clr-primary-700, #047857); font-weight: 800; letter-spacing: 2px; }
+        [data-theme="dark"] .ug-title { color: #10b981; }
+
+    </style>
+</head>
+<body>
+
+    <k4-navbar current-page="referensi"></k4-navbar>
+
+    <header class="ref-hero">
+        <h1 class="ref-title anim-fade-down">NEXA Data Center</h1>
+        <p class="ref-subtitle anim-fade-up delay-100">Pusat Pustaka Akademik & Mesin Sitasi Otomatis. Mengeksplorasi sumber primer dan sekunder pembentuk historiografi filsafat Islam.</p>
+    </header>
+
+    <div class="ref-container">
+        
+        <aside class="ref-sidebar anim-fade-up delay-200">
+            <div class="sidebar-header"><i class="fa-solid fa-server"></i> Direktori Data</div>
+            <button class="ref-tab-btn active" data-target="buku1">
+                <i class="fa-solid fa-book-open-reader"></i> <span>Risalah Cinta</span>
+            </button>
+            <button class="ref-tab-btn" data-target="buku2">
+                <i class="fa-solid fa-landmark-dome"></i> <span>History of Philosophy</span>
+            </button>
+            <button class="ref-tab-btn" data-target="quran">
+                <i class="fa-solid fa-book-quran"></i> <span>Dalil Al-Quran</span>
+            </button>
+            
+            <div style="margin-top: 40px; padding: 20px; background: rgba(16, 185, 129, 0.05); border-radius: 15px; border: 1px dashed rgba(16, 185, 129, 0.3); text-align: center;">
+                <i class="fa-solid fa-circle-check" style="color: var(--clr-primary-500); font-size: 2rem; margin-bottom: 10px;"></i>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">Tervalidasi Akademik</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Sesuai arahan Bpk. Mulyadi</div>
+            </div>
+        </aside>
+
+        <main class="ref-content-area anim-fade-up delay-300">
+            
+            <section id="buku1" class="ref-pane active">
+                <div class="showcase-header">
+                    <div class="book-3d-wrapper" onmousemove="tiltBook(event, this)" onmouseleave="resetTilt(this)">
+                        <div class="book-3d-object" style="--book-c1: #9f1239; --book-c2: #4c0519;">
+                            <div class="book-pages"></div>
+                            <div class="book-spine"></div>
+                            <div class="book-front">
+                                <i class="fa-solid fa-heart-pulse b-icon"></i>
+                                <div class="b-title">Risalah Cinta</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="book-meta">
+                        <h1 class="meta-title">Islam Risalah Cinta dan Kebahagiaan</h1>
+                        <div class="meta-author"><i class="fa-solid fa-feather-pointed"></i> Dr. Haidar Bagir</div>
+                        <div class="badges-wrapper">
+                            <span class="data-badge"><i class="fa-solid fa-calendar-check"></i> Cetakan 2016</span>
+                            <span class="data-badge"><i class="fa-solid fa-building"></i> Penerbit Mizan</span>
+                            <span class="data-badge"><i class="fa-solid fa-tag"></i> Tasawuf Kontemporer</span>
+                        </div>
+                        
+                        <div class="citation-box">
+                            <div class="citation-header">
+                                <div class="citation-title"><i class="fa-solid fa-quote-left"></i> Auto-Citation Engine</div>
+                                <select class="citation-select" id="citSelect1" onchange="updateCitation('buku1')">
+                                    <option value="apa">APA 7th</option>
+                                    <option value="mla">MLA 9th</option>
+                                    <option value="chicago">Chicago</option>
+                                    <option value="harvard">Harvard</option>
+                                </select>
+                            </div>
+                            <div class="citation-text" id="citText1">Bagir, H. (2016). Islam Risalah Cinta dan Kebahagiaan (Edisi Baru). Noura Books.</div>
+                            <button class="btn-copy" onclick="copyCitation('citText1')"><i class="fa-solid fa-copy"></i> Copy Citation</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="academic-content">
+                    <h3><i class="fa-solid fa-microscope"></i> Analisis Konseptual</h3>
+                    <p>
+                        Buku ini dikembangkan oleh Haidar Bagir sebagai respons filosofis dan sufistik terhadap wajah keberagamaan modern yang sering kali ditampilkan secara kaku, formalistik, dan penuh ketakutan (fear-based religion). Dengan pijakan keilmuan epistemologi <strong>Irfan</strong> (tasawuf filosofis) dari tokoh seperti Ibnu Arabi dan Mulla Sadra, penulis mendekonstruksi pemahaman tersebut.
+                    </p>
+                    <p>
+                        Gagasan sentralnya adalah bahwa fondasi penciptaan alam semesta adalah <strong>Mahabbah (Cinta)</strong>. Tuhan, sebagai wujud yang Maha Sempurna dan Maha Indah, berkehendak untuk "dikenal" melalui ciptaan-Nya. Oleh karena itu, perjalanan seorang manusia beragama hakikatnya adalah perjalanan merespons cinta tersebut, yang puncaknya bermuara pada kebahagiaan eksistensial, bukan sekadar janji surga material.
+                    </p>
+                    
+                    <h3><i class="fa-solid fa-list-check"></i> Intisari Penerapan (Tugas Mata Kuliah)</h3>
+                    <ul>
+                        <li><strong>Takhalli & Tajalli:</strong> Konsep pembersihan jiwa dari ego (Takhalli) agar dapat memantulkan sifat-sifat welas asih Ilahi (Tajalli) dalam interaksi sosial.</li>
+                        <li><strong>Agama sebagai Terapeutik:</strong> Di tengah era kecemasan (anxiety) dan nihilisme, tasawuf menawarkan terapi batin yang mengembalikan makna hidup manusia.</li>
+                        <li><strong>Sintesis Fikih & Tasawuf:</strong> Menghindari ekstremitas syariat tanpa ruh, maupun kebatinan tanpa aturan, selaras dengan paradigma Imam Al-Ghazali.</li>
+                    </ul>
+
+                    <div style="margin-top: 40px; display: flex; gap: 15px;">
+                        <button class="btn-copy" style="background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-strong);" onclick="appToast('Mengunduh resume PDF...', 'success')"><i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> Resume Kelompok (PDF)</button>
+                        <button class="btn-copy" style="background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-strong);" onclick="appToast('Membuka file presentasi...', 'success')"><i class="fa-solid fa-file-powerpoint" style="color: #f97316;"></i> Slide Presentasi (PPTX)</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="buku2" class="ref-pane">
+                <div class="showcase-header">
+                    <div class="book-3d-wrapper" onmousemove="tiltBook(event, this)" onmouseleave="resetTilt(this)">
+                        <div class="book-3d-object" style="--book-c1: #064e3b; --book-c2: #022c22;">
+                            <div class="book-pages"></div>
+                            <div class="book-spine"></div>
+                            <div class="book-front">
+                                <i class="fa-solid fa-globe b-icon"></i>
+                                <div class="b-title" style="font-size:1.1rem; margin-top:20px;">History of Philosophy<br>Islamic World</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="book-meta">
+                        <h1 class="meta-title">Philosophy in the Islamic World</h1>
+                        <div class="meta-author"><i class="fa-solid fa-feather-pointed"></i> Prof. Peter Adamson</div>
+                        <div class="badges-wrapper">
+                            <span class="data-badge"><i class="fa-solid fa-calendar-check"></i> Cetakan 2016</span>
+                            <span class="data-badge"><i class="fa-solid fa-building"></i> Oxford Univ. Press</span>
+                            <span class="data-badge"><i class="fa-solid fa-tag"></i> Historiografi Global</span>
+                        </div>
+                        
+                        <div class="citation-box">
+                            <div class="citation-header">
+                                <div class="citation-title"><i class="fa-solid fa-quote-left"></i> Auto-Citation Engine</div>
+                                <select class="citation-select" id="citSelect2" onchange="updateCitation('buku2')">
+                                    <option value="apa">APA 7th</option>
+                                    <option value="mla">MLA 9th</option>
+                                    <option value="chicago">Chicago</option>
+                                    <option value="harvard">Harvard</option>
+                                </select>
+                            </div>
+                            <div class="citation-text" id="citText2">Adamson, P. (2016). Philosophy in the Islamic World: A history of philosophy without any gaps. Oxford University Press.</div>
+                            <button class="btn-copy" onclick="copyCitation('citText2')"><i class="fa-solid fa-copy"></i> Copy Citation</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="academic-content">
+                    <h3><i class="fa-solid fa-microscope"></i> Dekonstruksi Sejarah</h3>
+                    <p>
+                        Karya Profesor Peter Adamson (Universitas LMU Munich) ini adalah pukulan mematikan bagi narasi historiografi Orientalis kuno. Narasi usang sering menyebutkan bahwa filsafat Islam (Falsafah) hanyalah sekadar "tukang pos" yang menjaga filsafat Yunani selama Abad Pertengahan Gelap Eropa, dan kemudian mati total setelah kritikan Al-Ghazali dan wafatnya Ibnu Rusyd di Andalusia (abad 12 M).
+                    </p>
+                    <p>
+                        Adamson membuktikan sebaliknya dengan prinsip <em>"Without any gaps"</em>. Ia memaparkan bahwa filsafat justru terasimilasi kuat ke dalam institusi pendidikan Islam (Madrasah) melalui disiplin Ilmu Kalam (Teologi Rasional) dan berkembang melahirkan sintesis raksasa di wilayah Timur (Persia dan Kesultanan Mughal India) hingga masa modern.
+                    </p>
+                    
+                    <h3><i class="fa-solid fa-timeline"></i> Periode Kunci Pembahasan</h3>
+                    <ul>
+                        <li><strong>Fase Helenistik & Penerjemahan:</strong> Mengupas era Baitul Hikmah Baghdad, peran penerjemah Kristen Suriah, hingga perumusan awal oleh Al-Kindi dan Al-Farabi.</li>
+                        <li><strong>Sistem Avicennan:</strong> Bagaimana metafisika Ibnu Sina (Avicenna) menjadi standar emas dan target kritik bagi generasi setelahnya (termasuk Al-Ghazali dan Fakhruddin ar-Razi).</li>
+                        <li><strong>Era Iluminasi & Safawiyah:</strong> Munculnya Suhrawardi dengan filsafat cahaya (Isyraq), hingga puncaknya pada Mulla Sadra (abad 17 M) yang menyatukan rasio, teks wahyu, dan intuisi mistik.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="quran" class="ref-pane">
+                <div class="quran-header">
+                    <h2>Fondasi Epistemologi</h2>
+                    <p>Ayat-ayat suci sebagai landasan legal-teologis (syar'i) bagi para filsuf Muslim dalam melakukan perenungan rasional.</p>
+                </div>
+
+                <div class="verse-card">
+                    <div class="verse-badge">QS. Ali 'Imran [3]: 190</div>
+                    <div class="verse-controls" style="position: absolute; top: 30px; left: 30px;">
+                        <button class="btn-audio" onclick="playAudioTafsir('audio1', this)"><i class="fa-solid fa-play"></i> Dengarkan</button>
+                        <button class="btn-tafsir" onclick="toggleTafsir('tafsir1')"><i class="fa-solid fa-book-open"></i> Buka Tafsir</button>
+                    </div>
+                    
+                    <div class="verse-arabic" style="margin-top: 50px;">
+                        إِنَّ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ وَاخْتِلَافِ اللَّيْلِ وَالنَّهَارِ لَآيَاتٍ لِأُولِي الْأَلْبَابِ
+                    </div>
+                    <div class="verse-translation">
+                        "Sesungguhnya dalam penciptaan langit dan bumi, dan silih bergantinya malam dan siang terdapat tanda-tanda bagi orang-orang yang berakal (Ulul Albab)."
+                    </div>
+
+                    <div class="tafsir-box" id="tafsir1">
+                        <div class="tafsir-title"><i class="fa-solid fa-lightbulb"></i> Implikasi Filosofis (Konteks Ibnu Rusyd):</div>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">
+                            Dalam karyanya <em>Fasl al-Maqal</em>, Ibnu Rusyd menggunakan ayat ini (beserta QS. Al-A'raf: 185 dan Al-Hasyr: 2) sebagai dalil bahwa Syariat secara tegas <strong>mewajibkan</strong> manusia untuk merenungkan (i'tibar) alam semesta. Metode perenungan yang paling sempurna dan bebas dari kesalahan adalah metode rasional-demonstratif (Burhani), yang tak lain adalah <strong>Filsafat</strong>. Dengan demikian, berfilsafat adalah memenuhi perintah Al-Quran bagi mereka yang mampu.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="verse-card">
+                    <div class="verse-badge">QS. Al-Baqarah [2]: 269</div>
+                    <div class="verse-controls" style="position: absolute; top: 30px; left: 30px;">
+                        <button class="btn-audio" onclick="playAudioTafsir('audio2', this)"><i class="fa-solid fa-play"></i> Dengarkan</button>
+                        <button class="btn-tafsir" onclick="toggleTafsir('tafsir2')"><i class="fa-solid fa-book-open"></i> Buka Tafsir</button>
+                    </div>
+                    
+                    <div class="verse-arabic" style="margin-top: 50px;">
+                        يُؤْتِي الْحِكْمَةَ مَنْ يَشَاءُ ۚ وَمَنْ يُؤْتَ الْحِكْمَةَ فَقَدْ أُوتِيَ خَيْرًا كَثِيرًا ۗ وَمَا يَذَّكَّرُ إِلَّا أُولُو الْأَلْبَابِ
+                    </div>
+                    <div class="verse-translation">
+                        "Dia memberikan hikmah (ilmu yang berguna) kepada siapa yang dikehendaki-Nya. Barangsiapa yang diberi hikmah, sungguh telah diberi kebajikan yang banyak. Dan tiadalah yang dapat mengambil pelajaran kecuali orang-orang yang berakal."
+                    </div>
+
+                    <div class="tafsir-box" id="tafsir2">
+                        <div class="tafsir-title"><i class="fa-solid fa-lightbulb"></i> Integrasi Epistemologi (Konteks Al-Kindi):</div>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">
+                            Kata "Hikmah" diadopsi secara luas oleh para filsuf Islam (yang dijuluki <em>Al-Hukama</em>, para pemilik hikmah) sebagai padanan kata dari <em>Philosophia</em> (Cinta Kebijaksanaan). Al-Kindi, filsuf Arab pertama, bersandar pada konsep hikmah ini untuk meruntuhkan keengganan umat Islam di awal abad ke-9 M dalam menerima sains dan filsafat dari peradaban Yunani dan India Kuno. Kebenaran adalah kebenaran, terlepas dari lisan siapa ia diucapkan.
+                        </p>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <section class="ug-mega-section anim-fade-up">
+        <img src="assets/images/brand/gunadarma-logo.png" 
+             onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'" 
+             alt="Logo Universitas Gunadarma" 
+             class="ug-logo">
+        <h2 class="ug-title">UNIVERSITAS GUNADARMA</h2>
+        <div style="font-size: 1.1rem; color: var(--clr-accent-500); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;">Fakultas Teknologi Industri • Teknik Informatika</div>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 600px; margin: 0 auto;">Pusat Referensi ini dibangun secara khusus untuk menunjang presentasi Kelompok IV Mata Kuliah Agama Islam (Diampu oleh Bapak Mulyadi). Digagas oleh Muhamad Fauzan Al Farikhi.</p>
+    </section>
+
+    <k4-footer></k4-footer>
+
+    <div id="smartToast"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i> <span>Selesai!</span></div>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="data.js"></script>
+    <script src="core.js"></script>
+    <script src="search.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /* -----------------------------------------------------------
+               1. SMART TAB ROUTING SYSTEM (Hash Support)
+               ----------------------------------------------------------- */
+            const tabs = document.querySelectorAll('.ref-tab-btn');
+            const panes = document.querySelectorAll('.ref-pane');
+
+            function activateTab(targetId) {
+                // Remove active class
+                tabs.forEach(t => t.classList.remove('active'));
+                panes.forEach(p => p.classList.remove('active'));
+
+                // Add active class to target
+                const btn = document.querySelector(`.ref-tab-btn[data-target="${targetId}"]`);
+                const pane = document.getElementById(targetId);
+
+                if(btn && pane) {
+                    btn.classList.add('active');
+                    pane.classList.add('active');
+                    // Update URL hash safely without jumping
+                    history.replaceState(null, null, `#${targetId}`);
+                }
+            }
+
+            // Click Event Listener
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => activateTab(tab.getAttribute('data-target')));
+            });
+
+            // Check URL Hash on Load
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(hash)) {
+                activateTab(hash);
+            }
+
+            /* -----------------------------------------------------------
+               2. DYNAMIC CITATION MACHINE
+               ----------------------------------------------------------- */
+            const citationDB = {
+                buku1: {
+                    apa: "Bagir, H. (2016). Islam Risalah Cinta dan Kebahagiaan (Edisi Baru). Noura Books.",
+                    mla: "Bagir, Haidar. Islam Risalah Cinta Dan Kebahagiaan. Edisi Baru, Noura Books, 2016.",
+                    chicago: "Bagir, Haidar. Islam Risalah Cinta dan Kebahagiaan. Edisi Baru. Jakarta: Noura Books, 2016.",
+                    harvard: "Bagir, H., 2016. Islam Risalah Cinta dan Kebahagiaan. Edisi Baru. Jakarta: Noura Books."
+                },
+                buku2: {
+                    apa: "Adamson, P. (2016). Philosophy in the Islamic World: A history of philosophy without any gaps. Oxford University Press.",
+                    mla: "Adamson, Peter. Philosophy in the Islamic World: A History of Philosophy Without Any Gaps. Oxford University Press, 2016.",
+                    chicago: "Adamson, Peter. Philosophy in the Islamic World: A History of Philosophy Without Any Gaps. Oxford: Oxford University Press, 2016.",
+                    harvard: "Adamson, P., 2016. Philosophy in the Islamic World: A history of philosophy without any gaps. Oxford: Oxford University Press."
+                }
+            };
+
+            // Expose to window so inline onclick can use it
+            window.updateCitation = function(bookId) {
+                let format;
+                let textElId;
+
+                if(bookId === 'buku1') {
+                    format = document.getElementById('citSelect1').value;
+                    textElId = 'citText1';
+                } else if (bookId === 'buku2') {
+                    format = document.getElementById('citSelect2').value;
+                    textElId = 'citText2';
+                }
+
+                if(citationDB[bookId] && citationDB[bookId][format]) {
+                    document.getElementById(textElId).innerText = citationDB[bookId][format];
+                    appToast(`Format Sitasi diubah ke ${format.toUpperCase()}`, 'info');
+                }
+            }
+
+            /* -----------------------------------------------------------
+               3. 3D TILT EFFECT ENGINE (Mouse Tracking)
+               ----------------------------------------------------------- */
+            window.tiltBook = function(event, element) {
+                const book = element.querySelector('.book-3d-object');
+                const rect = element.getBoundingClientRect();
+                
+                // Get mouse position relative to element center
+                const x = event.clientX - rect.left - (rect.width / 2);
+                const y = event.clientY - rect.top - (rect.height / 2);
+                
+                // Calculate rotation limits (max 20 degrees)
+                const rotateY = (x / (rect.width / 2)) * 20;
+                const rotateX = -(y / (rect.height / 2)) * 20;
+                
+                // Apply inline transform (combining with base 3D orientation)
+                book.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(1.05)`;
+            }
+
+            window.resetTilt = function(element) {
+                const book = element.querySelector('.book-3d-object');
+                // Revert to base orientation
+                book.style.transform = `rotateY(-15deg) rotateX(5deg) scale(1)`;
+            }
+
+            /* -----------------------------------------------------------
+               4. QURANIC EXPLORER ENGINE (Tafsir & Audio Sim)
+               ----------------------------------------------------------- */
+            window.toggleTafsir = function(id) {
+                const box = document.getElementById(id);
+                if(box.classList.contains('show')) {
+                    box.classList.remove('show');
+                } else {
+                    // Close others first (Optional, let's keep it independent for now)
+                    box.classList.add('show');
+                }
+            }
+
+            // Audio Synthesis Simulation (Web Speech API)
+            let currentUtterance = null;
+            
+            window.playAudioTafsir = function(audioId, btnElement) {
+                // If browser doesn't support TTS
+                if(!('speechSynthesis' in window)) {
+                    appToast("Browser Anda tidak mendukung Audio AI.", "error");
+                    return;
+                }
+
+                const isPlaying = btnElement.classList.contains('playing');
+                
+                // Reset all audio buttons
+                document.querySelectorAll('.btn-audio').forEach(b => {
+                    b.classList.remove('playing');
+                    b.innerHTML = '<i class="fa-solid fa-play"></i> Dengarkan';
+                });
+                window.speechSynthesis.cancel();
+
+                if(isPlaying) {
+                    // User clicked stop
+                    return;
+                }
+
+                // Get text to read (Translation)
+                const card = btnElement.closest('.verse-card');
+                const textToRead = card.querySelector('.verse-translation').innerText;
+
+                currentUtterance = new SpeechSynthesisUtterance(textToRead);
+                currentUtterance.lang = 'id-ID';
+                currentUtterance.rate = 0.9; // Calm reading pace
+
+                currentUtterance.onstart = () => {
+                    btnElement.classList.add('playing');
+                    btnElement.innerHTML = '<i class="fa-solid fa-stop"></i> Berhenti';
+                    appToast("Memutar terjemahan AI...", "info");
+                };
+
+                currentUtterance.onend = () => {
+                    btnElement.classList.remove('playing');
+                    btnElement.innerHTML = '<i class="fa-solid fa-play"></i> Dengarkan';
+                };
+
+                window.speechSynthesis.speak(currentUtterance);
+            }
+
+            /* -----------------------------------------------------------
+               5. SMART TOAST NOTIFICATION
+               ----------------------------------------------------------- */
+            window.copyCitation = function(elementId) {
+                const text = document.getElementById(elementId).innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    appToast("Teks Sitasi Tersalin ke Clipboard!", "success");
+                }).catch(err => {
+                    console.error('Copy failed: ', err);
+                });
+            }
+
+            window.appToast = function(message, type = 'success') {
+                const toast = document.getElementById('smartToast');
+                const icon = type === 'success' ? '<i class="fa-solid fa-circle-check" style="color: #10b981;"></i>' : 
+                             type === 'error' ? '<i class="fa-solid fa-circle-xmark" style="color: #ef4444;"></i>' :
+                             '<i class="fa-solid fa-circle-info" style="color: #3b82f6;"></i>';
+                
+                toast.innerHTML = `${icon} <span>${message}</span>`;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garis Waktu | Historiografi Filsafat Islam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #064e3b;
+            --primary-light: #059669;
+            --secondary: #047857;
+            --accent: #d97706;
+            --accent-glow: #f59e0b;
+            --bg: #faf9f6;
+            --bg-deep: #f0ede6;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --card: rgba(255,255,255,0.88);
+            --border: rgba(6,78,59,0.1);
+            --line-color: rgba(6,78,59,0.25);
+            --shadow: rgba(6,78,59,0.08);
+            --glow: rgba(6,78,59,0.15);
+        }
+        [data-theme="dark"] {
+            --primary: #10b981;
+            --primary-light: #34d399;
+            --bg: #0c1220;
+            --bg-deep: #0a0f1a;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --card: rgba(15,23,42,0.9);
+            --border: rgba(255,255,255,0.08);
+            --line-color: rgba(255,255,255,0.15);
+            --shadow: rgba(0,0,0,0.3);
+            --glow: rgba(16,185,129,0.15);
+        }
+        ::selection{background:var(--accent);color:#fff}
+        *{margin:0;padding:0;box-sizing:border-box;cursor:none}
+        body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background .5s,color .5s}
+        a,button,input,.btn-filter,.action-btn,.btn-icon,.content{cursor:none}
+        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--primary);border-radius:6px}
+        @media(hover:none)and(pointer:coarse){*{cursor:auto!important}.cursor-dot,.cursor-outline{display:none!important}}
+
+        /* ===== PRELOADER (ENHANCED) ===== */
+        #preloader{position:fixed;inset:0;background:var(--bg-deep);z-index:999999;display:flex;justify-content:center;align-items:center;flex-direction:column;transition:opacity .8s cubic-bezier(.4,0,.2,1),visibility .8s}
+        #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .pre-calligraphy{font-family:'Amiri',serif;font-size:clamp(2rem,6vw,3.5rem);color:var(--primary);animation:calliPulse 2.5s ease-in-out infinite;text-align:center;line-height:1.4}
+        @keyframes calliPulse{0%,100%{transform:scale(1);opacity:1;filter:blur(0)}50%{transform:scale(1.03);opacity:.6;filter:blur(.5px)}}
+        .pre-ornament{width:120px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:20px auto;border-radius:2px}
+        .pre-bar{width:240px;height:3px;background:rgba(0,0,0,.06);border-radius:3px;overflow:hidden;margin-top:16px}
+        [data-theme="dark"] .pre-bar{background:rgba(255,255,255,.06)}
+        .pre-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;box-shadow:0 0 15px var(--glow);transition:width .3s}
+        .pre-status{font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);margin-top:14px;font-weight:600}
+
+        /* ===== CURSOR ===== */
+        .cursor-dot{width:8px;height:8px;background:var(--accent);position:fixed;border-radius:50%;pointer-events:none;z-index:999998;transform:translate(-50%,-50%);box-shadow:0 0 12px rgba(217,119,6,.6);mix-blend-mode:normal}
+        .cursor-outline{width:40px;height:40px;border:2px solid var(--primary);position:fixed;border-radius:50%;pointer-events:none;z-index:999997;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s,background .25s}
+        .cursor-outline.hover{width:60px;height:60px;border-color:var(--accent);background:rgba(217,119,6,.06)}
+
+        /* ===== SCROLL PROGRESS ===== */
+        #reading-progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--primary-light));z-index:999990;box-shadow:0 0 10px var(--glow)}
+
+        /* ===== GEOMETRIC CANVAS ===== */
+        #geo-canvas{position:fixed;inset:0;z-index:-1;opacity:.25;pointer-events:none}
+
+        /* ===== NOISE ===== */
+        .noise-ov{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");background-repeat:repeat;background-size:200px}
+
+        /* ===== TOOLBAR ===== */
+        .toolbar-top{background:linear-gradient(135deg,var(--primary),#065f46);color:white;padding:10px 5%;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;z-index:100;position:relative;font-weight:500}
+        .toolbar-top i{margin-right:5px}
+
+        /* ===== HEADER ===== */
+        header{padding:12px 5%;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px) saturate(1.5);background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:0 4px 20px var(--shadow)}
+        .brand{font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;color:var(--primary);display:flex;align-items:center;gap:10px}
+        .brand img{height:36px;object-fit:contain;opacity:.9}
+        .nav-controls{display:flex;gap:8px}
+        .btn-icon{width:40px;height:40px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:center;font-size:.9rem;transition:all .3s}
+        .btn-icon:hover,.btn-icon.active{background:var(--primary);color:white;border-color:var(--primary);box-shadow:0 4px 15px var(--glow);transform:translateY(-2px)}
+
+        /* ===== HERO ===== */
+        .hero{text-align:center;padding:3.5rem 5% 1.5rem;position:relative}
+        .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:30px;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.2);color:var(--accent);font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;margin-bottom:18px}
+        .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--primary);margin-bottom:10px;font-weight:900;line-height:1.15}
+        .hero p{color:var(--text-muted);font-weight:500;max-width:620px;margin:0 auto 24px;font-size:.95rem;line-height:1.7}
+
+        /* ===== STATS ROW ===== */
+        .stats-row{display:flex;justify-content:center;gap:clamp(20px,5vw,60px);flex-wrap:wrap;padding:0 5% 2rem}
+        .stat-item{text-align:center}
+        .stat-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--primary);line-height:1}
+        .stat-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--text-muted);font-weight:600;margin-top:4px}
+
+        /* ===== FILTER ===== */
+        .filter-panel{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:2.5rem;padding:0 5%}
+        .btn-filter{padding:10px 22px;border-radius:30px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-weight:600;font-size:.85rem;transition:all .3s;position:relative;overflow:hidden}
+        .btn-filter::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--primary),var(--secondary));opacity:0;transition:opacity .3s}
+        .btn-filter.active::before,.btn-filter:hover::before{opacity:1}
+        .btn-filter.active,.btn-filter:hover{color:white;border-color:var(--primary);box-shadow:0 4px 20px var(--glow)}
+        .btn-filter span{position:relative;z-index:1}
+
+        /* ===== MINIMAP SIDEBAR ===== */
+        .minimap{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;align-items:center}
+        .minimap-dot{width:10px;height:10px;border-radius:50%;background:var(--border);border:2px solid transparent;transition:all .3s;position:relative}
+        .minimap-dot.active{background:var(--accent);border-color:var(--accent);box-shadow:0 0 10px rgba(217,119,6,.4);transform:scale(1.3)}
+        .minimap-dot::after{content:attr(data-label);position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:9px;font-weight:700;color:var(--text-muted);white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none;text-transform:uppercase;letter-spacing:.1em}
+        .minimap-dot:hover::after{opacity:1}
+        .minimap-line{width:1px;height:12px;background:var(--border)}
+        @media(max-width:768px){.minimap{display:none}}
+
+        /* ===== TIMELINE ===== */
+        #timeline-container{position:relative;max-width:1100px;margin:0 auto;padding:2rem 5%;transition:transform .3s}
+        #timeline-container::after{content:'';position:absolute;width:4px;background:linear-gradient(to bottom,var(--primary),var(--accent),var(--primary-light));top:0;bottom:0;left:50%;margin-left:-2px;border-radius:4px;box-shadow:0 0 15px var(--glow)}
+        .timeline-item{padding:10px 40px;position:relative;width:50%;margin-bottom:50px;opacity:0;transform:translateY(60px) scale(.97);transition:all .9s cubic-bezier(.175,.885,.32,1.275)}
+        .timeline-item.show{opacity:1;transform:translateY(0) scale(1)}
+        .left{left:0;text-align:right}.right{left:50%;text-align:left}
+        .timeline-item::after{content:'';position:absolute;width:20px;height:20px;right:-10px;background:var(--bg);border:4px solid var(--accent);top:22px;border-radius:50%;z-index:1;box-shadow:0 0 0 4px var(--bg),0 0 20px rgba(217,119,6,.2);transition:all .4s cubic-bezier(.175,.885,.32,1.275)}
+        .right::after{left:-10px}
+        .timeline-item:hover::after{background:var(--accent);transform:scale(1.4);box-shadow:0 0 0 4px var(--bg),0 0 25px rgba(217,119,6,.5)}
+        .timeline-item.show .connector-line{transform:scaleX(1)}
+        .connector-line{position:absolute;top:30px;height:2px;background:linear-gradient(90deg,var(--accent),transparent);width:40px;transform:scaleX(0);transition:transform .6s .3s;transform-origin:right}
+        .left .connector-line{right:0}.right .connector-line{left:0;transform-origin:left;background:linear-gradient(270deg,var(--accent),transparent)}
+
+        /* ===== CONTENT CARD ===== */
+        .content{padding:28px;background:var(--card);backdrop-filter:blur(15px) saturate(1.3);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 30px var(--shadow);position:relative;transform-style:preserve-3d;transition:all .4s cubic-bezier(.23,1,.32,1);overflow:hidden}
+        .content::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:20px 20px 0 0}
+        .content::after{content:'';position:absolute;inset:0;border-radius:20px;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),var(--glow),transparent 50%);opacity:0;transition:opacity .4s;pointer-events:none}
+        .content:hover::after{opacity:1}
+        .content:hover{box-shadow:0 15px 50px var(--shadow);border-color:rgba(217,119,6,.2)}
+        .era-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(217,119,6,.08);color:var(--accent);border-radius:20px;font-weight:800;font-size:.8rem;margin-bottom:14px;border:1px solid rgba(217,119,6,.15)}
+        .content h2{font-family:'Playfair Display',serif;color:var(--primary);font-size:1.5rem;margin-bottom:8px;font-weight:900;line-height:1.2}
+        .content p{color:var(--text-muted);font-size:.9rem;line-height:1.75;margin-bottom:16px}
+        .content-actions{display:flex;gap:8px;justify-content:flex-end;border-top:1px dashed var(--border);padding-top:14px}
+        .left .content-actions{justify-content:flex-start}
+        .action-btn{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:10px;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:5px;transition:all .3s}
+        .action-btn:hover{background:var(--primary);color:white;border-color:var(--primary);transform:translateY(-2px);box-shadow:0 4px 12px var(--glow)}
+
+        @media(max-width:768px){
+            #timeline-container::after{left:25px}
+            .timeline-item{width:100%;padding-left:60px;padding-right:20px;text-align:left}
+            .left,.right{left:0}
+            .timeline-item::after{left:15px}
+            .left .content-actions{justify-content:flex-end}
+            .connector-line{display:none}
+        }
+
+        /* ===== PLAY CONTROL ===== */
+        .play-control-panel{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card);backdrop-filter:blur(15px) saturate(1.3);padding:10px 20px;border-radius:20px;border:1px solid var(--border);box-shadow:0 10px 40px var(--shadow);display:flex;gap:12px;align-items:center;z-index:999}
+        .play-sep{width:1px;height:24px;background:var(--border)}
+        .play-btn-main{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--glow);transition:all .3s}
+        .play-btn-main:hover{transform:scale(1.1);box-shadow:0 6px 25px var(--glow)}
+
+        /* ===== KEYBOARD SHORTCUTS PANEL ===== */
+        .kbd-panel{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:999999;display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:all .3s}
+        .kbd-panel.active{opacity:1;visibility:visible}
+        .kbd-content{background:var(--bg);border-radius:20px;padding:36px;max-width:500px;width:90%;border:1px solid var(--border);transform:scale(.9);transition:transform .3s}
+        .kbd-panel.active .kbd-content{transform:scale(1)}
+        .kbd-content h3{font-family:'Playfair Display',serif;color:var(--primary);font-size:1.5rem;margin-bottom:20px;font-weight:900}
+        .kbd-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+        .kbd-row:last-child{border:none}
+        .kbd-key{background:var(--bg-deep);border:1px solid var(--border);padding:4px 12px;border-radius:6px;font-family:monospace;font-weight:700;font-size:.85rem;color:var(--primary);box-shadow:0 2px 4px var(--shadow)}
+        .kbd-desc{color:var(--text-muted);font-size:.85rem;font-weight:500}
+
+        /* ===== TOAST ===== */
+        #toast-box{position:fixed;bottom:90px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:100000}
+        .toast{background:linear-gradient(135deg,var(--primary),#065f46);color:white;padding:14px 22px;border-radius:14px;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:8px;animation:toastIn .4s forwards,toastOut .4s 2.6s forwards;box-shadow:0 10px 30px rgba(0,0,0,.15)}
+        [data-theme="dark"] .toast{background:linear-gradient(135deg,#064e3b,#047857)}
+        @keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+        @keyframes toastOut{to{transform:translateX(120%);opacity:0}}
+
+        /* ===== MODAL (ENHANCED WITH TABS) ===== */
+        .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:100000;display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:all .4s}
+        .modal.active{opacity:1;visibility:visible}
+        .modal-content{background:var(--bg);width:92%;max-width:720px;border-radius:24px;padding:0;position:relative;transform:scale(.9) translateY(20px);transition:all .4s cubic-bezier(.16,1,.3,1);border:1px solid var(--border);overflow:hidden;max-height:85vh;overflow-y:auto}
+        .modal.active .modal-content{transform:scale(1) translateY(0)}
+        .modal-header{background:linear-gradient(135deg,var(--primary),#065f46);padding:28px 32px;color:white;position:relative}
+        .modal-header .era-badge{background:rgba(255,255,255,.15);color:white;border-color:rgba(255,255,255,.2)}
+        .modal-header h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;margin-top:8px;line-height:1.2}
+        .close-btn{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.15);border:none;width:36px;height:36px;border-radius:50%;font-size:1.1rem;color:white;display:flex;align-items:center;justify-content:center;transition:all .3s}
+        .close-btn:hover{background:rgba(255,255,255,.3);transform:rotate(90deg)}
+        .modal-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--card)}
+        .modal-tab{flex:1;padding:14px;text-align:center;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);border:none;background:transparent;transition:all .3s;position:relative}
+        .modal-tab.active{color:var(--primary)}
+        .modal-tab.active::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:3px;background:var(--primary);border-radius:3px 3px 0 0}
+        .modal-body{padding:28px 32px}
+        .modal-tab-content{display:none}.modal-tab-content.active{display:block}
+        .modal-quote{font-family:'Amiri',serif;font-size:1.35rem;color:var(--primary);border-left:4px solid var(--accent);padding:16px 20px;margin:16px 0;line-height:1.8;background:rgba(217,119,6,.04);border-radius:0 12px 12px 0}
+        .modal-impact{font-weight:600;color:var(--text);background:rgba(6,78,59,.05);padding:16px;border-radius:12px;border:1px solid var(--border);line-height:1.7}
+
+        /* ===== FOOTER ===== */
+        .site-footer{text-align:center;padding:3rem 5%;border-top:1px solid var(--border);margin-top:4rem;color:var(--text-muted);font-size:.8rem}
+        .site-footer .footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
+        .site-footer img{height:32px;opacity:.7}
+
+        /* ===== PAGE TRANSITION ===== */
+        .page-wrap{animation:pgFadeIn .8s cubic-bezier(.16,1,.3,1) both;animation-delay:.1s}
+        @keyframes pgFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+        /* ===== READING TIME BADGE ===== */
+        .reading-time{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;color:var(--text-muted);font-weight:600;background:var(--bg-deep);padding:5px 14px;border-radius:20px;border:1px solid var(--border)}
+    </style>
+</head>
+<body>
+<div id="reading-progress"></div>
+
+<!-- PRELOADER -->
+<div id="preloader">
+    <div class="pre-calligraphy">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
+    <div class="pre-ornament"></div>
+    <p style="color:var(--primary);font-weight:600;font-size:.9rem;font-family:'Playfair Display',serif;font-style:italic">Mempersiapkan Mesin Waktu...</p>
+    <div class="pre-bar"><div class="pre-fill" id="preFill"></div></div>
+    <div class="pre-status" id="preStatus">LOADING MANUSCRIPTS...</div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor-dot" id="curDot"></div>
+<div class="cursor-outline" id="curRing"></div>
+
+<!-- CANVAS & NOISE -->
+<canvas id="geo-canvas"></canvas>
+<div class="noise-ov"></div>
+
+<!-- SFX -->
+<audio id="sfx-whoosh" src="https://actions.google.com/sounds/v1/foley/whoosh_short.ogg"></audio>
+
+<div class="page-wrap">
+
+<!-- TOOLBAR -->
+<div class="toolbar-top">
+    <div id="hijri-date"><i class="fa-solid fa-moon"></i> --</div>
+    <div style="display:flex;align-items:center;gap:16px">
+        <span class="reading-time" id="readTime"><i class="fa-regular fa-clock"></i> -- mnt baca</span>
+        <div id="local-time"><i class="fa-regular fa-clock"></i> --:-- WIB</div>
+    </div>
+</div>
+
+<!-- HEADER -->
+<header>
+    <div class="brand">
+        <img src="assets/img/brand/gunadarma-logo.png" alt="Gunadarma" onerror="this.style.display='none'">
+        <span><i class="fa-solid fa-hourglass-half" style="color:var(--accent);margin-right:6px"></i>Historiografi</span>
+    </div>
+    <div class="nav-controls">
+        <button class="btn-icon" id="zoomOut" title="Perkecil"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+        <button class="btn-icon" id="zoomIn" title="Perbesar"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+        <button class="btn-icon" id="btnKbd" title="Pintasan Keyboard"><i class="fa-solid fa-keyboard"></i></button>
+        <button class="btn-icon" id="themeToggle" title="Mode Gelap/Terang"><i class="fa-solid fa-moon"></i></button>
+        <a href="tim.html" class="btn-icon" title="Kembali ke Tim"><i class="fa-solid fa-users"></i></a>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge"><i class="fa-solid fa-scroll"></i> Kelompok 4 — Filsafat Islam</div>
+    <h1>Jejak Intelektual Islam</h1>
+    <p>Evolusi pemikiran filosofis "Tanpa Celah" (Without Any Gaps) dari era Klasik hingga Kontemporer, merujuk pada literatur Peter Adamson dan Haidar Bagir.</p>
+    <div class="filter-panel">
+        <button class="btn-filter active" data-filter="all"><span>Semua Era</span></button>
+        <button class="btn-filter" data-filter="formatif"><span>Formatif (9-10)</span></button>
+        <button class="btn-filter" data-filter="klasik"><span>Klasik & Kritik (11-12)</span></button>
+        <button class="btn-filter" data-filter="pasca"><span>Pasca-Klasik (13+)</span></button>
+    </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row" id="statsRow">
+    <div class="stat-item"><div class="stat-num counter" data-target="7">0</div><div class="stat-label">Tokoh Filsuf</div></div>
+    <div class="stat-item"><div class="stat-num counter" data-target="9">0</div><div class="stat-label">Abad Rentang</div></div>
+    <div class="stat-item"><div class="stat-num counter" data-target="3">0</div><div class="stat-label">Era Utama</div></div>
+    <div class="stat-item"><div class="stat-num counter" data-target="2">0</div><div class="stat-label">Sumber Utama</div></div>
+</div>
+
+<!-- TIMELINE -->
+<div id="timeline-container"></div>
+
+<!-- MINIMAP -->
+<div class="minimap" id="minimap"></div>
+
+<!-- PLAY CONTROLS -->
+<div class="play-control-panel">
+    <button class="btn-icon" id="btnSfx" title="SFX"><i class="fa-solid fa-volume-high"></i></button>
+    <div class="play-sep"></div>
+    <button class="btn-icon" id="btnPrev" title="Sebelumnya (↑)"><i class="fa-solid fa-backward-step"></i></button>
+    <button class="play-btn-main" id="btnPlay" title="Auto Time-Travel"><i class="fa-solid fa-play"></i></button>
+    <button class="btn-icon" id="btnNext" title="Selanjutnya (↓)"><i class="fa-solid fa-forward-step"></i></button>
+    <div class="play-sep"></div>
+    <button class="btn-icon" id="btnShare" title="Bagikan"><i class="fa-solid fa-share-nodes"></i></button>
+</div>
+
+<div id="toast-box"></div>
+
+<!-- MODAL -->
+<div class="modal" id="eventModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
+            <span class="era-badge" id="modalEra"></span>
+            <h2 id="modalTitle"></h2>
+        </div>
+        <div class="modal-tabs">
+            <button class="modal-tab active" data-tab="desc"><i class="fa-solid fa-book"></i> Narasi</button>
+            <button class="modal-tab" data-tab="quote"><i class="fa-solid fa-quote-left"></i> Kutipan</button>
+            <button class="modal-tab" data-tab="impact"><i class="fa-solid fa-bolt"></i> Dampak</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-tab-content active" data-tab="desc"><p id="modalDesc" style="color:var(--text-muted);line-height:1.85"></p></div>
+            <div class="modal-tab-content" data-tab="quote"><div class="modal-quote" id="modalQuote"></div></div>
+            <div class="modal-tab-content" data-tab="impact"><div class="modal-impact" id="modalImpact"></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- KBD PANEL -->
+<div class="kbd-panel" id="kbdPanel">
+    <div class="kbd-content">
+        <h3><i class="fa-solid fa-keyboard" style="color:var(--accent)"></i> Pintasan Keyboard</h3>
+        <div class="kbd-row"><span class="kbd-key">↑ ↓</span><span class="kbd-desc">Navigasi antar era</span></div>
+        <div class="kbd-row"><span class="kbd-key">Space</span><span class="kbd-desc">Auto Time-Travel</span></div>
+        <div class="kbd-row"><span class="kbd-key">D</span><span class="kbd-desc">Mode Gelap/Terang</span></div>
+        <div class="kbd-row"><span class="kbd-key">M</span><span class="kbd-desc">Mute/Unmute SFX</span></div>
+        <div class="kbd-row"><span class="kbd-key">?</span><span class="kbd-desc">Panel ini</span></div>
+        <div class="kbd-row"><span class="kbd-key">Esc</span><span class="kbd-desc">Tutup panel/modal</span></div>
+        <div style="text-align:center;margin-top:16px"><button class="action-btn" onclick="document.getElementById('kbdPanel').classList.remove('active')" style="margin:0 auto"><i class="fa-solid fa-xmark"></i> Tutup</button></div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="footer-brand">
+        <img src="assets/img/brand/gunadarma-logo.png" alt="Gunadarma" onerror="this.style.display='none'">
+        <span style="font-family:'Playfair Display',serif;font-weight:700;color:var(--primary)">Universitas Gunadarma</span>
+    </div>
+    <p>Tugas Kelompok 4 — Historiografi Filsafat Islam</p>
+    <p style="margin-top:4px;font-size:.7rem;color:var(--border)">© 2026. Dibangun dengan ❤️ dan rasa ingin tahu.</p>
+</footer>
+
+</div><!-- end .page-wrap -->
+
+<script>
+const timelineData=[
+{id:"alkindi",period:"formatif",era:"Abad 9 M",title:"Al-Kindi & Gerakan Penerjemahan",short:"Filsuf Arab pertama yang menyelaraskan filsafat Yunani dengan fondasi tauhid Islam.",desc:"Berakar di Baitul Hikmah Baghdad, Al-Kindi meletakkan dasar bahwa kebenaran filosofis (Yunani) tidak bertentangan dengan wahyu. Ia mendefinisikan filsafat sebagai 'pengetahuan tentang realitas segala sesuatu sejauh kemampuan manusia'.",quote:"Kita tidak boleh malu untuk mengakui kebenaran dari manapun asalnya, sekalipun dari bangsa yang jauh.",impact:"Membuka gerbang rasionalitas dalam dunia Islam tanpa kehilangan identitas keagamaan."},
+{id:"alfarabi",period:"formatif",era:"Abad 10 M",title:"Al-Farabi: Sang Guru Kedua",short:"Menyempurnakan logika Aristoteles dan merumuskan konsep filsafat politik Islam.",desc:"Dikenal sebagai Al-Mu'allim Ats-Tsani (Guru Kedua setelah Aristoteles). Ia merumuskan hierarki kecerdasan dan konsep 'Al-Madinah Al-Fadhilah' (Kota Utama), di mana seorang pemimpin haruslah setara dengan seorang Nabi atau Filsuf yang menerima pancaran intelek aktif.",quote:"Masyarakat yang baik adalah masyarakat yang warganya bekerjasama untuk mencapai kebahagiaan sejati.",impact:"Menciptakan sistem Neoplatonisme Islam yang sistematis pertama."},
+{id:"ibnusina",period:"klasik",era:"Abad 11 M",title:"Puncak Klasik: Ibnu Sina",short:"Mensintesis pemikiran Aristotelian-Platonik menjadi sebuah sistem filsafat dan medis yang mendominasi dunia.",desc:"Ibnu Sina (Avicenna) membuktikan eksistensi Tuhan melalui konsep Wajib al-Wujud (Wujud yang Niscaya). Sistem filosofisnya sangat komprehensif hingga memicu reaksi keras dari para teolog di abad berikutnya.",quote:"Waktu adalah alat ukur pergerakan yang tak kasat mata.",impact:"Karyanya menjadi rujukan utama universitas Eropa dan dunia Islam selama ratusan tahun."},
+{id:"alghazali",period:"klasik",era:"Abad 11 M",title:"Kritik Al-Ghazali (Tahafut)",short:"Membongkar kerancuan para filsuf neoplatonik demi menyelamatkan akidah umat.",desc:"Melalui 'Tahafut al-Falasifah' (Kerancuan Para Filsuf), Al-Ghazali menyerang tiga poin utama filsafat Ibnu Sina yang dianggap keluar dari Islam (alam qadim, Tuhan tidak tahu rincian, dan kebangkitan hanya ruhani). Ia mempopulerkan pendekatan Tasawuf (sejalan dengan buku Haidar Bagir).",quote:"Pengetahuan tanpa amal adalah gila, dan amal tanpa pengetahuan adalah sia-sia.",impact:"Menggeser tren intelektual dari rasionalisme murni menuju intuisi spiritual (Irfan/Tasawuf)."},
+{id:"ibnurusyd",period:"klasik",era:"Abad 12 M",title:"Pembelaan Ibnu Rusyd di Andalusia",short:"Membalas kritik Al-Ghazali dan mengembalikan filsafat pada kemurnian Aristoteles.",desc:"Ibnu Rusyd (Averroes) menulis 'Tahafut al-Tahafut' untuk membantah Al-Ghazali. Ia berargumen melalui ayat (Fasl al-Maqal) bahwa syariat mewajibkan penggunaan penalaran demonstratif (burhani) untuk merenungkan Tuhan.",quote:"Kebenaran tidak mungkin bertentangan dengan kebenaran; melainkan ia harus selaras dengannya.",impact:"Sangat berpengaruh di Eropa (Averroisme) meski akhirnya pudar di dunia Islam Barat."},
+{id:"suhrawardi",period:"pasca",era:"Abad 12 M",title:"Filsafat Iluminasi (Isyraq)",short:"Menyatukan nalar rasional diskursif dengan pengalaman mistik pencerahan (intuisi).",desc:"Suhrawardi mendirikan mazhab Iluminasi. Ia menolak beberapa dasar logika Ibnu Sina dan menggantinya dengan 'Metafisika Cahaya'. Realitas tertinggi adalah Cahaya Segala Cahaya (Nur al-Anwar) yaitu Allah.",quote:"Barangsiapa yang tidak pernah merasakan intuisi (dzawq), ia tidak mengerti apa itu pengetahuan sejati.",impact:"Membuktikan bahwa filsafat Islam TIDAK MATI setelah Ibnu Rusyd, sesuai argumen Peter Adamson."},
+{id:"mullasadra",period:"pasca",era:"Abad 17 M",title:"Teosofi Transenden Mulla Sadra",short:"Puncak sintesis filsafat, kalam, dan tasawuf di era Dinasti Safawiyah.",desc:"Merumuskan 'Al-Hikmah Al-Muta'aliyah'. Konsep utamanya adalah 'Wahdatul Wujud' (Kesatuan Wujud) dan 'Harakah Jauhariyah' (Gerak Substantif) yang menyatakan bahwa alam semesta selalu berevolusi menuju kesempurnaan kembali kepada Tuhan.",quote:"Wujud adalah realitas tunggal yang bergradasi dari materi paling rendah hingga Tuhan.",impact:"Menjadi fondasi kurikulum filsafat Islam di pesantren dan universitas (terutama Iran) hingga hari ini."}
+];
+
+const tlContainer=document.getElementById('timeline-container');
+let playInterval=null,isPlaying=false,sfxEnabled=true,currentFocusIndex=-1;
+const sfxWhoosh=document.getElementById('sfx-whoosh');
+
+function toast(msg){const b=document.getElementById('toast-box'),t=document.createElement('div');t.className='toast';t.innerHTML=`<i class="fa-solid fa-circle-info"></i> ${msg}`;b.appendChild(t);setTimeout(()=>t.remove(),3100)}
+
+// ===== RENDER TIMELINE =====
+function renderTimeline(filter='all'){
+    tlContainer.innerHTML='';
+    const data=filter==='all'?timelineData:timelineData.filter(d=>d.period===filter);
+    if(!data.length){tlContainer.innerHTML='<p style="text-align:center;color:var(--text-muted);padding:40px">Tidak ada data pada era ini.</p>';buildMinimap([]);return}
+    data.forEach((item,i)=>{
+        const align=i%2===0?'left':'right';
+        const div=document.createElement('div');
+        div.className=`timeline-item ${align}`;div.id=`evt-${item.id}`;
+        const bm=localStorage.getItem(`bm_${item.id}`)==='true';
+        div.innerHTML=`
+            <div class="connector-line"></div>
+            <div class="content">
+                <span class="era-badge"><i class="fa-solid fa-hourglass-half"></i> ${item.era}</span>
+                <h2>${item.title}</h2>
+                <p>${item.short}</p>
+                <div class="content-actions">
+                    <button class="action-btn" onclick="openModal('${item.id}')" title="Baca Lengkap"><i class="fa-solid fa-book-open"></i> Detail</button>
+                    <button class="action-btn" onclick="readAloud('${item.short}')" title="Dengarkan"><i class="fa-solid fa-volume-high"></i></button>
+                    <button class="action-btn bm-btn" onclick="toggleBM('${item.id}',this)" title="Bookmark" style="color:${bm?'var(--accent)':'inherit'}"><i class="fa-solid fa-bookmark"></i></button>
+                </div>
+            </div>`;
+        // 3D tilt + glow track
+        const c=div.querySelector('.content');
+        c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;c.style.transform=`perspective(1000px) rotateX(${-(y-r.height/2)/25}deg) rotateY(${(x-r.width/2)/25}deg) scale3d(1.02,1.02,1.02)`;c.style.setProperty('--mx',x+'px');c.style.setProperty('--my',y+'px')});
+        c.addEventListener('mouseleave',()=>{c.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale3d(1,1,1)'});
+        tlContainer.appendChild(div);
+    });
+    buildMinimap(data);
+    setTimeout(checkReveal,100);
+}
+
+// ===== MINIMAP =====
+function buildMinimap(data){
+    const mm=document.getElementById('minimap');mm.innerHTML='';
+    data.forEach((item,i)=>{
+        if(i>0){const l=document.createElement('div');l.className='minimap-line';mm.appendChild(l)}
+        const d=document.createElement('div');d.className='minimap-dot';d.setAttribute('data-label',item.title.substring(0,18));d.setAttribute('data-index',i);
+        d.addEventListener('click',()=>{const el=document.getElementById(`evt-${item.id}`);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})});
+        mm.appendChild(d);
+    });
+}
+
+function updateMinimap(idx){document.querySelectorAll('.minimap-dot').forEach((d,i)=>{d.classList.toggle('active',i===idx)})}
+
+// ===== SCROLL REVEAL =====
+function checkReveal(){
+    const tb=window.innerHeight*.85;
+    document.querySelectorAll('.timeline-item').forEach((item,i)=>{
+        const top=item.getBoundingClientRect().top;
+        if(top<tb&&!item.classList.contains('show')){item.classList.add('show');if(sfxEnabled){sfxWhoosh.currentTime=0;sfxWhoosh.volume=.15;sfxWhoosh.play().catch(()=>{})}}
+        if(top>0&&top<window.innerHeight/2){const id=item.id.replace('evt-','');if(history.state!==id){history.pushState(id,null,`#${id}`);currentFocusIndex=i;updateMinimap(i)}}
+    });
+}
+window.addEventListener('scroll',checkReveal);
+
+// ===== FILTER =====
+document.querySelectorAll('.btn-filter').forEach(btn=>{btn.addEventListener('click',e=>{document.querySelectorAll('.btn-filter').forEach(b=>b.classList.remove('active'));e.currentTarget.classList.add('active');renderTimeline(e.currentTarget.getAttribute('data-filter'));toast(`Filter: ${e.currentTarget.textContent.trim()}`)})});
+
+function toggleBM(id,btn){const is=localStorage.getItem(`bm_${id}`)==='true';if(is){localStorage.removeItem(`bm_${id}`);btn.style.color='inherit';toast("Dihapus dari Bookmark")}else{localStorage.setItem(`bm_${id}`,'true');btn.style.color='var(--accent)';toast("Disimpan ke Bookmark!")}}
+function readAloud(t){if('speechSynthesis'in window){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='id-ID';window.speechSynthesis.speak(u);toast("Memutar narasi...")}}
+
+// ===== AUTO-PLAY =====
+const btnPlay=document.getElementById('btnPlay');
+function togglePlay(){isPlaying=!isPlaying;btnPlay.innerHTML=isPlaying?'<i class="fa-solid fa-pause"></i>':'<i class="fa-solid fa-play"></i>';if(isPlaying){toast("Mesin Waktu Aktif!");playInterval=setInterval(()=>{window.scrollBy({top:180,behavior:'smooth'});if((window.innerHeight+window.scrollY)>=document.body.offsetHeight)togglePlay()},2200)}else{clearInterval(playInterval);toast("Mesin Waktu Dihentikan.")}}
+btnPlay.addEventListener('click',togglePlay);
+
+function jumpTo(dir){const items=document.querySelectorAll('.timeline-item');if(!items.length)return;if(dir==='next'&&currentFocusIndex<items.length-1)currentFocusIndex++;else if(dir==='prev'&&currentFocusIndex>0)currentFocusIndex--;else return;items[currentFocusIndex].scrollIntoView({behavior:'smooth',block:'center'})}
+document.getElementById('btnNext').addEventListener('click',()=>jumpTo('next'));
+document.getElementById('btnPrev').addEventListener('click',()=>jumpTo('prev'));
+
+// ===== KEYBOARD SHORTCUTS =====
+document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'){e.preventDefault();jumpTo('next')}
+    if(e.key==='ArrowUp'){e.preventDefault();jumpTo('prev')}
+    if(e.key===' '&&!e.target.closest('input,textarea')){e.preventDefault();togglePlay()}
+    if(e.key==='d'||e.key==='D')document.getElementById('themeToggle').click();
+    if(e.key==='m'||e.key==='M')document.getElementById('btnSfx').click();
+    if(e.key==='?')document.getElementById('kbdPanel').classList.toggle('active');
+    if(e.key==='Escape'){document.getElementById('kbdPanel').classList.remove('active');document.getElementById('eventModal').classList.remove('active')}
+});
+document.getElementById('btnKbd').addEventListener('click',()=>document.getElementById('kbdPanel').classList.toggle('active'));
+
+// ===== MODAL (TABBED) =====
+const modal=document.getElementById('eventModal');
+function openModal(id){
+    const d=timelineData.find(x=>x.id===id);
+    document.getElementById('modalEra').innerHTML=`<i class="fa-solid fa-hourglass-half"></i> ${d.era}`;
+    document.getElementById('modalTitle').innerText=d.title;
+    document.getElementById('modalDesc').innerText=d.desc;
+    document.getElementById('modalQuote').innerText=`"${d.quote}"`;
+    document.getElementById('modalImpact').innerHTML=`<i class="fa-solid fa-bolt" style="color:var(--accent)"></i> <strong>Dampak:</strong> ${d.impact}`;
+    // Reset tabs
+    document.querySelectorAll('.modal-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+    document.querySelectorAll('.modal-tab-content').forEach((c,i)=>c.classList.toggle('active',i===0));
+    modal.classList.add('active');
+}
+document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('active'));
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('active')});
+document.querySelectorAll('.modal-tab').forEach(tab=>{tab.addEventListener('click',()=>{const t=tab.dataset.tab;document.querySelectorAll('.modal-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));document.querySelectorAll('.modal-tab-content').forEach(x=>x.classList.toggle('active',x.dataset.tab===t))})});
+
+// ===== ZOOM =====
+let zoomLevel=1;
+document.getElementById('zoomIn').addEventListener('click',()=>{if(zoomLevel<1.15){zoomLevel+=.05;tlContainer.style.transform=`scale(${zoomLevel})`;toast(`Zoom: ${Math.round(zoomLevel*100)}%`)}});
+document.getElementById('zoomOut').addEventListener('click',()=>{if(zoomLevel>.85){zoomLevel-=.05;tlContainer.style.transform=`scale(${zoomLevel})`;toast(`Zoom: ${Math.round(zoomLevel*100)}%`)}});
+
+// ===== SHARE =====
+document.getElementById('btnShare').addEventListener('click',()=>{if(navigator.share){navigator.share({title:'Historiografi Filsafat Islam',text:'Jejak Intelektual Islam — Timeline Interaktif',url:window.location.href}).catch(()=>{})}else{navigator.clipboard.writeText(window.location.href).then(()=>toast("Link disalin ke clipboard!"))}});
+
+// ===== THEME =====
+document.getElementById('themeToggle').addEventListener('click',()=>{const c=document.documentElement.getAttribute('data-theme');const isDark=c==='dark';document.documentElement.setAttribute('data-theme',isDark?'light':'dark');document.getElementById('themeToggle').innerHTML=isDark?'<i class="fa-solid fa-moon"></i>':'<i class="fa-solid fa-sun"></i>';toast(isDark?"Mode Terang":"Mode Gelap")});
+
+// ===== SFX =====
+document.getElementById('btnSfx').addEventListener('click',e=>{sfxEnabled=!sfxEnabled;e.currentTarget.innerHTML=sfxEnabled?'<i class="fa-solid fa-volume-high"></i>':'<i class="fa-solid fa-volume-xmark"></i>';toast(sfxEnabled?"SFX Aktif":"SFX Bisu")});
+
+// ===== CLOCK & HIJRI =====
+setInterval(()=>{document.getElementById('local-time').innerHTML=`<i class="fa-regular fa-clock"></i> ${new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})} WIB`},1000);
+try{document.getElementById('hijri-date').innerHTML=`<i class="fa-solid fa-moon"></i> ${new Intl.DateTimeFormat('id-ID-u-ca-islamic',{day:'numeric',month:'long',year:'numeric'}).format(new Date())}`}catch(e){}
+
+// ===== READING PROGRESS =====
+window.addEventListener('scroll',()=>{const p=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100;document.getElementById('reading-progress').style.width=p+'%'});
+
+// ===== READING TIME =====
+function calcReadTime(){const words=timelineData.reduce((a,d)=>a+d.desc.split(' ').length+d.short.split(' ').length+d.impact.split(' ').length,0);const min=Math.ceil(words/200);document.getElementById('readTime').innerHTML=`<i class="fa-regular fa-clock"></i> ${min} mnt baca`}
+
+// ===== CURSOR =====
+const dot=document.getElementById('curDot'),ring=document.getElementById('curRing');
+let cmx=0,cmy=0,crx=0,cry=0;
+document.addEventListener('mousemove',e=>{cmx=e.clientX;cmy=e.clientY;dot.style.left=cmx+'px';dot.style.top=cmy+'px'});
+(function aR(){crx+=(cmx-crx)*.12;cry+=(cmy-cry)*.12;ring.style.left=crx+'px';ring.style.top=cry+'px';requestAnimationFrame(aR)})();
+document.querySelectorAll('a,button,.content,.action-btn,.btn-filter,.btn-icon').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hover'));el.addEventListener('mouseleave',()=>ring.classList.remove('hover'))});
+
+// ===== GEOMETRIC CANVAS =====
+const cv=document.getElementById('geo-canvas'),cx=cv.getContext('2d');
+function rCV(){cv.width=window.innerWidth;cv.height=window.innerHeight}rCV();window.addEventListener('resize',rCV);
+const pts=Array.from({length:35},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+function drawCV(){
+    cx.clearRect(0,0,cv.width,cv.height);
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cv.width)p.vx*=-1;if(p.y<0||p.y>cv.height)p.vy*=-1;cx.beginPath();cx.arc(p.x,p.y,1.5,0,Math.PI*2);cx.fillStyle=isDark?'rgba(16,185,129,.35)':'rgba(217,119,6,.3)';cx.fill()});
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<140){cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.strokeStyle=isDark?`rgba(16,185,129,${.06*(1-d/140)})`:`rgba(6,78,59,${.04*(1-d/140)})`;cx.lineWidth=.5;cx.stroke()}}
+    requestAnimationFrame(drawCV);
+}
+
+// ===== COUNTER ANIMATION =====
+function animCounters(){
+    const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const c=e.target,t=+c.dataset.target;let v=0;const s=t/30;(function u(){v+=s;if(v<t){c.innerText=Math.ceil(v);requestAnimationFrame(u)}else c.innerText=t})();obs.unobserve(c)}})},{threshold:.5});
+    document.querySelectorAll('.counter').forEach(c=>obs.observe(c));
+}
+
+// ===== PRELOADER =====
+function initPreloader(){
+    const pre=document.getElementById('preloader'),fill=document.getElementById('preFill'),status=document.getElementById('preStatus');
+    const steps=['LOADING MANUSCRIPTS...','DECODING ARABIC TEXTS...','ASSEMBLING TIMELINE...','BISMILLAH, SIAP!'];
+    let pg=0;
+    const iv=setInterval(()=>{pg+=Math.random()*25+8;if(pg>100)pg=100;fill.style.width=pg+'%';status.textContent=steps[Math.min(Math.floor(pg/25),3)];if(pg>=100){clearInterval(iv);setTimeout(()=>{pre.classList.add('hidden')},600)}},320);
+}
+
+// ===== INIT =====
+window.addEventListener('load',()=>{
+    initPreloader();
+    renderTimeline();
+    drawCV();
+    calcReadTime();
+    animCounters();
+    if(window.location.hash){const el=document.querySelector(window.location.hash.replace('#','#evt-'));if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center'}),1200)}
+});
+</script>
+</body>
+</html>

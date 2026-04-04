@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Komponen Card Tokoh (Web Component)</title>
+    </head>
+<body>
+
+    <div style="display: flex; gap: 30px; padding: 50px; justify-content: center; background: #0f172a; min-height: 100vh; flex-wrap: wrap;">
+        
+        <card-tokoh 
+            nama="Ibnu Sina" 
+            gelar="Avicenna / Syaikh al-Ra'is" 
+            era="Abad 11 M" 
+            warna="#10b981" 
+            foto="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Avicenna_Portrait_On_Silver_Vase.jpg/400px-Avicenna_Portrait_On_Silver_Vase.jpg"
+            deskripsi="Merumuskan konsep Wajib al-Wujud dan menyempurnakan sintesis logika serta kedokteran yang mendominasi dunia selama berabad-abad.">
+        </card-tokoh>
+
+        <card-tokoh 
+            nama="Al-Ghazali" 
+            gelar="Hujjat al-Islam" 
+            era="Abad 11-12 M" 
+            warna="#0284c7" 
+            foto="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Ghazali.jpg/400px-Ghazali.jpg"
+            deskripsi="Mengkritik keras para filsuf melalui Tahafut al-Falasifah dan mengintegrasikan tasawuf ke dalam ajaran Islam arus utama.">
+        </card-tokoh>
+
+    </div>
+
+    <script>
+        class CardTokoh extends HTMLElement {
+            constructor() {
+                super();
+                // Menggunakan Shadow DOM agar CSS di dalam komponen ini tidak bocor/rusak oleh CSS luar
+                this.attachShadow({ mode: 'open' });
+            }
+
+            connectedCallback() {
+                // Mengambil data dari atribut HTML
+                const nama = this.getAttribute('nama') || 'Nama Tokoh';
+                const gelar = this.getAttribute('gelar') || 'Gelar Tokoh';
+                const era = this.getAttribute('era') || 'Era Klasik';
+                const warna = this.getAttribute('warna') || '#d97706'; // Default Gold
+                const foto = this.getAttribute('foto') || `https://ui-avatars.com/api/?name=${nama}&background=random`;
+                const deskripsi = this.getAttribute('deskripsi') || 'Deskripsi pemikiran tokoh tidak tersedia.';
+
+                // Merender HTML & CSS ke dalam Shadow DOM
+                this.shadowRoot.innerHTML = `
+                    <style>
+                        :host {
+                            display: inline-block;
+                            perspective: 1000px; /* Kedalaman 3D */
+                            font-family: 'Poppins', sans-serif;
+                        }
+
+                        /* Container Utama Kartu */
+                        .card-inner {
+                            width: 300px;
+                            height: 420px;
+                            position: relative;
+                            transform-style: preserve-3d;
+                            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                            cursor: pointer;
+                        }
+
+                        /* Efek Hover 3D Tilt & Flip */
+                        :host(:hover) .card-inner.is-flipped {
+                            transform: rotateY(180deg) scale(1.05);
+                        }
+                        :host(:hover) .card-inner:not(.is-flipped) {
+                            transform: translateY(-10px) scale(1.02);
+                        }
+                        .card-inner.is-flipped {
+                            transform: rotateY(180deg);
+                        }
+
+                        /* Sisi Depan dan Belakang */
+                        .card-front, .card-back {
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            backface-visibility: hidden;
+                            border-radius: 20px;
+                            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+                            overflow: hidden;
+                            background: rgba(255, 255, 255, 0.1);
+                            backdrop-filter: blur(15px);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                        }
+
+                        /* Efek Kilauan Holografis (Glare) */
+                        .glare {
+                            position: absolute;
+                            top: 0; left: 0; width: 100%; height: 100%;
+                            background: linear-gradient(125deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 100%);
+                            z-index: 10;
+                            pointer-events: none;
+                        }
+
+                        /* --- DESAIN BAGIAN DEPAN --- */
+                        .card-front {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            padding: 20px;
+                            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+                            color: white;
+                        }
+                        .card-front::before {
+                            content: '';
+                            position: absolute;
+                            top: 0; left: 0; width: 100%; height: 6px;
+                            background: ${warna};
+                        }
+                        .image-container {
+                            width: 140px;
+                            height: 140px;
+                            border-radius: 50%;
+                            padding: 5px;
+                            background: linear-gradient(135deg, ${warna}, transparent);
+                            margin-bottom: 20px;
+                            position: relative;
+                            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+                        }
+                        .image-container img {
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            border: 4px solid #0f172a;
+                        }
+                        .nama {
+                            font-size: 1.6rem;
+                            font-weight: 800;
+                            margin: 0 0 5px 0;
+                            text-align: center;
+                            color: #f8fafc;
+                        }
+                        .gelar {
+                            font-size: 0.9rem;
+                            color: ${warna};
+                            font-weight: 600;
+                            text-align: center;
+                            margin-bottom: 15px;
+                            font-style: italic;
+                        }
+                        .era-badge {
+                            background: rgba(255,255,255,0.1);
+                            padding: 5px 15px;
+                            border-radius: 20px;
+                            font-size: 0.8rem;
+                            font-weight: 700;
+                            letter-spacing: 1px;
+                            text-transform: uppercase;
+                            border: 1px solid rgba(255,255,255,0.2);
+                        }
+                        .btn-flip {
+                            position: absolute;
+                            bottom: 20px;
+                            background: transparent;
+                            border: 1px solid rgba(255,255,255,0.3);
+                            color: white;
+                            padding: 8px 20px;
+                            border-radius: 20px;
+                            cursor: pointer;
+                            font-size: 0.8rem;
+                            font-weight: 600;
+                            transition: 0.3s;
+                        }
+                        .btn-flip:hover {
+                            background: ${warna};
+                            border-color: ${warna};
+                        }
+
+                        /* --- DESAIN BAGIAN BELAKANG --- */
+                        .card-back {
+                            transform: rotateY(180deg);
+                            background: ${warna};
+                            color: white;
+                            padding: 30px 20px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            text-align: center;
+                        }
+                        .card-back h3 {
+                            font-size: 1.2rem;
+                            margin-top: 0;
+                            margin-bottom: 15px;
+                            border-bottom: 2px dashed rgba(255,255,255,0.3);
+                            padding-bottom: 10px;
+                        }
+                        .deskripsi {
+                            font-size: 0.95rem;
+                            line-height: 1.6;
+                            margin-bottom: auto;
+                            text-align: justify;
+                        }
+                        .back-icon {
+                            font-size: 3rem;
+                            opacity: 0.2;
+                            position: absolute;
+                            bottom: -10px;
+                            right: -10px;
+                        }
+                    </style>
+
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="glare"></div>
+                            <div class="image-container">
+                                <img src="${foto}" alt="${nama}">
+                            </div>
+                            <h2 class="nama">${nama}</h2>
+                            <div class="gelar">${gelar}</div>
+                            <div class="era-badge">${era}</div>
+                            <button class="btn-flip" id="btn-front">Baca Ringkasan ⤾</button>
+                        </div>
+
+                        <div class="card-back">
+                            <div class="glare"></div>
+                            <h3>Intisari Pemikiran</h3>
+                            <div class="deskripsi">${deskripsi}</div>
+                            <button class="btn-flip" id="btn-back" style="bottom: 20px; border-color: white;">⤿ Kembali</button>
+                        </div>
+                    </div>
+                `;
+
+                this.bindEvents();
+            }
+
+            bindEvents() {
+                const cardInner = this.shadowRoot.querySelector('.card-inner');
+                const btnFront = this.shadowRoot.querySelector('#btn-front');
+                const btnBack = this.shadowRoot.querySelector('#btn-back');
+
+                // Logika Membalik Kartu
+                btnFront.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    cardInner.classList.add('is-flipped');
+                });
+
+                btnBack.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    cardInner.classList.remove('is-flipped');
+                });
+
+                // Efek 3D Tilt mengikuti Mouse (Dewa Effect)
+                this.addEventListener('mousemove', (e) => {
+                    if (cardInner.classList.contains('is-flipped')) return; // Matikan tilt jika sedang dibalik
+                    
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -15;
+                    const rotateY = ((x - centerX) / centerX) * 15;
+                    
+                    cardInner.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+
+                this.addEventListener('mouseleave', () => {
+                    if (!cardInner.classList.contains('is-flipped')) {
+                        cardInner.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    }
+                });
+            }
+        }
+
+        // Mendaftarkan Custom Element ke Browser
+        customElements.define('card-tokoh', CardTokoh);
+    </script>
+</body>
+</html>

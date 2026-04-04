@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Tokoh | Kelompok IV</title>
+    <meta name="description" content="Dashboard interaktif tokoh-tokoh filsuf Islam — Al-Kindi, Al-Farabi, Ibnu Sina, Al-Ghazali, Ibnu Rusyd. Kelompok IV.">
+    <meta name="keywords" content="filsafat islam, tokoh islam, al-kindi, al-farabi, ibnu sina, al-ghazali, ibnu rusyd, dashboard">
+    <meta property="og:title" content="Dashboard Tokoh Filsuf Islam | Kelompok IV">
+    <meta property="og:description" content="Jelajahi profil interaktif tokoh-tokoh besar filsafat Islam melalui dashboard 3D.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#064e3b">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Space+Mono:wght@400;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="animations.css">
+
+    <style>
+        /* ============================================
+           GLOBAL & DYNAMIC THEME SYSTEM
+           ============================================ */
+        :root {
+            --bg-base: #f8fafc;
+            --bg-base-rgb: 248,250,252;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --card-glass: rgba(255, 255, 255, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.4);
+            --dyn-color-1: #064e3b;
+            --dyn-color-2: #047857;
+            --accent: #d97706;
+            --shadow-card: 0 25px 50px -12px rgba(0,0,0,0.1);
+            --transition-theme: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-base: #020617;
+            --bg-base-rgb: 2,6,23;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-glass: rgba(15, 23, 42, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.05);
+            --shadow-card: 0 25px 50px -12px rgba(0,0,0,0.4);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-base);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background var(--transition-theme), color var(--transition-theme);
+        }
+
+        /* ============================================
+           LOADING SCREEN
+           ============================================ */
+        .loader-screen {
+            position: fixed; inset: 0; z-index: 10000;
+            background: #020617;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .loader-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-ring {
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.08);
+            border-top-color: var(--dyn-color-1);
+            border-right-color: var(--dyn-color-2);
+            animation: loaderSpin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+        .loader-text {
+            margin-top: 28px; font-family: 'Cinzel', serif; font-size: 1rem;
+            color: rgba(255,255,255,0.5); letter-spacing: 6px; text-transform: uppercase;
+            animation: loaderPulse 2s ease-in-out infinite;
+        }
+        @keyframes loaderSpin { to { transform: rotate(360deg); } }
+        @keyframes loaderPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        /* ============================================
+           MORPHING BACKGROUND + PARTICLES
+           ============================================ */
+        .bg-morph {
+            position: fixed; inset: 0; z-index: -2;
+            background:
+                radial-gradient(ellipse at 20% 0%, var(--dyn-color-1) 0%, transparent 55%),
+                radial-gradient(ellipse at 90% 90%, var(--dyn-color-2) 0%, transparent 55%);
+            opacity: 0.12;
+            transition: all 1.5s ease-in-out;
+        }
+        [data-theme="dark"] .bg-morph { opacity: 0.2; }
+
+        #particle-canvas {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+        }
+
+        /* ============================================
+           THEME TOGGLE (Floating)
+           ============================================ */
+        .theme-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 9000;
+            width: 52px; height: 52px; border-radius: 50%;
+            background: var(--card-glass); border: 1px solid var(--border-glass);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.2rem; color: var(--text-main);
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover { transform: scale(1.12) rotate(15deg); }
+        .theme-toggle:active { transform: scale(0.95); }
+
+        /* ============================================
+           DASHBOARD ARCHITECTURE
+           ============================================ */
+        .dashboard-container {
+            display: flex; min-height: 100vh; padding-top: 80px;
+        }
+        @media (max-width: 1100px) {
+            .dashboard-container { flex-direction: column; }
+        }
+
+        /* ============================================
+           LEFT PANEL: 3D CAROUSEL
+           ============================================ */
+        .carousel-panel {
+            flex: 1; position: sticky; top: 80px; height: calc(100vh - 80px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            perspective: 1200px; padding: 20px; overflow: hidden;
+            user-select: none; -webkit-user-select: none;
+        }
+        @media (max-width: 1100px) {
+            .carousel-panel { position: relative; top: 0; height: auto; min-height: 620px; }
+        }
+
+        .carousel-track {
+            position: relative; width: 320px; height: 480px;
+            transform-style: preserve-3d;
+        }
+
+        .tokoh-card {
+            position: absolute; width: 100%; height: 100%;
+            background: var(--card-glass);
+            border: 2px solid var(--border-glass);
+            border-radius: 30px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; align-items: center; padding: 40px 30px;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
+            cursor: pointer; text-align: center;
+            will-change: transform, opacity;
+        }
+        .tokoh-card.active {
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.25);
+        }
+
+        .tokoh-card img {
+            width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
+            border: 5px solid var(--bg-base);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        .tokoh-card.active img { transform: scale(1.05); }
+
+        .tokoh-card h2 { font-family: 'Cinzel', serif; font-size: 1.8rem; margin-bottom: 5px; line-height: 1.2; }
+
+        .era-badge {
+            background: var(--dyn-color-1); color: white;
+            padding: 5px 15px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 800; letter-spacing: 1px;
+            margin-bottom: 20px;
+            transition: background 1s ease;
+        }
+
+        /* Carousel Controls */
+        .carousel-controls { margin-top: 40px; display: flex; gap: 20px; align-items: center; }
+
+        .btn-nav {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: var(--card-glass); border: 1px solid var(--border-glass);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            color: var(--text-main); font-size: 1.1rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        .btn-nav:hover { background: var(--dyn-color-1); color: #fff; transform: scale(1.1); }
+        .btn-nav:active { transform: scale(0.95); }
+
+        .carousel-hint {
+            margin-top: 20px; font-size: 0.75rem; font-weight: 700;
+            color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .carousel-hint .keys { display: flex; gap: 4px; }
+        .key-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px; border-radius: 6px;
+            background: var(--card-glass); border: 1px solid var(--border-glass);
+            font-size: 0.65rem; font-family: 'Space Mono', monospace;
+        }
+
+        /* ============================================
+           TIMELINE MINIMAP
+           ============================================ */
+        .timeline-minimap {
+            width: 100%; max-width: 360px; margin-top: 30px;
+            position: relative; height: 50px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 10px;
+        }
+        .timeline-line {
+            position: absolute; top: 50%; left: 20px; right: 20px;
+            height: 2px; background: rgba(100,116,139,0.2);
+            transform: translateY(-50%);
+        }
+        .timeline-progress {
+            position: absolute; top: 50%; left: 20px;
+            height: 3px; background: var(--dyn-color-1);
+            transform: translateY(-50%); border-radius: 3px;
+            transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1), background 1s;
+        }
+        .timeline-dot {
+            position: relative; z-index: 2;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--bg-base); border: 2px solid var(--text-muted);
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+        .timeline-dot:hover { transform: scale(1.4); }
+        .timeline-dot.active {
+            background: var(--dyn-color-1); border-color: var(--dyn-color-1);
+            transform: scale(1.5);
+            box-shadow: 0 0 12px var(--dyn-color-1);
+        }
+        .timeline-dot-label {
+            position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
+            font-size: 0.55rem; font-weight: 800; white-space: nowrap;
+            color: var(--text-muted); letter-spacing: 0.5px;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .timeline-dot:hover .timeline-dot-label,
+        .timeline-dot.active .timeline-dot-label { opacity: 1; }
+
+        /* ============================================
+           RIGHT PANEL: DATA VISUALIZATION
+           ============================================ */
+        .data-panel {
+            flex: 1.4; padding: 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+            align-content: start;
+        }
+        @media (max-width: 768px) {
+            .data-panel { grid-template-columns: 1fr; padding: 20px; }
+        }
+
+        /* Reveal animation */
+        .reveal-box {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal-box.visible { opacity: 1; transform: translateY(0); }
+        .reveal-box:nth-child(2) { transition-delay: 0.1s; }
+        .reveal-box:nth-child(3) { transition-delay: 0.2s; }
+        .reveal-box:nth-child(4) { transition-delay: 0.3s; }
+
+        /* Info Box */
+        .info-box {
+            grid-column: 1 / -1;
+            background: var(--card-glass);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px; padding: 40px;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow-card);
+            transition: all 0.5s ease;
+        }
+        .info-box:hover { box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
+
+        .bio-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; }
+
+        .bio-title h1 {
+            font-family: 'Cinzel', serif; font-size: 2.8rem;
+            color: var(--dyn-color-1); transition: color 1s;
+            line-height: 1.1;
+        }
+        @media (max-width: 600px) { .bio-title h1 { font-size: 2rem; } }
+
+        .bio-laqab {
+            font-family: 'Amiri', serif; font-size: 1.4rem;
+            color: var(--accent); margin-bottom: 20px;
+        }
+
+        .bio-text {
+            font-size: 1.05rem; line-height: 1.9; color: var(--text-main);
+            text-align: justify;
+            transition: color var(--transition-theme);
+        }
+
+        .bio-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .btn-action {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px; border-radius: 14px;
+            background: var(--card-glass); border: 1px solid var(--border-glass);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            color: var(--text-main); font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-action:hover { background: var(--dyn-color-1); color: #fff; transform: translateY(-2px); }
+        .btn-action:active { transform: translateY(0) scale(0.97); }
+        .btn-action.playing { background: var(--dyn-color-1); color: #fff; }
+
+        .data-badges { margin-top: 25px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .data-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 12px;
+            font-size: 0.8rem; font-weight: 700;
+            background: rgba(100,116,139,0.08);
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+        .data-badge.book { background: rgba(217,119,6,0.1); color: var(--accent); }
+
+        /* ============================================
+           STAT BARS (Quick Compare)
+           ============================================ */
+        .stats-quick {
+            grid-column: 1 / -1;
+            background: var(--card-glass);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px; padding: 30px;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow-card);
+        }
+        .stats-quick-title {
+            font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--text-muted); margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .stat-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+        .stat-row:last-child { margin-bottom: 0; }
+        .stat-label {
+            width: 85px; font-family: 'Space Mono', monospace;
+            font-size: 0.72rem; font-weight: 700; color: var(--text-muted);
+            text-align: right; flex-shrink: 0;
+        }
+        .stat-track {
+            flex: 1; height: 10px; background: rgba(100,116,139,0.1);
+            border-radius: 10px; overflow: hidden; position: relative;
+        }
+        .stat-fill {
+            height: 100%; border-radius: 10px;
+            background: linear-gradient(90deg, var(--dyn-color-1), var(--dyn-color-2));
+            transition: width 1s cubic-bezier(0.22, 1, 0.36, 1), background 1s;
+            position: relative;
+        }
+        .stat-fill::after {
+            content: ''; position: absolute; right: 0; top: 0;
+            width: 4px; height: 100%; background: rgba(255,255,255,0.6);
+            border-radius: 0 10px 10px 0;
+        }
+        .stat-value {
+            width: 38px; font-family: 'Space Mono', monospace;
+            font-size: 0.8rem; font-weight: 700; color: var(--dyn-color-1);
+            transition: color 1s;
+        }
+
+        /* ============================================
+           RADAR CHART BOX
+           ============================================ */
+        .chart-box {
+            background: var(--card-glass);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px; padding: 30px;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow-card);
+            text-align: center;
+        }
+        .canvas-container { width: 100%; aspect-ratio: 1; position: relative; }
+        #radarCanvas { width: 100%; height: 100%; }
+
+        /* ============================================
+           VIRTUAL INTERVIEW
+           ============================================ */
+        .interview-box {
+            background: var(--card-glass);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px; padding: 30px;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow-card);
+            display: flex; flex-direction: column;
+        }
+
+        .section-header {
+            font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--text-muted);
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 20px;
+        }
+        .section-header i { font-size: 1rem; color: var(--dyn-color-1); transition: color 1s; }
+
+        .chat-display {
+            flex: 1; min-height: 260px;
+            background: rgba(var(--bg-base-rgb), 0.5);
+            border-radius: 20px; padding: 20px;
+            overflow-y: auto; display: flex; flex-direction: column; gap: 15px;
+            margin-bottom: 20px;
+            scroll-behavior: smooth;
+        }
+        .chat-display::-webkit-scrollbar { width: 4px; }
+        .chat-display::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+
+        .bubble {
+            max-width: 85%; padding: 14px 20px; border-radius: 20px;
+            font-size: 0.92rem; line-height: 1.7;
+            animation: bubbleIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .bubble.ai {
+            background: var(--bg-base); color: var(--text-main);
+            align-self: flex-start; border-bottom-left-radius: 4px;
+            border: 1px solid var(--border-glass);
+        }
+        .bubble.user {
+            background: var(--dyn-color-1); color: white;
+            align-self: flex-end; border-bottom-right-radius: 4px;
+        }
+        .typing-indicator { display: inline-flex; gap: 4px; padding: 4px 0; }
+        .typing-indicator span {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--text-muted);
+            animation: typingBounce 1.4s ease-in-out infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bubbleIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        .chat-options { display: flex; flex-direction: column; gap: 10px; }
+
+        .btn-query {
+            background: var(--bg-base); border: 1px solid var(--border-glass);
+            padding: 14px 18px; border-radius: 14px;
+            text-align: left; font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+            color: var(--text-main); font-family: 'Poppins', sans-serif;
+            position: relative; overflow: hidden;
+        }
+        .btn-query::before {
+            content: ''; position: absolute; left: 0; top: 0;
+            width: 3px; height: 100%; background: var(--dyn-color-1);
+            transform: scaleY(0); transition: transform 0.3s ease;
+        }
+        .btn-query:hover {
+            background: var(--dyn-color-1); color: white;
+            transform: translateX(6px);
+            border-color: var(--dyn-color-1);
+        }
+        .btn-query:hover::before { transform: scaleY(1); }
+        .btn-query:active { transform: translateX(6px) scale(0.98); }
+
+        /* ============================================
+           TOAST NOTIFICATION
+           ============================================ */
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--card-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass); border-radius: 16px;
+            padding: 14px 28px; font-size: 0.85rem; font-weight: 600;
+            color: var(--text-main); z-index: 9999;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            opacity: 0; transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none; display: flex; align-items: center; gap: 10px;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast i { color: var(--dyn-color-1); }
+
+        /* ============================================
+           SCROLL-TO-TOP FAB
+           ============================================ */
+        .scroll-top-btn {
+            position: fixed; bottom: 30px; right: 30px; z-index: 8000;
+            width: 48px; height: 48px; border-radius: 50%;
+            background: var(--dyn-color-1); color: #fff; border: none;
+            font-size: 1.1rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            opacity: 0; transform: translateY(20px);
+            transition: all 0.4s ease; pointer-events: none;
+        }
+        .scroll-top-btn.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .scroll-top-btn:hover { transform: translateY(-3px) scale(1.08); }
+
+        /* ============================================
+           PAGE ENTRY
+           ============================================ */
+        .page-enter { animation: pageEnter 0.8s ease forwards; }
+        @keyframes pageEnter { from { opacity: 0; } to { opacity: 1; } }
+
+        /* ============================================
+           RESPONSIVE POLISH
+           ============================================ */
+        @media (max-width: 1100px) {
+            .carousel-panel { padding: 30px 20px 10px; }
+            .data-panel { padding: 20px; }
+        }
+        @media (max-width: 600px) {
+            .carousel-track { width: 260px; height: 400px; }
+            .tokoh-card { padding: 30px 20px; }
+            .tokoh-card img { width: 110px; height: 110px; }
+            .tokoh-card h2 { font-size: 1.4rem; }
+            .info-box { padding: 28px; }
+            .bio-title h1 { font-size: 1.8rem; }
+            .stat-label { width: 65px; font-size: 0.65rem; }
+        }
+
+        /* Focus visible for accessibility */
+        :focus-visible { outline: 3px solid var(--dyn-color-1); outline-offset: 3px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div class="loader-screen" id="loaderScreen" aria-label="Memuat halaman">
+        <div class="loader-ring"></div>
+        <div class="loader-text">Historiografi</div>
+    </div>
+
+    <!-- BACKGROUND LAYERS -->
+    <div class="bg-morph" id="bg-morph"></div>
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+    <!-- THEME TOGGLE -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Ganti Tema" title="Ganti Tema Gelap/Terang">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <!-- NAVBAR (External Component) -->
+    <k4-navbar current-page="tokoh"></k4-navbar>
+
+    <div class="dashboard-container page-enter">
+
+        <!-- LEFT: 3D CAROUSEL -->
+        <section class="carousel-panel" aria-label="Carousel Tokoh">
+            <div class="carousel-track" id="carouselTrack"></div>
+
+            <div class="carousel-controls">
+                <button class="btn-nav" id="prevTokoh" aria-label="Tokoh Sebelumnya"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="btn-nav" id="nextTokoh" aria-label="Tokoh Selanjutnya"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+            <!-- Timeline Minimap -->
+            <div class="timeline-minimap" id="timelineMinimap" aria-label="Timeline Tokoh">
+                <div class="timeline-line"></div>
+                <div class="timeline-progress" id="timelineProgress"></div>
+            </div>
+
+            <div class="carousel-hint">
+                <div class="keys">
+                    <span class="key-badge"><i class="fa-solid fa-arrow-left" style="font-size:0.55rem;"></i></span>
+                    <span class="key-badge"><i class="fa-solid fa-arrow-right" style="font-size:0.55rem;"></i></span>
+                </div>
+                <span>Keyboard &middot; Swipe &middot; Klik</span>
+            </div>
+        </section>
+
+        <!-- RIGHT: DATA PANEL -->
+        <section class="data-panel" aria-label="Detail Tokoh">
+
+            <!-- BIO INFO -->
+            <div class="info-box reveal-box" id="infoBox">
+                <div class="bio-header">
+                    <div class="bio-title">
+                        <h1 id="nodeName">--</h1>
+                        <div class="bio-laqab" id="nodeLaqab">--</div>
+                    </div>
+                    <div class="bio-actions">
+                        <button class="btn-action" id="readBio" title="Narasi Audio" aria-label="Putar narasi audio">
+                            <i class="fa-solid fa-volume-high"></i> <span>Dengarkan</span>
+                        </button>
+                        <button class="btn-action" id="shareTokoh" title="Bagikan" aria-label="Bagikan profil tokoh">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="bio-text" id="nodeText">Memuat arsip historiografi...</p>
+                <div class="data-badges">
+                    <span class="data-badge book" id="nodeBook"><i class="fa-solid fa-book"></i> --</span>
+                    <span class="data-badge" id="nodeOrigin"><i class="fa-solid fa-map-location-dot"></i> --</span>
+                    <span class="data-badge" id="nodeEra"><i class="fa-solid fa-clock-rotate-left"></i> --</span>
+                </div>
+            </div>
+
+            <!-- STAT BARS -->
+            <div class="stats-quick reveal-box" id="statsQuick">
+                <div class="stats-quick-title"><i class="fa-solid fa-bars-progress"></i> Profil Atribut</div>
+                <div id="statBarsContainer"></div>
+            </div>
+
+            <!-- RADAR CHART -->
+            <div class="chart-box reveal-box">
+                <div class="section-header"><i class="fa-solid fa-chart-line"></i> Radar Intelektual</div>
+                <div class="canvas-container">
+                    <canvas id="radarCanvas"></canvas>
+                </div>
+            </div>
+
+            <!-- VIRTUAL INTERVIEW -->
+            <div class="interview-box reveal-box">
+                <div class="section-header"><i class="fa-solid fa-comment-dots"></i> Virtual Interview</div>
+                <div class="chat-display" id="chatDisplay"></div>
+                <div class="chat-options" id="chatOptions"></div>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- SCROLL TO TOP -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Kembali ke atas">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- FOOTER (External Component) -->
+    <k4-footer></k4-footer>
+
+    <!-- External Scripts -->
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="data.js"></script>
+    <script src="core.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        /* ==========================================================
+           1. DATABASE TOKOH
+           ========================================================== */
+        const database = [
+            {
+                id: "alkindi", name: "Al-Kindi", laqab: "Al-Faylasuf al-Arab",
+                era: "Abad 9 M", eraShort: "801\u2013873 M", origin: "Irak", book: "Fi al-Falsafah al-Ula",
+                colors: ["#0284c7", "#0369a1"],
+                img: "assets/images/tokoh/alkindi.jpg",
+                bio: "Perintis filsafat Arab pertama. Ia menyelaraskan pemikiran Aristotelian dengan tauhid Islam, membuktikan bahwa filsafat dan wahyu adalah dua jalan menuju Kebenaran Tunggal.",
+                stats: { Rasional: 90, Metafisika: 85, Sains: 95, Tasawuf: 30, Logika: 85 },
+                qna: [
+                    { q: "Mengapa Anda mempelajari filsafat Yunani?", a: "Kebenaran adalah milik universal. Kita tidak boleh malu mengakui kebenaran dari manapun asalnya, sekalipun dari bangsa yang jauh." },
+                    { q: "Apa tujuan akhir filsafat?", a: "Tujuan filsuf adalah mencapai realitas segala sesuatu sejauh kemampuan manusia untuk mengenal Tuhan." }
+                ]
+            },
+            {
+                id: "alfarabi", name: "Al-Farabi", laqab: "Al-Mu'allim Ats-Tsani",
+                era: "Abad 10 M", eraShort: "872\u2013950 M", origin: "Kazakhstan", book: "Madinah al-Fadhilah",
+                colors: ["#7c3aed", "#5b21b6"],
+                img: "assets/images/tokoh/alfarabi.jpg",
+                bio: "Dikenal sebagai 'Guru Kedua'. Ia merumuskan konsep Negara Utama di mana pemimpin haruslah seorang Nabi-Filsuf yang memiliki kesempurnaan intelek dan spiritual.",
+                stats: { Rasional: 95, Metafisika: 90, Sains: 80, Tasawuf: 50, Logika: 100 },
+                qna: [
+                    { q: "Siapa pemimpin ideal itu?", a: "Seorang yang akalnya telah bersatu dengan Akal Aktif (Jibril), sehingga ia memadukan hikmah filosofis dan wahyu kenabian." },
+                    { q: "Apa itu kebahagiaan sejati?", a: "Kebahagiaan adalah ketika jiwa manusia mencapai tingkat intelek yang tidak lagi membutuhkan materi." }
+                ]
+            },
+            {
+                id: "ibnusina", name: "Ibnu Sina", laqab: "Al-Syaikh al-Ra'is",
+                era: "Abad 11 M", eraShort: "980\u20131037 M", origin: "Uzbekistan", book: "Al-Syifa & Al-Qanun",
+                colors: ["#10b981", "#047857"],
+                img: "assets/images/tokoh/ibnusina.jpg",
+                bio: "Raksasa intelektual yang mendominasi dunia medis dan metafisika. Argumen 'Wajib al-Wujud'-nya menjadi standar pembuktian Tuhan bagi teolog dan filsuf berabad-abad.",
+                stats: { Rasional: 100, Metafisika: 100, Sains: 100, Tasawuf: 60, Logika: 95 },
+                qna: [
+                    { q: "Bagaimana Anda membuktikan adanya Tuhan?", a: "Melalui konsep Wajib al-Wujud. Sesuatu yang 'mungkin' harus bersandar pada Sesuatu yang 'Niscaya' adanya." },
+                    { q: "Apakah jiwa itu kekal?", a: "Jiwa adalah substansi immaterial yang tidak hancur bersama hancurnya jasad. Ia adalah penunggang bagi raga." }
+                ]
+            },
+            {
+                id: "alghazali", name: "Al-Ghazali", laqab: "Hujjat al-Islam",
+                era: "Abad 12 M", eraShort: "1058\u20131111 M", origin: "Persia", book: "Ihya Ulumuddin",
+                colors: ["#0891b2", "#0e7490"],
+                img: "assets/images/tokoh/alghazali.jpg",
+                bio: "Pembela Islam yang mengintegrasikan Tasawuf ke dalam syariat. Kritiknya terhadap filsuf Neoplatonik mengubah arah sejarah pemikiran Islam selamanya.",
+                stats: { Rasional: 75, Metafisika: 85, Sains: 40, Tasawuf: 100, Logika: 95 },
+                qna: [
+                    { q: "Mengapa Anda mengkritik para filsuf?", a: "Karena mereka terjebak pada spekulasi rasio yang tidak mampu menjangkau hakikat ghaib. Akal punya batas, cahaya iman tidak." },
+                    { q: "Apa itu ma'rifat?", a: "Ma'rifat adalah cahaya yang dipancarkan Allah ke dalam hati hamba-Nya setelah ia membersihkan cermin jiwanya." }
+                ]
+            },
+            {
+                id: "ibnurusyd", name: "Ibnu Rusyd", laqab: "The Commentator",
+                era: "Abad 12 M", eraShort: "1126\u20131198 M", origin: "Andalusia", book: "Tahafut al-Tahafut",
+                colors: ["#ef4444", "#991b1b"],
+                img: "assets/images/tokoh/ibnurusyd.jpg",
+                bio: "Sang pembela nalar dari Andalusia. Ia membuktikan bahwa kebenaran hasil penalaran demonstratif (burhani) tidak mungkin bertentangan dengan wahyu.",
+                stats: { Rasional: 100, Metafisika: 90, Sains: 90, Tasawuf: 20, Logika: 100 },
+                qna: [
+                    { q: "Apakah filsafat itu sesat?", a: "Tidak. Agama memerintahkan manusia untuk merenungkan ciptaan agar mengenal Penciptanya. Itulah esensi filsafat." },
+                    { q: "Bagaimana menyikapi pertentangan ayat dan akal?", a: "Kebenaran tidak akan bertentangan dengan kebenaran. Jika ada pertentangan, teks agama harus dipahami secara metaforis (takwil)." }
+                ]
+            }
+        ];
+
+        /* ==========================================================
+           2. LOADING SCREEN
+           ========================================================== */
+        const loader = document.getElementById('loaderScreen');
+        window.addEventListener('load', () => {
+            setTimeout(() => loader.classList.add('hidden'), 800);
+        });
+        setTimeout(() => loader.classList.add('hidden'), 3000);
+
+        /* ==========================================================
+           3. THEME TOGGLE
+           ========================================================== */
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('k4-theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('k4-theme', next);
+            updateThemeIcon(next);
+            showToast(next === 'dark' ? '<i class="fa-solid fa-moon"></i> Mode Gelap' : '<i class="fa-solid fa-sun"></i> Mode Terang');
+        });
+
+        function updateThemeIcon(theme) {
+            themeToggle.innerHTML = theme === 'dark'
+                ? '<i class="fa-solid fa-sun"></i>'
+                : '<i class="fa-solid fa-moon"></i>';
+        }
+
+        /* ==========================================================
+           4. PARTICLE SYSTEM (Connected Dots)
+           ========================================================== */
+        const pCanvas = document.getElementById('particle-canvas');
+        const pCtx = pCanvas.getContext('2d');
+        let particles = [];
+        const PARTICLE_COUNT = 55;
+
+        function resizeParticles() {
+            pCanvas.width = window.innerWidth;
+            pCanvas.height = window.innerHeight;
+        }
+        resizeParticles();
+        window.addEventListener('resize', resizeParticles);
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * pCanvas.width;
+                this.y = Math.random() * pCanvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > pCanvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > pCanvas.height) this.speedY *= -1;
+            }
+            draw() {
+                pCtx.beginPath();
+                pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                pCtx.fillStyle = isDark
+                    ? `rgba(255,255,255,${this.opacity * 0.5})`
+                    : `rgba(15,23,42,${this.opacity * 0.25})`;
+                pCtx.fill();
+            }
+        }
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+        function drawParticleLines() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a + 1; b < particles.length; b++) {
+                    const dx = particles[a].x - particles[b].x;
+                    const dy = particles[a].y - particles[b].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 130) {
+                        const alpha = (1 - dist / 130) * (isDark ? 0.07 : 0.04);
+                        pCtx.strokeStyle = isDark
+                            ? `rgba(255,255,255,${alpha})`
+                            : `rgba(15,23,42,${alpha})`;
+                        pCtx.lineWidth = 0.5;
+                        pCtx.beginPath();
+                        pCtx.moveTo(particles[a].x, particles[a].y);
+                        pCtx.lineTo(particles[b].x, particles[b].y);
+                        pCtx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            drawParticleLines();
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        /* ==========================================================
+           5. CORE: CAROUSEL + DASHBOARD
+           ========================================================== */
+        let currentIdx = 0;
+        const track = document.getElementById('carouselTrack');
+
+        function renderCarousel() {
+            track.innerHTML = '';
+            database.forEach((item, i) => {
+                const card = document.createElement('div');
+                card.className = 'tokoh-card';
+                card.setAttribute('role', 'button');
+                card.setAttribute('aria-label', `Lihat profil ${item.name}`);
+                card.setAttribute('tabindex', '0');
+                card.innerHTML = `
+                    <img src="${item.img}" alt="Foto ${item.name}" loading="lazy"
+                         onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.name)}&background=${item.colors[0].replace('#','')}&color=fff&size=140'">
+                    <div class="era-badge">${item.era}</div>
+                    <h2>${item.name}</h2>
+                    <p style="font-size:0.8rem; color:var(--text-muted); font-weight:700;">${item.laqab}</p>
+                `;
+                card.addEventListener('click', () => { currentIdx = i; updateView(); });
+                card.addEventListener('keydown', (e) => { if (e.key === 'Enter') { currentIdx = i; updateView(); } });
+                track.appendChild(card);
+            });
+            renderTimeline();
+            updateView();
+        }
+
+        let animatedStats = {};
+        let radarAnimId = null;
+
+        function updateView() {
+            const cards = document.querySelectorAll('.tokoh-card');
+            const data = database[currentIdx];
+
+            cards.forEach((card, i) => {
+                const offset = i - currentIdx;
+                const abs = Math.abs(offset);
+                card.style.transform = `translateX(${offset * 120}px) translateZ(${abs * -150}px) rotateY(${offset * -35}deg) scale(${1 - abs * 0.1})`;
+                card.style.zIndex = 100 - abs;
+                card.style.opacity = abs > 2 ? 0 : 1;
+                card.style.pointerEvents = offset === 0 ? 'auto' : 'none';
+                card.classList.toggle('active', offset === 0);
+                card.style.borderColor = offset === 0 ? data.colors[0] : 'var(--border-glass)';
+            });
+
+            // Theme colors
+            document.documentElement.style.setProperty('--dyn-color-1', data.colors[0]);
+            document.documentElement.style.setProperty('--dyn-color-2', data.colors[1]);
+
+            // Text data
+            document.getElementById('nodeName').innerText = data.name;
+            document.getElementById('nodeLaqab').innerText = data.laqab;
+            document.getElementById('nodeText').innerText = data.bio;
+            document.getElementById('nodeBook').innerHTML = `<i class="fa-solid fa-book"></i> ${data.book}`;
+            document.getElementById('nodeOrigin').innerHTML = `<i class="fa-solid fa-map-location-dot"></i> ${data.origin}`;
+            document.getElementById('nodeEra').innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> ${data.eraShort}`;
+
+            renderStatBars(data.stats);
+            animateRadarTo(data.stats);
+            initInterview(data);
+            updateTimeline();
+
+            // Re-trigger reveal
+            document.querySelectorAll('.reveal-box').forEach(el => {
+                el.classList.remove('visible');
+                requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('visible')));
+            });
+        }
+
+        document.getElementById('prevTokoh').onclick = () => { currentIdx = (currentIdx - 1 + database.length) % database.length; updateView(); };
+        document.getElementById('nextTokoh').onclick = () => { currentIdx = (currentIdx + 1) % database.length; updateView(); };
+
+        /* ==========================================================
+           6. KEYBOARD + TOUCH NAVIGATION
+           ========================================================== */
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'ArrowLeft') { currentIdx = (currentIdx - 1 + database.length) % database.length; updateView(); }
+            if (e.key === 'ArrowRight') { currentIdx = (currentIdx + 1) % database.length; updateView(); }
+        });
+
+        let touchStartX = 0;
+        const carouselPanel = document.querySelector('.carousel-panel');
+        carouselPanel.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        carouselPanel.addEventListener('touchend', (e) => {
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if (Math.abs(diff) > 50) {
+                currentIdx = diff > 0
+                    ? (currentIdx + 1) % database.length
+                    : (currentIdx - 1 + database.length) % database.length;
+                updateView();
+            }
+        }, { passive: true });
+
+        /* ==========================================================
+           7. TIMELINE MINIMAP
+           ========================================================== */
+        function renderTimeline() {
+            const container = document.getElementById('timelineMinimap');
+            container.querySelectorAll('.timeline-dot').forEach(d => d.remove());
+            database.forEach((item, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'timeline-dot';
+                dot.setAttribute('role', 'button');
+                dot.setAttribute('aria-label', item.name);
+                dot.innerHTML = `<span class="timeline-dot-label">${item.name}</span>`;
+                dot.addEventListener('click', () => { currentIdx = i; updateView(); });
+                container.appendChild(dot);
+            });
+        }
+
+        function updateTimeline() {
+            const dots = document.querySelectorAll('.timeline-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIdx));
+            const progress = document.getElementById('timelineProgress');
+            const pct = database.length > 1 ? (currentIdx / (database.length - 1)) * 100 : 0;
+            progress.style.width = `calc(${pct}%)`;
+        }
+
+        /* ==========================================================
+           8. STAT BARS
+           ========================================================== */
+        function renderStatBars(stats) {
+            const container = document.getElementById('statBarsContainer');
+            container.innerHTML = '';
+            Object.entries(stats).forEach(([key, val]) => {
+                const row = document.createElement('div');
+                row.className = 'stat-row';
+                row.innerHTML = `
+                    <span class="stat-label">${key}</span>
+                    <div class="stat-track"><div class="stat-fill" style="width: 0%"></div></div>
+                    <span class="stat-value">${val}</span>
+                `;
+                container.appendChild(row);
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        row.querySelector('.stat-fill').style.width = val + '%';
+                    });
+                });
+            });
+        }
+
+        /* ==========================================================
+           9. ANIMATED RADAR CHART (HiDPI)
+           ========================================================== */
+        const canvas = document.getElementById('radarCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function animateRadarTo(targetStats) {
+            if (radarAnimId) cancelAnimationFrame(radarAnimId);
+            const labels = Object.keys(targetStats);
+            const targets = Object.values(targetStats);
+            const current = labels.map(l => animatedStats[l] || 0);
+            const duration = 600;
+            const start = performance.now();
+
+            function step(now) {
+                const t = Math.min((now - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - t, 3);
+                const vals = targets.map((tgt, i) => current[i] + (tgt - current[i]) * ease);
+                labels.forEach((l, i) => animatedStats[l] = vals[i]);
+                drawRadar(labels, vals);
+                if (t < 1) radarAnimId = requestAnimationFrame(step);
+            }
+            radarAnimId = requestAnimationFrame(step);
+        }
+
+        function drawRadar(labels, values) {
+            const size = canvas.parentElement.clientWidth;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = size * dpr; canvas.height = size * dpr;
+            canvas.style.width = size + 'px'; canvas.style.height = size + 'px';
+            ctx.scale(dpr, dpr);
+
+            const cx = size / 2, cy = size / 2, radius = size * 0.34;
+            ctx.clearRect(0, 0, size, size);
+
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const webColor = isDark ? 'rgba(148,163,184,0.15)' : 'rgba(100,116,139,0.15)';
+            const labelColor = isDark ? '#94a3b8' : '#64748b';
+
+            // Web rings
+            ctx.strokeStyle = webColor; ctx.lineWidth = 1;
+            for (let j = 1; j <= 4; j++) {
+                ctx.beginPath();
+                for (let i = 0; i < labels.length; i++) {
+                    const angle = (Math.PI * 2 / labels.length) * i - Math.PI / 2;
+                    const x = cx + Math.cos(angle) * (radius * j / 4);
+                    const y = cy + Math.sin(angle) * (radius * j / 4);
+                    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.closePath(); ctx.stroke();
+            }
+
+            // Spokes
+            for (let i = 0; i < labels.length; i++) {
+                const angle = (Math.PI * 2 / labels.length) * i - Math.PI / 2;
+                ctx.beginPath(); ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+                ctx.stroke();
+            }
+
+            // Data polygon
+            const c1 = database[currentIdx].colors[0];
+            ctx.beginPath();
+            for (let i = 0; i < values.length; i++) {
+                const angle = (Math.PI * 2 / labels.length) * i - Math.PI / 2;
+                const r = (values[i] / 100) * radius;
+                const x = cx + Math.cos(angle) * r;
+                const y = cy + Math.sin(angle) * r;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+
+            const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+            grad.addColorStop(0, c1 + '66');
+            grad.addColorStop(1, c1 + '22');
+            ctx.fillStyle = grad; ctx.fill();
+            ctx.strokeStyle = c1; ctx.lineWidth = 2.5; ctx.stroke();
+
+            // Data points
+            for (let i = 0; i < values.length; i++) {
+                const angle = (Math.PI * 2 / labels.length) * i - Math.PI / 2;
+                const r = (values[i] / 100) * radius;
+                const x = cx + Math.cos(angle) * r;
+                const y = cy + Math.sin(angle) * r;
+                ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fillStyle = c1; ctx.fill();
+                ctx.strokeStyle = isDark ? '#0f172a' : '#fff'; ctx.lineWidth = 2; ctx.stroke();
+            }
+
+            // Labels
+            ctx.fillStyle = labelColor;
+            ctx.font = `bold ${Math.max(9, size * 0.032)}px 'Space Mono', monospace`;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            for (let i = 0; i < labels.length; i++) {
+                const angle = (Math.PI * 2 / labels.length) * i - Math.PI / 2;
+                const x = cx + Math.cos(angle) * (radius + 28);
+                const y = cy + Math.sin(angle) * (radius + 28);
+                ctx.fillText(labels[i], x, y);
+            }
+        }
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const d = database[currentIdx];
+                drawRadar(Object.keys(d.stats), Object.values(d.stats));
+            }, 200);
+        });
+
+        /* ==========================================================
+           10. VIRTUAL INTERVIEW (with Typing Effect)
+           ========================================================== */
+        function initInterview(tokoh) {
+            const display = document.getElementById('chatDisplay');
+            const options = document.getElementById('chatOptions');
+            display.innerHTML = `<div class="bubble ai">Salam, saya <strong>${tokoh.name}</strong>. Adakah persoalan hikmah yang ingin Anda diskusikan hari ini?</div>`;
+            options.innerHTML = '';
+
+            tokoh.qna.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-query';
+                btn.innerText = item.q;
+                btn.addEventListener('click', () => {
+                    const userBubble = document.createElement('div');
+                    userBubble.className = 'bubble user';
+                    userBubble.textContent = item.q;
+                    display.appendChild(userBubble);
+                    display.scrollTop = display.scrollHeight;
+
+                    const typing = document.createElement('div');
+                    typing.className = 'bubble ai';
+                    typing.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+                    display.appendChild(typing);
+                    display.scrollTop = display.scrollHeight;
+
+                    setTimeout(() => {
+                        typing.innerHTML = `<em>${tokoh.name}:</em> \u201C${item.a}\u201D`;
+                        display.scrollTop = display.scrollHeight;
+                    }, 800 + Math.random() * 500);
+                });
+                options.appendChild(btn);
+            });
+        }
+
+        /* ==========================================================
+           11. AUDIO SYNTHESIS
+           ========================================================== */
+        const readBtn = document.getElementById('readBio');
+        let isSpeaking = false;
+
+        readBtn.addEventListener('click', () => {
+            if (!('speechSynthesis' in window)) {
+                showToast('<i class="fa-solid fa-triangle-exclamation"></i> Browser tidak mendukung audio');
+                return;
+            }
+            if (isSpeaking) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                readBtn.classList.remove('playing');
+                readBtn.querySelector('span').textContent = 'Dengarkan';
+                return;
+            }
+            const d = database[currentIdx];
+            const text = `Profil ${d.name}, ${d.laqab}. ${d.bio}`;
+            const utt = new SpeechSynthesisUtterance(text);
+            utt.lang = 'id-ID'; utt.rate = 0.95;
+            utt.onend = () => { isSpeaking = false; readBtn.classList.remove('playing'); readBtn.querySelector('span').textContent = 'Dengarkan'; };
+            window.speechSynthesis.speak(utt);
+            isSpeaking = true;
+            readBtn.classList.add('playing');
+            readBtn.querySelector('span').textContent = 'Berhenti';
+            showToast('<i class="fa-solid fa-headphones"></i> Memutar narasi...');
+        });
+
+        /* ==========================================================
+           12. SHARE FUNCTIONALITY
+           ========================================================== */
+        document.getElementById('shareTokoh').addEventListener('click', async () => {
+            const d = database[currentIdx];
+            const shareData = {
+                title: `${d.name} \u2014 ${d.laqab}`,
+                text: d.bio,
+                url: window.location.href
+            };
+            try {
+                if (navigator.share) { await navigator.share(shareData); }
+                else {
+                    await navigator.clipboard.writeText(`${d.name} (${d.laqab}): ${d.bio}\n${window.location.href}`);
+                    showToast('<i class="fa-solid fa-check"></i> Link disalin ke clipboard!');
+                }
+            } catch(e) { /* user cancelled */ }
+        });
+
+        /* ==========================================================
+           13. SCROLL-TO-TOP + SCROLL REVEAL
+           ========================================================== */
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('visible', window.scrollY > 400);
+        }, { passive: true });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal-box').forEach(el => observer.observe(el));
+
+        /* ==========================================================
+           14. TOAST SYSTEM
+           ========================================================== */
+        let toastTimer;
+        function showToast(html) {
+            const toast = document.getElementById('toast');
+            toast.innerHTML = html;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        /* ==========================================================
+           INIT
+           ========================================================== */
+        renderCarousel();
+        window.appToast = showToast;
+    });
+    </script>
+</body>
+</html>

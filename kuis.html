@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ujian Interaktif Filsafat Islam - Proyek Akhir Kelompok IV">
+    <title>Evaluasi Interaktif | Kelompok IV</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="animations.css">
+
+    <style>
+        /* --- GLOBAL QUIZ BACKGROUND --- */
+        body {
+            background-color: var(--bg-body, #f8fafc);
+            background-image: radial-gradient(circle at top right, rgba(16, 185, 129, 0.05), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(217, 119, 6, 0.05), transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 5% 60px; /* Space for navbar */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- GLASSMORPHISM CONTAINER --- */
+        .quiz-card {
+            background: var(--bg-surface, #ffffff);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15), 0 0 0 1px var(--border-light, rgba(0,0,0,0.05));
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        [data-theme="dark"] .quiz-card {
+            background: rgba(15, 23, 42, 0.85);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        /* Ambient Glow Behind Card */
+        .quiz-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(16,185,129,0.03) 0%, transparent 50%);
+            z-index: 0; pointer-events: none; animation: tawafSpin 20s linear infinite;
+        }
+
+        .screen { display: none; padding: 50px; position: relative; z-index: 1; }
+        .screen.active { display: block; animation: fadeUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+
+        /* --- START SCREEN --- */
+        .start-header { text-align: center; margin-bottom: 40px; }
+        .start-header i { font-size: 4rem; color: var(--clr-primary-500, #10b981); margin-bottom: 20px; filter: drop-shadow(0 10px 15px rgba(16,185,129,0.3)); }
+        .start-header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--clr-primary-700, #047857); margin-bottom: 10px; }
+        [data-theme="dark"] .start-header h1 { color: #6ee7b7; }
+        .start-header p { color: var(--text-muted, #64748b); font-size: 1.1rem; }
+
+        .rules-box {
+            background: var(--bg-body, #f1f5f9); border: 1px solid var(--border-strong, #cbd5e1);
+            border-radius: 20px; padding: 30px; margin-bottom: 40px;
+        }
+        [data-theme="dark"] .rules-box { background: #020617; border-color: #334155; }
+        
+        .rules-title { font-weight: 800; color: var(--clr-accent-500, #d97706); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .rules-list { list-style: none; margin: 0; padding: 0; }
+        .rules-list li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; color: var(--text-main, #1e293b); font-weight: 600; }
+        .rules-list li i { color: var(--clr-primary-500, #10b981); margin-top: 3px; }
+        .keyboard-hint { background: var(--border-light, #e2e8f0); padding: 2px 8px; border-radius: 6px; font-family: 'Space Mono', monospace; font-size: 0.8rem; }
+        [data-theme="dark"] .keyboard-hint { background: #334155; color: #cbd5e1; }
+
+        .high-score-badge {
+            position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, var(--clr-accent-500), var(--clr-accent-700));
+            color: white; padding: 8px 20px; border-radius: 30px; font-weight: 800; font-size: 0.9rem;
+            box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3); display: flex; align-items: center; gap: 8px;
+        }
+
+        /* --- QUIZ SCREEN --- */
+        .quiz-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid var(--border-light, #e2e8f0); padding-bottom: 20px; }
+        
+        .q-tracker { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--text-muted, #64748b); font-size: 0.95rem; margin-bottom: 8px; }
+        .q-progress-bg { width: 100%; max-width: 300px; height: 8px; background: var(--border-light, #e2e8f0); border-radius: 10px; overflow: hidden; }
+        .q-progress-fill { height: 100%; background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-primary-300)); width: 0%; transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        /* SVG Circular Timer */
+        .timer-wrapper { position: relative; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; }
+        .timer-svg { transform: rotate(-90deg); width: 60px; height: 60px; }
+        .timer-circle-bg { fill: none; stroke: var(--border-light, #e2e8f0); stroke-width: 4; }
+        .timer-circle-fill { fill: none; stroke: var(--clr-primary-500, #10b981); stroke-width: 4; stroke-dasharray: 163; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear, stroke 0.3s; stroke-linecap: round; }
+        .timer-text { position: absolute; font-family: 'Space Mono', monospace; font-weight: 800; font-size: 0.9rem; color: var(--text-main, #0f172a); }
+        .timer-wrapper.danger .timer-circle-fill { stroke: #ef4444; animation: pulseGlowRed 1s infinite; }
+        .timer-wrapper.danger .timer-text { color: #ef4444; animation: heartbeat 1s infinite; }
+
+        @keyframes heartbeat { 0% { transform: scale(1); } 25% { transform: scale(1.1); } 50% { transform: scale(1); } 75% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes pulseGlowRed { 0% { filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5)); } 50% { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.8)); } 100% { filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5)); } }
+
+        .question-text { font-size: 1.5rem; font-weight: 700; color: var(--text-main, #0f172a); margin-bottom: 30px; line-height: 1.5; }
+        
+        .options-grid { display: grid; gap: 15px; }
+        .option-btn {
+            background: var(--bg-surface, #ffffff); border: 2px solid var(--border-light, #cbd5e1);
+            padding: 15px 25px; border-radius: 15px; text-align: left; font-size: 1.05rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); color: var(--text-main, #1e293b);
+            display: flex; align-items: center; gap: 20px; position: relative; overflow: hidden;
+        }
+        [data-theme="dark"] .option-btn { background: #0f172a; border-color: rgba(255,255,255,0.1); color: #f8fafc; }
+        
+        .option-hotkey {
+            background: var(--bg-body, #f1f5f9); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; font-weight: 800; color: var(--clr-primary-700, #047857); font-family: 'Space Mono', monospace;
+            border: 1px solid var(--border-strong, #cbd5e1); transition: 0.3s;
+        }
+        [data-theme="dark"] .option-hotkey { background: #1e293b; border-color: #334155; color: #6ee7b7; }
+        
+        .option-btn:hover { border-color: var(--clr-primary-500, #10b981); transform: translateX(10px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.1); }
+        .option-btn.selected { border-color: var(--clr-primary-500, #10b981); background: rgba(16, 185, 129, 0.05); }
+        .option-btn.selected .option-hotkey { background: var(--clr-primary-500, #10b981); color: white; border-color: var(--clr-primary-500, #10b981); }
+
+        .quiz-controls { margin-top: 40px; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
+        .enter-hint { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; opacity: 0; transition: 0.3s; }
+        .enter-hint.show { opacity: 1; }
+
+        /* --- RESULT SCREEN --- */
+        .result-screen { text-align: center; }
+        .score-display-wrapper { position: relative; width: 200px; height: 200px; margin: 0 auto 30px; display: flex; justify-content: center; align-items: center; }
+        .score-circle-svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+        .score-circle-bg { fill: none; stroke: var(--border-light, #e2e8f0); stroke-width: 8; }
+        .score-circle-fill { fill: none; stroke: var(--clr-primary-500, #10b981); stroke-width: 8; stroke-dasharray: 565; stroke-dashoffset: 565; transition: stroke-dashoffset 2s cubic-bezier(0.175, 0.885, 0.32, 1.275); stroke-linecap: round; }
+        .score-number { font-size: 4rem; font-weight: 800; color: var(--text-main, #0f172a); font-family: 'Space Mono', monospace; }
+        [data-theme="dark"] .score-number { color: white; }
+
+        .grade-badge { display: inline-block; padding: 10px 30px; border-radius: 50px; font-size: 1.5rem; font-weight: 800; font-family: 'Cinzel', serif; letter-spacing: 2px; margin-bottom: 20px; color: white; }
+        .grade-mumtaz { background: linear-gradient(135deg, #10b981, #047857); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); }
+        .grade-jayyid { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); }
+        .grade-rasib { background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4); }
+
+        .result-actions { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
+
+        .review-container { text-align: left; background: var(--bg-body, #f1f5f9); border-radius: 20px; padding: 30px; border: 1px solid var(--border-light, #e2e8f0); }
+        [data-theme="dark"] .review-container { background: #020617; border-color: rgba(255,255,255,0.05); }
+        .review-item { background: var(--bg-surface, white); padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 6px solid; box-shadow: 0 10px 20px rgba(0,0,0,0.02); }
+        [data-theme="dark"] .review-item { background: #0f172a; }
+        .review-item.correct { border-left-color: #10b981; }
+        .review-item.wrong { border-left-color: #ef4444; }
+        .review-q { font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; color: var(--text-main); }
+        .review-ans { font-size: 0.95rem; margin-bottom: 8px; font-weight: 600; }
+        .review-exp { background: rgba(217, 119, 6, 0.05); padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 0.9rem; color: var(--text-muted); border: 1px dashed rgba(217, 119, 6, 0.3); line-height: 1.6; }
+
+        /* --- EXTREME ANTI-CHEAT OVERLAY --- */
+        .anti-cheat-overlay {
+            position: fixed; inset: 0; background: rgba(239, 68, 68, 0.95); backdrop-filter: blur(25px);
+            z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; text-align: center; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .anti-cheat-overlay.active { opacity: 1; visibility: visible; }
+        .anti-cheat-overlay i { font-size: 8rem; margin-bottom: 30px; animation: pulse 1s infinite; }
+        .strike-boxes { display: flex; gap: 15px; margin-top: 30px; }
+        .strike-box { width: 40px; height: 40px; border: 3px solid white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 900; }
+        .strike-box.filled { background: white; color: #ef4444; }
+
+        /* --- PRINTABLE CERTIFICATE STYLES --- */
+        #certificate-print { display: none; }
+        @media print {
+            body * { visibility: hidden; }
+            #certificate-print, #certificate-print * { visibility: visible; }
+            #certificate-print {
+                display: flex; position: fixed; inset: 0; width: 100%; height: 100vh;
+                flex-direction: column; justify-content: center; align-items: center;
+                background: white; color: black; text-align: center; padding: 50px;
+                border: 20px solid #064e3b; box-sizing: border-box;
+            }
+            .cert-title { font-family: 'Cinzel', serif; font-size: 4rem; color: #064e3b; margin-bottom: 20px; }
+            .cert-subtitle { font-size: 1.5rem; margin-bottom: 40px; letter-spacing: 3px; text-transform: uppercase; }
+            .cert-name { font-family: 'Amiri', serif; font-size: 3.5rem; font-weight: bold; border-bottom: 2px solid #d97706; padding-bottom: 10px; margin-bottom: 40px; display: inline-block; min-width: 500px; }
+            .cert-score { font-size: 2rem; font-weight: bold; color: #064e3b; margin-bottom: 50px; }
+            .cert-footer { display: flex; justify-content: space-between; width: 100%; padding: 0 100px; margin-top: 50px; }
+            .sign-line { width: 200px; border-top: 2px solid black; margin-top: 80px; padding-top: 10px; font-weight: bold; }
+        }
+
+        /* Buttons from ecosystem */
+        .btn-mega { padding: 12px 30px; border-radius: 50px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; border: none; font-size: 1.05rem; }
+        .btn-mega.primary { background: linear-gradient(135deg, var(--clr-primary-500), var(--clr-primary-700)); color: white; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
+        .btn-mega.primary:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(16, 185, 129, 0.5); }
+        .btn-mega.accent { background: linear-gradient(135deg, var(--clr-accent-500), var(--clr-accent-700)); color: white; box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3); }
+        .btn-mega.accent:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(217, 119, 6, 0.5); }
+        
+        @media (max-width: 768px) {
+            .screen { padding: 30px 20px; }
+            .quiz-wrapper { padding-top: 100px; }
+            .start-header h1 { font-size: 2rem; }
+            .option-btn { padding: 12px 15px; font-size: 0.95rem; }
+            .option-hotkey { display: none; } /* Hide hotkeys on mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <k4-navbar current-page="kuis"></k4-navbar>
+
+    <div class="anti-cheat-overlay" id="antiCheatOverlay">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h1 style="font-size: 3rem; margin-bottom: 10px; font-family: 'Cinzel', serif;">PELANGGARAN TERDETEKSI</h1>
+        <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 30px;">
+            Sistem mendeteksi Anda meninggalkan halaman ujian. Sesuai integritas akademik, aktivitas ini dicatat. Jika mencapai 3 pelanggaran, ujian akan dihentikan paksa.
+        </p>
+        <div class="strike-boxes" id="strikeBoxes">
+            <div class="strike-box" id="strike1">1</div>
+            <div class="strike-box" id="strike2">2</div>
+            <div class="strike-box" id="strike3">3</div>
+        </div>
+        <button class="btn-mega" style="background: white; color: #ef4444; margin-top: 40px;" onclick="closeAntiCheatWarning()">Saya Mengerti, Kembali ke Ujian</button>
+    </div>
+
+    <main class="quiz-wrapper">
+        <div class="quiz-card" id="quizCard">
+            
+            <div id="screen-start" class="screen active">
+                <div class="high-score-badge" id="highScoreBadge" style="display: none;">
+                    <i class="fa-solid fa-crown"></i> Rekor: <span id="highScoreText">0</span>
+                </div>
+
+                <div class="start-header">
+                    <i class="fa-solid fa-brain"></i>
+                    <h1>Sistem Evaluasi Interaktif</h1>
+                    <p>Mata Kuliah Agama Islam • Filsafat & Risalah Cinta</p>
+                </div>
+
+                <div class="rules-box">
+                    <div class="rules-title"><i class="fa-solid fa-shield-halved"></i> Protokol Ujian (God-Mode):</div>
+                    <ul class="rules-list">
+                        <li><i class="fa-solid fa-clock"></i> <span>Waktu pengerjaan dibatasi ketat <strong>3 Menit (180 Detik)</strong>.</span></li>
+                        <li><i class="fa-solid fa-keyboard"></i> <span>Dukungan Desktop: Gunakan tombol <span class="keyboard-hint">A</span> <span class="keyboard-hint">B</span> <span class="keyboard-hint">C</span> <span class="keyboard-hint">D</span> untuk menjawab dan <span class="keyboard-hint">ENTER</span> untuk lanjut.</span></li>
+                        <li><i class="fa-solid fa-eye-slash"></i> <span><strong>Sistem Pengawasan Aktif:</strong> Pindah tab/aplikasi sebanyak 3 kali akan mengakibatkan <strong>Diskualifikasi Otomatis (Nilai 0)</strong>.</span></li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center;">
+                    <button class="btn-mega primary" onclick="GodModeQuiz.startQuiz()" style="font-size: 1.2rem; padding: 15px 50px;">
+                        Mulai Ujian Sekarang <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="screen-quiz" class="screen">
+                <div class="quiz-topbar">
+                    <div style="flex-grow: 1; padding-right: 30px;">
+                        <div class="q-tracker" id="qTracker">Soal 1 / 5</div>
+                        <div class="q-progress-bg">
+                            <div class="q-progress-fill" id="qProgress"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="timer-wrapper" id="timerWrapper">
+                        <svg class="timer-svg" viewBox="0 0 60 60">
+                            <circle class="timer-circle-bg" cx="30" cy="30" r="26"></circle>
+                            <circle class="timer-circle-fill" id="timerCircle" cx="30" cy="30" r="26"></circle>
+                        </svg>
+                        <div class="timer-text" id="timerText">180</div>
+                    </div>
+                </div>
+
+                <div class="question-text" id="questionText">Memuat pertanyaan dari database...</div>
+                
+                <div class="options-grid" id="optionsGrid">
+                    </div>
+
+                <div class="quiz-controls">
+                    <span class="enter-hint" id="enterHint">Tekan <span class="keyboard-hint">ENTER</span> untuk lanjut</span>
+                    <button class="btn-mega primary" id="btnNext" onclick="GodModeQuiz.nextQuestion()" style="display: none;">
+                        Lanjutkan <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="screen-result" class="screen">
+                <div class="result-header" style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="font-family: 'Cinzel', serif; font-size: 2rem; color: var(--clr-primary-700); margin-bottom: 30px;">Evaluasi Selesai</h2>
+                    
+                    <div class="score-display-wrapper">
+                        <svg class="score-circle-svg" viewBox="0 0 200 200">
+                            <circle class="score-circle-bg" cx="100" cy="100" r="90"></circle>
+                            <circle class="score-circle-fill" id="scoreCircleFill" cx="100" cy="100" r="90"></circle>
+                        </svg>
+                        <div class="score-number" id="scoreNumber">0</div>
+                    </div>
+
+                    <div class="grade-badge" id="gradeBadge">MEMPROSES...</div>
+                    <p id="cheatFailMsg" style="color: #ef4444; font-weight: 700; margin-bottom: 20px; display: none;">
+                        <i class="fa-solid fa-ban"></i> DISKUALIFIKASI KARENA KECURANGAN
+                    </p>
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn-mega accent" id="btnPrintCert" onclick="window.print()"><i class="fa-solid fa-award"></i> Cetak Sertifikat</button>
+                    <button class="btn-mega" style="background: var(--bg-body); color: var(--text-main); border: 2px solid var(--border-strong);" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> Ulangi Ujian</button>
+                </div>
+
+                <div class="review-container">
+                    <h3 style="margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-clipboard-list" style="color: var(--clr-accent-500);"></i> Pembahasan Akademik</h3>
+                    <div id="reviewContent">
+                        </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="certificate-print">
+        <div class="cert-title">SERTIFIKAT KELULUSAN</div>
+        <div class="cert-subtitle">Eksplorasi Filsafat & Risalah Cinta</div>
+        <p style="font-size: 1.2rem; margin-bottom: 20px;">Diberikan dengan penuh hormat kepada:</p>
+        <div class="cert-name">Bapak Mulyadi / Penguji</div>
+        <p style="font-size: 1.2rem; margin-bottom: 20px;">Telah menyelesaikan evaluasi interaktif Kelompok IV dengan nilai:</p>
+        <div class="cert-score" id="certScoreDisplay">100 (MUMTAZ)</div>
+        <div class="cert-footer">
+            <div>
+                <div class="sign-line">Sistem Penilai Otomatis</div>
+                <p>NEXA Edu Engine</p>
+            </div>
+            <div>
+                <img src="assets/images/brand/gunadarma-logo.png" onerror="this.style.display='none'" style="height: 100px; margin-top: 30px;" alt="Logo Kampus">
+            </div>
+            <div>
+                <div class="sign-line">Ketua Kelompok IV</div>
+                <p>Muhamad Fauzan Al Farikhi</p>
+            </div>
+        </div>
+    </div>
+
+    <k4-footer></k4-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="data.js"></script>
+    <script src="core.js"></script>
+    <script src="search.js"></script>
+
+    <script>
+        class IslamicGodModeQuiz {
+            constructor() {
+                // Konfigurasi & State
+                this.timeLimit = 180; // 3 Menit
+                this.maxStrikes = 3;
+                
+                this.state = {
+                    currentQ: 0,
+                    score: 0,
+                    answers: [],
+                    timeLeft: this.timeLimit,
+                    timerInt: null,
+                    isActive: false,
+                    strikes: 0,
+                    selectedOption: null
+                };
+
+                // Database Soal Mendalam
+                this.db = [
+                    {
+                        q: "Menurut Haidar Bagir dalam 'Islam Risalah Cinta', esensi keberagamaan bukanlah ketakutan akan neraka, melainkan...",
+                        opts: ["Ketaatan tanpa syarat pada elit agama", "Cinta (Mahabbah) yang bermuara pada kebahagiaan", "Pencarian kekuasaan politik umat", "Penolakan total terhadap kehidupan duniawi"],
+                        ans: 1,
+                        exp: "Buku ini merangkum gagasan tasawuf bahwa Tuhan adalah wujud Maha Cinta. Beragama seharusnya merupakan respons cinta makhluk kepada Sang Pencipta, yang secara otomatis melahirkan kebahagiaan eksistensial, bukan sekadar kepatuhan mekanis berbasis ketakutan."
+                    },
+                    {
+                        q: "Dalam 'Philosophy in the Islamic World', Peter Adamson secara tegas membantah narasi Orientalis klasik yang menyatakan bahwa...",
+                        opts: ["Filsafat Islam hanya mengkopi karya Aristoteles", "Al-Ghazali adalah pendiri filsafat Islam", "Filsafat mati dan berakhir setelah kritik Al-Ghazali dan wafatnya Ibnu Rusyd", "Dunia Islam tidak pernah mengenal ilmu logika"],
+                        ans: 2,
+                        exp: "Adamson membuktikan ('Without any gaps') bahwa setelah era klasik di Andalusia, filsafat justru mekar pesat di wilayah timur (Persia/India) melalui tradisi Iluminasi Suhrawardi dan Hikmah Muta'aliyah Mulla Sadra."
+                    },
+                    {
+                        q: "Tujuan utama Al-Ghazali menulis 'Tahafut al-Falasifah' (Kerancuan Para Filsuf) adalah...",
+                        opts: ["Menghancurkan seluruh ilmu sains dan matematika", "Menyelamatkan akidah umat dari pemikiran neoplatonik Ibnu Sina yang dianggap menyimpang", "Mendirikan mazhab Mu'tazilah", "Melarang penggunaan logika silogisme"],
+                        ans: 1,
+                        exp: "Al-Ghazali tidak anti-logika (ia malah menulis buku pengantar logika). Ia hanya mengkritik 20 klaim metafisika filsuf yang tidak punya bukti rasional kuat namun bertentangan dengan teks wahyu (seperti klaim alam semesta itu kekal/qadim)."
+                    },
+                    {
+                        q: "Ibnu Rusyd (Averroes) menulis 'Fasl al-Maqal' untuk memberikan putusan hukum (fatwa) yang menyimpulkan bahwa belajar filsafat itu...",
+                        opts: ["Haram mutlak bagi umat Islam", "Sunnah (Dianjurkan)", "Wajib (Syar'i) bagi mereka yang memiliki kapasitas nalar mumpuni", "Mubah (Boleh) asalkan sembunyi-sembunyi"],
+                        ans: 2,
+                        exp: "Ibnu Rusyd berargumen bahwa Al-Quran memerintahkan manusia (Ulul Albab) untuk merenungkan alam semesta. Metode perenungan paling demonstratif dan rasional adalah filsafat (Burhani), sehingga mempelajarinya adalah sebuah kewajiban syariat."
+                    },
+                    {
+                        q: "Sintesis terbesar antara filsafat rasional, teologi (Kalam), dan tasawuf intuisi pada abad ke-17 M dicapai oleh Mulla Sadra melalui konsep...",
+                        opts: ["Asalat al-Mahiyyah (Primasinya Esensi)", "Asalat al-Wujud (Primasinya Eksistensi/Ada)", "Wahdatul Wujud", "Wajib al-Wujud"],
+                        ans: 1,
+                        exp: "Mulla Sadra merevolusi filsafat dengan menyatakan bahwa 'Esensi' (konsep/bentuk) hanyalah ilusi pikiran manusia. Realitas tunggal yang mutlak nyata dan terus bergerak evolusioner menuju kesempurnaan hanyalah 'Wujud' (Asalat al-Wujud)."
+                    }
+                ];
+
+                this.init();
+            }
+
+            init() {
+                this.cacheDOM();
+                this.bindEvents();
+                this.checkHighScore();
+                
+                // Keyboard Bindings
+                window.addEventListener('keydown', (e) => this.handleKeyboard(e));
+                // Anti-Cheat Bindings
+                document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
+            }
+
+            cacheDOM() {
+                this.screens = {
+                    start: document.getElementById('screen-start'),
+                    quiz: document.getElementById('screen-quiz'),
+                    result: document.getElementById('screen-result')
+                };
+                this.ui = {
+                    qText: document.getElementById('questionText'),
+                    optGrid: document.getElementById('optionsGrid'),
+                    btnNext: document.getElementById('btnNext'),
+                    qTracker: document.getElementById('qTracker'),
+                    qProgress: document.getElementById('qProgress'),
+                    timerText: document.getElementById('timerText'),
+                    timerCircle: document.getElementById('timerCircle'),
+                    timerWrapper: document.getElementById('timerWrapper'),
+                    enterHint: document.getElementById('enterHint'),
+                    antiCheat: document.getElementById('antiCheatOverlay')
+                };
+            }
+
+            bindEvents() {
+                // Initialize strikes UI
+                for(let i=1; i<=3; i++) {
+                    document.getElementById(`strike${i}`).classList.remove('filled');
+                }
+            }
+
+            checkHighScore() {
+                const high = localStorage.getItem('k4_high_score');
+                if(high) {
+                    document.getElementById('highScoreBadge').style.display = 'flex';
+                    document.getElementById('highScoreText').innerText = high;
+                }
+            }
+
+            /* ================= THE ENGINE ================= */
+            
+            startQuiz() {
+                this.switchScreen('quiz');
+                this.state.isActive = true;
+                this.state.answers = new Array(this.db.length).fill(null);
+                this.loadQuestion();
+                this.startTimer();
+                if(window.appToast) window.appToast("Ujian Dimulai. Fokus!", "info");
+            }
+
+            switchScreen(screenName) {
+                Object.values(this.screens).forEach(s => s.classList.remove('active'));
+                this.screens[screenName].classList.add('active');
+            }
+
+            loadQuestion() {
+                const data = this.db[this.state.currentQ];
+                this.state.selectedOption = null;
+                
+                // Update UI
+                this.ui.qText.innerHTML = `${this.state.currentQ + 1}. ${data.q}`;
+                this.ui.qTracker.innerText = `Soal ${this.state.currentQ + 1} / ${this.db.length}`;
+                this.ui.qProgress.style.width = `${((this.state.currentQ) / this.db.length) * 100}%`;
+                
+                // Clear & Render Options
+                this.ui.optGrid.innerHTML = '';
+                this.ui.btnNext.style.display = 'none';
+                this.ui.enterHint.classList.remove('show');
+                
+                const labels = ['A', 'B', 'C', 'D'];
+                data.opts.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerHTML = `<span class="option-hotkey">${labels[idx]}</span> <span style="flex:1;">${opt}</span>`;
+                    btn.onclick = () => this.selectOption(idx, btn);
+                    this.ui.optGrid.appendChild(btn);
+                });
+            }
+
+            selectOption(index, btnEl) {
+                if(!this.state.isActive) return;
+                
+                // UI Update
+                document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                btnEl.classList.add('selected');
+                
+                // State Update
+                this.state.selectedOption = index;
+                this.state.answers[this.state.currentQ] = index;
+                
+                // Show Next / Hint
+                this.ui.btnNext.style.display = 'inline-flex';
+                this.ui.enterHint.classList.add('show');
+            }
+
+            nextQuestion() {
+                if(this.state.selectedOption === null) return; // Cannot proceed without answering
+                
+                if (this.state.currentQ < this.db.length - 1) {
+                    this.state.currentQ++;
+                    this.ui.qProgress.style.width = `${((this.state.currentQ) / this.db.length) * 100}%`;
+                    this.loadQuestion();
+                } else {
+                    this.finishQuiz();
+                }
+            }
+
+            /* ================= TIMER ================= */
+            
+            startTimer() {
+                const circumference = 163; // 2 * pi * r (r=26)
+                
+                this.state.timerInt = setInterval(() => {
+                    this.state.timeLeft--;
+                    this.ui.timerText.innerText = this.state.timeLeft;
+                    
+                    // SVG Circle Dashoffset math
+                    const dashoffset = circumference - (this.state.timeLeft / this.timeLimit) * circumference;
+                    this.ui.timerCircle.style.strokeDashoffset = dashoffset;
+                    
+                    if(this.state.timeLeft <= 15) {
+                        this.ui.timerWrapper.classList.add('danger');
+                    }
+                    
+                    if(this.state.timeLeft <= 0) {
+                        this.finishQuiz(true);
+                    }
+                }, 1000);
+            }
+
+            /* ================= KEYBOARD SUPPORT ================= */
+            handleKeyboard(e) {
+                if(!this.state.isActive) return;
+                
+                const key = e.key.toLowerCase();
+                const buttons = document.querySelectorAll('.option-btn');
+                
+                if(key === 'a' && buttons[0]) this.selectOption(0, buttons[0]);
+                if(key === 'b' && buttons[1]) this.selectOption(1, buttons[1]);
+                if(key === 'c' && buttons[2]) this.selectOption(2, buttons[2]);
+                if(key === 'd' && buttons[3]) this.selectOption(3, buttons[3]);
+                
+                if(key === 'enter' && this.state.selectedOption !== null) {
+                    e.preventDefault();
+                    this.nextQuestion();
+                }
+            }
+
+            /* ================= ANTI CHEAT SYSTEM ================= */
+            handleVisibilityChange() {
+                if(this.state.isActive && document.hidden) {
+                    this.state.strikes++;
+                    this.ui.antiCheat.classList.add('active');
+                    
+                    // Update Strike Box UI
+                    if(this.state.strikes <= 3) {
+                        document.getElementById(`strike${this.state.strikes}`).classList.add('filled');
+                    }
+                    
+                    if(this.state.strikes >= this.maxStrikes) {
+                        // AUTO FAIL
+                        this.state.score = 0;
+                        this.finishQuiz(false, true);
+                        this.ui.antiCheat.classList.remove('active'); // Close overlay to show fail screen
+                    }
+                }
+            }
+
+            /* ================= GRADING & RESULTS ================= */
+            finishQuiz(isTimeOut = false, isCheat = false) {
+                clearInterval(this.state.timerInt);
+                this.state.isActive = false;
+                this.ui.qProgress.style.width = '100%';
+                
+                // Calculation
+                let correctCount = 0;
+                this.db.forEach((item, i) => {
+                    if(this.state.answers[i] === item.ans) correctCount++;
+                });
+                
+                this.state.score = isCheat ? 0 : (correctCount / this.db.length) * 100;
+                
+                this.renderResultScreen(isCheat);
+                this.saveHighScore();
+            }
+
+            renderResultScreen(isCheat) {
+                this.switchScreen('result');
+                
+                // Animate Score SVG
+                const finalOffset = 565 - (this.state.score / 100) * 565;
+                setTimeout(() => {
+                    document.getElementById('scoreCircleFill').style.strokeDashoffset = finalOffset;
+                }, 500);
+
+                // Animate Number Counter
+                let currentNum = 0;
+                const numEl = document.getElementById('scoreNumber');
+                const interval = setInterval(() => {
+                    if(currentNum >= this.state.score) {
+                        clearInterval(interval);
+                        numEl.innerText = this.state.score;
+                    } else {
+                        currentNum += 2;
+                        numEl.innerText = currentNum;
+                    }
+                }, 20);
+
+                // Grade Logic
+                const badge = document.getElementById('gradeBadge');
+                const btnPrint = document.getElementById('btnPrintCert');
+                
+                badge.className = 'grade-badge'; // reset
+                
+                if(isCheat) {
+                    badge.innerText = "DISKUALIFIKASI";
+                    badge.classList.add('grade-rasib');
+                    document.getElementById('cheatFailMsg').style.display = 'block';
+                    document.getElementById('scoreCircleFill').style.stroke = '#ef4444';
+                    numEl.style.color = '#ef4444';
+                    btnPrint.style.display = 'none';
+                    document.getElementById('certScoreDisplay').innerText = `0 (DISKUALIFIKASI KECURANGAN)`;
+                } else {
+                    if(this.state.score >= 90) {
+                        badge.innerText = "MUMTAZ (Sangat Baik)";
+                        badge.classList.add('grade-mumtaz');
+                        this.fireConfetti();
+                        document.getElementById('certScoreDisplay').innerText = `${this.state.score} (MUMTAZ)`;
+                    } else if (this.state.score >= 60) {
+                        badge.innerText = "JAYYID (Baik)";
+                        badge.classList.add('grade-jayyid');
+                        this.fireConfetti();
+                        document.getElementById('certScoreDisplay').innerText = `${this.state.score} (JAYYID)`;
+                    } else {
+                        badge.innerText = "RASIB (Gagal)";
+                        badge.classList.add('grade-rasib');
+                        document.getElementById('scoreCircleFill').style.stroke = '#ef4444';
+                        btnPrint.style.display = 'none'; // Gagal = No Certificate
+                    }
+                }
+
+                // Render Pembahasan
+                const revBox = document.getElementById('reviewContent');
+                revBox.innerHTML = '';
+                this.db.forEach((item, i) => {
+                    const isCorrect = this.state.answers[i] === item.ans;
+                    const userAnsText = this.state.answers[i] !== null ? item.opts[this.state.answers[i]] : 'Kosong/Waktu Habis';
+                    
+                    const div = document.createElement('div');
+                    div.className = `review-item ${isCorrect ? 'correct' : 'wrong'}`;
+                    div.innerHTML = `
+                        <div class="review-q">${i+1}. ${item.q}</div>
+                        <div class="review-ans" style="color: ${isCorrect ? '#10b981' : '#ef4444'}">
+                            Pilihan Anda: ${userAnsText} ${isCorrect ? '<i class="fa-solid fa-check-circle"></i>' : '<i class="fa-solid fa-times-circle"></i>'}
+                        </div>
+                        ${!isCorrect ? `<div class="review-ans" style="color: #047857;">Jawaban Benar: ${item.opts[item.ans]}</div>` : ''}
+                        <div class="review-exp">${item.exp}</div>
+                    `;
+                    revBox.appendChild(div);
+                });
+            }
+
+            fireConfetti() {
+                var duration = 4 * 1000;
+                var end = Date.now() + duration;
+                (function frame() {
+                    confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#10b981', '#d97706', '#047857'] });
+                    confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#10b981', '#d97706', '#047857'] });
+                    if (Date.now() < end) requestAnimationFrame(frame);
+                }());
+            }
+
+            saveHighScore() {
+                const prev = parseInt(localStorage.getItem('k4_high_score')) || 0;
+                if(this.state.score > prev) {
+                    localStorage.setItem('k4_high_score', this.state.score);
+                }
+            }
+        }
+
+        // Initialize Engine
+        const GodModeQuiz = new IslamicGodModeQuiz();
+
+        // Helper function for anti cheat overlay
+        function closeAntiCheatWarning() {
+            document.getElementById('antiCheatOverlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

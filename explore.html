@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eksplorasi Baitul Hikmah | Kelompok IV</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="animations.css">
+
+    <style>
+        /* --- GLOBAL OVERRIDES --- */
+        body { 
+            background-color: var(--bg-body, #0f172a); 
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
+        }
+
+        /* --- HERO SECTION: STELLAR OBSERVATORY --- */
+        .explore-hero {
+            position: relative;
+            padding: 150px 5% 100px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 100%, var(--clr-primary-900, #022c22), var(--bg-body, #0f172a));
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-strong, rgba(16, 185, 129, 0.2));
+        }
+
+        #constellation-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .explore-title { 
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem); 
+            color: var(--clr-primary-300, #6ee7b7); 
+            margin-bottom: 15px; 
+            text-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .explore-subtitle { 
+            color: var(--text-muted, #94a3b8); 
+            font-size: var(--text-lg); 
+            max-width: 700px; 
+            margin: 0 auto 40px; 
+            line-height: 1.8;
+        }
+
+        /* --- THE ASTROLABE RANDOMIZER --- */
+        .astrolabe-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-astrolabe {
+            background: linear-gradient(135deg, var(--clr-accent-500, #d97706), var(--clr-accent-700, #b45309));
+            color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(217, 119, 6, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .btn-astrolabe::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg); transition: 0.5s;
+        }
+        .btn-astrolabe:hover::before { left: 150%; }
+        .btn-astrolabe:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 20px 40px rgba(217, 119, 6, 0.6); }
+        
+        .astrolabe-icon {
+            font-size: 1.5rem;
+            transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .btn-astrolabe.spinning .astrolabe-icon { transform: rotate(1080deg); }
+
+        /* --- CONTROL PANEL (FILTER & SORT) --- */
+        .control-panel {
+            background: var(--bg-surface, rgba(15, 23, 42, 0.8));
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light, rgba(255,255,255,0.05));
+            padding: 20px 5%;
+            position: sticky;
+            top: 80px; /* Di bawah navbar */
+            z-index: 90;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .filter-group { display: flex; gap: 10px; flex-wrap: wrap; flex: 1; }
+        
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border-strong, rgba(255,255,255,0.2));
+            color: var(--text-muted, #94a3b8);
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover { 
+            background: var(--clr-primary-700, #047857); 
+            color: white; 
+            border-color: var(--clr-primary-500, #10b981); 
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .sort-group select {
+            background: var(--bg-body, #020617);
+            color: var(--text-main, #f8fafc);
+            border: 1px solid var(--border-strong, rgba(255,255,255,0.2));
+            padding: 10px 20px;
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        /* --- 3D BOOK LIBRARY GRID --- */
+        .library-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+            perspective: 1500px;
+        }
+
+        /* 3D Book CSS Magic */
+        .book-wrapper {
+            height: 450px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            cursor: pointer;
+        }
+
+        .book-wrapper.hide-item {
+            display: none;
+        }
+
+        .book-3d {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: rotateY(-15deg) rotateX(5deg);
+        }
+
+        .book-wrapper:hover .book-3d {
+            transform: rotateY(0deg) rotateX(0deg) scale(1.05) translateY(-10px);
+        }
+
+        /* Cover Depan Buku */
+        .book-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--book-color-1, #1e293b), var(--book-color-2, #0f172a));
+            border-radius: 2px 15px 15px 2px;
+            box-shadow: inset 4px 0 10px rgba(0,0,0,0.5), inset -1px 0 2px rgba(255,255,255,0.3), 5px 15px 30px rgba(0,0,0,0.4);
+            transform: translateZ(20px);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        /* Tekstur Cover Klasik */
+        .book-cover::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            opacity: 0.1; mix-blend-mode: overlay; pointer-events: none;
+        }
+
+        /* Tulang Buku (Spine) */
+        .book-spine {
+            position: absolute;
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(to right, var(--book-color-2, #0f172a), var(--book-color-1, #1e293b));
+            transform: rotateY(-90deg) translateZ(20px);
+            transform-origin: left;
+            border-radius: 10px 0 0 10px;
+            box-shadow: inset -2px 0 5px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spine-text {
+            color: rgba(255,255,255,0.5);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: var(--font-arabic);
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        /* Halaman Buku (Samping) */
+        .book-pages {
+            position: absolute;
+            width: calc(100% - 10px);
+            height: 96%;
+            top: 2%;
+            left: 5px;
+            background: #fdf6e3;
+            transform: translateZ(-15px);
+            border-radius: 0 10px 10px 0;
+            box-shadow: inset -5px 0 10px rgba(0,0,0,0.1);
+            background-image: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.05) 3px);
+        }
+
+        /* Konten Dalam Cover Buku */
+        .book-category {
+            font-size: 0.7rem; color: var(--clr-accent-500, #d97706);
+            font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 15px; text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;
+        }
+        
+        .book-title {
+            font-size: 1.8rem; color: #ffffff;
+            font-family: 'Amiri', serif; line-height: 1.3;
+            text-align: center; margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .book-author {
+            font-size: 0.9rem; color: var(--clr-primary-300, #6ee7b7);
+            font-weight: 600; text-align: center; margin-bottom: auto;
+        }
+
+        .book-era {
+            text-align: center; font-size: 0.8rem; color: rgba(255,255,255,0.5);
+            background: rgba(0,0,0,0.3); padding: 5px; border-radius: 5px;
+        }
+
+        /* Badge Sudang Dibaca */
+        .read-stamp {
+            position: absolute; top: 10px; right: -20px;
+            background: #10b981; color: white;
+            font-size: 0.6rem; font-weight: 800; padding: 5px 30px;
+            transform: rotate(45deg); box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            display: none; z-index: 20; letter-spacing: 1px;
+        }
+        .book-wrapper.is-read .read-stamp { display: block; }
+        .book-wrapper.is-read .book-cover { filter: grayscale(30%); }
+
+        /* --- GUNADARMA BRANDING SECTION --- */
+        .ug-branding-mega {
+            background: linear-gradient(to top, var(--bg-body), transparent);
+            padding: 80px 5% 40px;
+            text-align: center;
+            border-top: 1px solid var(--border-light);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .ug-logo-container {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .ug-logo-container::before {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+            z-index: -1; animation: breathe 4s infinite;
+        }
+
+        .ug-logo {
+            width: 120px; height: auto;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+            transition: transform 0.5s;
+        }
+        .ug-logo:hover { transform: scale(1.1) rotate(5deg); }
+
+        .ug-text-primary {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem; color: var(--clr-primary-500);
+            margin: 0 0 5px 0; font-weight: 800; letter-spacing: 2px;
+        }
+        .ug-text-secondary {
+            color: var(--text-muted); font-size: 1rem; font-weight: 600;
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        /* --- ZEN READING MODAL (PARCHMENT UI) --- */
+        .zen-modal {
+            position: fixed; inset: 0; background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(10px); z-index: 100000;
+            display: flex; justify-content: center; overflow-y: auto;
+            opacity: 0; visibility: hidden; transition: 0.4s;
+            perspective: 1000px;
+        }
+        .zen-modal.active { opacity: 1; visibility: visible; }
+
+        .zen-paper {
+            background: #fdf6e3; /* Warna perkamen */
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            width: 100%; max-width: 850px; min-height: 100vh;
+            padding: 80px 8%; position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            color: #334155;
+            transform: rotateX(10deg) translateY(50px);
+            transform-origin: top; transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .zen-modal.active .zen-paper { transform: rotateX(0deg) translateY(0); }
+
+        /* Tools Reader */
+        .zen-tools {
+            position: fixed; top: 30px; right: 5%;
+            display: flex; gap: 15px; z-index: 100001;
+        }
+        .zen-btn {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: var(--bg-surface); border: 1px solid var(--border-strong);
+            color: var(--text-main); font-size: 1.2rem; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .zen-btn:hover { background: var(--clr-primary-500); color: white; transform: scale(1.1); }
+        .zen-btn.close:hover { background: #ef4444; border-color: #ef4444; transform: rotate(90deg); }
+
+        .zen-header { text-align: center; margin-bottom: 50px; border-bottom: 2px solid #cbd5e1; padding-bottom: 30px; position: relative; }
+        .zen-header::after { content: '❁'; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); background: #fdf6e3; padding: 0 10px; color: #94a3b8; font-size: 1.5rem; }
+        
+        .zen-title { font-family: 'Amiri', serif; font-size: 3.5rem; color: #0f172a; margin-bottom: 10px; line-height: 1.2; }
+        .zen-author { color: #b45309; font-weight: 700; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; }
+
+        .zen-content { font-size: 1.15rem; line-height: 2; text-align: justify; }
+        .zen-content p { margin-bottom: 25px; }
+        .zen-content p:first-child::first-letter { font-size: 3.5rem; font-family: 'Amiri', serif; float: left; margin-right: 10px; line-height: 1; color: #064e3b; }
+        
+        .zen-quote {
+            font-family: 'Amiri', serif; font-size: 1.8rem; color: #064e3b;
+            text-align: center; margin: 40px 0; position: relative; padding: 0 40px;
+        }
+        .zen-quote::before, .zen-quote::after { content: '"'; font-size: 4rem; position: absolute; color: rgba(6, 78, 59, 0.2); top: -20px; }
+        .zen-quote::before { left: 0; } .zen-quote::after { right: 0; }
+
+        /* TTS Audio Feedback */
+        .tts-playing { animation: pulseGlow 2s infinite; background: #10b981 !important; color: white !important; border-color: #10b981 !important; }
+
+        @media (max-width: 768px) {
+            .explore-title { font-size: 2rem; }
+            .control-panel { top: 60px; justify-content: center; }
+            .library-container { grid-template-columns: 1fr; padding: 40px 5%; }
+            .zen-paper { padding: 60px 5%; }
+            .zen-title { font-size: 2.2rem; }
+            .zen-tools { top: auto; bottom: 20px; right: 50%; transform: translateX(50%); background: rgba(0,0,0,0.5); padding: 10px; border-radius: 30px; backdrop-filter: blur(10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <k4-navbar current-page="explore"></k4-navbar>
+
+    <section class="explore-hero">
+        <canvas id="constellation-canvas"></canvas>
+        
+        <div class="hero-content">
+            <h1 class="explore-title anim-fade-down">Perpustakaan Baitul Hikmah</h1>
+            <p class="explore-subtitle anim-fade-up delay-100">
+                Menelusuri mahakarya pemikiran Islam klasik hingga kontemporer. Membedah diskursus filsafat, tasawuf, dan sains tanpa celah sejarah (<em>without any gaps</em>).
+            </p>
+            
+            <div class="astrolabe-wrapper anim-zoom-bounce delay-300">
+                <button class="btn-astrolabe" id="btnAstrolabe" onclick="spinAndReadRandom()">
+                    <i class="fa-solid fa-compass astrolabe-icon"></i> Acak Pengetahuan
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div class="control-panel anim-fade-up delay-400">
+        <div class="filter-group" id="filterGroup">
+            <button class="filter-btn active" data-filter="all">Semua Koleksi</button>
+            <button class="filter-btn" data-filter="filsafat">Filsafat Peripatetik</button>
+            <button class="filter-btn" data-filter="tasawuf">Tasawuf & Irfan</button>
+            <button class="filter-btn" data-filter="medis">Sains & Kedokteran</button>
+            <button class="filter-btn" data-filter="politik">Filsafat Politik</button>
+            <button class="filter-btn" data-filter="sejarah">Historiografi</button>
+        </div>
+        <div class="sort-group">
+            <select id="sortSelect" onchange="sortLibrary()">
+                <option value="default">Urutkan: Relevansi</option>
+                <option value="eraAsc">Era: Paling Klasik</option>
+                <option value="eraDesc">Era: Paling Modern</option>
+                <option value="titleAsc">Judul: A - Z</option>
+            </select>
+        </div>
+    </div>
+
+    <main class="library-container" id="libraryGrid">
+        </main>
+
+    <section class="ug-branding-mega anim-fade-up">
+        <div class="ug-logo-container hover-lift">
+            <img src="assets/images/brand/gunadarma-logo.png" 
+                 onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'" 
+                 alt="Logo Universitas Gunadarma" 
+                 class="ug-logo">
+        </div>
+        <h2 class="ug-text-primary">UNIVERSITAS GUNADARMA</h2>
+        <div class="ug-text-secondary">Fakultas Teknologi Industri • Teknik Informatika</div>
+        <p style="color: var(--text-muted); margin-top: 15px; max-width: 600px; margin-inline: auto; font-size: 0.9rem;">
+            Proyek Eksplorasi Interaktif Mata Kuliah Agama Islam. Disusun oleh Kelompok IV untuk mempresentasikan historiografi dan sintesis pemikiran filsafat Islam.
+        </p>
+    </section>
+
+    <k4-footer></k4-footer>
+
+    <div class="zen-modal" id="zenModal">
+        <div class="zen-tools">
+            <button class="zen-btn" id="btnTTS" title="Dengarkan (Audio AI)" onclick="toggleTTS()">
+                <i class="fa-solid fa-headphones"></i>
+            </button>
+            <button class="zen-btn close" title="Tutup Buku" onclick="closeZenReader()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <div class="zen-paper" id="zenPaper">
+            <div class="zen-header">
+                <div style="font-size: 0.9rem; color: #64748b; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px;" id="zenCategory">KATEGORI</div>
+                <h1 class="zen-title" id="zenTitle">Judul Kitab</h1>
+                <div class="zen-author" id="zenAuthor">Penulis / Mufassir</div>
+                <div style="margin-top: 15px; font-size: 0.85rem; color: #94a3b8; background: #f1f5f9; display: inline-block; padding: 5px 15px; border-radius: 20px;" id="zenEra">Era Penulisan</div>
+            </div>
+            
+            <div class="zen-content" id="zenContent">
+                </div>
+        </div>
+    </div>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="data.js"></script>
+    <script src="core.js"></script>
+    <script src="search.js"></script>
+
+    <script>
+        /**
+         * MASSIVE DATABASE OF ISLAMIC PHILOSOPHY & LITERATURE
+         * Data lengkap 12 Kitab & Tokoh untuk memenuhi standar akademik tugas.
+         */
+        const libraryDB = [
+            {
+                id: "k-01",
+                category: "filsafat",
+                catLabel: "Filsafat Peripatetik",
+                title: "Al-Falsafah al-Ula",
+                author: "Al-Kindi",
+                eraNum: 850,
+                eraLabel: "Abad ke-9 M",
+                colors: ["#1e3a8a", "#172554"], // Deep Blue
+                content: `<p>Dikenal sebagai "Filsafat Pertama", karya ini adalah batu loncatan di mana Al-Kindi (Filsuf Arab pertama) berusaha membuktikan bahwa tidak ada pertentangan esensial antara pencarian rasional kebenaran (filsafat Yunani) dan wahyu ilahi (Al-Quran).</p>
+                <p>Al-Kindi secara cerdas menggunakan kerangka Aristoteles mengenai sebab-akibat untuk membuktikan keberadaan Tuhan, namun ia menolak keras gagasan Aristoteles bahwa alam semesta ini kekal (qadim). Baginya, alam semesta diciptakan dari ketiadaan (creatio ex nihilo) oleh Kehendak Tuhan.</p>
+                <div class="zen-quote">Kita tidak boleh merasa malu untuk mengakui kebenaran dari mana pun asalnya, sekalipun itu dibawa oleh bangsa-bangsa terdahulu maupun bangsa yang jauh dari kita.</div>
+                <p>Melalui buku ini, Al-Kindi meletakkan fondasi teologis yang aman bagi perkembangan sains dan rasionalitas di dunia Islam, menjembatani Athena dan Baghdad.</p>`
+            },
+            {
+                id: "k-02",
+                category: "politik",
+                catLabel: "Filsafat Politik",
+                title: "Ara' Ahl al-Madinah al-Fadhilah",
+                author: "Al-Farabi",
+                eraNum: 950,
+                eraLabel: "Abad ke-10 M",
+                colors: ["#5b21b6", "#4c1d95"], // Violet
+                content: `<p>Karya monumental Al-Farabi (Guru Kedua) ini merumuskan konsep utopia Islam yang terinspirasi dari "The Republic" karya Plato. Namun, Al-Farabi memberikan nyawa tauhid ke dalam sistem politiknya.</p>
+                <p>Al-Farabi berpendapat bahwa manusia secara alamiah tidak bisa mencapai kebahagiaan tanpa hidup bermasyarakat. Negara (Madinah) adalah entitas organik, mirip dengan anatomi tubuh manusia di mana jantung (pemimpin) mengatur organ lainnya.</p>
+                <div class="zen-quote">Masyarakat yang utama adalah mereka yang bekerja sama untuk mencapai kebahagiaan sejati, bukan sekadar bertahan hidup.</div>
+                <p>Syarat mutlak negara yang sempurna adalah pemimpinnya harus seorang Nabi atau Filsuf Tertinggi. Akal sang pemimpin harus sudah mencapai tahap "Akal Mustafad" sehingga ia bisa menerima emanasi (pancaran) langsung dari Akal Aktif (Malaikat Jibril).</p>`
+            },
+            {
+                id: "k-03",
+                category: "medis",
+                catLabel: "Sains & Kedokteran",
+                title: "Al-Qanun fi al-Tibb",
+                author: "Ibnu Sina (Avicenna)",
+                eraNum: 1025,
+                eraLabel: "Abad ke-11 M",
+                colors: ["#064e3b", "#022c22"], // Emerald
+                content: `<p>Ini bukan sekadar buku, melainkan "Kitab Suci" dunia kedokteran selama lebih dari enam abad di Eropa maupun dunia Islam. Ibnu Sina menyintesis pengetahuan dari Galen, Aristoteles, kedokteran Persia, dan India ke dalam satu kerangka kerja yang logis.</p>
+                <p>Al-Qanun menetapkan standar observasi empiris. Ibnu Sina merinci 760 jenis obat-obatan, anatomi mata manusia, sifat menular dari tuberkulosis, hingga penyakit menular seksual. Ia bahkan membahas anestesi pra-operasi.</p>
+                <div class="zen-quote">Kedokteran adalah ilmu tentang keadaan tubuh manusia, untuk menjaga kesehatan ketika ada, dan memulihkannya ketika hilang.</div>
+                <p>Yang membuat buku ini istimewa adalah pendekatannya yang holistik. Ibnu Sina sangat memperhatikan hubungan antara pikiran dan tubuh (psikosomatis), menjelaskan bagaimana emosi yang ekstrem dapat menyebabkan penyakit fisik.</p>`
+            },
+            {
+                id: "k-04",
+                category: "filsafat",
+                catLabel: "Filsafat Murni",
+                title: "Al-Shifa",
+                author: "Ibnu Sina (Avicenna)",
+                eraNum: 1027,
+                eraLabel: "Abad ke-11 M",
+                colors: ["#b45309", "#78350f"], // Amber/Gold
+                content: `<p>Berbeda dengan Al-Qanun yang mengobati fisik, <strong>Al-Shifa (The Book of Healing)</strong> ditulis untuk "menyembuhkan" jiwa dari kebodohan. Ini adalah ensiklopedia filsafat dan sains terbesar yang pernah ditulis oleh satu orang.</p>
+                <p>Di sinilah Ibnu Sina mematangkan konsep <strong>Wajib al-Wujud</strong> (Wujud yang Niscaya). Ia membuktikan keberadaan Tuhan secara murni melalui logika ontologis, tanpa bersandar pada teks agama terlebih dahulu. Argumen ini kelak diadopsi oleh Thomas Aquinas di Barat.</p>
+                <div class="zen-quote">Waktu bukanlah realitas mandiri, melainkan alat ukur pergerakan yang tak kasat mata yang terikat pada materi.</div>
+                <p>Ibnu Sina juga memperkenalkan konsep eksperimen pemikiran "Flying Man" (Manusia Melayang) untuk membuktikan bahwa jiwa manusia itu nyata, independen dari tubuh fisik, dan abadi.</p>`
+            },
+            {
+                id: "k-05",
+                category: "tasawuf",
+                catLabel: "Tasawuf & Kritik",
+                title: "Tahafut al-Falasifah",
+                author: "Al-Ghazali",
+                eraNum: 1095,
+                eraLabel: "Abad ke-11 M",
+                colors: ["#991b1b", "#7f1d1d"], // Red
+                content: `<p>Karya ini sering disalahpahami sebagai "kematian filsafat Islam", padahal ini adalah puncak kritik filosofis itu sendiri. Al-Ghazali menggunakan metode silogisme para filsuf untuk menghancurkan argumen mereka sendiri.</p>
+                <p>Ia mengidentifikasi 20 masalah filosofis. Dari jumlah itu, ia menyatakan para filsuf seperti Ibnu Sina telah kafir pada 3 poin utama: meyakini alam semesta qadim (tidak punya awal/kekal), meyakini Tuhan hanya tahu hal universal bukan partikular, dan mengingkari kebangkitan jasmani.</p>
+                <div class="zen-quote">Barangsiapa yang mempelajari matematika dan terpesona oleh ketepatannya, jangan sampai ia berpikir bahwa semua ilmu (termasuk metafisika) sama pastinya dengan itu.</div>
+                <p>Buku ini berhasil mengembalikan dominasi teologi (Ilmu Kalam) Asy'ariyah dan memaksa filsafat untuk lebih tunduk pada batasan-batasan wahyu.</p>`
+            },
+            {
+                id: "k-06",
+                category: "tasawuf",
+                catLabel: "Tasawuf & Akhlak",
+                title: "Ihya Ulumuddin",
+                author: "Al-Ghazali",
+                eraNum: 1105,
+                eraLabel: "Abad ke-12 M",
+                colors: ["#047857", "#064e3b"], // Forest Green
+                content: `<p><em>Ihya Ulumuddin</em> (Menghidupkan Kembali Ilmu-ilmu Agama) adalah <em>magnum opus</em> Al-Ghazali pasca masa krisis spiritualnya. Buku ini menjembatani jurang yang dalam antara Fikih (hukum lahiriah) yang kering dan Tasawuf (pengalaman batiniah).</p>
+                <p>Al-Ghazali menyadari bahwa banyak ulama pada masanya terjebak pada debat fiqih formalistik demi kedudukan politik. Ihya memandu umat Islam dari ibadah fisik menuju "Tazkiyatun Nafs" (penyucian jiwa).</p>
+                <div class="zen-quote">Mengetahui definisi cinta (mahabbah) secara rasional tidak akan pernah sama rasanya dengan menjadi seorang pecinta yang sedang dimabuk rindu kepada Tuhannya.</div>
+                <p>Karya ini mengamankan posisi tasawuf (ortodoks) ke dalam arus utama tradisi intelektual Sunni hingga saat ini.</p>`
+            },
+            {
+                id: "k-07",
+                category: "filsafat",
+                catLabel: "Pembelaan Filsafat",
+                title: "Fasl al-Maqal",
+                author: "Ibnu Rusyd (Averroes)",
+                eraNum: 1179,
+                eraLabel: "Abad ke-12 M",
+                colors: ["#c2410c", "#9a3412"], // Orange/Rust
+                content: `<p>Ditulis di Kordoba, Andalusia. Ibnu Rusyd menulis risalah ini sebagai fatwa hukum (yurisprudensi) untuk menjawab: <em>Apakah belajar filsafat diizinkan, dilarang, atau diwajibkan oleh Syariat Islam?</em></p>
+                <p>Kesimpulannya mengejutkan kaum konservatif: Belajar filsafat adalah wajib (wajib syar'i) bagi mereka yang memiliki kapasitas akal yang mumpuni. Alasannya, Al-Quran terus-menerus memerintahkan manusia merenungkan penciptaan langit dan bumi (seperti istilah Ulul Albab).</p>
+                <div class="zen-quote">Kebenaran rasional tidak mungkin bertentangan dengan kebenaran wahyu; melainkan keduanya harus selaras dan saling bersaksi.</div>
+                <p>Jika terjadi pertentangan lahiriah antara dalil akal yang pasti dan teks wahyu, maka teks wahyu tersebut harus ditakwilkan (ditafsirkan makna batinnya), bukan akal yang dibuang.</p>`
+            },
+            {
+                id: "k-08",
+                category: "filsafat",
+                catLabel: "Sastra & Eksistensialisme",
+                title: "Hayy bin Yaqdhan",
+                author: "Ibnu Tufail",
+                eraNum: 1180,
+                eraLabel: "Abad ke-12 M",
+                colors: ["#0f766e", "#115e59"], // Teal
+                content: `<p>Karya paling unik dalam sejarah filsafat Islam. Ini adalah sebuah novel filosofis (mendahului Robinson Crusoe) tentang seorang bayi bernama Hayy yang tumbuh sendirian di pulau terpencil tanpa interaksi manusia, dirawat oleh seekor rusa betina.</p>
+                <p>Tanpa guru, tanpa bahasa, dan tanpa agama formal, Hayy secara bertahap menggunakan akal murninya dan observasi alam untuk menemukan fisika, astronomi, hingga akhirnya menyimpulkan keberadaan Tuhan Yang Maha Esa.</p>
+                <div class="zen-quote">Ketika ia menatap langit, ia menyadari bahwa keteraturan yang sempurna ini tidak mungkin terjadi tanpa adanya Penggerak Utama yang tidak bergerak.</div>
+                <p>Buku ini membuktikan secara sastrawi gagasan bahwa "Akal murni yang terbebas dari dogma masyarakat akan sampai pada kesimpulan yang sama dengan apa yang diajarkan oleh para Nabi."</p>`
+            },
+            {
+                id: "k-09",
+                category: "tasawuf",
+                catLabel: "Filsafat Iluminasi",
+                title: "Hikmat al-Ishraq",
+                author: "Suhrawardi al-Maqtul",
+                eraNum: 1186,
+                eraLabel: "Abad ke-12 M",
+                colors: ["#b45309", "#451a03"], // Amber/Brown
+                content: `<p>Suhrawardi mendirikan aliran "Isyraqiyyah" (Iluminasi). Ia merasa metode Aristoteles/Ibnu Sina terlalu kering. Baginya, logika (bahth) hanya bernilai jika digabungkan dengan pencerahan spiritual langsung (dzawq).</p>
+                <p>Sistem ontologinya sangat indah: Tidak ada "materi" dalam arti padat, yang ada hanyalah Cahaya. Tuhan adalah <strong>Nur al-Anwar</strong> (Cahaya di atas Segala Cahaya). Realitas makhluk hanyalah tingkat intensitas cahaya yang berbeda-beda.</p>
+                <div class="zen-quote">Kegelapan bukanlah sebuah wujud yang nyata, ia hanyalah ketiadaan cahaya. Begitu pula keburukan, ia hanyalah ketiadaan kebaikan.</div>
+                <p>Karya ini membantah narasi orientalis bahwa filsafat mati setelah Al-Ghazali. Di dunia timur (Persia), filsafat justru berevolusi menjadi teosofi yang lebih mistik dan mendalam.</p>`
+            },
+            {
+                id: "k-10",
+                category: "sejarah",
+                catLabel: "Sosiologi & Sejarah",
+                title: "Muqaddimah",
+                author: "Ibnu Khaldun",
+                eraNum: 1377,
+                eraLabel: "Abad ke-14 M",
+                colors: ["#57534e", "#292524"], // Stone/Dark Grey
+                content: `<p>Ibnu Khaldun adalah manusia pertama yang menjadikan "Sejarah" sebagai ilmu sains yang sistematis, mendahului sosiolog Barat berabad-abad lamanya. <em>Muqaddimah</em> adalah volume pendahuluan dari buku sejarah raksasanya.</p>
+                <p>Konsep terpentingnya adalah <strong>'Asabiyyah</strong> (solidaritas sosial). Ia menganalisis bagaimana sebuah peradaban bangkit dari masyarakat badui (nomaden) yang punya 'Asabiyyah kuat, menaklukkan kota, mendirikan dinasti, lalu menjadi manja, korup, kehilangan 'Asabiyyah, dan akhirnya runtuh digantikan kelompok badui baru.</p>
+                <div class="zen-quote">Kekaisaran dan dinasti memiliki umur alami sama seperti manusia. Mereka tumbuh, mencapai puncak, menua, dan mati.</div>
+                <p>Buku ini meletakkan pondasi bagi sosiologi, demografi, hingga ekonomi (ia menulis tentang konsep pajak dan nilai tenaga kerja sebelum Adam Smith).</p>`
+            },
+            {
+                id: "k-11",
+                category: "filsafat",
+                catLabel: "Teosofi Transenden",
+                title: "Al-Hikmah al-Muta'aliyah",
+                author: "Mulla Sadra",
+                eraNum: 1628,
+                eraLabel: "Abad ke-17 M",
+                colors: ["#312e81", "#1e1b4b"], // Indigo
+                content: `<p>Mulla Sadra adalah puncak perpaduan antara filsafat Aristotelian, pemikiran Iluminasi Suhrawardi, Kalam (teologi), dan tasawuf Ibnu Arabi. Mahakaryanya ini dikenal sebagai "Empat Perjalanan Akal" (Al-Asfar al-Arba'a).</p>
+                <p>Sadra merevolusi filsafat dengan prinsip <strong>Asalat al-Wujud</strong> (Primasinya Wujud atas Esensi). Menurutnya, esensi (seperti konsep "kuda" atau "pohon") itu ilusi konseptual pikiran; yang nyata secara mutlak hanyalah "Ada" (Wujud). Wujud itu tunggal namun bergradasi dari batu hingga Tuhan.</p>
+                <div class="zen-quote">Alam semesta tidaklah statis. Segalanya berada dalam proses gerak substantif (Harakah Jauhariyah) evolusioner yang terus-menerus merindu untuk kembali kepada Kesempurnaan Ilahi.</div>
+                <p>Karyanya memastikan kurikulum filsafat tetap diajarkan di universitas dan hauzah (pesantren) di kawasan timur hingga hari ini.</p>`
+            },
+            {
+                id: "k-12",
+                category: "tasawuf",
+                catLabel: "Buku Referensi Modern",
+                title: "Islam Risalah Cinta & Kebahagiaan",
+                author: "Haidar Bagir",
+                eraNum: 2012,
+                eraLabel: "Abad Kontemporer",
+                colors: ["#831843", "#4c0519"], // Pink Dark / Maroon
+                content: `<p>Sebagai referensi utama makalah Kelompok IV, buku karya Haidar Bagir ini memberikan angin segar di tengah pandangan keras terhadap Islam di era modern. Buku ini menyaring intisari tasawuf klasik untuk manusia modern.</p>
+                <p>Gagasan utamanya adalah: Agama tidak diturunkan untuk mengekang manusia atau menciptakan ketakutan, melainkan untuk membimbing manusia menuju fitrah tertingginya yaitu kebahagiaan sejati. Dan poros utama untuk mencapainya adalah <strong>Cinta (Mahabbah)</strong>.</p>
+                <div class="zen-quote">Tuhan adalah Maha Cinta. Segala penderitaan di dunia ini hanyalah riak kecil dalam samudra rahmat-Nya yang tak bertepi.</div>
+                <p>Buku ini relevan karena memadukan epistemologi Al-Ghazali dan Mulla Sadra untuk menjawab krisis eksistensial, kecemasan (anxiety), dan kehilangan makna hidup manusia abad ke-21.</p>`
+            }
+        ];
+
+        /* =======================================================================
+           1. CONSTELLATION CANVAS ENGINE (HERO BACKGROUND)
+           ======================================================================= */
+        const canvas = document.getElementById('constellation-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = document.querySelector('.explore-hero').offsetHeight;
+            particles = [];
+            const numParticles = Math.floor(window.innerWidth / 15);
+            for(let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 2
+                });
+            }
+        }
+
+        function drawConstellation() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for(let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx; p.y += p.vy;
+                
+                // Boundary check
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(110, 231, 183, 0.5)'; // Emerald light
+                ctx.fill();
+
+                // Draw lines between close particles
+                for(let j = i + 1; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if(dist < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(16, 185, 129, ${0.2 - dist/500})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawConstellation);
+        }
+
+        window.addEventListener('resize', initCanvas);
+
+        /* =======================================================================
+           2. 3D LIBRARY RENDERER & SORTING ENGINE
+           ======================================================================= */
+        let currentData = [...libraryDB]; // Clone data for sorting
+
+        function renderLibrary(data) {
+            const grid = document.getElementById('libraryGrid');
+            grid.innerHTML = ''; 
+
+            data.forEach((book, index) => {
+                const isRead = localStorage.getItem(`zen_read_${book.id}`) === 'true';
+                
+                const card = document.createElement('div');
+                card.className = `book-wrapper item-${book.category} anim-fade-up ${isRead ? 'is-read' : ''}`;
+                card.style.animationDelay = `${(index % 10) * 0.1}s`; // Staggered animation
+                card.style.setProperty('--book-color-1', book.colors[0]);
+                card.style.setProperty('--book-color-2', book.colors[1]);
+
+                card.innerHTML = `
+                    <div class="read-stamp">Telah Dibaca</div>
+                    <div class="book-3d">
+                        <div class="book-pages"></div>
+                        <div class="book-spine"><div class="spine-text">${book.title}</div></div>
+                        <div class="book-cover">
+                            <div class="book-category">${book.catLabel}</div>
+                            <h2 class="book-title">${book.title}</h2>
+                            <div class="book-author">${book.author}</div>
+                            <div class="book-era">${book.eraLabel}</div>
+                        </div>
+                    </div>
+                `;
+
+                card.onclick = () => openZenReader(book.id);
+                grid.appendChild(card);
+            });
+        }
+
+        function sortLibrary() {
+            const val = document.getElementById('sortSelect').value;
+            
+            if(val === 'eraAsc') currentData.sort((a,b) => a.eraNum - b.eraNum);
+            else if(val === 'eraDesc') currentData.sort((a,b) => b.eraNum - a.eraNum);
+            else if(val === 'titleAsc') currentData.sort((a,b) => a.title.localeCompare(b.title));
+            else currentData = [...libraryDB]; // Default order
+            
+            applyFilterAndRender();
+        }
+
+        function applyFilterAndRender() {
+            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+            
+            let filteredData = currentData;
+            if(activeFilter !== 'all') {
+                filteredData = currentData.filter(b => b.category === activeFilter);
+            }
+            
+            renderLibrary(filteredData);
+        }
+
+        // Setup Filter Buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                applyFilterAndRender();
+            });
+        });
+
+        /* =======================================================================
+           3. ZEN READING MODAL & TEXT-TO-SPEECH (TTS) AI
+           ======================================================================= */
+        let ttsActive = false;
+        let currentUtterance = null;
+        let currentTextToRead = "";
+
+        function openZenReader(id) {
+            const book = libraryDB.find(b => b.id === id);
+            if(!book) return;
+
+            document.getElementById('zenCategory').innerText = book.catLabel;
+            document.getElementById('zenTitle').innerText = book.title;
+            document.getElementById('zenAuthor').innerText = book.author;
+            document.getElementById('zenEra').innerText = book.eraLabel;
+            document.getElementById('zenContent').innerHTML = book.content;
+
+            // Extract plain text for TTS (remove HTML tags)
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = book.content;
+            currentTextToRead = `Buku ${book.title}, karya ${book.author}. ${tempDiv.innerText}`;
+
+            document.getElementById('zenModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Mark as Read in Local Storage
+            if(localStorage.getItem(`zen_read_${id}`) !== 'true') {
+                localStorage.setItem(`zen_read_${id}`, 'true');
+                setTimeout(() => applyFilterAndRender(), 500); // Update UI badge in background
+            }
+        }
+
+        function closeZenReader() {
+            document.getElementById('zenModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            stopTTS();
+        }
+
+        function toggleTTS() {
+            if(!('speechSynthesis' in window)) {
+                if(window.appToast) appToast("Browser Anda tidak mendukung Suara AI.", "error");
+                return;
+            }
+
+            const btn = document.getElementById('btnTTS');
+
+            if(ttsActive) {
+                stopTTS();
+            } else {
+                // Play TTS
+                window.speechSynthesis.cancel(); // Clear queue
+                currentUtterance = new SpeechSynthesisUtterance(currentTextToRead);
+                currentUtterance.lang = 'id-ID';
+                currentUtterance.pitch = 1;
+                currentUtterance.rate = 0.95; // Sedikit dilambatkan agar terdengar wibawa
+                
+                currentUtterance.onend = () => { stopTTS(); };
+                
+                window.speechSynthesis.speak(currentUtterance);
+                
+                ttsActive = true;
+                btn.innerHTML = '<i class="fa-solid fa-stop"></i>';
+                btn.classList.add('tts-playing');
+                if(window.appToast) appToast("Audio AI sedang membaca...", "info");
+            }
+        }
+
+        function stopTTS() {
+            window.speechSynthesis.cancel();
+            ttsActive = false;
+            const btn = document.getElementById('btnTTS');
+            if(btn) {
+                btn.innerHTML = '<i class="fa-solid fa-headphones"></i>';
+                btn.classList.remove('tts-playing');
+            }
+        }
+
+        /* =======================================================================
+           4. ASTROLABE RANDOMIZER LOGIC
+           ======================================================================= */
+        function spinAndReadRandom() {
+            const btn = document.getElementById('btnAstrolabe');
+            if(btn.classList.contains('spinning')) return;
+
+            btn.classList.add('spinning');
+            if(window.appToast) appToast("Memutar Astrolabe Waktu...", "info");
+
+            setTimeout(() => {
+                btn.classList.remove('spinning');
+                const randIndex = Math.floor(Math.random() * libraryDB.length);
+                const book = libraryDB[randIndex];
+                
+                openZenReader(book.id);
+                if(window.appToast) appToast(`Astrolabe memilih: ${book.title}`, "success");
+            }, 2000);
+        }
+
+        /* =======================================================================
+           5. START ENGINE ON LOAD
+           ======================================================================= */
+        window.addEventListener('load', () => {
+            initCanvas();
+            drawConstellation();
+            renderLibrary(currentData);
+        });
+
+    </script>
+</body>
+</html>

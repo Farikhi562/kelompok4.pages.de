@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Eksplorasi Filsafat Islam: Risalah Cinta dan Sejarah Filsafat. Proyek Akhir untuk Bapak Mulyadi.">
+    <meta name="author" content="Muhamad Fauzan Al Farikhi & Kelompok IV">
+    <title>Filsafat & Hikmah Islam | Kelompok IV</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="animations.css">
+
+    <style>
+        /* --- GLOBAL OVERRIDES FOR INDEX --- */
+        body {
+            background-color: var(--bg-body, #f8fafc);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- PRELOADER DEWA --- */
+        #index-preloader {
+            position: fixed; inset: 0; background: #0f172a; z-index: 999999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .loader-brand { font-size: 2.5rem; font-weight: 800; color: #10b981; letter-spacing: 2px; margin-bottom: 20px; font-family: 'Poppins', sans-serif; display: flex; align-items: center; gap: 15px;}
+        .loader-bar { width: 200px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; position: relative; }
+        .loader-progress { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #d97706; box-shadow: 0 0 15px #d97706; transition: width 0.4s ease; }
+        .loader-text { margin-top: 15px; color: #94a3b8; font-family: 'Space Mono', monospace; font-size: 0.85rem; }
+
+        /* --- HERO SECTION (PARALLAX & PARTICLES) --- */
+        .hero-mega {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #022c22 0%, #0f172a 100%);
+            color: white;
+            padding: 80px 5% 0;
+        }
+
+        #hero-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
+        }
+
+        .hero-overlay {
+            position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 0%, #0f172a 100%); z-index: 2; opacity: 0.8;
+        }
+
+        .hero-content {
+            position: relative; z-index: 3; max-width: 900px; text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block; padding: 8px 20px; border-radius: 30px;
+            background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7; font-weight: 700; font-family: 'Space Mono', monospace;
+            font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800; line-height: 1.1; margin-bottom: 20px;
+            background: linear-gradient(to right, #ffffff, #6ee7b7);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* AI Typing Effect */
+        .typing-container {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: #cbd5e1; font-weight: 300; margin-bottom: 40px; min-height: 80px;
+        }
+        .typed-cursor { opacity: 1; animation: blink 0.7s infinite; color: #d97706; font-weight: 800; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+
+        .hero-actions { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .btn-mega {
+            padding: 15px 35px; border-radius: 50px; font-weight: 800; font-size: 1.1rem;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none; text-decoration: none;
+        }
+        .btn-mega.primary { background: #d97706; color: white; box-shadow: 0 10px 25px rgba(217, 119, 6, 0.4); }
+        .btn-mega.primary:hover { transform: translateY(-5px); background: #b45309; box-shadow: 0 15px 35px rgba(217, 119, 6, 0.6); }
+        .btn-mega.secondary { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); }
+        .btn-mega.secondary:hover { background: rgba(255,255,255,0.1); border-color: white; transform: translateY(-5px); }
+
+        .scroll-indicator {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 3; color: rgba(255,255,255,0.5); font-size: 2rem;
+            animation: floatDown 2s infinite; cursor: pointer; transition: 0.3s;
+        }
+        .scroll-indicator:hover { color: white; }
+        @keyframes floatDown { 0% { transform: translate(-50%, 0); opacity: 0.5; } 50% { transform: translate(-50%, 15px); opacity: 1; } 100% { transform: translate(-50%, 0); opacity: 0.5; } }
+
+        /* --- SECTION BASE STYLES --- */
+        .section-padding { padding: 120px 5%; position: relative; }
+        .section-header-mega { text-align: center; margin-bottom: 80px; }
+        .section-subtitle { color: var(--clr-accent-500, #d97706); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        .section-title { font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--text-main, #0f172a); font-weight: 800; line-height: 1.2; position: relative; display: inline-block; }
+        [data-theme="dark"] .section-title { color: #f8fafc; }
+        .section-title::after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 60px; height: 5px; background: var(--clr-accent-500, #d97706); border-radius: 5px; }
+
+        /* --- THE HOLY QURAN SECTION --- */
+        .ayat-container {
+            max-width: 1000px; margin: 0 auto; background: var(--bg-surface, #ffffff);
+            border-radius: 30px; padding: 60px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-light, rgba(6,78,59,0.1)); position: relative; overflow: hidden;
+        }
+        [data-theme="dark"] .ayat-container { background: #1e293b; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        .ayat-container::before { content: '❁'; position: absolute; top: -40px; right: -20px; font-size: 15rem; color: var(--border-light, rgba(6,78,59,0.03)); line-height: 1; pointer-events: none; }
+        
+        .ayat-arabic {
+            font-family: 'Amiri', serif; font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--clr-primary-700, #047857); text-align: center; line-height: 2;
+            margin-bottom: 30px; direction: rtl; text-shadow: 0 4px 15px rgba(4, 120, 87, 0.1);
+        }
+        [data-theme="dark"] .ayat-arabic { color: #10b981; }
+        
+        .ayat-translation { font-size: 1.1rem; color: var(--text-muted, #64748b); text-align: center; font-style: italic; line-height: 1.8; margin-bottom: 30px; padding: 0 5%; }
+        .ayat-meta { text-align: center; }
+        .ayat-badge { display: inline-block; background: var(--clr-primary-700, #047857); color: white; padding: 8px 25px; border-radius: 30px; font-weight: 800; font-size: 0.9rem; box-shadow: 0 10px 20px rgba(4, 120, 87, 0.3); }
+
+        /* --- 3D LITERATURE CARDS --- */
+        .lit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 50px; max-width: 1200px; margin: 0 auto; perspective: 2000px; }
+        @media (max-width: 768px) { .lit-grid { grid-template-columns: 1fr; } }
+        
+        .lit-card {
+            background: var(--bg-surface, #ffffff); border-radius: 25px; padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid var(--border-light, rgba(0,0,0,0.05));
+            transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; position: relative;
+        }
+        [data-theme="dark"] .lit-card { background: #0f172a; border-color: rgba(255,255,255,0.05); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .lit-card:hover { transform: translateY(-15px) rotateX(5deg) rotateY(-5deg); box-shadow: 0 30px 60px rgba(16, 185, 129, 0.15); }
+        
+        /* Glare Effect */
+        .lit-card::after { content: ''; position: absolute; inset: 0; border-radius: 25px; background: linear-gradient(125deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 40%); opacity: 0; transition: 0.6s; pointer-events: none; z-index: 10; }
+        .lit-card:hover::after { opacity: 1; }
+
+        .lit-icon { width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, var(--clr-primary-500, #10b981), var(--clr-primary-700, #047857)); display: flex; justify-content: center; align-items: center; font-size: 2.5rem; color: white; margin-bottom: 25px; box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3); transform: translateZ(30px); }
+        .lit-card:nth-child(2) .lit-icon { background: linear-gradient(135deg, var(--clr-accent-500, #d97706), #9a3412); box-shadow: 0 15px 30px rgba(217, 119, 6, 0.3); }
+
+        .lit-author { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--clr-accent-500, #d97706); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; transform: translateZ(20px); }
+        .lit-title { font-size: 1.8rem; font-weight: 800; color: var(--text-main, #0f172a); margin-bottom: 20px; line-height: 1.3; transform: translateZ(25px); }
+        [data-theme="dark"] .lit-title { color: white; }
+        .lit-desc { color: var(--text-muted, #64748b); font-size: 1rem; line-height: 1.7; flex-grow: 1; margin-bottom: 30px; transform: translateZ(15px); }
+
+        .lit-actions { display: flex; gap: 15px; flex-wrap: wrap; transform: translateZ(20px); border-top: 1px dashed var(--border-light, #e2e8f0); padding-top: 25px; }
+        .action-btn { background: var(--bg-body, #f1f5f9); color: var(--text-main, #0f172a); border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        [data-theme="dark"] .action-btn { background: #1e293b; color: white; }
+        .action-btn:hover { background: var(--clr-primary-500, #10b981); color: white; transform: translateY(-3px); }
+
+        /* --- INTERACTIVE ROADMAP (JEJAK FILSAFAT) --- */
+        .roadmap-container { position: relative; max-width: 1200px; margin: 0 auto; padding: 40px 0; }
+        .roadmap-container::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 4px; background: var(--border-light, #e2e8f0); transform: translateY(-50%); border-radius: 2px; }
+        [data-theme="dark"] .roadmap-container::before { background: #334155; }
+        
+        .roadmap-scroll { display: flex; overflow-x: auto; gap: 50px; padding: 20px 5%; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .roadmap-scroll::-webkit-scrollbar { display: none; }
+        
+        .roadmap-node { min-width: 300px; position: relative; scroll-snap-align: center; }
+        .node-dot { width: 24px; height: 24px; background: var(--clr-accent-500, #d97706); border: 4px solid var(--bg-body, #f8fafc); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.2); transition: 0.3s; }
+        [data-theme="dark"] .node-dot { border-color: #0f172a; }
+        .roadmap-node:hover .node-dot { transform: translate(-50%, -50%) scale(1.5); background: var(--clr-primary-500, #10b981); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2); }
+        
+        .node-content { background: var(--bg-surface, white); padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--border-light, #e2e8f0); margin-bottom: 40px; position: relative; transition: 0.3s; cursor: default; }
+        [data-theme="dark"] .node-content { background: #1e293b; border-color: rgba(255,255,255,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .roadmap-node:nth-child(even) .node-content { margin-bottom: 0; margin-top: 40px; }
+        .roadmap-node:hover .node-content { transform: translateY(-5px); border-color: var(--clr-primary-500, #10b981); }
+        
+        .node-era { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--clr-accent-500, #d97706); font-weight: 700; margin-bottom: 5px; }
+        .node-title { font-size: 1.2rem; font-weight: 800; color: var(--text-main, #0f172a); margin-bottom: 10px; }
+        [data-theme="dark"] .node-title { color: white; }
+        .node-desc { font-size: 0.9rem; color: var(--text-muted, #64748b); line-height: 1.6; }
+
+        /* --- MULTIMEDIA & FAQ --- */
+        .media-flex { display: flex; flex-wrap: wrap; gap: 50px; max-width: 1200px; margin: 0 auto; align-items: flex-start; }
+        .media-video { flex: 1; min-width: 300px; background: var(--bg-surface, white); padding: 20px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid var(--border-light, #e2e8f0); }
+        [data-theme="dark"] .media-video { background: #1e293b; border-color: rgba(255,255,255,0.05); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .iframe-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 20px; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
+        .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        
+        .media-faq { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 15px; }
+        .faq-item { background: var(--bg-surface, white); border-radius: 15px; border: 1px solid var(--border-light, #e2e8f0); overflow: hidden; transition: 0.3s; }
+        [data-theme="dark"] .faq-item { background: #1e293b; border-color: rgba(255,255,255,0.05); }
+        .faq-header { width: 100%; text-align: left; padding: 20px; background: none; border: none; font-size: 1.05rem; font-weight: 700; color: var(--text-main, #0f172a); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        [data-theme="dark"] .faq-header { color: white; }
+        .faq-header i { color: var(--clr-accent-500, #d97706); transition: transform 0.3s; }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0, 1, 0, 1); background: var(--bg-body, #f8fafc); }
+        [data-theme="dark"] .faq-content { background: #0f172a; }
+        .faq-content p { padding: 0 20px 20px; margin: 0; color: var(--text-muted, #64748b); font-size: 0.95rem; line-height: 1.7; }
+        .faq-item.active .faq-header i { transform: rotate(180deg); color: var(--clr-primary-500, #10b981); }
+        .faq-item.active .faq-content { max-height: 1000px; transition: max-height 0.4s ease-in-out; }
+
+        /* --- TEAM PREVIEW SNIPPET --- */
+        .team-snippet { background: linear-gradient(135deg, var(--clr-primary-900, #022c22), var(--clr-primary-700, #047857)); padding: 80px 5%; color: white; text-align: center; border-radius: 40px; margin: 0 5%; box-shadow: 0 30px 60px rgba(4, 120, 87, 0.3); position: relative; overflow: hidden; }
+        .team-snippet::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/cubes.png'); opacity: 0.1; }
+        .team-avatars { display: flex; justify-content: center; margin: 30px 0; }
+        .avatar-circle { width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; margin-left: -15px; background: #d97706; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 1.2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; position: relative; z-index: 1; }
+        .avatar-circle:hover { transform: translateY(-10px); z-index: 10; }
+        .avatar-circle:first-child { margin-left: 0; }
+
+        /* --- GUNADARMA MEGA BRANDING --- */
+        .ug-mega-section { padding: 100px 5% 60px; text-align: center; background: linear-gradient(to top, var(--bg-surface, white), var(--bg-body, #f8fafc)); position: relative; border-top: 1px dashed var(--border-light, rgba(0,0,0,0.1)); }
+        [data-theme="dark"] .ug-mega-section { background: linear-gradient(to top, #020617, #0f172a); border-color: rgba(255,255,255,0.1); }
+        
+        .ug-logo-wrapper { display: inline-block; position: relative; margin-bottom: 25px; cursor: pointer; }
+        .ug-logo-wrapper::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 180px; height: 180px; background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%); border-radius: 50%; z-index: 0; animation: pulseGlow 3s infinite; }
+        .ug-logo { width: 140px; height: auto; position: relative; z-index: 1; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.2)); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .ug-logo-wrapper:hover .ug-logo { transform: scale(1.15) rotate(5deg); }
+        
+        .ug-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 4vw, 2.5rem); color: var(--clr-primary-700, #047857); font-weight: 800; letter-spacing: 3px; margin-bottom: 10px; }
+        [data-theme="dark"] .ug-title { color: #10b981; }
+        .ug-subtitle { font-size: 1.1rem; color: var(--clr-accent-500, #d97706); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+        .ug-desc { max-width: 600px; margin: 0 auto; color: var(--text-muted, #64748b); font-size: 0.95rem; line-height: 1.8; }
+
+        /* Animation Classes from core */
+        .anim-fade-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .anim-fade-up.active { opacity: 1; transform: translateY(0); }
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <div id="index-preloader">
+        <div class="loader-brand"><i class="fa-solid fa-kaaba"></i> KELOMPOK IV</div>
+        <div class="loader-bar"><div class="loader-progress" id="loaderProgress"></div></div>
+        <div class="loader-text" id="loaderText">Inisialisasi Sistem... 0%</div>
+    </div>
+
+    <k4-navbar current-page="beranda"></k4-navbar>
+
+    <section id="beranda" class="hero-mega">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <div class="hero-badge">Proyek Akhir • Bapak Mulyadi</div>
+            <h1 class="hero-title">Filsafat & Hikmah Islam</h1>
+            
+            <div class="typing-container">
+                <span id="typed-text"></span><span class="typed-cursor">|</span>
+            </div>
+            
+            <div class="hero-actions">
+                <a href="#literatur" class="btn-mega primary">
+                    <i class="fa-solid fa-rocket"></i> Mulai Eksplorasi
+                </a>
+                <a href="tim.html" class="btn-mega secondary">
+                    <i class="fa-solid fa-users"></i> Profil Tim Penyusun
+                </a>
+            </div>
+        </div>
+
+        <a href="#quran" class="scroll-indicator"><i class="fa-solid fa-computer-mouse"></i></a>
+    </section>
+
+    <section id="quran" class="section-padding">
+        <div class="section-header-mega anim-fade-up">
+            <span class="section-subtitle">Fondasi Kebijaksanaan</span>
+            <h2 class="section-title">Sumber Hakikat Utama</h2>
+        </div>
+
+        <div class="ayat-container anim-fade-up delay-200">
+            <div class="ayat-arabic">
+                يُؤْتِي الْحِكْمَةَ مَنْ يَشَاءُ ۚ وَمَنْ يُؤْتَ الْحِكْمَةَ فَقَدْ أُوتِيَ خَيْرًا كَثِيرًا ۗ وَمَا يَذَّكَّرُ إِلَّا أُولُو الْأَلْبَابِ
+            </div>
+            <div class="ayat-translation">
+                "Dia memberikan hikmah (ilmu yang berguna) kepada siapa yang dikehendaki-Nya. Barangsiapa yang diberi hikmah, sungguh telah diberi kebajikan yang banyak. Dan tiadalah yang dapat mengambil pelajaran kecuali orang-orang yang berakal."
+            </div>
+            <div class="ayat-meta">
+                <span class="ayat-badge"><i class="fa-solid fa-book-open-reader"></i> QS. Al-Baqarah: 269</span>
+            </div>
+            <hr style="margin: 40px 0; border: 0; border-top: 1px dashed var(--border-light, #e2e8f0);">
+            <div style="text-align: center; color: var(--text-muted, #64748b); max-width: 800px; margin: 0 auto; line-height: 1.8;">
+                Ayat ini menjadi justifikasi teologis tak terbantahkan bagi para filsuf Muslim. <strong>'Hikmah'</strong> dipahami bukan sekadar pengetahuan empiris, melainkan pemahaman mendalam tentang realitas (filsafat). Ibnu Sina dan Al-Farabi memandang bahwa filsafat adalah jalan tertinggi menuju pemahaman Sang Pencipta melalui akal budi (Ulul Albab).
+            </div>
+        </div>
+    </section>
+
+    <section id="literatur" class="section-padding" style="background: var(--bg-body, #f1f5f9);">
+        <div class="section-header-mega anim-fade-up">
+            <span class="section-subtitle">Referensi Akademik</span>
+            <h2 class="section-title">Kajian Literatur Utama</h2>
+        </div>
+
+        <div class="lit-grid">
+            <div class="lit-card anim-fade-up delay-100">
+                <div class="lit-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                <div class="lit-author">Haidar Bagir (2016)</div>
+                <h3 class="lit-title">Islam Risalah Cinta dan Kebahagiaan</h3>
+                <p class="lit-desc">
+                    Merekonstruksi wajah Islam dengan menitikberatkan pada esensi <em>Cinta (Mahabbah)</em>. Berakar pada tradisi tasawuf dan irfan, buku ini berargumen bahwa pencarian Tuhan bermuara pada kebahagiaan sejati manusia, memadukan epistemologi Al-Ghazali dan Mulla Sadra.
+                </p>
+                <div class="lit-actions">
+                    <button class="action-btn" onclick="appToast('Membuka PDF Resume...', 'info')"><i class="fa-solid fa-file-pdf" style="color: #e11d48;"></i> Resume (PDF)</button>
+                    <button class="action-btn" onclick="appToast('Membuka Makalah Word...', 'info')"><i class="fa-solid fa-file-word" style="color: #2563eb;"></i> Makalah (DOCX)</button>
+                </div>
+            </div>
+
+            <div class="lit-card anim-fade-up delay-200">
+                <div class="lit-icon"><i class="fa-solid fa-globe"></i></div>
+                <div class="lit-author">Peter Adamson (2016)</div>
+                <h3 class="lit-title">Philosophy in the Islamic World: Without Any Gaps</h3>
+                <p class="lit-desc">
+                    Karya monumental yang membantah mitos bahwa filsafat di dunia Islam "mati" setelah Ibnu Rusyd. Adamson memaparkan sejarah pemikiran tanpa celah, mencakup tradisi teologi (Kalam), filsafat pencerahan (Suhrawardi), hingga kejayaan intelektual Safawiyah.
+                </p>
+                <div class="lit-actions">
+                    <button class="action-btn" onclick="appToast('Membuka Ringkasan Terjemahan...', 'info')"><i class="fa-solid fa-language" style="color: #10b981;"></i> Terjemahan (PDF)</button>
+                    <button class="action-btn" onclick="window.location.href='explore.html'"><i class="fa-solid fa-compass" style="color: #d97706;"></i> Eksplorasi Interaktif</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="section-header-mega anim-fade-up">
+            <span class="section-subtitle">Evolusi Pemikiran</span>
+            <h2 class="section-title">Jejak Historiografi Filsafat</h2>
+        </div>
+
+        <div class="roadmap-container anim-fade-up delay-200">
+            <div class="roadmap-scroll">
+                <div class="roadmap-node">
+                    <div class="node-dot"></div>
+                    <div class="node-content">
+                        <div class="node-era">Abad 9 M</div>
+                        <h4 class="node-title">Era Formatif & Terjemahan</h4>
+                        <p class="node-desc">Al-Kindi meletakkan dasar keselarasan antara filsafat Yunani dan wahyu tauhid di Baitul Hikmah Baghdad.</p>
+                    </div>
+                </div>
+                <div class="roadmap-node">
+                    <div class="node-dot"></div>
+                    <div class="node-content">
+                        <div class="node-era">Abad 11 M</div>
+                        <h4 class="node-title">Puncak Klasik & Kritik</h4>
+                        <p class="node-desc">Ibnu Sina menyempurnakan sistem metafisika, yang kemudian dikritik tajam oleh Al-Ghazali demi menyelamatkan akidah.</p>
+                    </div>
+                </div>
+                <div class="roadmap-node">
+                    <div class="node-dot"></div>
+                    <div class="node-content">
+                        <div class="node-era">Abad 12 M</div>
+                        <h4 class="node-title">Kebangkitan Iluminasi</h4>
+                        <p class="node-desc">Suhrawardi mendobrak rasionalisme kaku dengan mendirikan mazhab Isyraq (Pencerahan/Intuisi) di dunia Timur.</p>
+                    </div>
+                </div>
+                <div class="roadmap-node">
+                    <div class="node-dot"></div>
+                    <div class="node-content">
+                        <div class="node-era">Abad 17 M</div>
+                        <h4 class="node-title">Teosofi Transenden</h4>
+                        <p class="node-desc">Mulla Sadra menyintesis filsafat, kalam, dan tasawuf menjadi satu kesatuan utuh yang diajarkan hingga hari ini.</p>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="timeline.html" class="btn-mega secondary" style="font-size: 0.9rem; padding: 10px 25px;"><i class="fa-solid fa-clock-rotate-left"></i> Buka Mesin Waktu Lengkap</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="multimedia" class="section-padding" style="background: var(--bg-body, #f1f5f9);">
+        <div class="section-header-mega anim-fade-up">
+            <span class="section-subtitle">Visualisasi & Diskusi</span>
+            <h2 class="section-title">Multimedia & Penjelasan</h2>
+        </div>
+
+        <div class="media-flex anim-fade-up delay-200">
+            <div class="media-video">
+                <h3 style="margin-bottom: 20px; font-weight: 800; font-size: 1.3rem;"><i class="fa-brands fa-youtube" style="color: #ef4444;"></i> Video Dokumenter Pendek</h3>
+                <div class="iframe-wrapper">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1" title="Video Presentasi" allowfullscreen></iframe>
+                </div>
+                <p style="margin-top: 20px; color: var(--text-muted, #64748b); font-size: 0.95rem;">
+                    Video ilustrasi mengenai sejarah perkembangan pemikiran Islam, dari era penerjemahan Baitul Hikmah hingga sintesis modern.
+                </p>
+            </div>
+
+            <div class="media-faq" id="faqAccordion">
+                <div class="faq-item">
+                    <button class="faq-header">Mengapa menggabungkan dua literatur ini? <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq-content">
+                        <p>Buku Haidar Bagir memberikan sentuhan esoteris (tasawuf/cinta), sedangkan buku Peter Adamson memberikan landasan historis-rasional yang solid ("Without any gaps"). Perpaduan ini merepresentasikan keseimbangan akal dan qalbu yang diminta oleh Bapak Mulyadi.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-header">Apakah filsafat Islam mati setelah Al-Ghazali? <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq-content">
+                        <p>Tidak. Ini adalah mitos Orientalis. Seperti yang dibuktikan Peter Adamson, filsafat justru berkembang pesat pasca-klasik di wilayah Timur (Persia dan India) melalui tokoh seperti Suhrawardi dan Mulla Sadra.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-header">Siapa pengembang website interaktif ini? <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq-content">
+                        <p>Website ekosistem ini dirancang dan dikembangkan sepenuhnya secara <em>from-scratch</em> (HTML/CSS/JS murni) oleh <strong>Muhamad Fauzan Al Farikhi</strong> (Founder NEXA Tech Labs) sebagai dedikasi maksimal untuk tugas Kelompok IV Agama Islam.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="padding-top: 60px; padding-bottom: 60px;">
+        <div class="team-snippet anim-fade-up">
+            <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 10px;">Dibalik Layar Kelompok IV</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">5 Mahasiswa. 1 Visi. Dedikasi total untuk menyajikan risalah agama dalam format teknologi masa depan.</p>
+            
+            <div class="team-avatars">
+                <div class="avatar-circle" title="Muhamad Fauzan Al Farikhi"><i class="fa-solid fa-laptop-code"></i></div>
+                <div class="avatar-circle" title="Yusuf Maulana Wahyudi"><i class="fa-solid fa-pen-nib"></i></div>
+                <div class="avatar-circle" title="Mahardieka Yusuf Nugraha"><i class="fa-solid fa-book-open-reader"></i></div>
+                <div class="avatar-circle" title="Muhammad Fairuz Kurniawan"><i class="fa-solid fa-file-lines"></i></div>
+                <div class="avatar-circle" title="Qinnan Ashiddiq Arianto"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                <div class="avatar-circle" title="Anggota Ke-6"><i class="fa-solid fa-users"></i></div>
+            </div>
+            
+            <a href="tim.html" class="btn-mega secondary" style="padding: 10px 25px; font-size: 0.95rem; border-color: rgba(255,255,255,0.5);">Lihat Profil Lengkap Tim <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <section class="ug-mega-section anim-fade-up">
+        <div class="ug-logo-wrapper" onclick="window.open('https://gunadarma.ac.id', '_blank')" title="Kunjungi Situs Resmi Universitas Gunadarma">
+            <img src="assets/images/brand/gunadarma-logo.png" 
+                 onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'" 
+                 alt="Logo Universitas Gunadarma" 
+                 class="ug-logo">
+        </div>
+        <h2 class="ug-title">UNIVERSITAS GUNADARMA</h2>
+        <div class="ug-subtitle">Fakultas Teknologi Industri • Teknik Informatika</div>
+        <p class="ug-desc">
+            Sistem Informasi Pembelajaran Interaktif. Proyek Akhir Mata Kuliah Agama Islam. <br>
+            Disusun dengan integritas akademik tinggi oleh Mahasiswa Angkatan 2025.
+        </p>
+    </section>
+
+    <k4-footer></k4-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    
+    <script src="data.js"></script>
+    <script src="core.js"></script>
+    <script src="search.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. PRELOADER LOGIC
+            const preloader = document.getElementById('index-preloader');
+            const pBar = document.getElementById('loaderProgress');
+            const pText = document.getElementById('loaderText');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 5;
+                if(progress >= 100) progress = 100;
+                
+                pBar.style.width = `${progress}%`;
+                pText.innerText = `Memuat Aset... ${progress}%`;
+                
+                if(progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        pText.innerText = "Sistem Siap.";
+                        preloader.style.opacity = '0';
+                        preloader.style.visibility = 'hidden';
+                        initHeroAnimations();
+                    }, 500);
+                }
+            }, 100);
+
+            // 2. AI TYPING EFFECT ENGINE (No External Library)
+            const phrases = [
+                "Mensintesis Rasio dan Wahyu...",
+                "Menyelami Risalah Cinta Haidar Bagir...",
+                "Mempelajari Sejarah Filsafat Tanpa Celah...",
+                "Disusun oleh Muhamad Fauzan Al Farikhi..."
+            ];
+            const typedTextSpan = document.getElementById("typed-text");
+            let phraseIndex = 0;
+            let letterIndex = 0;
+            let currentText = "";
+            let isDeleting = false;
+
+            function typeRoutine() {
+                const fullText = phrases[phraseIndex];
+                
+                if (isDeleting) {
+                    currentText = fullText.substring(0, currentText.length - 1);
+                } else {
+                    currentText = fullText.substring(0, currentText.length + 1);
+                }
+                
+                typedTextSpan.innerText = currentText;
+
+                let typeSpeed = isDeleting ? 30 : 70;
+
+                if (!isDeleting && currentText === fullText) {
+                    typeSpeed = 2000; // Pause at end
+                    isDeleting = true;
+                } else if (isDeleting && currentText === "") {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    typeSpeed = 500; // Pause before typing next
+                }
+
+                setTimeout(typeRoutine, typeSpeed);
+            }
+
+            function initHeroAnimations() {
+                setTimeout(typeRoutine, 1000);
+                
+                // Trigger Scroll Reveal untuk elemen yang sudah di viewport
+                setTimeout(handleScrollReveal, 100);
+            }
+
+            // 3. INTERACTIVE PARTICLE CANVAS (Boids/Nodes Simulation)
+            const canvas = document.getElementById('hero-canvas');
+            const ctx = canvas.getContext('2d');
+            let particlesArray = [];
+            let mouse = { x: null, y: null, radius: 150 };
+
+            window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = document.querySelector('.hero-mega').offsetHeight; initParticles(); });
+
+            class Particle {
+                constructor(x, y, dirX, dirY, size, color) {
+                    this.x = x; this.y = y; this.dirX = dirX; this.dirY = dirY;
+                    this.size = size; this.color = color; this.baseX = this.x; this.baseY = this.y;
+                }
+                draw() {
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    ctx.fillStyle = this.color; ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) this.dirX = -this.dirX;
+                    if (this.y > canvas.height || this.y < 0) this.dirY = -this.dirY;
+
+                    // Mouse Interaction
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        const directionX = forceDirectionX * force * 5;
+                        const directionY = forceDirectionY * force * 5;
+                        this.x -= directionX; this.y -= directionY;
+                    } else {
+                        if (this.x !== this.baseX) { let dx = this.x - this.baseX; this.x -= dx/20; }
+                        if (this.y !== this.baseY) { let dy = this.y - this.baseY; this.y -= dy/20; }
+                    }
+
+                    this.x += this.dirX; this.y += this.dirY;
+                    this.draw();
+                }
+            }
+
+            function initParticles() {
+                particlesArray = [];
+                canvas.width = window.innerWidth; canvas.height = document.querySelector('.hero-mega').offsetHeight;
+                let numberOfParticles = (canvas.height * canvas.width) / 15000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let dirX = (Math.random() * 1) - 0.5;
+                    let dirY = (Math.random() * 1) - 0.5;
+                    let color = 'rgba(16, 185, 129, 0.4)';
+                    particlesArray.push(new Particle(x, y, dirX, dirY, size, color));
+                }
+            }
+
+            function animateParticles() {
+                requestAnimationFrame(animateParticles);
+                ctx.clearRect(0, 0, innerWidth, innerHeight);
+                for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
+                connectParticles();
+            }
+
+            function connectParticles() {
+                let opacityValue = 1;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a; b < particlesArray.length; b++) {
+                        let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                        if (distance < (canvas.width / 10) * (canvas.height / 10)) {
+                            opacityValue = 1 - (distance / 10000);
+                            ctx.strokeStyle = 'rgba(16, 185, 129,' + opacityValue + ')';
+                            ctx.lineWidth = 0.5; ctx.beginPath();
+                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            initParticles(); animateParticles();
+
+            // 4. SCROLL REVEAL ENGINE
+            const revealElements = document.querySelectorAll('.anim-fade-up');
+            function handleScrollReveal() {
+                const windowHeight = window.innerHeight;
+                revealElements.forEach(el => {
+                    const elementTop = el.getBoundingClientRect().top;
+                    const revealPoint = 100; // Trigger threshold
+                    if(elementTop < windowHeight - revealPoint) {
+                        el.classList.add('active');
+                    }
+                });
+            }
+            window.addEventListener('scroll', handleScrollReveal);
+
+            // 5. FAQ ACCORDION ENGINE
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const header = item.querySelector('.faq-header');
+                header.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    faqItems.forEach(i => i.classList.remove('active')); // Tutup semua
+                    if(!isActive) item.classList.add('active'); // Buka yang diklik
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
