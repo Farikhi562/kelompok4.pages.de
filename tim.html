@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NEXA Team Hub - Profil Anggota Kelompok IV untuk Proyek Akhir Agama Islam.">
-    <meta name="author" content="Muhamad Fauzan Al Farikhi & NEXA Tech Labs">
+    <meta name="description" content="Kelompok IV Hub - Profil Anggota Kelompok IV untuk Proyek Akhir Agama Islam.">
+    <meta name="author" content="Muhamad Fauzan Al Farikhi">
     <title>Struktur Kelompok IV | Filsafat Islam</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1188,6 +1188,95 @@
         .term-path { color: #d97706; }
         .term-error { color: #ef4444; }
 
+        /* --- 14. DOCUMENT CENTER SECTION --- */
+        .document-section {
+            max-width: 1300px;
+            margin: 0 auto 40px;
+            padding: 0 5%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .doc-card {
+            background: linear-gradient(145deg, var(--bg-surface), var(--bg-surface-alt));
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-bounce);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--clr-primary-500);
+        }
+
+        .doc-icon {
+            font-size: 3rem;
+            color: var(--clr-primary-500);
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 6px rgba(16,185,129,0.3));
+        }
+
+        .doc-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .doc-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .doc-btn {
+            background: var(--clr-primary-500);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .doc-btn:hover {
+            background: var(--clr-primary-700);
+            transform: scale(1.02);
+        }
+
+        .doc-btn.outline-btn {
+            background: transparent;
+            color: var(--clr-primary-500);
+            border: 2px solid var(--clr-primary-500);
+        }
+
+        .doc-btn.outline-btn:hover {
+            background: var(--clr-primary-500);
+            color: white;
+        }
+
         /* TOAST UTILITY */
         #toast-box {
             position: fixed;
@@ -1254,12 +1343,37 @@
     </nav>
 
     <section class="hero-section">
-        <div class="badge-pro"><i class="fa-solid fa-microchip"></i> NEXA God-Mode Architecture</div>
+        <div class="badge-pro"><i class="fa-solid fa-microchip"></i> Kelompok IV God-Mode Architecture</div>
         <h1 class="hero-title">Struktur <span>Manajerial & Akademik</span></h1>
-        <p class="hero-subtitle">Disusun khusus untuk pemenuhan Proyek Akhir Mata Kuliah Agama Islam (Semester 2) di Universitas Gunadarma, di bawah bimbingan Bapak Mulyadi.</p>
+        <p class="hero-subtitle">Disusun khusus untuk pemenuhan tugas Mata Kuliah Agama Islam (Semester 2) di Universitas Gunadarma, di bawah bimbingan Bapak Mulyadi.</p>
         
         <div class="quote-box">
             <p class="quote-text" id="heroQuote">"Sistem yang baik tidak hanya berjalan, tapi berkembang. Hindari bottleneck, fokus pada eksekusi bertahap." - Muhamad Fauzan Al Farikhi</p>
+        </div>
+    </section>
+
+    <section class="document-section">
+        <div class="doc-grid">
+            <div class="doc-card">
+                <i class="fa-solid fa-book-open-reader doc-icon"></i>
+                <h3 class="doc-title">Buka Makalah</h3>
+                <p class="doc-desc">Baca langsung dokumen karya tulis ilmiah Kelompok IV secara online tanpa perlu mengunduh.</p>
+                <a href="assets/docs/Makalah_Agama_Islam_dalam_Filsafat (1) (1).docx" target="_blank" id="btnViewDoc" class="doc-btn"><i class="fa-solid fa-eye"></i> Baca Sekarang</a>
+            </div>
+
+            <div class="doc-card">
+                <i class="fa-solid fa-file-pdf doc-icon"></i>
+                <h3 class="doc-title">Unduh PDF</h3>
+                <p class="doc-desc">Simpan salinan makalah lengkap dalam format PDF untuk keperluan referensi dan pencetakan.</p>
+                <a href="assets/docs/Makalah_Agama_Islam_dalam_Filsafat (1) (1)-1.pdf" download="Makalah_Filsafat_Islam_Kelompok4.pdf" id="btnDownloadDoc" class="doc-btn"><i class="fa-solid fa-cloud-arrow-down"></i> Download Makalah</a>
+            </div>
+
+            <div class="doc-card">
+                <i class="fa-solid fa-layer-group doc-icon"></i>
+                <h3 class="doc-title">Executive Summary</h3>
+                <p class="doc-desc">Akses intisari cepat, slide presentasi, dan pemetaan konsep Filsafat Islam dari kelompok IV.</p>
+                <a href="#" id="btnSummaryDoc" class="doc-btn outline-btn"><i class="fa-solid fa-bolt"></i> Lihat Ringkasan</a>
+            </div>
         </div>
     </section>
 
@@ -1383,7 +1497,7 @@
     <footer class="k4-footer">
         <img src="assets/images/brand/gunadarma-logo.png" alt="UG" style="height: 60px; margin-bottom: 20px; filter: grayscale(100%); opacity: 0.5;" onerror="this.style.display='none'">
         <p style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.9rem;">
-            © 2026 <strong>Kelompok IV</strong> | NEXA God-Mode Architecture V5.0
+            © 2026 <strong>Muhamad Fauzan Al Farikhi</strong> | Nexa Tech Labs Architecture V5.0
         </p>
     </footer>
 
@@ -1448,13 +1562,13 @@
                     id: 1,
                     name: "Muhamad Fauzan Al Farikhi",
                     npm: "50425672",
-                    role: "Ketua & Arsitek Sistem (CEO NEXA)",
+                    role: "Ketua & Arsitek Sistem",
                     img: "assets/images/team/fauzan.jpg", 
-                    desc: "Sebagai inisiator arsitektur 'God Mode', Fauzan mengelola eksekusi bertahap tanpa toleransi terhadap bottleneck. Bertanggung jawab menterjemahkan konsep rumit Filsafat Islam menjadi ekosistem digital interaktif yang *seamless* dan memenuhi standar akademik tinggi Universitas Gunadarma.",
+                    desc: "Sebagai inisiator arsitektur, Fauzan mengelola eksekusi bertahap tanpa toleransi terhadap bottleneck. Bertanggung jawab menterjemahkan konsep rumit Filsafat Islam menjadi ekosistem digital interaktif yang *seamless* dan memenuhi standar akademik tinggi Universitas Gunadarma.",
                     contributions: [
                         { name: "Sistem Arsitektur Web", level: 98 },
                         { name: "Manajemen Tim", level: 95 },
-                        { name: "Integrasi Data Filsafat", level: 90 }
+                        { name: "Integrasi Data Filsafat", level: 91 }
                     ]
                 },
                 {
@@ -1463,11 +1577,11 @@
                     npm: "51425323",
                     role: "UI/UX & Desain Interaktif",
                     img: "assets/images/team/yusuf.jpg",
-                    desc: "Ahli estetika digital. Yusuf merancang palet warna *Emerald Green* dan tata letak *Glassmorphism* untuk menjembatani nuansa klasik khazanah Islam dengan antarmuka modern yang memanjakan mata pembaca.",
+                    desc: "Estetika digital. Yusuf merancang palet warna Emerald Green dan tata letak Glassmorphism untuk menjembatani nuansa klasik khazanah Islam dengan antarmuka modern yang memanjakan mata pembaca.",
                     contributions: [
-                        { name: "UI/UX Engineering", level: 96 },
-                        { name: "Graphic Asset Creation", level: 92 },
-                        { name: "Frontend Styling", level: 88 }
+                        { name: "UI/UX Engineering", level: 56 },
+                        { name: "Graphic Asset Creation", level: 42 },
+                        { name: "Frontend Styling", level: 63 }
                     ]
                 },
                 {
@@ -1475,12 +1589,12 @@
                     name: "Mahardieka Yusuf Nugraha",
                     npm: "50425600",
                     role: "Kurator Literatur Syar'i",
-                    img: "assets/images/team/dieka.jpg",
+                    img: "assets/images/team/dika.jpg",
                     desc: "Mahardieka berfungsi sebagai jangkar teologis tim. Ia bertugas memverifikasi setiap dalil, hadits, dan kutipan filsuf yang digunakan dalam proyek agar memiliki sanad (referensi) yang sahih dan dapat dipertanggungjawabkan secara akademik.",
                     contributions: [
-                        { name: "Riset Dalil Al-Quran/Hadits", level: 95 },
-                        { name: "Verifikasi Sejarah", level: 90 },
-                        { name: "Kurasi Kutipan Tokoh", level: 85 }
+                        { name: "Riset Dalil Al-Quran/Hadits", level: 56 },
+                        { name: "Verifikasi Sejarah", level: 70 },
+                        { name: "Kurasi Kutipan Tokoh", level: 81 }
                     ]
                 },
                 {
@@ -1491,9 +1605,9 @@
                     img: "assets/images/team/fairuz.jpg",
                     desc: "Sang perangkai kata. Fairuz mengubah raw data penelitian ke dalam format karya tulis ilmiah yang koheren, terstruktur, dan sesuai dengan kaidah PUEBI yang disyaratkan oleh institusi.",
                     contributions: [
-                        { name: "Academic Writing", level: 94 },
-                        { name: "Struktur Logika Makalah", level: 90 },
-                        { name: "Penyusunan Sitasi", level: 88 }
+                        { name: "Academic Writing", level: 78 },
+                        { name: "Struktur Logika Makalah", level: 82 },
+                        { name: "Penyusunan Sitasi", level: 85 }
                     ]
                 },
                 {
@@ -1502,11 +1616,11 @@
                     npm: "51425003",
                     role: "Quality Control & Editor",
                     img: "assets/images/team/qinnan.jpg",
-                    desc: "Garda terakhir sebelum *deployment*. Qinnan mengaudit seluruh presentasi, dokumen, dan *website* untuk memastikan tidak ada kesalahan ketik, ambiguitas materi, atau *bug* navigasi yang dapat mengurangi nilai dari Bapak Mulyadi.",
+                    desc: "Garda terakhir sebelum deployment. Qinnan mengaudit seluruh presentasi, dokumen, dan website untuk memastikan tidak ada kesalahan ketik, ambiguitas materi, atau bug navigasi yang dapat mengurangi nilai dari Bapak Mulyadi.",
                     contributions: [
-                        { name: "Proofreading Dokumen", level: 97 },
-                        { name: "Bug Testing Web", level: 93 },
-                        { name: "Keselarasan Materi", level: 95 }
+                        { name: "Proofreading Dokumen", level: 75 },
+                        { name: "Bug Testing Web", level: 82 },
+                        { name: "Keselarasan Materi", level: 92 }
                     ]
                 }
             ];
@@ -1515,10 +1629,10 @@
             // 3. TIMELINE DATA
             // ==========================================================
             const timelineData = [
-                { time: "Minggu 1-2", title: "Inisiasi & Pembagian Tugas", desc: "Pembentukan Kelompok IV, penentuan topik besar 'Filsafat Islam', dan delegasi tugas teknis maupun akademis." },
-                { time: "Minggu 3-5", title: "Discovery & Pengumpulan Dalil", desc: "Mahardieka dan Fairuz membedah buku 'Islam Risalah Cinta' karya Haidar Bagir serta menyusun kerangka teori." },
-                { time: "Minggu 6-8", title: "Prototyping NEXA Engine", desc: "Fauzan membangun arsitektur *God Mode* awal, sementara Yusuf mengeksekusi desain *wireframe* ke format UI/UX." },
-                { time: "Minggu 9-10", title: "Integrasi & Quality Control", desc: "Penggabungan materi makalah ke dalam ekosistem web interaktif. Qinnan melakukan audit penuh pada sistem dan teks." }
+                { time: "Minggu 1", title: "Inisiasi & Pembagian Tugas", desc: "Pembentukan Kelompok IV, penentuan topik besar 'Filsafat Islam', dan delegasi tugas teknis maupun akademis." },
+                { time: "Minggu 2-3", title: "Discovery & Pengumpulan Dalil", desc: "Mahardieka dan Fairuz membedah buku 'Islam Risalah Cinta' karya Haidar Bagir serta menyusun kerangka teori." },
+                { time: "Minggu 4", title: "Prototyping Kelompok IV Engine", desc: "Fauzan membangun arsitektur Modern awal, sementara Yusuf mengeksekusi desain wireframe ke format UI/UX." },
+                { time: "Minggu 5", title: "Integrasi & Quality Control", desc: "Penggabungan materi makalah ke dalam ekosistem web interaktif. Qinnan melakukan audit penuh pada sistem dan teks." }
             ];
 
             // ==========================================================
@@ -1975,6 +2089,32 @@
                     toast("Browser tidak mendukung fitur SpeechSynthesis.", "error");
                     termLog("SpeechSynthesis API not supported in current client.", "error");
                 }
+            });
+
+            // ==========================================================
+            // 14.5 DOCUMENT CENTER LOGIC
+            // ==========================================================
+            document.getElementById('btnViewDoc').addEventListener('click', (e) => {
+                // e.preventDefault(); // DIMATIKAN: Agar href file PDF bisa terbuka
+                AudioEngine.click();
+                termLog("Fetching PDF data stream from server...");
+                toast("Membuka PDF viewer...", "info");
+            });
+
+            document.getElementById('btnDownloadDoc').addEventListener('click', (e) => {
+                // e.preventDefault(); // DIMATIKAN: Agar fitur download bawaan HTML berfungsi
+                AudioEngine.click();
+                termLog("Initiating file download protocol for Makalah_Kelompok4.pdf...");
+                toast("Mengunduh Makalah PDF...", "success");
+                setTimeout(() => termLog("Download complete. File saved to local storage.", "info"), 1500);
+            });
+
+            document.getElementById('btnSummaryDoc').addEventListener('click', (e) => {
+                e.preventDefault();
+                AudioEngine.click();
+                termLog("Querying Executive Summary matrix...");
+                toast("Memuat ringkasan eksekutif...", "info");
+                document.querySelector('.glossary-section').scrollIntoView({ behavior: 'smooth' });
             });
 
             // ==========================================================

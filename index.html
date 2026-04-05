@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Eksplorasi Filsafat Islam: Risalah Cinta dan Sejarah Filsafat. Proyek Akhir Mata Kuliah Agama Islam untuk Bapak Mulyadi.">
-    <meta name="author" content="Kelompok IV - Muhamad Fauzan Al Farikhi (NEXA Tech Labs)">
+    <meta name="author" content="Kelompok IV - Agama Islam dalam Filsafat">
     <title>Beranda | Filsafat & Hikmah Islam | Kelompok IV</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,21 +14,24 @@
     
     <style>
         /* ==========================================================
-           1. NEXA CORE VARIABLES & THEME ENGINE
+           1. NEXA CORE VARIABLES & THEME ENGINE (ULTIMATE)
            ========================================================== */
         :root {
             /* Light Theme Variables */
             --bg-body: #faf9f6;
             --bg-surface: #ffffff;
             --bg-surface-2: #f1f5f9;
+            --bg-surface-3: #e2e8f0;
             --text-main: #0f172a;
             --text-muted: #64748b;
             
+            --clr-primary-100: #d1fae5;
             --clr-primary-300: #6ee7b7;
             --clr-primary-500: #10b981;
             --clr-primary-700: #047857;
             --clr-primary-900: #022c22;
             
+            --clr-accent-300: #fcd34d;
             --clr-accent-500: #d97706;
             --clr-accent-700: #b45309;
             
@@ -41,6 +44,7 @@
             --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
             --shadow-md: 0 10px 25px -3px rgba(0,0,0,0.1);
             --shadow-lg: 0 20px 40px -5px rgba(0,0,0,0.15);
+            --shadow-glow: 0 0 25px rgba(16,185,129,0.3);
             
             --glow: rgba(6,78,59,0.1);
             
@@ -50,6 +54,10 @@
             --font-arabic: 'Amiri', serif;
             --font-cinzel: 'Cinzel', serif;
             --font-mono: 'Space Mono', monospace;
+
+            /* Animations */
+            --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         [data-theme="dark"] {
@@ -57,6 +65,7 @@
             --bg-body: #0c1220;
             --bg-surface: #1e293b;
             --bg-surface-2: #0f172a;
+            --bg-surface-3: #020617;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             
@@ -65,9 +74,9 @@
             --border-light: rgba(255,255,255,0.05);
             --border-strong: rgba(16,185,129,0.2);
             
-            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.2);
-            --shadow-md: 0 10px 25px -3px rgba(0,0,0,0.4);
-            --shadow-lg: 0 20px 40px -5px rgba(0,0,0,0.5);
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.3);
+            --shadow-md: 0 10px 25px -3px rgba(0,0,0,0.5);
+            --shadow-lg: 0 20px 40px -5px rgba(0,0,0,0.6);
             
             --glow: rgba(16,185,129,0.15);
         }
@@ -77,6 +86,7 @@
             --bg-body: #f5ebe0;
             --bg-surface: #fdf6e3;
             --bg-surface-2: #eaddcf;
+            --bg-surface-3: #d9cbb8;
             --text-main: #3d2c1e;
             --text-muted: #8b7355;
             
@@ -116,18 +126,9 @@
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-body);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--clr-primary-500);
-            border-radius: 8px;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: var(--clr-primary-500); border-radius: 8px; }
 
         /* ==========================================================
            2. PRELOADER & SCROLL PROGRESS
@@ -161,11 +162,15 @@
             gap: 15px;
             margin-bottom: 20px;
             text-shadow: 0 0 20px rgba(16,185,129,0.4);
+            animation: pulseGlow 2s infinite alternate;
         }
 
-        .loader-brand i {
-            color: var(--clr-accent-500);
+        @keyframes pulseGlow {
+            0% { transform: scale(0.98); opacity: 0.8; }
+            100% { transform: scale(1.02); opacity: 1; text-shadow: 0 0 30px rgba(16,185,129,0.8); }
         }
+
+        .loader-brand i { color: var(--clr-accent-500); }
         
         .loader-bar {
             width: 250px;
@@ -206,7 +211,7 @@
         }
 
         /* ==========================================================
-           3. SMART NAVBAR
+           3. SMART NAVBAR (V4 ULTIMATE)
            ========================================================== */
         .k4-nav {
             position: sticky;
@@ -219,13 +224,8 @@
             transition: all 0.4s ease;
         }
 
-        [data-theme="dark"] .k4-nav {
-            background: rgba(12,18,32,0.85);
-        }
-
-        [data-theme="sepia"] .k4-nav {
-            background: rgba(245,235,224,0.85);
-        }
+        [data-theme="dark"] .k4-nav { background: rgba(12,18,32,0.85); }
+        [data-theme="sepia"] .k4-nav { background: rgba(245,235,224,0.85); }
         
         .k4-nav.scrolled {
             box-shadow: var(--shadow-md);
@@ -242,9 +242,7 @@
             transition: height 0.3s;
         }
 
-        .k4-nav.scrolled .k4-nav-inner {
-            height: 60px;
-        }
+        .k4-nav.scrolled .k4-nav-inner { height: 60px; }
         
         .k4-brand {
             display: flex;
@@ -256,12 +254,13 @@
             font-weight: 900;
             font-size: 1.2rem;
             letter-spacing: 1px;
+            transition: var(--transition-bounce);
         }
 
+        .k4-brand:hover { transform: scale(1.05); }
+
         [data-theme="dark"] .k4-brand, 
-        [data-theme="sepia"] .k4-brand {
-            color: var(--clr-primary-500);
-        }
+        [data-theme="sepia"] .k4-brand { color: var(--clr-primary-500); }
 
         .k4-brand img {
             height: 38px;
@@ -349,16 +348,12 @@
                 gap: 10px;
                 box-shadow: var(--shadow-lg);
             }
-            .nav-menu.open {
-                display: flex;
-            }
-            .mobile-toggle {
-                display: block;
-            }
+            .nav-menu.open { display: flex; }
+            .mobile-toggle { display: block; }
         }
 
         /* ==========================================================
-           4. MEGA HERO SECTION
+           4. MEGA HERO SECTION (CONSTELLATION)
            ========================================================== */
         .hero-mega {
             position: relative;
@@ -415,9 +410,7 @@
             backdrop-filter: blur(5px);
         }
 
-        .hero-badge i {
-            color: var(--clr-accent-500);
-        }
+        .hero-badge i { color: var(--clr-accent-500); }
         
         .hero-title {
             font-family: var(--font-display);
@@ -427,7 +420,7 @@
             margin-bottom: 20px;
             background: linear-gradient(to right, #ffffff, #6ee7b7, #d97706);
             -webkit-background-clip: text;
-            background-clip: text; /* FIX FOR LINTER WARNING: standard property added */
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 10px 30px rgba(0,0,0,0.5);
             letter-spacing: -1px;
@@ -512,9 +505,7 @@
             transition: color 0.3s;
         }
 
-        .scroll-indicator:hover {
-            color: #10b981;
-        }
+        .scroll-indicator:hover { color: #10b981; }
 
         @keyframes floatD {
             0%, 100% { transform: translate(-50%, 0); opacity: 0.5; }
@@ -638,9 +629,7 @@
             text-shadow: 2px 2px 0px var(--glow);
         }
 
-        [data-theme="dark"] .ayat-arabic {
-            color: var(--clr-primary-500);
-        }
+        [data-theme="dark"] .ayat-arabic { color: var(--clr-primary-500); }
         
         .ayat-translation {
             font-size: 1.15rem;
@@ -691,7 +680,51 @@
         }
 
         /* ==========================================================
-           7. MULTIMEDIA & INSIGHT (HAIDAR BAGIR VIDEO)
+           7. SILABUS / MATERI SECTION
+           ========================================================== */
+        .syllabus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .syllabus-card {
+            background: var(--bg-surface);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s;
+        }
+
+        .syllabus-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--clr-accent-500);
+        }
+
+        .syllabus-icon {
+            font-size: 2rem;
+            color: var(--clr-primary-500);
+            margin-bottom: 15px;
+        }
+
+        .syllabus-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .syllabus-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ==========================================================
+           8. MULTIMEDIA (HAIDAR BAGIR VIDEO)
            ========================================================== */
         .video-mega-container {
             max-width: 1200px;
@@ -707,9 +740,7 @@
         }
 
         @media (max-width: 950px) {
-            .video-mega-container {
-                grid-template-columns: 1fr;
-            }
+            .video-mega-container { grid-template-columns: 1fr; }
         }
         
         .video-player-wrapper {
@@ -735,9 +766,7 @@
             border: 0;
         }
         
-        .video-info {
-            padding: 20px 0 0;
-        }
+        .video-info { padding: 20px 0 0; }
 
         .video-tag {
             display: inline-block;
@@ -772,9 +801,7 @@
             gap: 8px;
         }
 
-        [data-theme="dark"] .video-speaker {
-            color: var(--clr-primary-500);
-        }
+        [data-theme="dark"] .video-speaker { color: var(--clr-primary-500); }
         
         .video-interactive-panel {
             background: var(--bg-surface-2);
@@ -872,11 +899,11 @@
         }
 
         /* ==========================================================
-           8. 3D PHILOSOPHER CAROUSEL
+           9. TOKOH 3D CAROUSEL (UPDATED DGN FOTO ASLI)
            ========================================================== */
         .tokoh-container {
             perspective: 2000px;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 40px 0;
         }
@@ -888,16 +915,14 @@
         }
         
         .tokoh-card {
-            height: 400px;
+            height: 420px;
             transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             position: relative;
         }
 
-        .tokoh-card:hover {
-            transform: rotateY(180deg);
-        }
+        .tokoh-card:hover { transform: rotateY(180deg); }
         
         .tokoh-face {
             position: absolute;
@@ -916,7 +941,7 @@
             background: linear-gradient(145deg, var(--bg-surface), var(--bg-surface-2));
             align-items: center;
             text-align: center;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         .tokoh-front::before {
@@ -925,27 +950,45 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 120px;
+            height: 140px;
             background: linear-gradient(135deg, var(--clr-primary-700), var(--clr-primary-900));
             border-radius: 24px 24px 0 0;
             z-index: 0;
         }
         
+        /* UPDATED AVATAR FOR REAL PHOTOS */
         .tokoh-avatar {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            background: var(--bg-body);
-            border: 4px solid var(--bg-surface);
+            background: var(--bg-surface-3);
+            border: 5px solid var(--bg-surface);
             box-shadow: var(--shadow-md);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 3rem;
-            color: var(--clr-accent-500);
             position: relative;
             z-index: 1;
             margin-bottom: 20px;
+            margin-top: 40px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tokoh-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .tokoh-card:hover .tokoh-img {
+            transform: scale(1.1);
+        }
+
+        .tokoh-icon-fallback {
+            font-size: 3.5rem;
+            color: var(--clr-accent-500);
+            display: none; /* Only shows if image fails */
         }
 
         .tokoh-name {
@@ -978,11 +1021,10 @@
             font-size: 0.8rem;
             font-weight: 800;
             border: 1px solid var(--border-strong);
+            margin-top: auto;
         }
 
-        [data-theme="dark"] .tokoh-era {
-            color: var(--clr-primary-500);
-        }
+        [data-theme="dark"] .tokoh-era { color: var(--clr-primary-500); }
         
         .tokoh-back {
             background: linear-gradient(145deg, var(--clr-primary-900), var(--clr-primary-700));
@@ -994,7 +1036,7 @@
 
         .tokoh-back h4 {
             font-family: var(--font-display);
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 900;
             margin-bottom: 15px;
             color: var(--clr-primary-300);
@@ -1009,15 +1051,84 @@
 
         .tokoh-back .magnum-opus {
             background: rgba(0,0,0,0.3);
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-radius: 10px;
             font-size: 0.85rem;
             font-style: italic;
             border-left: 3px solid var(--clr-accent-500);
+            margin-top: auto;
         }
 
         /* ==========================================================
-           9. MASONRY QUOTES GRID
+           10. GLOSSARY SECTION (NEW FEATURE FOR EXTENSION)
+           ========================================================== */
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .glossary-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glossary-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--clr-primary-500);
+            box-shadow: var(--shadow-md);
+        }
+
+        .glossary-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--clr-accent-500);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glossary-card:hover::before { opacity: 1; }
+
+        .glossary-term {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--clr-primary-700);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        [data-theme="dark"] .glossary-term { color: var(--clr-primary-300); }
+
+        .glossary-arabic {
+            font-family: var(--font-arabic);
+            font-size: 1.6rem;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .glossary-def {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* ==========================================================
+           11. MASONRY QUOTES GRID
            ========================================================== */
         .quotes-masonry {
             columns: 1;
@@ -1026,13 +1137,8 @@
             margin: 0 auto;
         }
 
-        @media (min-width: 768px) {
-            .quotes-masonry { columns: 2; }
-        }
-
-        @media (min-width: 1024px) {
-            .quotes-masonry { columns: 3; }
-        }
+        @media (min-width: 768px) { .quotes-masonry { columns: 2; } }
+        @media (min-width: 1024px) { .quotes-masonry { columns: 3; } }
         
         .quote-card {
             break-inside: avoid;
@@ -1067,9 +1173,7 @@
             transition: color 0.4s;
         }
 
-        .quote-card:hover::before {
-            color: rgba(217,119,6,0.15);
-        }
+        .quote-card:hover::before { color: rgba(217,119,6,0.15); }
         
         .quote-text {
             position: relative;
@@ -1100,230 +1204,61 @@
         }
 
         /* ==========================================================
-           10. SILABUS/MATERI SECTION (NEW FOR EXPANSION)
+           12. FAQ SECTION (NEW FEATURE FOR EXTENSION)
            ========================================================== */
-        .syllabus-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
+        .faq-container {
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        .syllabus-card {
+        .faq-item {
             background: var(--bg-surface);
-            border-radius: 16px;
-            padding: 25px;
             border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-sm);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            background: var(--bg-surface);
+            user-select: none;
+        }
+
+        .faq-question i {
+            color: var(--clr-primary-500);
             transition: transform 0.3s;
         }
 
-        .syllabus-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--clr-accent-500);
-        }
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+        .faq-item.active { border-color: var(--clr-primary-500); box-shadow: var(--shadow-md); }
 
-        .syllabus-icon {
-            font-size: 2rem;
-            color: var(--clr-primary-500);
-            margin-bottom: 15px;
-        }
-
-        .syllabus-title {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .syllabus-desc {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* ==========================================================
-           11. NEXA AI FLOATING WIDGET
-           ========================================================== */
-        .nexa-ai-widget {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 99999;
-        }
-
-        .ai-fab {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--clr-primary-500), var(--clr-primary-700));
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(16,185,129,0.4);
-            border: 2px solid rgba(255,255,255,0.2);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .ai-fab:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 15px 35px rgba(16,185,129,0.6);
-        }
-
-        .ai-fab::after {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            border-radius: 50%;
-            border: 2px solid var(--clr-primary-500);
-            opacity: 0;
-            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
-
-        @keyframes ping {
-            75%, 100% { transform: scale(1.5); opacity: 0; }
-        }
-        
-        .ai-panel {
-            position: absolute;
-            bottom: 80px;
-            left: 0;
-            width: 350px;
-            background: var(--bg-surface);
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            border: 1px solid var(--clr-primary-500);
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
             overflow: hidden;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px) scale(0.9);
-            transform-origin: bottom left;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .nexa-ai-widget.active .ai-panel {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-        
-        .ai-header {
-            background: linear-gradient(135deg, var(--clr-primary-900), var(--clr-primary-700));
-            padding: 15px 20px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .ai-title {
-            font-weight: 900;
-            font-family: var(--font-cinzel);
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .ai-close {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: 0.3s;
-        }
-
-        .ai-close:hover {
-            color: var(--clr-danger);
-            transform: rotate(90deg);
-        }
-        
-        .ai-body {
-            padding: 20px;
-            height: 300px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .ai-bubble {
-            padding: 12px 16px;
-            border-radius: 16px;
-            max-width: 90%;
-        }
-
-        .ai-bubble.system {
+            transition: max-height 0.4s ease, padding 0.4s ease;
             background: var(--bg-surface-2);
-            border: 1px solid var(--border-light);
-            color: var(--text-main);
-            border-bottom-left-radius: 4px;
-            align-self: flex-start;
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.95rem;
         }
 
-        .ai-bubble.user {
-            background: var(--glow);
-            border: 1px solid var(--border-strong);
-            color: var(--clr-primary-700);
-            border-bottom-right-radius: 4px;
-            align-self: flex-end;
-        }
-
-        [data-theme="dark"] .ai-bubble.user {
-            color: var(--clr-primary-300);
-        }
-        
-        .ai-input-area {
-            padding: 15px;
-            border-top: 1px solid var(--border-light);
-            display: flex;
-            gap: 10px;
-            background: var(--bg-surface-2);
-        }
-
-        .ai-input {
-            flex-grow: 1;
-            padding: 10px 15px;
-            border-radius: 20px;
-            border: 1px solid var(--border-strong);
-            background: var(--bg-surface);
-            color: var(--text-main);
-            font-family: var(--font-body);
-            outline: none;
-        }
-
-        .ai-input:focus {
-            border-color: var(--clr-primary-500);
-        }
-
-        .ai-send {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--clr-primary-500);
-            color: white;
-            border: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .ai-send:hover {
-            background: var(--clr-accent-500);
-            transform: translateX(3px);
+        .faq-item.active .faq-answer {
+            padding: 20px 25px;
+            max-height: 500px;
         }
 
         /* ==========================================================
-           12. TEAM & FOOTER
+           13. TEAM & FOOTER
            ========================================================== */
         .team-snippet {
             background: linear-gradient(135deg, var(--clr-primary-900), var(--clr-primary-700));
@@ -1379,9 +1314,7 @@
             border-color: white;
         }
 
-        .avatar-circle:first-child {
-            margin-left: 0;
-        }
+        .avatar-circle:first-child { margin-left: 0; }
 
         .ug-mega-section {
             padding: 100px 5% 60px;
@@ -1398,9 +1331,7 @@
             margin-bottom: 25px;
         }
 
-        .ug-logo:hover {
-            transform: scale(1.15) rotate(5deg);
-        }
+        .ug-logo:hover { transform: scale(1.15) rotate(5deg); }
         
         .k4-footer {
             background: var(--bg-surface);
@@ -1419,11 +1350,166 @@
             transition: 0.3s;
         }
 
-        .k4-footer a:hover {
-            color: var(--clr-accent-500);
+        .k4-footer a:hover { color: var(--clr-accent-500); }
+
+        /* ==========================================================
+           14. NEXA AI WIDGET
+           ========================================================== */
+        .nexa-ai-widget {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 99999;
         }
 
-        /* TOAST NOTIFICATION */
+        .ai-fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clr-primary-500), var(--clr-primary-700));
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(16,185,129,0.4);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .ai-fab:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 15px 35px rgba(16,185,129,0.6);
+        }
+        
+        .ai-panel {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            width: 350px;
+            background: var(--bg-surface);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid var(--clr-primary-500);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.9);
+            transform-origin: bottom left;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .nexa-ai-widget.active .ai-panel {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        
+        .ai-header {
+            background: linear-gradient(135deg, var(--clr-primary-900), var(--clr-primary-700));
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-title {
+            font-weight: 900;
+            font-family: var(--font-cinzel);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .ai-close:hover { color: var(--clr-danger); transform: rotate(90deg); }
+        
+        .ai-body {
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .ai-bubble {
+            padding: 12px 16px;
+            border-radius: 16px;
+            max-width: 90%;
+        }
+
+        .ai-bubble.system {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+        }
+
+        .ai-bubble.user {
+            background: var(--glow);
+            border: 1px solid var(--border-strong);
+            color: var(--clr-primary-700);
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
+        }
+
+        [data-theme="dark"] .ai-bubble.user { color: var(--clr-primary-300); }
+        
+        .ai-input-area {
+            padding: 15px;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            gap: 10px;
+            background: var(--bg-surface-2);
+        }
+
+        .ai-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--border-strong);
+            background: var(--bg-surface);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            outline: none;
+        }
+
+        .ai-input:focus { border-color: var(--clr-primary-500); }
+
+        .ai-send {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--clr-primary-500);
+            color: white;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .ai-send:hover { background: var(--clr-accent-500); transform: translateX(3px); }
+
+        /* ==========================================================
+           15. TOAST NOTIFICATION
+           ========================================================== */
         #toast-box {
             position: fixed;
             top: 90px;
@@ -1454,10 +1540,7 @@
             pointer-events: auto;
         }
 
-        .toast i {
-            color: var(--clr-primary-500);
-            font-size: 1.2rem;
-        }
+        .toast i { color: var(--clr-primary-500); font-size: 1.2rem; }
 
         @keyframes slideIn {
             from { transform: translateX(120%); opacity: 0; }
@@ -1472,13 +1555,9 @@
 <body>
 
 <div id="index-preloader">
-    <div class="loader-brand">
-        <i class="fa-solid fa-kaaba"></i> KELOMPOK IV
-    </div>
-    <div class="loader-bar">
-        <div class="loader-progress" id="loaderProgress"></div>
-    </div>
-    <div class="loader-text" id="loaderText">Inisialisasi Sistem NEXA... 0%</div>
+    <div class="loader-brand"><i class="fa-solid fa-kaaba"></i> KELOMPOK IV</div>
+    <div class="loader-bar"><div class="loader-progress" id="loaderProgress"></div></div>
+    <div class="loader-text" id="loaderText">Inisialisasi Sistem Kelompok IV... 0%</div>
 </div>
 <div id="scrollProg"></div>
 
@@ -1488,9 +1567,7 @@
             <img src="assets/images/brand/gunadarma-logo.png" alt="UG" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'">
             <span>Kelompok IV</span>
         </a>
-        <button class="mobile-toggle" id="mobileToggle">
-            <i class="fa-solid fa-bars-staggered"></i>
-        </button>
+        <button class="mobile-toggle" id="mobileToggle"><i class="fa-solid fa-bars-staggered"></i></button>
         <div class="nav-menu" id="navMenu">
             <a href="index.html" class="nav-link active">Beranda</a>
             <a href="tim.html" class="nav-link">Tim Kami</a>
@@ -1500,9 +1577,7 @@
             <a href="kuis.html" class="nav-link">Uji Pemahaman</a>
         </div>
         <div class="nav-tools">
-            <button class="nav-btn" id="themeToggle" title="Ganti Tema">
-                <i class="fa-solid fa-moon"></i>
-            </button>
+            <button class="nav-btn" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-moon"></i></button>
         </div>
     </div>
 </nav>
@@ -1514,31 +1589,21 @@
         <div class="hero-badge reveal">
             <i class="fa-solid fa-bolt"></i> V4.0 Ultimate Edition
         </div>
-        <h1 class="hero-title reveal" style="transition-delay:0.1s">
-            Filsafat & Hikmah Islam
-        </h1>
+        <h1 class="hero-title reveal" style="transition-delay:0.1s">Filsafat & Hikmah Islam</h1>
         <div class="typing-container reveal" style="transition-delay:0.2s">
             <span id="typed-text"></span><span class="typed-cursor">|</span>
         </div>
         <div class="hero-actions reveal" style="transition-delay:0.3s">
-            <a href="#multimedia" class="btn-mega primary">
-                <i class="fa-solid fa-play"></i> Tonton Dokumenter
-            </a>
-            <a href="explore.html" class="btn-mega secondary">
-                <i class="fa-solid fa-landmark-dome"></i> Buka Perpustakaan
-            </a>
+            <a href="#multimedia" class="btn-mega primary"><i class="fa-solid fa-play"></i> Tonton Dokumenter</a>
+            <a href="explore.html" class="btn-mega secondary"><i class="fa-solid fa-landmark-dome"></i> Buka Perpustakaan</a>
         </div>
     </div>
-    <a href="#quran" class="scroll-indicator">
-        <i class="fa-solid fa-angles-down"></i>
-    </a>
+    <a href="#quran" class="scroll-indicator"><i class="fa-solid fa-angles-down"></i></a>
 </section>
 
 <section id="quran" class="section-padding">
     <div class="section-header-mega reveal">
-        <span class="section-subtitle">
-            <i class="fa-solid fa-book-quran"></i> Fondasi Teologis
-        </span>
+        <span class="section-subtitle"><i class="fa-solid fa-book-quran"></i> Fondasi Teologis</span>
         <h2 class="section-title">Sumber Hakikat Utama</h2>
     </div>
     <div class="ayat-container reveal" style="transition-delay:0.15s">
@@ -1549,21 +1614,17 @@
             "Dia memberikan hikmah kepada siapa yang dikehendaki-Nya. Barangsiapa yang diberi hikmah, sungguh telah diberi kebajikan yang banyak. Dan tiadalah yang dapat mengambil pelajaran kecuali orang-orang yang berakal."
         </div>
         <div class="ayat-meta">
-            <span class="ayat-badge">
-                <i class="fa-solid fa-bookmark"></i> QS. Al-Baqarah: 269
-            </span>
+            <span class="ayat-badge"><i class="fa-solid fa-bookmark"></i> QS. Al-Baqarah: 269</span>
         </div>
         <div class="ayat-insight">
-            <strong>NEXA Insight:</strong> Ayat ini menjadi justifikasi utama bagi para filsuf Muslim awal. Kata <strong>'Hikmah'</strong> dipahami bukan sekadar 'kebijaksanaan' pasif, melainkan penggunaan <em>akal demonstratif (Burhani)</em> untuk memahami realitas penciptaan. Tokoh seperti Al-Kindi dan Ibnu Rusyd berpijak pada "Ulul Albab" sebagai mandat ilahi untuk berfilsafat.
+            <strong>Kelompok IV Insight:</strong> Ayat ini menjadi justifikasi utama bagi para filsuf Muslim awal. Kata <strong>'Hikmah'</strong> dipahami bukan sekadar 'kebijaksanaan' pasif, melainkan penggunaan <em>akal demonstratif (Burhani)</em> untuk memahami realitas penciptaan. Tokoh seperti Al-Kindi dan Ibnu Rusyd berpijak pada "Ulul Albab" sebagai mandat ilahi untuk berfilsafat.
         </div>
     </div>
 </section>
 
 <section id="silabus" class="section-padding section-alt">
     <div class="section-header-mega reveal">
-        <span class="section-subtitle">
-            <i class="fa-solid fa-graduation-cap"></i> Silabus Pembelajaran
-        </span>
+        <span class="section-subtitle"><i class="fa-solid fa-graduation-cap"></i> Silabus Pembelajaran</span>
         <h2 class="section-title">Materi Agama Islam Semester 2</h2>
         <p style="color:var(--text-muted); max-width: 600px; margin: 15px auto 0; line-height: 1.6;">
             Sesuai kurikulum Universitas Gunadarma, eksplorasi kita mencakup sejarah dan pokok-pokok pemikiran Islam.
@@ -1573,39 +1634,29 @@
         <div class="syllabus-card">
             <div class="syllabus-icon"><i class="fa-solid fa-kaaba"></i></div>
             <h3 class="syllabus-title">1. Sejarah Peradaban</h3>
-            <p class="syllabus-desc">
-                Melacak jejak intelektual dari era Khulafaur Rasyidin, Dinasti Umayyah, hingga kejayaan Abbasiyah di Baitul Hikmah.
-            </p>
+            <p class="syllabus-desc">Melacak jejak intelektual dari era Khulafaur Rasyidin, Dinasti Umayyah, hingga kejayaan Abbasiyah di Baitul Hikmah.</p>
         </div>
         <div class="syllabus-card">
             <div class="syllabus-icon"><i class="fa-solid fa-brain"></i></div>
             <h3 class="syllabus-title">2. Epistemologi Islam</h3>
-            <p class="syllabus-desc">
-                Mengkaji bagaimana para ilmuwan memadukan rasionalitas Yunani dengan nilai-nilai tauhid dan etika kenabian.
-            </p>
+            <p class="syllabus-desc">Mengkaji bagaimana para ilmuwan memadukan rasionalitas Yunani dengan nilai-nilai tauhid dan etika kenabian.</p>
         </div>
         <div class="syllabus-card">
             <div class="syllabus-icon"><i class="fa-solid fa-heart"></i></div>
             <h3 class="syllabus-title">3. Akhlak & Tasawuf</h3>
-            <p class="syllabus-desc">
-                Memahami konsep Mahabbah (Cinta) dan penyucian jiwa (Tazkiyatun Nafs) untuk menjawab problematika manusia modern.
-            </p>
+            <p class="syllabus-desc">Memahami konsep Mahabbah (Cinta) dan penyucian jiwa (Tazkiyatun Nafs) untuk menjawab problematika manusia modern.</p>
         </div>
         <div class="syllabus-card">
             <div class="syllabus-icon"><i class="fa-solid fa-scale-balanced"></i></div>
             <h3 class="syllabus-title">4. Syariah & Muamalah</h3>
-            <p class="syllabus-desc">
-                Aplikasi hukum Islam dalam kehidupan sehari-hari, ekonomi, dan bagaimana etika bisnis berjalan selaras dengan syariat.
-            </p>
+            <p class="syllabus-desc">Aplikasi hukum Islam dalam kehidupan sehari-hari, ekonomi, dan bagaimana etika bisnis berjalan selaras dengan syariat.</p>
         </div>
     </div>
 </section>
 
 <section id="multimedia" class="section-padding">
     <div class="section-header-mega reveal">
-        <span class="section-subtitle">
-            <i class="fa-solid fa-film"></i> Kajian Kontemporer
-        </span>
+        <span class="section-subtitle"><i class="fa-solid fa-film"></i> Kajian Kontemporer</span>
         <h2 class="section-title">Dialektika Cinta & Pemikiran</h2>
         <p style="color:var(--text-muted); max-width: 600px; margin: 15px auto 0; line-height: 1.6;">
             Menyelami perbedaan mendasar keberagamaan yang bersifat simbolik versus keberagamaan yang organik dan penuh kasih sayang.
@@ -1646,10 +1697,11 @@
 
 <section id="tokoh" class="section-padding section-alt">
     <div class="section-header-mega reveal">
-        <span class="section-subtitle">
-            <i class="fa-solid fa-users-viewfinder"></i> Peta Epistemologi
-        </span>
+        <span class="section-subtitle"><i class="fa-solid fa-users-viewfinder"></i> Peta Epistemologi</span>
         <h2 class="section-title">Arsitek Peradaban Klasik</h2>
+        <p style="color:var(--text-muted); max-width: 600px; margin: 15px auto 0; line-height: 1.6;">
+            Arahkan kursor pada kartu untuk melihat mahakarya para pemikir Islam. (Menggunakan foto/ilustrasi riil).
+        </p>
     </div>
     
     <div class="tokoh-container reveal" style="transition-delay:0.2s">
@@ -1664,15 +1716,30 @@
     </div>
 </section>
 
-<section id="quotes" class="section-padding">
+<section id="glossary" class="section-padding">
     <div class="section-header-mega reveal">
-        <span class="section-subtitle">
-            <i class="fa-solid fa-quote-left"></i> Aforisma & Kebijaksanaan
-        </span>
+        <span class="section-subtitle"><i class="fa-solid fa-book-open"></i> Kamus Istilah</span>
+        <h2 class="section-title">Glosarium Filsafat</h2>
+    </div>
+    <div class="glossary-grid reveal" id="glossaryGrid" style="transition-delay:0.2s">
+        </div>
+</section>
+
+<section id="quotes" class="section-padding section-alt">
+    <div class="section-header-mega reveal">
+        <span class="section-subtitle"><i class="fa-solid fa-quote-left"></i> Aforisma & Kebijaksanaan</span>
         <h2 class="section-title">Percikan Hikmah</h2>
     </div>
-    
     <div class="quotes-masonry" id="quotesGrid">
+        </div>
+</section>
+
+<section id="faq" class="section-padding">
+    <div class="section-header-mega reveal">
+        <span class="section-subtitle"><i class="fa-solid fa-circle-question"></i> Diskusi & Pertanyaan</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-container reveal" id="faqContainer" style="transition-delay:0.2s">
         </div>
 </section>
 
@@ -1682,7 +1749,7 @@
             Dibalik Mahakarya Kelompok IV
         </h2>
         <p style="font-size:1.1rem; opacity:0.9; max-width:650px; margin:0 auto; line-height:1.6;">
-            Dirancang khusus dengan pendekatan <em>God Mode</em>. Menghindari bottleneck, fokus pada eksekusi bertahap, dan arsitektur tanpa celah.
+            Dirancang khusus dengan pendekatan <em>Modernisasi</em>. Menghindari bottleneck, fokus pada eksekusi bertahap, dan arsitektur tanpa celah.
         </p>
         
         <div class="team-avatars">
@@ -1700,7 +1767,7 @@
 </section>
 
 <section class="ug-mega-section reveal">
-    <div class="ug-logo-wrapper" onclick="window.open('https://gunadarma.ac.id','_blank')" title="Kunjungi Situs Universitas Gunadarma">
+    <div class="ug-logo-wrapper" onclick="window.open('https://gunadarma.ac.id','_blank')" title="Kunjungi Situs Universitas Gunadarma" style="cursor:pointer;">
         <img src="assets/images/brand/gunadarma-logo.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'" alt="Gunadarma" class="ug-logo">
     </div>
     <h2 style="font-family:var(--font-cinzel); font-size:clamp(1.5rem, 3vw, 2.2rem); color:var(--clr-primary-700); font-weight:900; letter-spacing:3px; margin-bottom:10px;">
@@ -1710,7 +1777,7 @@
         Fakultas Teknologi Industri • Teknik Informatika
     </div>
     <p style="max-width:600px; margin:0 auto; color:var(--text-muted); font-size:0.95rem; line-height:1.8;">
-        Disusun sebagai Proyek Akhir Mata Kuliah Agama Islam (Semester 2). Menjembatani tradisi intelektual klasik dengan antarmuka digital modern yang dibangun dari nol oleh NEXA Tech Labs.
+        Disusun untuk memenuhi Mata Kuliah Agama Islam (Semester 2). Menjembatani tradisi intelektual klasik dengan antarmuka digital modern yang dibangun dari nol oleh Muhamad Fauzan Al Farikhi.
     </p>
 </section>
 
@@ -1728,28 +1795,18 @@
 <div class="nexa-ai-widget" id="nexaWidget">
     <div class="ai-panel">
         <div class="ai-header">
-            <div class="ai-title">
-                <i class="fa-solid fa-robot"></i> NEXA AI Assistant
-            </div>
-            <button class="ai-close" id="aiCloseBtn">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <div class="ai-title"><i class="fa-solid fa-robot"></i> NEXA AI Assistant</div>
+            <button class="ai-close" id="aiCloseBtn"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="ai-body" id="aiChatBody">
-            <div class="ai-bubble system">
-                Halo! Saya NEXA AI. Ada konsep filsafat atau poin dari video Haidar Bagir yang ingin Anda diskusikan?
-            </div>
+            <div class="ai-bubble system">Halo! Saya NEXA AI. Ada konsep filsafat atau poin dari video Haidar Bagir yang ingin Anda diskusikan?</div>
         </div>
         <div class="ai-input-area">
             <input type="text" class="ai-input" id="aiInput" placeholder="Tanya tentang Ibnu Sina...">
-            <button class="ai-send" id="aiSendBtn">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
+            <button class="ai-send" id="aiSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
-    <div class="ai-fab" id="aiFabBtn" title="Tanya NEXA AI">
-        <i class="fa-solid fa-sparkles"></i>
-    </div>
+    <div class="ai-fab" id="aiFabBtn" title="Tanya NEXA AI"><i class="fa-solid fa-sparkles"></i></div>
 </div>
 
 <div id="toast-box"></div>
@@ -1757,7 +1814,7 @@
 <script>
 /**
  * NEXA Core System Logic
- * Versi 4.0 Ultimate Edition
+ * Versi 4.0 Ultimate Edition (Photo Enabled & 1200+ Lines Config)
  * Dibuat khusus untuk menghindari bottleneck eksekusi.
  */
 
@@ -1770,9 +1827,7 @@ function toast(msg) {
     toastElem.className = 'toast';
     toastElem.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>`;
     box.appendChild(toastElem);
-    setTimeout(() => {
-        toastElem.remove();
-    }, 3800);
+    setTimeout(() => { toastElem.remove(); }, 3800);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1787,9 +1842,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const loaderInterval = setInterval(() => {
         progressValue += Math.floor(Math.random() * 15) + 5;
-        if (progressValue >= 100) {
-            progressValue = 100;
-        }
+        if (progressValue >= 100) progressValue = 100;
+        
         progressBar.style.width = progressValue + '%';
         progressText.innerText = `SINKRONISASI DATA... ${progressValue}%`;
         
@@ -1810,7 +1864,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "Mensintesis Rasio (Akal) dan Wahyu...",
         "Menyelami Risalah Cinta Haidar Bagir...",
         "Historiografi Filsafat 'Without Any Gaps'...",
-        "Proyek Eksekusi Bertahap NEXA Tech Labs...",
+        "Proyek Eksekusi Bertahap Muhamad Fauzan Al Farikhi...",
         "Pemenuhan Tugas Agama Islam Semester 2..."
     ];
     
@@ -1821,7 +1875,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function initTyping() {
         const fullString = phrases[phraseIndex];
-        
         if (isDeleting) {
             currentString = fullString.substring(0, currentString.length - 1);
         } else {
@@ -1829,18 +1882,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         typedElement.innerText = currentString;
-        
         let typingSpeed = isDeleting ? 25 : 50;
         
         if (!isDeleting && currentString === fullString) {
-            typingSpeed = 2000; // Jeda sebelum menghapus
+            typingSpeed = 2000;
             isDeleting = true;
         } else if (isDeleting && currentString === "") {
             isDeleting = false;
             phraseIndex = (phraseIndex + 1) % phrases.length;
-            typingSpeed = 500; // Jeda sebelum mengetik kata baru
+            typingSpeed = 500;
         }
-        
         setTimeout(initTyping, typingSpeed);
     }
 
@@ -1849,7 +1900,6 @@ document.addEventListener('DOMContentLoaded', () => {
        ======================================================= */
     const canvas = document.getElementById('hero-canvas');
     const ctx = canvas.getContext('2d');
-    
     let particles = [];
     const mouse = { x: null, y: null, radius: 150 };
     
@@ -1859,16 +1909,12 @@ document.addEventListener('DOMContentLoaded', () => {
         mouse.y = event.clientY - rect.top;
     });
     
-    canvas.addEventListener('mouseleave', () => {
-        mouse.x = null;
-        mouse.y = null;
-    });
+    canvas.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
     
     function initCanvas() {
         canvas.width = canvas.parentElement.offsetWidth;
         canvas.height = canvas.parentElement.offsetHeight;
         particles = [];
-        
         const numberOfParticles = Math.floor((canvas.width * canvas.height) / 10000);
         
         for (let i = 0; i < numberOfParticles; i++) {
@@ -1890,15 +1936,9 @@ document.addEventListener('DOMContentLoaded', () => {
             particle.x += particle.dx;
             particle.y += particle.dy;
             
-            // Wall collision
-            if (particle.x > canvas.width || particle.x < 0) {
-                particle.dx *= -1;
-            }
-            if (particle.y > canvas.height || particle.y < 0) {
-                particle.dy *= -1;
-            }
+            if (particle.x > canvas.width || particle.x < 0) particle.dx *= -1;
+            if (particle.y > canvas.height || particle.y < 0) particle.dy *= -1;
             
-            // Mouse interaction
             if (mouse.x) {
                 let dx = mouse.x - particle.x;
                 let dy = mouse.y - particle.y;
@@ -1917,7 +1957,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fill();
         });
         
-        // Connect nearby particles
         for (let a = 0; a < particles.length; a++) {
             for (let b = a + 1; b < particles.length; b++) {
                 const distance = Math.hypot(particles[a].x - particles[b].x, particles[a].y - particles[b].y);
@@ -1932,65 +1971,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    
     window.addEventListener('resize', initCanvas);
-    initCanvas();
-    drawCanvas();
+    initCanvas(); drawCanvas();
 
     /* =======================================================
-       4. DATA INJECTION (TOKOH, TIMESTAMPS, QUOTES)
+       4. DATA INJECTION: TIMESTAMPS
        ======================================================= */
-    
-    // 4A. Timestamps Video Haidar Bagir
     const timestampsData = [
-        { 
-            time: "00:00", 
-            tSec: 0, 
-            title: "Faktor Geopolitik", 
-            desc: "Masuknya dana dan konflik proksi dari Timur Tengah yang mereduksi pemahaman ketuhanan menjadi sektarian semata." 
-        },
-        { 
-            time: "04:16", 
-            tSec: 256, 
-            title: "Islam Nusantara & Toleransi", 
-            desc: "Kecenderungan asli bangsa Indonesia yang inklusif dan menghendaki kedamaian, sesuai kodrat keragaman dalam Al-Quran." 
-        },
-        { 
-            time: "07:12", 
-            tSec: 432, 
-            title: "Low Islam vs High Islam", 
-            desc: "Low Islam: agama menyatu organik, mengayomi musafir. High Islam: arogan, simbolik, dan memisahkan identitas." 
-        },
-        { 
-            time: "09:32", 
-            tSec: 572, 
-            title: "Konsep Rahmat (Welas Asih)", 
-            desc: "Agama harus berlandaskan cinta kasih bahkan kepada mereka yang berbuat buruk. Tuhan dipahami sebagai 'Maha Perindu'." 
-        },
-        { 
-            time: "18:46", 
-            tSec: 1126, 
-            title: "Sufisme: Solusi Krisis Modern", 
-            desc: "Kerinduan mencari koneksi spiritual makrokosmos akibat kehampaan atau kecenderungan depresif pada manusia modern." 
-        },
-        { 
-            time: "25:18", 
-            tSec: 1518, 
-            title: "Nabi Isa dalam Sufisme", 
-            desc: "Nabi Isa (Yesus) dijadikan sebagai teladan Sufi tertinggi karena ajaran cinta kasihnya yang tanpa pamrih." 
-        },
-        { 
-            time: "30:53", 
-            tSec: 1853, 
-            title: "Manifesto Islam Cinta", 
-            desc: "Menyaring ajaran agama dengan 'Prisma Cinta'. Jika suatu tafsir bertentangan dengan kasih sayang, maka itu batal." 
-        },
-        { 
-            time: "45:51", 
-            tSec: 2751, 
-            title: "Filantropi & Penyembuhan", 
-            desc: "Berbuat baik/menolong orang adalah tindakan yang menyembuhkan jiwa sendiri dari jeratan depresi dan kecemasan." 
-        }
+        { time: "00:00", tSec: 0, title: "Faktor Geopolitik", desc: "Masuknya dana dan konflik proksi dari Timur Tengah yang mereduksi pemahaman ketuhanan menjadi sektarian semata." },
+        { time: "04:16", tSec: 256, title: "Islam Nusantara & Toleransi", desc: "Kecenderungan asli bangsa Indonesia yang inklusif dan menghendaki kedamaian, sesuai kodrat keragaman dalam Al-Quran." },
+        { time: "07:12", tSec: 432, title: "Low Islam vs High Islam", desc: "Low Islam: agama menyatu organik, mengayomi musafir. High Islam: arogan, simbolik, dan memisahkan identitas." },
+        { time: "09:32", tSec: 572, title: "Konsep Rahmat (Welas Asih)", desc: "Agama harus berlandaskan cinta kasih bahkan kepada mereka yang berbuat buruk. Tuhan dipahami sebagai 'Maha Perindu'." },
+        { time: "18:46", tSec: 1126, title: "Sufisme: Solusi Krisis Modern", desc: "Kerinduan mencari koneksi spiritual makrokosmos akibat kehampaan atau kecenderungan depresif pada manusia modern." },
+        { time: "25:18", tSec: 1518, title: "Nabi Isa dalam Sufisme", desc: "Nabi Isa (Yesus) dijadikan sebagai teladan Sufi tertinggi karena ajaran cinta kasihnya yang tanpa pamrih." },
+        { time: "30:53", tSec: 1853, title: "Manifesto Islam Cinta", desc: "Menyaring ajaran agama dengan 'Prisma Cinta'. Jika suatu tafsir bertentangan dengan kasih sayang, maka itu batal." },
+        { time: "45:51", tSec: 2751, title: "Filantropi & Penyembuhan", desc: "Berbuat baik/menolong orang adalah tindakan yang menyembuhkan jiwa sendiri dari jeratan depresi dan kecemasan." }
     ];
     
     const timestampContainer = document.getElementById('tsList');
@@ -1998,7 +1993,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const itemDiv = document.createElement('div');
         itemDiv.className = `ts-item reveal ${index === 0 ? 'active' : ''}`;
         itemDiv.style.transitionDelay = `${index * 0.05}s`;
-        
         itemDiv.innerHTML = `
             <div class="ts-time">${ts.time}</div>
             <div class="ts-content">
@@ -2006,78 +2000,60 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>${ts.desc}</p>
             </div>
         `;
-        
         itemDiv.onclick = () => {
-            // Remove active class from all
             document.querySelectorAll('.ts-item').forEach(el => el.classList.remove('active'));
-            // Add active class to clicked
             itemDiv.classList.add('active');
-            
-            // Reload iframe to seek
             const iframe = document.getElementById('mainVideo');
             let baseSrc = iframe.src.split('?')[0];
             iframe.src = `${baseSrc}?enablejsapi=1&rel=0&autoplay=1&start=${ts.tSec}`;
             toast(`Melompat ke materi: ${ts.title}`);
         };
-        
         timestampContainer.appendChild(itemDiv);
     });
 
-    // 4B. Tokoh 3D Carousel Data
+    /* =======================================================
+       5. DATA INJECTION: TOKOH 3D (FOTO ASLI ENABLED)
+       ======================================================= */
     const tokohDatabase = [
         { 
-            id: "alkindi", 
-            name: "Al-Kindi", 
-            era: "Abad 9 M", 
-            title: "Bapak Filsafat Arab", 
-            icon: "fa-scale-balanced", 
-            opus: "Al-Falsafah al-Ula", 
-            desc: "Orang pertama yang mensintesiskan pemikiran rasional Yunani dengan monoteisme Islam. Membuktikan Tuhan sebagai 'Sebab Pertama'." 
+            id: "alkindi", name: "Al-Kindi", era: "Abad 9 M", title: "Bapak Filsafat Arab", 
+            icon: "fa-scale-balanced", image: "assets/images/tokoh/alkindi.jpg", opus: "Al-Falsafah al-Ula", 
+            desc: "Orang pertama yang mensintesiskan rasio Yunani dengan monoteisme Islam. Membuktikan Tuhan sebagai 'Sebab Pertama'." 
         },
         { 
-            id: "alfarabi", 
-            name: "Al-Farabi", 
-            era: "Abad 10 M", 
-            title: "Guru Kedua (Aristoteles Islam)", 
-            icon: "fa-city", 
-            opus: "Ara' Ahl al-Madinah", 
-            desc: "Merumuskan filsafat politik Islam. Pemimpin negara ideal menurutnya adalah manifestasi dari seorang Nabi atau Filsuf Paripurna." 
+            id: "alfarabi", name: "Al-Farabi", era: "Abad 10 M", title: "Guru Kedua (Aristoteles Islam)", 
+            icon: "fa-city", image: "assets/images/tokoh/alfarabi.jpg", opus: "Ara' Ahl al-Madinah", 
+            desc: "Merumuskan filsafat politik Islam. Pemimpin negara ideal menurutnya adalah manifestasi dari seorang Nabi." 
         },
         { 
-            id: "ibnusina", 
-            name: "Ibnu Sina", 
-            era: "Abad 11 M", 
-            title: "Sang Polymath Medis", 
-            icon: "fa-staff-snake", 
-            opus: "Al-Shifa & Al-Qanun", 
-            desc: "Menyempurnakan argumen kosmologis (Wajib al-Wujud). Pemikirannya mendominasi kedokteran dan filsafat Eropa selama berabad-abad." 
+            id: "ibnusina", name: "Ibnu Sina", era: "Abad 11 M", title: "Sang Polymath Medis", 
+            icon: "fa-staff-snake", image: "assets/images/tokoh/ibnusina.jpg", opus: "Al-Shifa & Al-Qanun", 
+            desc: "Menyempurnakan argumen kosmologis (Wajib al-Wujud). Karyanya mendominasi kedokteran Eropa selama berabad-abad." 
         },
         { 
-            id: "alghazali", 
-            name: "Al-Ghazali", 
-            era: "Abad 11 M", 
-            title: "Hujjatul Islam", 
-            icon: "fa-shield-halved", 
-            opus: "Tahafut al-Falasifah", 
-            desc: "Menggunakan logika diskursif untuk mengkritik rasionalisme murni, meramu batasan Fikih dengan kelembutan spiritual Tasawuf." 
+            id: "alghazali", name: "Al-Ghazali", era: "Abad 11 M", title: "Hujjatul Islam", 
+            icon: "fa-shield-halved", image: "assets/images/tokoh/alghazali.jpg", opus: "Tahafut al-Falasifah", 
+            desc: "Menggunakan logika diskursif untuk mengkritik rasionalisme murni, lalu mempopulerkan Tasawuf." 
         },
         { 
-            id: "ibnurusyd", 
-            name: "Ibnu Rusyd", 
-            era: "Abad 12 M", 
-            title: "Komentator Andalusia", 
-            icon: "fa-book-gavel", 
-            opus: "Fasl al-Maqal", 
-            desc: "Fatwanya menyatakan belajar filsafat adalah wajib. Kebenaran demonstratif akal tidak akan pernah bertentangan dengan kebenaran wahyu." 
+            id: "ibnurusyd", name: "Ibnu Rusyd", era: "Abad 12 M", title: "Komentator Andalusia", 
+            icon: "fa-book-gavel", image: "assets/images/tokoh/ibnurusyd.jpg", opus: "Fasl al-Maqal", 
+            desc: "Fatwanya menyatakan belajar filsafat adalah wajib. Akal tidak akan bertentangan dengan kebenaran wahyu." 
         },
         { 
-            id: "mullasadra", 
-            name: "Mulla Sadra", 
-            era: "Abad 17 M", 
-            title: "Teosofi Transenden", 
-            icon: "fa-atom", 
-            opus: "Al-Hikmah al-Muta'aliyah", 
-            desc: "Mengakhiri debat panjang dengan mensintesis Filsafat Peripatetik, Kalam, dan intuisi (Tasawuf) ke dalam satu sistem dinamis utuh." 
+            id: "mullasadra", name: "Mulla Sadra", era: "Abad 17 M", title: "Teosofi Transenden", 
+            icon: "fa-atom", image: "assets/images/tokoh/mullasadra.jpg", opus: "Al-Hikmah al-Muta'aliyah", 
+            desc: "Mensintesis Filsafat, Kalam, dan Tasawuf ke dalam satu sistem dinamis (Gerak Substantif)." 
+        },
+        { 
+            id: "suhrawardi", name: "Suhrawardi", era: "Abad 12 M", title: "Master of Illumination", 
+            icon: "fa-sun", image: "assets/images/tokoh/suhrawardi.jpg", opus: "Hikmat al-Ishraq", 
+            desc: "Pendiri mazhab Isyraqiyah (Iluminasi). Filsafat yang berbasis pada pencerahan mistis dan ontologi cahaya." 
+        },
+        { 
+            id: "ibnkhaldun", name: "Ibnu Khaldun", era: "Abad 14 M", title: "Bapak Sosiologi Islam", 
+            icon: "fa-landmark", image: "assets/images/tokoh/ibnukhaldun.jpg", opus: "Muqaddimah", 
+            desc: "Menciptakan ilmu sejarah dan sosiologi empiris melalui konsep 'Asabiyyah' (solidaritas sosial)." 
         }
     ];
     
@@ -2085,12 +2061,14 @@ document.addEventListener('DOMContentLoaded', () => {
     tokohDatabase.forEach((tokoh, index) => {
         const cardElement = document.createElement('div');
         cardElement.className = 'tokoh-card reveal';
-        cardElement.style.transitionDelay = `${index * 0.1}s`;
+        cardElement.style.transitionDelay = `${(index % 4) * 0.1}s`;
         
+        // Perhatikan bagian avatar, menggunakan 'onerror' untuk menampilkan icon jika gambar gagal dimuat
         cardElement.innerHTML = `
             <div class="tokoh-face tokoh-front">
                 <div class="tokoh-avatar">
-                    <i class="fa-solid ${tokoh.icon}"></i>
+                    <img src="${tokoh.image}" alt="${tokoh.name}" class="tokoh-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="tokoh-icon-fallback"><i class="fa-solid ${tokoh.icon}"></i></div>
                 </div>
                 <div class="tokoh-name">${tokoh.name}</div>
                 <div class="tokoh-title">${tokoh.title}</div>
@@ -2105,48 +2083,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
-        
         tokohGridContainer.appendChild(cardElement);
     });
 
-    // 4C. Masonry Quotes Data
+    /* =======================================================
+       6. DATA INJECTION: GLOSARIUM
+       ======================================================= */
+    const glossaryDatabase = [
+        { term: "Burhani", arab: "برهاني", def: "Pendekatan epistemologis yang bersumber pada akal, logika demonstratif, dan penalaran empiris. Metode utama filsafat." },
+        { term: "Bayani", arab: "بياني", def: "Pendekatan berbasis teks (nas). Mengandalkan analisis gramatikal dan linguistik terhadap Al-Quran dan Hadis." },
+        { term: "Irfani", arab: "عرفاني", def: "Pendekatan berbasis intuisi (kasyf) atau pengalaman spiritual langsung yang melampaui logika diskursif." },
+        { term: "Wahdatul Wujud", arab: "وحدة الوجود", def: "Konsep Kesatuan Wujud. Alam semesta bukanlah wujud mandiri, melainkan penampakan atau teofani dari Wujud Tuhan yang Tunggal." },
+        { term: "Mahabbah", arab: "محبة", def: "Cinta Ilahiah. Puncak maqam sufi di mana kerinduan dan cinta murni kepada Tuhan mengalahkan rasa takut pada neraka." },
+        { term: "Emanasi", arab: "فيض", def: "Teori pancaran penciptaan Neoplatonik (dikembangkan Al-Farabi/Ibnu Sina), di mana alam meluap dari Intelek Ilahi secara hierarkis." },
+        { term: "Asalat al-Wujud", arab: "أصالة الوجود", def: "Prinsip Mulla Sadra bahwa Wujud (Eksistensi) adalah fondasi fundamental realitas, sedangkan Esensi hanyalah konstruksi mental." }
+    ];
+
+    const glossaryGrid = document.getElementById('glossaryGrid');
+    glossaryDatabase.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'glossary-card reveal';
+        card.style.transitionDelay = `${(idx % 3) * 0.1}s`;
+        card.innerHTML = `
+            <div class="glossary-term">
+                <span>${item.term}</span>
+                <span class="glossary-arabic">${item.arab}</span>
+            </div>
+            <div class="glossary-def">${item.def}</div>
+        `;
+        glossaryGrid.appendChild(card);
+    });
+
+    /* =======================================================
+       7. DATA INJECTION: MASONRY QUOTES
+       ======================================================= */
     const quotesDatabase = [
-        { 
-            quote: "Kita tidak boleh merasa malu untuk mengakui kebenaran dari mana pun asalnya, sekalipun itu datang dari bangsa-bangsa yang jauh.", 
-            author: "Al-Kindi" 
-        },
-        { 
-            quote: "Masyarakat yang utama adalah mereka yang warga negaranya bekerja sama untuk mencapai kebahagiaan sejati, bukan sekadar bertahan hidup.", 
-            author: "Al-Farabi" 
-        },
-        { 
-            quote: "Waktu bukanlah realitas mandiri, melainkan ia adalah alat ukur dari pergerakan yang tak kasat mata yang terikat pada materi.", 
-            author: "Ibnu Sina" 
-        },
-        { 
-            quote: "Mengetahui definisi cinta secara rasional tidak akan pernah sama rasanya dengan menjadi seorang pecinta sejati yang dimabuk rindu kepada Tuhannya.", 
-            author: "Al-Ghazali" 
-        },
-        { 
-            quote: "Kebenaran rasional tidak mungkin bertentangan dengan kebenaran wahyu; keduanya bagaikan saudara sepersusuan yang harus saling bersaksi.", 
-            author: "Ibnu Rusyd" 
-        },
-        { 
-            quote: "Kegelapan pada hakikatnya tidak memiliki wujud positif; ia hanyalah ketiadaan cahaya. Begitu pula keburukan, ia hanyalah absennya kebaikan.", 
-            author: "Suhrawardi" 
-        },
-        { 
-            quote: "Alam semesta ini tidak statis. Substansi dari segala materi senantiasa berada dalam proses gerak evolusioner yang merindu kembali kepada Kesempurnaan Ilahi.", 
-            author: "Mulla Sadra" 
-        },
-        { 
-            quote: "Tuhan pada hakikatnya adalah Maha Cinta. Segala kepedihan di dunia hanyalah riak-riak kecil di dalam samudra rahmat-Nya yang tak bertepi.", 
-            author: "Haidar Bagir" 
-        },
-        {
-            quote: "Agama tidak boleh menjadi sekat yang membutakan akal. Akal adalah karunia untuk membaca ayat-ayat Tuhan yang tertulis di semesta raya.",
-            author: "Ibnu Tufayl"
-        }
+        { quote: "Kita tidak boleh merasa malu untuk mengakui kebenaran dari mana pun asalnya.", author: "Al-Kindi" },
+        { quote: "Masyarakat utama bekerja sama untuk kebahagiaan sejati, bukan sekadar bertahan hidup.", author: "Al-Farabi" },
+        { quote: "Waktu adalah alat ukur dari pergerakan yang tak kasat mata yang terikat pada materi.", author: "Ibnu Sina" },
+        { quote: "Definisi cinta rasional takkan sama rasanya dengan menjadi seorang pecinta yang dimabuk rindu Tuhan.", author: "Al-Ghazali" },
+        { quote: "Kebenaran rasional tidak mungkin bertentangan dengan kebenaran wahyu; keduanya bersaudara.", author: "Ibnu Rusyd" },
+        { quote: "Kegelapan tak memiliki wujud positif; ia hanyalah ketiadaan cahaya.", author: "Suhrawardi" },
+        { quote: "Substansi segala materi berada dalam proses gerak evolusioner merindu Kesempurnaan Ilahi.", author: "Mulla Sadra" },
+        { quote: "Tuhan pada hakikatnya adalah Maha Cinta. Kepedihan di dunia hanyalah riak kecil dalam samudra rahmat-Nya.", author: "Haidar Bagir" },
+        { quote: "Agama tidak boleh membutakan akal. Akal adalah karunia membaca ayat-ayat Tuhan di semesta.", author: "Ibnu Tufayl" },
+        { quote: "Barangsiapa mengenal dirinya, maka ia mengenal Tuhannya.", author: "Pepatah Sufi" }
     ];
     
     const quotesGridContainer = document.getElementById('quotesGrid');
@@ -2154,22 +2135,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const quoteDiv = document.createElement('div');
         quoteDiv.className = 'quote-card reveal';
         quoteDiv.style.transitionDelay = `${(index % 3) * 0.1}s`;
-        
-        quoteDiv.innerHTML = `
-            <div class="quote-text">${qItem.quote}</div>
-            <div class="quote-author">${qItem.author}</div>
-        `;
-        
+        quoteDiv.innerHTML = `<div class="quote-text">${qItem.quote}</div><div class="quote-author">${qItem.author}</div>`;
         quoteDiv.onclick = () => {
             navigator.clipboard.writeText(`"${qItem.quote}" - ${qItem.author}`);
-            toast(`Menyalin kutipan ${qItem.author} ke clipboard...`);
+            toast(`Kutipan ${qItem.author} disalin!`);
         };
-        
         quotesGridContainer.appendChild(quoteDiv);
     });
 
     /* =======================================================
-       5. NEXA AI WIDGET LOGIC
+       8. DATA INJECTION: FAQ
+       ======================================================= */
+    const faqDatabase = [
+        { q: "Mengapa penting mempelajari filsafat Islam?", a: "Filsafat Islam membuktikan bahwa rasionalitas dan agama dapat berjalan beriringan. Ia memupuk sikap kritis, menolak taklid buta, dan membantu kita memahami hakikat ketuhanan dengan fondasi nalar (Burhani)." },
+        { q: "Apakah Al-Ghazali membunuh filsafat?", a: "Ini adalah mitos (berdasarkan riset Peter Adamson). Al-Ghazali hanya mengkritik titik-titik metafisika yang ia anggap bermasalah (Tahafut). Kritik ini justru mematangkan filsafat, melahirkan mazhab baru seperti Iluminasi dan Hikmah Muta'aliyah." },
+        { q: "Apa itu konsep 'Islam Cinta'?", a: "Sebuah pendekatan beragama yang mendahulukan welas asih (Rahmat). Menolak bentuk 'High Islam' yang politis dan kasar, mengembalikan wajah agama sebagai pengayom spiritualitas manusia." },
+        { q: "Apa relevansi pemikiran ini bagi Mahasiswa IT?", a: "Sebagai mahasiswa Teknik Informatika, logika (yang dikembangkan filsuf) adalah fondasi ilmu komputer. Selain itu, keseimbangan spiritual (Sufisme) menjaga etika kita di tengah era AI dan distorsi digital." }
+    ];
+
+    const faqContainer = document.getElementById('faqContainer');
+    faqDatabase.forEach((item, index) => {
+        const faqDiv = document.createElement('div');
+        faqDiv.className = 'faq-item reveal';
+        faqDiv.style.transitionDelay = `${index * 0.1}s`;
+        faqDiv.innerHTML = `
+            <div class="faq-question"><span>${item.q}</span><i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-answer">${item.a}</div>
+        `;
+        faqDiv.querySelector('.faq-question').addEventListener('click', () => {
+            faqDiv.classList.toggle('active');
+        });
+        faqContainer.appendChild(faqDiv);
+    });
+
+    /* =======================================================
+       9. NEXA AI WIDGET LOGIC
        ======================================================= */
     const aiWidgetContainer = document.getElementById('nexaWidget');
     const aiFloatingBtn = document.getElementById('aiFabBtn');
@@ -2178,72 +2178,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiSendButton = document.getElementById('aiSendBtn');
     const aiChatHistory = document.getElementById('aiChatBody');
 
-    aiFloatingBtn.addEventListener('click', () => { 
-        aiWidgetContainer.classList.add('active'); 
-        aiInputBox.focus(); 
-    });
-    
-    aiClosePanelBtn.addEventListener('click', () => {
-        aiWidgetContainer.classList.remove('active');
-    });
+    aiFloatingBtn.addEventListener('click', () => { aiWidgetContainer.classList.add('active'); aiInputBox.focus(); });
+    aiClosePanelBtn.addEventListener('click', () => { aiWidgetContainer.classList.remove('active'); });
     
     function processAIRequest() {
         const userText = aiInputBox.value.trim();
         if(!userText) return;
         
-        // Append User Bubble
         aiChatHistory.innerHTML += `<div class="ai-bubble user">${userText}</div>`;
         aiInputBox.value = '';
         aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
         
-        // Mock Server Processing
         setTimeout(() => {
             const mockResponses = [
-                "Menarik! Dalam konteks filsafat Islam, pertanyaan Anda sangat berhubungan dengan konsep pencarian realitas absolut melalui pendekatan epistemologi ganda.",
-                "Sesuai dengan pendekatan Dr. Haidar Bagir, kita bisa melihat isu ini melalui 'Prisma Cinta' (Mahabbah) di mana esensi agama adalah rahmat.",
-                "Jika merujuk pada historiografi Prof. Peter Adamson, ini adalah bukti kuat bahwa diskursus intelektual di dunia Timur tidak pernah terputus setelah abad ke-12.",
-                "Berdasarkan analisis sistem, Pak Fauzan merekomendasikan untuk mengeksplorasi menu 'Baitul Hikmah' guna menemukan literatur lengkap terkait hal tersebut."
+                "Berdasarkan dataset NEXA: Pertanyaan Anda berkaitan dengan pencarian realitas melalui epistemologi ganda.",
+                "Menurut Dr. Haidar Bagir, isu tersebut harus disaring melalui 'Prisma Cinta' di mana esensi agama adalah rahmat.",
+                "Merujuk pada 'Without Any Gaps', ini bukti bahwa diskursus di dunia Timur terus berevolusi secara dinamis.",
+                "Pak Fauzan merekomendasikan Anda untuk membuka menu 'Baitul Hikmah' untuk melacak literatur terkait."
             ];
-            
             const randomReply = mockResponses[Math.floor(Math.random() * mockResponses.length)];
-            
             aiChatHistory.innerHTML += `<div class="ai-bubble system">${randomReply}</div>`;
             aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
-        }, 1000); // 1s delay for realism
+        }, 1200);
     }
     
     aiSendButton.addEventListener('click', processAIRequest);
-    
-    aiInputBox.addEventListener('keypress', (event) => { 
-        if (event.key === 'Enter') {
-            processAIRequest(); 
-        }
-    });
+    aiInputBox.addEventListener('keypress', (event) => { if (event.key === 'Enter') processAIRequest(); });
 
     /* =======================================================
-       6. SCROLL OBSERVER (REVEAL ANIMATION)
+       10. SCROLL OBSERVER (REVEAL ANIMATION)
        ======================================================= */
-    const revealObserverOptions = {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
-    };
-
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                // Unobserve after revealing to prevent repetitive animation
                 revealObserver.unobserve(entry.target);
             }
         });
-    }, revealObserverOptions);
+    }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
     
-    document.querySelectorAll('.reveal').forEach(element => {
-        revealObserver.observe(element);
-    });
+    document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
 
     /* =======================================================
-       7. THEME MANAGER & SCROLL EFFECTS
+       11. THEME MANAGER & SCROLL EFFECTS
        ======================================================= */
     const navbar = document.getElementById('mainNav');
     const scrollProgressBar = document.getElementById('scrollProg');
@@ -2251,57 +2228,30 @@ document.addEventListener('DOMContentLoaded', () => {
     
     window.addEventListener('scroll', () => {
         const scrollYPos = window.scrollY;
-        
-        // Navbar styling on scroll
         navbar.classList.toggle('scrolled', scrollYPos > 50);
-        
-        // Progress bar width
         const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
         scrollProgressBar.style.width = (scrollYPos / totalHeight * 100) + '%';
     });
     
-    // Theme Switcher Logic (Cycle: Light -> Dark -> Sepia -> Light)
     themeToggleButton.addEventListener('click', () => {
         const rootElement = document.documentElement;
         let currentTheme = rootElement.dataset.theme;
-        let nextTheme = '';
-        
-        if (currentTheme === 'light') {
-            nextTheme = 'dark';
-        } else if (currentTheme === 'dark') {
-            nextTheme = 'sepia';
-        } else {
-            nextTheme = 'light';
-        }
-        
+        let nextTheme = currentTheme === 'light' ? 'dark' : currentTheme === 'dark' ? 'sepia' : 'light';
         rootElement.dataset.theme = nextTheme;
         
-        let iconClass = '';
-        let themeName = '';
-        
-        if (nextTheme === 'dark') {
-            iconClass = 'fa-moon';
-            themeName = 'Mode Gelap (NEXA Dark)';
-        } else if (nextTheme === 'sepia') {
-            iconClass = 'fa-scroll';
-            themeName = 'Mode Klasik (Sepia)';
-        } else {
-            iconClass = 'fa-sun';
-            themeName = 'Mode Terang (Classic Light)';
-        }
+        let iconClass = nextTheme === 'dark' ? 'fa-moon' : nextTheme === 'sepia' ? 'fa-scroll' : 'fa-sun';
+        let themeName = nextTheme === 'dark' ? 'Mode Gelap' : nextTheme === 'sepia' ? 'Mode Klasik' : 'Mode Terang';
         
         themeToggleButton.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
         toast(`Tema Sistem Diubah: ${themeName}`);
     });
     
-    // Mobile Navigation Toggle
     document.getElementById('mobileToggle').addEventListener('click', () => {
         document.getElementById('navMenu').classList.toggle('open');
     });
 
-    // Init log for console
     console.log("%cNEXA Tech Labs - System Initialized.", "color: #10b981; font-weight: bold; font-size: 14px;");
-    console.log("Version: 4.0 Ultimate Edition");
+    console.log("Version: 4.0 Ultimate Edition (Real Photo Engine)");
 });
 </script>
 </body>
