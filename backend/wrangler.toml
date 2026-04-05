@@ -1,0 +1,17 @@
+name = "nexa-hikmah-api"
+main = "src/index.js"
+compatibility_date = "2026-04-05"
+
+# Konfigurasi agar Worker berjalan super cepat di Edge Network
+workers_dev = true
+
+# Binding ke Database D1 (SQLite Serverless)
+[[d1_databases]]
+binding = "DB" # Ini nama variabel yang akan dipanggil di index.js (c.env.DB)
+database_name = "nexa_hikmah_db"
+database_id = "MASUKKAN_ID_DATABASE_LU_DI_SINI" # Didapat setelah run 'npm run db:create'
+
+# Environment Variables (Bisa dipakai buat API Key tambahan nanti)
+[vars]
+ENVIRONMENT = "production"
+NEXA_VERSION = "4.0 Ultimate"

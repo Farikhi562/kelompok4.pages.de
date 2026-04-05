@@ -3,316 +3,1202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ujian Interaktif Filsafat Islam - Proyek Akhir Kelompok IV">
-    <title>Evaluasi Interaktif | Kelompok IV</title>
+    <meta name="description" content="Sistem Evaluasi Interaktif Filsafat Islam - Proyek Akhir Kelompok IV">
+    <meta name="author" content="NEXA Tech Labs - Muhamad Fauzan Al Farikhi">
+    <title>Ujian Interaktif | Filsafat Islam | Kelompok IV</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Space+Mono:wght@400;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="animations.css">
-
     <style>
-        /* --- GLOBAL QUIZ BACKGROUND --- */
+        /* ==========================================================
+           1. NEXA CORE VARIABLES
+           ========================================================== */
+        :root {
+            --bg-body: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-alt: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            
+            --clr-primary-300: #6ee7b7;
+            --clr-primary-500: #10b981;
+            --clr-primary-700: #047857;
+            --clr-primary-900: #022c22;
+            
+            --clr-accent-500: #d97706;
+            --clr-accent-700: #b45309;
+            
+            --clr-danger-500: #ef4444;
+            --clr-danger-700: #b91c1c;
+            --clr-info-500: #3b82f6;
+            
+            --border-light: #e2e8f0;
+            --border-strong: #cbd5e1;
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -3px rgba(0,0,0,0.1);
+            --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.15);
+            --glow: rgba(16, 185, 129, 0.15);
+            
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Poppins', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            --font-arabic: 'Amiri', serif;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #020617;
+            --bg-surface: #0f172a;
+            --bg-surface-alt: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            --border-light: rgba(255,255,255,0.05);
+            --border-strong: rgba(255,255,255,0.1);
+            
+            --shadow-md: 0 10px 25px -3px rgba(0,0,0,0.5);
+            --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.7);
+        }
+
+        /* ==========================================================
+           2. GLOBAL RESET
+           ========================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: var(--bg-body, #f8fafc);
-            background-image: radial-gradient(circle at top right, rgba(16, 185, 129, 0.05), transparent 40%),
-                              radial-gradient(circle at bottom left, rgba(217, 119, 6, 0.05), transparent 40%);
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(16, 185, 129, 0.08), transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(217, 119, 6, 0.08), transparent 50%);
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            transition: background-color 0.4s, color 0.4s;
         }
 
+        ::selection {
+            background: var(--clr-primary-500);
+            color: white;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--clr-primary-500);
+            border-radius: 8px;
+        }
+
+        /* ==========================================================
+           3. UI COMPONENTS & BUTTONS
+           ========================================================== */
+        .btn-mega {
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            font-size: 1.05rem;
+            font-family: var(--font-body);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .btn-mega:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .btn-mega.primary {
+            background: linear-gradient(135deg, var(--clr-primary-500), var(--clr-primary-700));
+            color: white;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-mega.primary:hover:not(:disabled) {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-mega.accent {
+            background: linear-gradient(135deg, var(--clr-accent-500), var(--clr-accent-700));
+            color: white;
+            box-shadow: 0 10px 25px rgba(217, 119, 6, 0.3);
+        }
+
+        .btn-mega.accent:hover:not(:disabled) {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(217, 119, 6, 0.5);
+        }
+
+        .btn-mega.outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--border-strong);
+        }
+
+        .btn-mega.outline:hover:not(:disabled) {
+            background: var(--bg-surface-alt);
+            border-color: var(--clr-primary-500);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================
+           4. LAYOUT & GLASSMORPHISM CONTAINER
+           ========================================================== */
         .quiz-wrapper {
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 120px 5% 60px; /* Space for navbar */
+            padding: 100px 5% 60px;
             position: relative;
             z-index: 10;
         }
 
-        /* --- GLASSMORPHISM CONTAINER --- */
         .quiz-card {
-            background: var(--bg-surface, #ffffff);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 30px;
+            background: var(--bg-surface);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 35px;
             width: 100%;
-            max-width: 900px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15), 0 0 0 1px var(--border-light, rgba(0,0,0,0.05));
+            max-width: 1000px;
+            box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-light);
             overflow: hidden;
             position: relative;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 500px;
         }
+
         [data-theme="dark"] .quiz-card {
             background: rgba(15, 23, 42, 0.85);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.08);
         }
 
-        /* Ambient Glow Behind Card */
         .quiz-card::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(16,185,129,0.03) 0%, transparent 50%);
-            z-index: 0; pointer-events: none; animation: tawafSpin 20s linear infinite;
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--glow) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+            animation: tawafSpin 25s linear infinite;
         }
 
-        .screen { display: none; padding: 50px; position: relative; z-index: 1; }
-        .screen.active { display: block; animation: fadeUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        @keyframes tawafSpin {
+            100% { transform: rotate(360deg); }
+        }
 
-        /* --- START SCREEN --- */
-        .start-header { text-align: center; margin-bottom: 40px; }
-        .start-header i { font-size: 4rem; color: var(--clr-primary-500, #10b981); margin-bottom: 20px; filter: drop-shadow(0 10px 15px rgba(16,185,129,0.3)); }
-        .start-header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--clr-primary-700, #047857); margin-bottom: 10px; }
-        [data-theme="dark"] .start-header h1 { color: #6ee7b7; }
-        .start-header p { color: var(--text-muted, #64748b); font-size: 1.1rem; }
+        .screen {
+            display: none;
+            padding: 60px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================
+           5. SCREEN 1: ONBOARDING / REGISTRATION
+           ========================================================== */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .brand-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+            animation: floatLogo 3s ease-in-out infinite;
+        }
+
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .brand-header h1 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: var(--clr-primary-700);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        [data-theme="dark"] .brand-header h1 {
+            color: var(--clr-primary-300);
+        }
+
+        .brand-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 15px;
+            border: 2px solid var(--border-light);
+            background: var(--bg-surface-alt);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--clr-primary-500);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+            background: var(--bg-surface);
+        }
+
+        /* ==========================================================
+           6. SCREEN 2: RULES & START
+           ========================================================== */
+        .user-greeting {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--clr-accent-500);
+            margin-bottom: 30px;
+            font-family: var(--font-mono);
+        }
 
         .rules-box {
-            background: var(--bg-body, #f1f5f9); border: 1px solid var(--border-strong, #cbd5e1);
-            border-radius: 20px; padding: 30px; margin-bottom: 40px;
+            background: var(--bg-surface-alt);
+            border: 1px solid var(--border-strong);
+            border-radius: 24px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
-        [data-theme="dark"] .rules-box { background: #020617; border-color: #334155; }
         
-        .rules-title { font-weight: 800; color: var(--clr-accent-500, #d97706); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .rules-list { list-style: none; margin: 0; padding: 0; }
-        .rules-list li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; color: var(--text-main, #1e293b); font-weight: 600; }
-        .rules-list li i { color: var(--clr-primary-500, #10b981); margin-top: 3px; }
-        .keyboard-hint { background: var(--border-light, #e2e8f0); padding: 2px 8px; border-radius: 6px; font-family: 'Space Mono', monospace; font-size: 0.8rem; }
-        [data-theme="dark"] .keyboard-hint { background: #334155; color: #cbd5e1; }
-
-        .high-score-badge {
-            position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, var(--clr-accent-500), var(--clr-accent-700));
-            color: white; padding: 8px 20px; border-radius: 30px; font-weight: 800; font-size: 0.9rem;
-            box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3); display: flex; align-items: center; gap: 8px;
+        .rules-title {
+            font-weight: 900;
+            color: var(--clr-primary-700);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            border-bottom: 2px dashed var(--border-light);
+            padding-bottom: 15px;
         }
 
-        /* --- QUIZ SCREEN --- */
-        .quiz-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid var(--border-light, #e2e8f0); padding-bottom: 20px; }
+        [data-theme="dark"] .rules-title {
+            color: var(--clr-primary-300);
+        }
+
+        .rules-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .rules-list li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            color: var(--text-main);
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .rules-list li i {
+            color: var(--clr-accent-500);
+            font-size: 1.2rem;
+            margin-top: 3px;
+        }
+
+        .keyboard-hint {
+            background: var(--border-light);
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-main);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+        }
+
+        /* ==========================================================
+           7. SCREEN 3: ACTIVE QUIZ
+           ========================================================== */
+        .quiz-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 25px;
+        }
         
-        .q-tracker { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--text-muted, #64748b); font-size: 0.95rem; margin-bottom: 8px; }
-        .q-progress-bg { width: 100%; max-width: 300px; height: 8px; background: var(--border-light, #e2e8f0); border-radius: 10px; overflow: hidden; }
-        .q-progress-fill { height: 100%; background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-primary-300)); width: 0%; transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .tracker-section {
+            flex-grow: 1;
+            padding-right: 40px;
+        }
+
+        .q-tracker {
+            font-family: var(--font-mono);
+            font-weight: 800;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .q-progress-bg {
+            width: 100%;
+            height: 10px;
+            background: var(--border-light);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .q-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-accent-500));
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 10px;
+        }
+
+        /* Lifeline System */
+        .lifeline-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .lifeline-btn {
+            background: var(--bg-surface-alt);
+            border: 1px solid var(--border-strong);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            color: var(--clr-primary-500);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .lifeline-btn:hover:not(:disabled) {
+            background: var(--clr-primary-500);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(16,185,129,0.3);
+        }
+
+        .lifeline-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
+
+        .lifeline-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-main);
+            color: var(--bg-surface);
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            font-family: var(--font-body);
+            font-weight: 700;
+        }
+
+        .lifeline-btn:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
 
         /* SVG Circular Timer */
-        .timer-wrapper { position: relative; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; }
-        .timer-svg { transform: rotate(-90deg); width: 60px; height: 60px; }
-        .timer-circle-bg { fill: none; stroke: var(--border-light, #e2e8f0); stroke-width: 4; }
-        .timer-circle-fill { fill: none; stroke: var(--clr-primary-500, #10b981); stroke-width: 4; stroke-dasharray: 163; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear, stroke 0.3s; stroke-linecap: round; }
-        .timer-text { position: absolute; font-family: 'Space Mono', monospace; font-weight: 800; font-size: 0.9rem; color: var(--text-main, #0f172a); }
-        .timer-wrapper.danger .timer-circle-fill { stroke: #ef4444; animation: pulseGlowRed 1s infinite; }
-        .timer-wrapper.danger .timer-text { color: #ef4444; animation: heartbeat 1s infinite; }
-
-        @keyframes heartbeat { 0% { transform: scale(1); } 25% { transform: scale(1.1); } 50% { transform: scale(1); } 75% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes pulseGlowRed { 0% { filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5)); } 50% { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.8)); } 100% { filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5)); } }
-
-        .question-text { font-size: 1.5rem; font-weight: 700; color: var(--text-main, #0f172a); margin-bottom: 30px; line-height: 1.5; }
-        
-        .options-grid { display: grid; gap: 15px; }
-        .option-btn {
-            background: var(--bg-surface, #ffffff); border: 2px solid var(--border-light, #cbd5e1);
-            padding: 15px 25px; border-radius: 15px; text-align: left; font-size: 1.05rem; font-weight: 600;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); color: var(--text-main, #1e293b);
-            display: flex; align-items: center; gap: 20px; position: relative; overflow: hidden;
+        .timer-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-surface);
+            border-radius: 50%;
+            box-shadow: var(--shadow-sm);
         }
-        [data-theme="dark"] .option-btn { background: #0f172a; border-color: rgba(255,255,255,0.1); color: #f8fafc; }
+
+        .timer-svg {
+            transform: rotate(-90deg);
+            width: 80px;
+            height: 80px;
+        }
+
+        .timer-circle-bg {
+            fill: none;
+            stroke: var(--border-light);
+            stroke-width: 6;
+        }
+
+        .timer-circle-fill {
+            fill: none;
+            stroke: var(--clr-primary-500);
+            stroke-width: 6;
+            stroke-dasharray: 213; /* 2 * pi * r (r=34) */
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 1s linear, stroke 0.3s;
+            stroke-linecap: round;
+        }
+
+        .timer-text {
+            position: absolute;
+            font-family: var(--font-mono);
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        .timer-wrapper.warning .timer-circle-fill {
+            stroke: var(--clr-accent-500);
+        }
+
+        .timer-wrapper.danger .timer-circle-fill {
+            stroke: var(--clr-danger-500);
+            animation: pulseGlowRed 1s infinite;
+        }
+
+        .timer-wrapper.danger .timer-text {
+            color: var(--clr-danger-500);
+            animation: heartbeat 1s infinite;
+        }
+
+        /* Question & Options */
+        .question-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+        
+        .options-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .option-btn {
+            background: var(--bg-surface);
+            border: 2px solid var(--border-strong);
+            padding: 18px 25px;
+            border-radius: 20px;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .option-btn.disabled-5050 {
+            opacity: 0.2;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
         
         .option-hotkey {
-            background: var(--bg-body, #f1f5f9); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;
-            border-radius: 10px; font-weight: 800; color: var(--clr-primary-700, #047857); font-family: 'Space Mono', monospace;
-            border: 1px solid var(--border-strong, #cbd5e1); transition: 0.3s;
+            background: var(--bg-surface-alt);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-weight: 900;
+            color: var(--clr-primary-700);
+            font-family: var(--font-mono);
+            border: 2px solid var(--border-light);
+            transition: 0.3s;
+            font-size: 1.1rem;
         }
-        [data-theme="dark"] .option-hotkey { background: #1e293b; border-color: #334155; color: #6ee7b7; }
         
-        .option-btn:hover { border-color: var(--clr-primary-500, #10b981); transform: translateX(10px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.1); }
-        .option-btn.selected { border-color: var(--clr-primary-500, #10b981); background: rgba(16, 185, 129, 0.05); }
-        .option-btn.selected .option-hotkey { background: var(--clr-primary-500, #10b981); color: white; border-color: var(--clr-primary-500, #10b981); }
-
-        .quiz-controls { margin-top: 40px; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
-        .enter-hint { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; opacity: 0; transition: 0.3s; }
-        .enter-hint.show { opacity: 1; }
-
-        /* --- RESULT SCREEN --- */
-        .result-screen { text-align: center; }
-        .score-display-wrapper { position: relative; width: 200px; height: 200px; margin: 0 auto 30px; display: flex; justify-content: center; align-items: center; }
-        .score-circle-svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-        .score-circle-bg { fill: none; stroke: var(--border-light, #e2e8f0); stroke-width: 8; }
-        .score-circle-fill { fill: none; stroke: var(--clr-primary-500, #10b981); stroke-width: 8; stroke-dasharray: 565; stroke-dashoffset: 565; transition: stroke-dashoffset 2s cubic-bezier(0.175, 0.885, 0.32, 1.275); stroke-linecap: round; }
-        .score-number { font-size: 4rem; font-weight: 800; color: var(--text-main, #0f172a); font-family: 'Space Mono', monospace; }
-        [data-theme="dark"] .score-number { color: white; }
-
-        .grade-badge { display: inline-block; padding: 10px 30px; border-radius: 50px; font-size: 1.5rem; font-weight: 800; font-family: 'Cinzel', serif; letter-spacing: 2px; margin-bottom: 20px; color: white; }
-        .grade-mumtaz { background: linear-gradient(135deg, #10b981, #047857); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); }
-        .grade-jayyid { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); }
-        .grade-rasib { background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4); }
-
-        .result-actions { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
-
-        .review-container { text-align: left; background: var(--bg-body, #f1f5f9); border-radius: 20px; padding: 30px; border: 1px solid var(--border-light, #e2e8f0); }
-        [data-theme="dark"] .review-container { background: #020617; border-color: rgba(255,255,255,0.05); }
-        .review-item { background: var(--bg-surface, white); padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 6px solid; box-shadow: 0 10px 20px rgba(0,0,0,0.02); }
-        [data-theme="dark"] .review-item { background: #0f172a; }
-        .review-item.correct { border-left-color: #10b981; }
-        .review-item.wrong { border-left-color: #ef4444; }
-        .review-q { font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; color: var(--text-main); }
-        .review-ans { font-size: 0.95rem; margin-bottom: 8px; font-weight: 600; }
-        .review-exp { background: rgba(217, 119, 6, 0.05); padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 0.9rem; color: var(--text-muted); border: 1px dashed rgba(217, 119, 6, 0.3); line-height: 1.6; }
-
-        /* --- EXTREME ANTI-CHEAT OVERLAY --- */
-        .anti-cheat-overlay {
-            position: fixed; inset: 0; background: rgba(239, 68, 68, 0.95); backdrop-filter: blur(25px);
-            z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: white; text-align: center; opacity: 0; visibility: hidden; transition: 0.3s;
+        .option-btn:hover:not(.disabled-5050) {
+            border-color: var(--clr-primary-500);
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
         }
-        .anti-cheat-overlay.active { opacity: 1; visibility: visible; }
-        .anti-cheat-overlay i { font-size: 8rem; margin-bottom: 30px; animation: pulse 1s infinite; }
-        .strike-boxes { display: flex; gap: 15px; margin-top: 30px; }
-        .strike-box { width: 40px; height: 40px; border: 3px solid white; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 900; }
-        .strike-box.filled { background: white; color: #ef4444; }
 
-        /* --- PRINTABLE CERTIFICATE STYLES --- */
-        #certificate-print { display: none; }
+        .option-btn.selected {
+            border-color: var(--clr-primary-500);
+            background: rgba(16, 185, 129, 0.08);
+            transform: translateX(15px);
+        }
+
+        .option-btn.selected .option-hotkey {
+            background: var(--clr-primary-500);
+            color: white;
+            border-color: var(--clr-primary-500);
+        }
+
+        .quiz-controls {
+            margin-top: 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px dashed var(--border-light);
+            padding-top: 25px;
+        }
+
+        .enter-hint {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            opacity: 0;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .enter-hint.show {
+            opacity: 1;
+            animation: pulseHint 2s infinite;
+        }
+
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* ==========================================================
+           8. SCREEN 4: RESULT & ANALYTICS
+           ========================================================== */
+        .result-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .score-display-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .score-circle-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .score-circle-bg {
+            fill: none;
+            stroke: var(--border-light);
+            stroke-width: 12;
+        }
+
+        .score-circle-fill {
+            fill: none;
+            stroke: var(--clr-primary-500);
+            stroke-width: 12;
+            stroke-dasharray: 628; /* 2 * pi * 100 */
+            stroke-dashoffset: 628;
+            transition: stroke-dashoffset 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            stroke-linecap: round;
+        }
+
+        .score-number {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            text-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-size: 1.6rem;
+            font-weight: 900;
+            font-family: var(--font-display);
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .grade-mumtaz { background: linear-gradient(135deg, #10b981, #047857); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); }
+        .grade-jayyid { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4); }
+        .grade-rasib { background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4); }
+
+        .analytics-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+            background: var(--bg-surface-alt);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border-light);
+        }
+
+        .analytics-text {
+            flex: 1;
+            min-width: 250px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--border-strong);
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            color: var(--clr-primary-500);
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+        }
+
+        .canvas-container {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-surface);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .result-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        /* Review Section */
+        .review-container {
+            text-align: left;
+            border-top: 2px solid var(--border-light);
+            padding-top: 40px;
+        }
+
+        .review-item {
+            background: var(--bg-surface-alt);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border-left: 8px solid;
+            box-shadow: var(--shadow-sm);
+            transition: 0.3s;
+        }
+
+        .review-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .review-item.correct { border-left-color: var(--clr-primary-500); }
+        .review-item.wrong { border-left-color: var(--clr-danger-500); }
+        .review-item.skipped { border-left-color: var(--text-muted); }
+
+        .review-q {
+            font-weight: 800;
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .review-ans {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-surface);
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+        }
+
+        .review-exp {
+            background: rgba(217, 119, 6, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            border: 1px dashed rgba(217, 119, 6, 0.4);
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        /* ==========================================================
+           9. EXTREME ANTI-CHEAT OVERLAY
+           ========================================================== */
+        .anti-cheat-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(239, 68, 68, 0.98);
+            backdrop-filter: blur(30px);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+            padding: 20px;
+        }
+
+        .anti-cheat-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .anti-cheat-overlay i {
+            font-size: 8rem;
+            margin-bottom: 30px;
+            animation: pulseAlert 1s infinite;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        @keyframes pulseAlert {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: #fca5a5; }
+            100% { transform: scale(1); }
+        }
+
+        .strike-boxes {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .strike-box {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.5);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 900;
+            transition: 0.5s;
+            font-family: var(--font-mono);
+        }
+
+        .strike-box.filled {
+            background: white;
+            color: #ef4444;
+            border-color: white;
+            box-shadow: 0 0 30px rgba(255,255,255,0.8);
+            transform: scale(1.1);
+        }
+
+        /* ==========================================================
+           10. PRINTABLE CERTIFICATE STYLES (A4 Landscape)
+           ========================================================== */
+        #certificate-print {
+            display: none;
+        }
+
         @media print {
             body * { visibility: hidden; }
             #certificate-print, #certificate-print * { visibility: visible; }
-            #certificate-print {
-                display: flex; position: fixed; inset: 0; width: 100%; height: 100vh;
-                flex-direction: column; justify-content: center; align-items: center;
-                background: white; color: black; text-align: center; padding: 50px;
-                border: 20px solid #064e3b; box-sizing: border-box;
+            
+            @page {
+                size: A4 landscape;
+                margin: 0;
             }
-            .cert-title { font-family: 'Cinzel', serif; font-size: 4rem; color: #064e3b; margin-bottom: 20px; }
-            .cert-subtitle { font-size: 1.5rem; margin-bottom: 40px; letter-spacing: 3px; text-transform: uppercase; }
-            .cert-name { font-family: 'Amiri', serif; font-size: 3.5rem; font-weight: bold; border-bottom: 2px solid #d97706; padding-bottom: 10px; margin-bottom: 40px; display: inline-block; min-width: 500px; }
-            .cert-score { font-size: 2rem; font-weight: bold; color: #064e3b; margin-bottom: 50px; }
-            .cert-footer { display: flex; justify-content: space-between; width: 100%; padding: 0 100px; margin-top: 50px; }
-            .sign-line { width: 200px; border-top: 2px solid black; margin-top: 80px; padding-top: 10px; font-weight: bold; }
+
+            #certificate-print {
+                display: flex;
+                position: fixed;
+                inset: 0;
+                width: 100vw;
+                height: 100vh;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: white;
+                color: #022c22;
+                text-align: center;
+                padding: 40px;
+                border: 20px solid #047857;
+                box-sizing: border-box;
+                background-image: radial-gradient(circle, rgba(16,185,129,0.05) 0%, transparent 70%);
+            }
+
+            .cert-logo {
+                height: 120px;
+                margin-bottom: 20px;
+            }
+
+            .cert-title {
+                font-family: 'Cinzel', serif;
+                font-size: 3.5rem;
+                color: #047857;
+                margin-bottom: 10px;
+                letter-spacing: 5px;
+            }
+
+            .cert-subtitle {
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                font-family: 'Poppins', sans-serif;
+                color: #64748b;
+            }
+
+            .cert-name {
+                font-family: 'Amiri', serif;
+                font-size: 4rem;
+                font-weight: bold;
+                border-bottom: 3px solid #d97706;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+                display: inline-block;
+                min-width: 600px;
+                color: #0f172a;
+            }
+            
+            .cert-npm {
+                font-family: 'Space Mono', monospace;
+                font-size: 1.5rem;
+                color: #64748b;
+                margin-bottom: 40px;
+            }
+
+            .cert-score {
+                font-size: 2.5rem;
+                font-weight: bold;
+                color: #047857;
+                margin-bottom: 50px;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .cert-footer {
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+                margin-top: 40px;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .sign-box {
+                text-align: center;
+            }
+
+            .sign-line {
+                width: 250px;
+                border-top: 2px solid #0f172a;
+                margin-top: 80px;
+                padding-top: 10px;
+                font-weight: bold;
+                font-size: 1.1rem;
+            }
         }
 
-        /* Buttons from ecosystem */
-        .btn-mega { padding: 12px 30px; border-radius: 50px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; border: none; font-size: 1.05rem; }
-        .btn-mega.primary { background: linear-gradient(135deg, var(--clr-primary-500), var(--clr-primary-700)); color: white; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
-        .btn-mega.primary:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(16, 185, 129, 0.5); }
-        .btn-mega.accent { background: linear-gradient(135deg, var(--clr-accent-500), var(--clr-accent-700)); color: white; box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3); }
-        .btn-mega.accent:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(217, 119, 6, 0.5); }
-        
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .screen { padding: 30px 20px; }
-            .quiz-wrapper { padding-top: 100px; }
-            .start-header h1 { font-size: 2rem; }
-            .option-btn { padding: 12px 15px; font-size: 0.95rem; }
-            .option-hotkey { display: none; } /* Hide hotkeys on mobile */
+            .quiz-wrapper { padding-top: 80px; }
+            .brand-header h1 { font-size: 1.8rem; }
+            .option-btn { padding: 15px; font-size: 1rem; }
+            .option-hotkey { display: none; }
+            .quiz-controls { flex-direction: column; gap: 20px; }
+            .score-display-wrapper { width: 150px; height: 150px; }
+            .score-number { font-size: 3rem; }
+            .analytics-container { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-    <k4-navbar current-page="kuis"></k4-navbar>
+    <nav class="k4-nav" id="mainNav" style="position: sticky; top: 0; z-index: 9999; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-light); padding: 15px 5%;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" style="display: flex; align-items: center; gap: 15px; text-decoration: none;">
+                <img src="assets/images/brand/gunadarma-logo.png" alt="UG" style="height: 40px;" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'">
+                <span style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.2rem; color: var(--clr-primary-700);">Kelompok IV</span>
+            </a>
+            <div style="display: flex; gap: 15px;">
+                <a href="index.html" class="btn-mega outline" style="padding: 8px 20px; font-size: 0.9rem;">Kembali ke Beranda</a>
+            </div>
+        </div>
+    </nav>
 
     <div class="anti-cheat-overlay" id="antiCheatOverlay">
         <i class="fa-solid fa-triangle-exclamation"></i>
-        <h1 style="font-size: 3rem; margin-bottom: 10px; font-family: 'Cinzel', serif;">PELANGGARAN TERDETEKSI</h1>
-        <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 30px;">
-            Sistem mendeteksi Anda meninggalkan halaman ujian. Sesuai integritas akademik, aktivitas ini dicatat. Jika mencapai 3 pelanggaran, ujian akan dihentikan paksa.
+        <h1 style="font-family: var(--font-display); font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 15px; letter-spacing: 2px;">PELANGGARAN TERDETEKSI</h1>
+        <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px; line-height: 1.6; font-weight: 600;">
+            Sistem pengawasan aktif kami mendeteksi Anda meninggalkan jendela ujian (Tab Switch / Minimize). Sesuai dengan protokol integritas akademik Universitas Gunadarma, aktivitas ini dicatat.
         </p>
         <div class="strike-boxes" id="strikeBoxes">
             <div class="strike-box" id="strike1">1</div>
             <div class="strike-box" id="strike2">2</div>
             <div class="strike-box" id="strike3">3</div>
         </div>
-        <button class="btn-mega" style="background: white; color: #ef4444; margin-top: 40px;" onclick="closeAntiCheatWarning()">Saya Mengerti, Kembali ke Ujian</button>
+        <p style="margin-top: 20px; font-family: var(--font-mono); font-weight: 700;">Maksimal 3 Pelanggaran = DISKUALIFIKASI (NILAI 0)</p>
+        <button class="btn-mega" style="background: white; color: var(--clr-danger-700); margin-top: 40px;" onclick="IslamicGodModeQuiz.closeWarning()">
+            Saya Mengerti, Kembali ke Ujian <i class="fa-solid fa-rotate-left"></i>
+        </button>
     </div>
 
     <main class="quiz-wrapper">
         <div class="quiz-card" id="quizCard">
             
-            <div id="screen-start" class="screen active">
-                <div class="high-score-badge" id="highScoreBadge" style="display: none;">
-                    <i class="fa-solid fa-crown"></i> Rekor: <span id="highScoreText">0</span>
+            <div id="screen-register" class="screen active">
+                <div class="brand-header">
+                    <img src="assets/images/brand/gunadarma-logo.png" alt="Logo Gunadarma" class="brand-logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'">
+                    <h1>Verifikasi Peserta Ujian</h1>
+                    <p>Sistem Evaluasi Interaktif - Filsafat & Hikmah Islam</p>
                 </div>
 
-                <div class="start-header">
-                    <i class="fa-solid fa-brain"></i>
-                    <h1>Sistem Evaluasi Interaktif</h1>
-                    <p>Mata Kuliah Agama Islam • Filsafat & Risalah Cinta</p>
+                <div class="form-group">
+                    <label class="form-label" for="userName"><i class="fa-solid fa-user"></i> Nama Lengkap Mahasiswa</label>
+                    <input type="text" id="userName" class="form-input" placeholder="Masukkan Nama Sesuai KRS..." autocomplete="off">
                 </div>
 
+                <div class="form-group">
+                    <label class="form-label" for="userNPM"><i class="fa-solid fa-id-card"></i> Nomor Pokok Mahasiswa (NPM)</label>
+                    <input type="number" id="userNPM" class="form-input" placeholder="Contoh: 50425672..." autocomplete="off">
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="btn-mega primary" onclick="IslamicGodModeQuiz.submitRegistration()">
+                        Verifikasi Data <i class="fa-solid fa-fingerprint"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="screen-rules" class="screen">
+                <div class="user-greeting" id="userGreetingText">Selamat Datang, Peserta!</div>
+                
                 <div class="rules-box">
-                    <div class="rules-title"><i class="fa-solid fa-shield-halved"></i> Protokol Ujian (God-Mode):</div>
+                    <div class="rules-title"><i class="fa-solid fa-shield-halved"></i> Protokol Ujian (God-Mode Engine):</div>
                     <ul class="rules-list">
-                        <li><i class="fa-solid fa-clock"></i> <span>Waktu pengerjaan dibatasi ketat <strong>3 Menit (180 Detik)</strong>.</span></li>
-                        <li><i class="fa-solid fa-keyboard"></i> <span>Dukungan Desktop: Gunakan tombol <span class="keyboard-hint">A</span> <span class="keyboard-hint">B</span> <span class="keyboard-hint">C</span> <span class="keyboard-hint">D</span> untuk menjawab dan <span class="keyboard-hint">ENTER</span> untuk lanjut.</span></li>
-                        <li><i class="fa-solid fa-eye-slash"></i> <span><strong>Sistem Pengawasan Aktif:</strong> Pindah tab/aplikasi sebanyak 3 kali akan mengakibatkan <strong>Diskualifikasi Otomatis (Nilai 0)</strong>.</span></li>
+                        <li>
+                            <i class="fa-solid fa-clock"></i> 
+                            <div><strong>Waktu Terbatas:</strong> Anda memiliki waktu <strong>5 Menit (300 Detik)</strong> untuk menyelesaikan 10 soal tingkat tinggi (HOTS).</div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-life-ring"></i>
+                            <div><strong>Sistem Bantuan (Lifelines):</strong> Anda dibekali 3 fitur bantuan: <em>50:50</em>, <em>Tambah Waktu (+30s)</em>, dan <em>Lewati Soal</em>. Gunakan dengan bijak!</div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-keyboard"></i> 
+                            <div><strong>Navigasi Cepat (Desktop):</strong> Gunakan tombol <span class="keyboard-hint">A</span> <span class="keyboard-hint">B</span> <span class="keyboard-hint">C</span> <span class="keyboard-hint">D</span> untuk memilih jawaban dan <span class="keyboard-hint">ENTER</span> untuk lanjut ke soal berikutnya.</div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-eye-slash"></i> 
+                            <div><strong>Pengawasan Anti-Cheat:</strong> Berpindah tab/aplikasi sebanyak 3 kali akan memicu <strong>Diskualifikasi Otomatis</strong> dan nilai Anda hangus.</div>
+                        </li>
                     </ul>
                 </div>
 
-                <div style="text-align: center;">
-                    <button class="btn-mega primary" onclick="GodModeQuiz.startQuiz()" style="font-size: 1.2rem; padding: 15px 50px;">
-                        Mulai Ujian Sekarang <i class="fa-solid fa-power-off"></i>
+                <div style="text-align: center; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <button class="btn-mega outline" onclick="IslamicGodModeQuiz.switchScreen('register')">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali
+                    </button>
+                    <button class="btn-mega accent" onclick="IslamicGodModeQuiz.startQuiz()" style="font-size: 1.2rem;">
+                        Mulai Ujian Sekarang <i class="fa-solid fa-rocket"></i>
                     </button>
                 </div>
             </div>
 
             <div id="screen-quiz" class="screen">
-                <div class="quiz-topbar">
-                    <div style="flex-grow: 1; padding-right: 30px;">
-                        <div class="q-tracker" id="qTracker">Soal 1 / 5</div>
+                <div class="quiz-header-flex">
+                    <div class="tracker-section">
+                        <div class="q-tracker" id="qTracker">Soal 1 / 10</div>
                         <div class="q-progress-bg">
                             <div class="q-progress-fill" id="qProgress"></div>
+                        </div>
+                        
+                        <div class="lifeline-container">
+                            <button class="lifeline-btn" id="ll-5050" onclick="IslamicGodModeQuiz.useLifeline('5050')" data-tooltip="Hapus 2 Opsi Salah">
+                                <i class="fa-solid fa-arrows-down-to-line"></i>
+                            </button>
+                            <button class="lifeline-btn" id="ll-time" onclick="IslamicGodModeQuiz.useLifeline('time')" data-tooltip="Tambah +30 Detik">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </button>
+                            <button class="lifeline-btn" id="ll-skip" onclick="IslamicGodModeQuiz.useLifeline('skip')" data-tooltip="Lewati Soal (Dihitung Benar)">
+                                <i class="fa-solid fa-forward-step"></i>
+                            </button>
                         </div>
                     </div>
                     
                     <div class="timer-wrapper" id="timerWrapper">
-                        <svg class="timer-svg" viewBox="0 0 60 60">
-                            <circle class="timer-circle-bg" cx="30" cy="30" r="26"></circle>
-                            <circle class="timer-circle-fill" id="timerCircle" cx="30" cy="30" r="26"></circle>
+                        <svg class="timer-svg" viewBox="0 0 80 80">
+                            <circle class="timer-circle-bg" cx="40" cy="40" r="34"></circle>
+                            <circle class="timer-circle-fill" id="timerCircle" cx="40" cy="40" r="34"></circle>
                         </svg>
-                        <div class="timer-text" id="timerText">180</div>
+                        <div class="timer-text" id="timerText">300</div>
                     </div>
                 </div>
 
-                <div class="question-text" id="questionText">Memuat pertanyaan dari database...</div>
+                <div class="question-text" id="questionText">Sistem sedang memuat data dari memori lokal...</div>
                 
                 <div class="options-grid" id="optionsGrid">
                     </div>
 
                 <div class="quiz-controls">
-                    <span class="enter-hint" id="enterHint">Tekan <span class="keyboard-hint">ENTER</span> untuk lanjut</span>
-                    <button class="btn-mega primary" id="btnNext" onclick="GodModeQuiz.nextQuestion()" style="display: none;">
+                    <span class="enter-hint" id="enterHint"><i class="fa-solid fa-arrow-turn-down" style="transform: rotate(90deg);"></i> Tekan <strong>ENTER</strong> untuk lanjut</span>
+                    <button class="btn-mega primary" id="btnNext" onclick="IslamicGodModeQuiz.nextQuestion()" style="display: none; margin-left: auto;">
                         Lanjutkan <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
             <div id="screen-result" class="screen">
-                <div class="result-header" style="text-align: center; margin-bottom: 30px;">
-                    <h2 style="font-family: 'Cinzel', serif; font-size: 2rem; color: var(--clr-primary-700); margin-bottom: 30px;">Evaluasi Selesai</h2>
+                <div class="result-header">
+                    <h2 style="font-family: var(--font-display); font-size: 2.2rem; color: var(--clr-primary-700); margin-bottom: 20px;">Laporan Evaluasi Akademik</h2>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 40px;" id="resultNameDisplay">Peserta: -</p>
                     
                     <div class="score-display-wrapper">
-                        <svg class="score-circle-svg" viewBox="0 0 200 200">
-                            <circle class="score-circle-bg" cx="100" cy="100" r="90"></circle>
-                            <circle class="score-circle-fill" id="scoreCircleFill" cx="100" cy="100" r="90"></circle>
+                        <svg class="score-circle-svg" viewBox="0 0 220 220">
+                            <circle class="score-circle-bg" cx="110" cy="110" r="100"></circle>
+                            <circle class="score-circle-fill" id="scoreCircleFill" cx="110" cy="110" r="100"></circle>
                         </svg>
                         <div class="score-number" id="scoreNumber">0</div>
                     </div>
 
                     <div class="grade-badge" id="gradeBadge">MEMPROSES...</div>
-                    <p id="cheatFailMsg" style="color: #ef4444; font-weight: 700; margin-bottom: 20px; display: none;">
-                        <i class="fa-solid fa-ban"></i> DISKUALIFIKASI KARENA KECURANGAN
-                    </p>
+                    
+                    <div id="cheatFailMsg" style="color: var(--clr-danger-500); font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; display: none; background: rgba(239,68,68,0.1); padding: 15px; border-radius: 15px; border: 2px dashed var(--clr-danger-500);">
+                        <i class="fa-solid fa-ban"></i> DISKUALIFIKASI KARENA PELANGGARAN INTEGRITAS
+                    </div>
+                </div>
+
+                <div class="analytics-container" id="analyticsPanel">
+                    <div class="analytics-text">
+                        <h3 style="margin-bottom: 20px; font-weight: 800; color: var(--clr-primary-700);"><i class="fa-solid fa-chart-pie"></i> Statistik Performa</h3>
+                        <div class="stat-row"><span>Total Soal Dijawab</span> <span class="stat-value" id="statAnswered">0 / 10</span></div>
+                        <div class="stat-row"><span>Jawaban Benar</span> <span class="stat-value" style="color: var(--clr-primary-500);" id="statCorrect">0</span></div>
+                        <div class="stat-row"><span>Jawaban Salah</span> <span class="stat-value" style="color: var(--clr-danger-500);" id="statWrong">0</span></div>
+                        <div class="stat-row"><span>Sisa Waktu</span> <span class="stat-value" style="color: var(--clr-accent-500);" id="statTime">0s</span></div>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="radarChart" width="250" height="250"></canvas>
+                    </div>
                 </div>
 
                 <div class="result-actions">
-                    <button class="btn-mega accent" id="btnPrintCert" onclick="window.print()"><i class="fa-solid fa-award"></i> Cetak Sertifikat</button>
-                    <button class="btn-mega" style="background: var(--bg-body); color: var(--text-main); border: 2px solid var(--border-strong);" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> Ulangi Ujian</button>
+                    <button class="btn-mega primary" id="btnPrintCert" onclick="window.print()">
+                        <i class="fa-solid fa-award"></i> Cetak Sertifikat Resmi
+                    </button>
+                    <button class="btn-mega outline" onclick="location.reload()">
+                        <i class="fa-solid fa-rotate-right"></i> Kembali ke Awal
+                    </button>
                 </div>
 
                 <div class="review-container">
-                    <h3 style="margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-clipboard-list" style="color: var(--clr-accent-500);"></i> Pembahasan Akademik</h3>
+                    <h3 style="margin-bottom: 25px; font-weight: 900; font-size: 1.5rem; display: flex; align-items: center; gap: 12px; color: var(--clr-accent-500);">
+                        <i class="fa-solid fa-book-open"></i> Pembahasan Komprehensif
+                    </h3>
                     <div id="reviewContent">
                         </div>
                 </div>
@@ -322,308 +1208,527 @@
     </main>
 
     <div id="certificate-print">
+        <img src="assets/images/brand/gunadarma-logo.png" alt="Gunadarma" class="cert-logo" onerror="this.style.display='none'">
         <div class="cert-title">SERTIFIKAT KELULUSAN</div>
-        <div class="cert-subtitle">Eksplorasi Filsafat & Risalah Cinta</div>
-        <p style="font-size: 1.2rem; margin-bottom: 20px;">Diberikan dengan penuh hormat kepada:</p>
-        <div class="cert-name">Bapak Mulyadi / Penguji</div>
-        <p style="font-size: 1.2rem; margin-bottom: 20px;">Telah menyelesaikan evaluasi interaktif Kelompok IV dengan nilai:</p>
+        <div class="cert-subtitle">Sistem Evaluasi Interaktif • Filsafat & Risalah Cinta</div>
+        
+        <p style="font-size: 1.2rem; margin-bottom: 10px;">Diberikan dengan penuh apresiasi kepada:</p>
+        <div class="cert-name" id="certNameDisplay">NAMA MAHASISWA</div>
+        <div class="cert-npm" id="certNPMDisplay">NPM: 00000000</div>
+        
+        <p style="font-size: 1.1rem; margin-bottom: 10px; max-width: 800px;">Telah menyelesaikan ujian akhir mata kuliah Agama Islam (Semester 2) yang diselenggarakan oleh Kelompok IV dengan pencapaian nilai akhir:</p>
         <div class="cert-score" id="certScoreDisplay">100 (MUMTAZ)</div>
+        
         <div class="cert-footer">
-            <div>
+            <div class="sign-box">
                 <div class="sign-line">Sistem Penilai Otomatis</div>
-                <p>NEXA Edu Engine</p>
+                <p style="color: #64748b;">NEXA Edu Engine V4.0</p>
             </div>
-            <div>
-                <img src="assets/images/brand/gunadarma-logo.png" onerror="this.style.display='none'" style="height: 100px; margin-top: 30px;" alt="Logo Kampus">
+            <div class="sign-box">
+                <div class="sign-line">Bapak Mulyadi</div>
+                <p style="color: #64748b;">Dosen Pengampu Mata Kuliah</p>
             </div>
-            <div>
-                <div class="sign-line">Ketua Kelompok IV</div>
-                <p>Muhamad Fauzan Al Farikhi</p>
+            <div class="sign-box">
+                <div class="sign-line">Kelompok IV</div>
+                <p style="color: #64748b;">Pengembang Sistem</p>
             </div>
         </div>
     </div>
 
-    <k4-footer></k4-footer>
-
-    <script src="components/navbar.js"></script>
-    <script src="components/footer.js"></script>
-    <script src="data.js"></script>
-    <script src="core.js"></script>
-    <script src="search.js"></script>
-
     <script>
-        class IslamicGodModeQuiz {
-            constructor() {
-                // Konfigurasi & State
-                this.timeLimit = 180; // 3 Menit
-                this.maxStrikes = 3;
-                
-                this.state = {
-                    currentQ: 0,
-                    score: 0,
-                    answers: [],
-                    timeLeft: this.timeLimit,
-                    timerInt: null,
-                    isActive: false,
-                    strikes: 0,
-                    selectedOption: null
-                };
-
-                // Database Soal Mendalam
-                this.db = [
-                    {
-                        q: "Menurut Haidar Bagir dalam 'Islam Risalah Cinta', esensi keberagamaan bukanlah ketakutan akan neraka, melainkan...",
-                        opts: ["Ketaatan tanpa syarat pada elit agama", "Cinta (Mahabbah) yang bermuara pada kebahagiaan", "Pencarian kekuasaan politik umat", "Penolakan total terhadap kehidupan duniawi"],
-                        ans: 1,
-                        exp: "Buku ini merangkum gagasan tasawuf bahwa Tuhan adalah wujud Maha Cinta. Beragama seharusnya merupakan respons cinta makhluk kepada Sang Pencipta, yang secara otomatis melahirkan kebahagiaan eksistensial, bukan sekadar kepatuhan mekanis berbasis ketakutan."
-                    },
-                    {
-                        q: "Dalam 'Philosophy in the Islamic World', Peter Adamson secara tegas membantah narasi Orientalis klasik yang menyatakan bahwa...",
-                        opts: ["Filsafat Islam hanya mengkopi karya Aristoteles", "Al-Ghazali adalah pendiri filsafat Islam", "Filsafat mati dan berakhir setelah kritik Al-Ghazali dan wafatnya Ibnu Rusyd", "Dunia Islam tidak pernah mengenal ilmu logika"],
-                        ans: 2,
-                        exp: "Adamson membuktikan ('Without any gaps') bahwa setelah era klasik di Andalusia, filsafat justru mekar pesat di wilayah timur (Persia/India) melalui tradisi Iluminasi Suhrawardi dan Hikmah Muta'aliyah Mulla Sadra."
-                    },
-                    {
-                        q: "Tujuan utama Al-Ghazali menulis 'Tahafut al-Falasifah' (Kerancuan Para Filsuf) adalah...",
-                        opts: ["Menghancurkan seluruh ilmu sains dan matematika", "Menyelamatkan akidah umat dari pemikiran neoplatonik Ibnu Sina yang dianggap menyimpang", "Mendirikan mazhab Mu'tazilah", "Melarang penggunaan logika silogisme"],
-                        ans: 1,
-                        exp: "Al-Ghazali tidak anti-logika (ia malah menulis buku pengantar logika). Ia hanya mengkritik 20 klaim metafisika filsuf yang tidak punya bukti rasional kuat namun bertentangan dengan teks wahyu (seperti klaim alam semesta itu kekal/qadim)."
-                    },
-                    {
-                        q: "Ibnu Rusyd (Averroes) menulis 'Fasl al-Maqal' untuk memberikan putusan hukum (fatwa) yang menyimpulkan bahwa belajar filsafat itu...",
-                        opts: ["Haram mutlak bagi umat Islam", "Sunnah (Dianjurkan)", "Wajib (Syar'i) bagi mereka yang memiliki kapasitas nalar mumpuni", "Mubah (Boleh) asalkan sembunyi-sembunyi"],
-                        ans: 2,
-                        exp: "Ibnu Rusyd berargumen bahwa Al-Quran memerintahkan manusia (Ulul Albab) untuk merenungkan alam semesta. Metode perenungan paling demonstratif dan rasional adalah filsafat (Burhani), sehingga mempelajarinya adalah sebuah kewajiban syariat."
-                    },
-                    {
-                        q: "Sintesis terbesar antara filsafat rasional, teologi (Kalam), dan tasawuf intuisi pada abad ke-17 M dicapai oleh Mulla Sadra melalui konsep...",
-                        opts: ["Asalat al-Mahiyyah (Primasinya Esensi)", "Asalat al-Wujud (Primasinya Eksistensi/Ada)", "Wahdatul Wujud", "Wajib al-Wujud"],
-                        ans: 1,
-                        exp: "Mulla Sadra merevolusi filsafat dengan menyatakan bahwa 'Esensi' (konsep/bentuk) hanyalah ilusi pikiran manusia. Realitas tunggal yang mutlak nyata dan terus bergerak evolusioner menuju kesempurnaan hanyalah 'Wujud' (Asalat al-Wujud)."
-                    }
-                ];
-
-                this.init();
-            }
-
-            init() {
-                this.cacheDOM();
-                this.bindEvents();
-                this.checkHighScore();
-                
-                // Keyboard Bindings
-                window.addEventListener('keydown', (e) => this.handleKeyboard(e));
-                // Anti-Cheat Bindings
-                document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
-            }
-
-            cacheDOM() {
-                this.screens = {
-                    start: document.getElementById('screen-start'),
-                    quiz: document.getElementById('screen-quiz'),
-                    result: document.getElementById('screen-result')
-                };
-                this.ui = {
-                    qText: document.getElementById('questionText'),
-                    optGrid: document.getElementById('optionsGrid'),
-                    btnNext: document.getElementById('btnNext'),
-                    qTracker: document.getElementById('qTracker'),
-                    qProgress: document.getElementById('qProgress'),
-                    timerText: document.getElementById('timerText'),
-                    timerCircle: document.getElementById('timerCircle'),
-                    timerWrapper: document.getElementById('timerWrapper'),
-                    enterHint: document.getElementById('enterHint'),
-                    antiCheat: document.getElementById('antiCheatOverlay')
-                };
-            }
-
-            bindEvents() {
-                // Initialize strikes UI
-                for(let i=1; i<=3; i++) {
-                    document.getElementById(`strike${i}`).classList.remove('filled');
-                }
-            }
-
-            checkHighScore() {
-                const high = localStorage.getItem('k4_high_score');
-                if(high) {
-                    document.getElementById('highScoreBadge').style.display = 'flex';
-                    document.getElementById('highScoreText').innerText = high;
-                }
-            }
-
-            /* ================= THE ENGINE ================= */
+        /**
+         * NEXA EDU ENGINE v4.0 Ultimate
+         * Arsitektur modular, Object-Oriented, tanpa dependency eksternal untuk UI/Logic.
+         */
+        const IslamicGodModeQuiz = (function() {
             
-            startQuiz() {
-                this.switchScreen('quiz');
-                this.state.isActive = true;
-                this.state.answers = new Array(this.db.length).fill(null);
-                this.loadQuestion();
-                this.startTimer();
-                if(window.appToast) window.appToast("Ujian Dimulai. Fokus!", "info");
+            // ========================================
+            // A. KONFIGURASI & STATE
+            // ========================================
+            const CONFIG = {
+                timeLimit: 300, // 5 Menit total
+                maxStrikes: 3,
+                passScore: 60,
+                excellentScore: 90
+            };
+
+            const state = {
+                user: { name: '', npm: '' },
+                currentQ: 0,
+                score: 0,
+                answers: [], // menyimpan index opsi yang dipilih user
+                timeLeft: CONFIG.timeLimit,
+                timerInterval: null,
+                isActive: false,
+                strikes: 0,
+                selectedOption: null,
+                lifelines: {
+                    used5050: false,
+                    usedTime: false,
+                    usedSkip: false
+                },
+                categories: {
+                    sejarah: { correct: 0, total: 3 },
+                    filsafat: { correct: 0, total: 4 },
+                    tasawuf: { correct: 0, total: 3 }
+                }
+            };
+
+            // ========================================
+            // B. AUDIO ENGINE (WEB AUDIO API)
+            // ========================================
+            // Menghasilkan suara sintesis tanpa file external mp3 untuk menghindari bottleneck
+            const AudioEngine = {
+                ctx: null,
+                init: function() {
+                    if (!this.ctx) {
+                        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                },
+                playTone: function(frequency, type, duration, vol=0.1) {
+                    if(!this.ctx) return;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(frequency, this.ctx.currentTime);
+                    
+                    gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                },
+                success: function() {
+                    this.init();
+                    this.playTone(600, 'sine', 0.1, 0.2);
+                    setTimeout(() => this.playTone(800, 'sine', 0.2, 0.2), 100);
+                },
+                fail: function() {
+                    this.init();
+                    this.playTone(300, 'sawtooth', 0.3, 0.2);
+                    setTimeout(() => this.playTone(250, 'sawtooth', 0.4, 0.2), 150);
+                },
+                tick: function() {
+                    this.init();
+                    this.playTone(1000, 'triangle', 0.05, 0.05);
+                },
+                lifeline: function() {
+                    this.init();
+                    this.playTone(400, 'square', 0.1, 0.1);
+                    setTimeout(() => this.playTone(600, 'square', 0.2, 0.1), 100);
+                    setTimeout(() => this.playTone(1200, 'sine', 0.4, 0.2), 200);
+                }
+            };
+
+            // ========================================
+            // C. DATABASE SOAL (10 SOAL HOTS)
+            // ========================================
+            const database = [
+                {
+                    q: "Menurut Haidar Bagir dalam 'Islam Risalah Cinta', esensi utama dari penciptaan alam semesta dan perintah beragama bukanlah ketakutan akan neraka, melainkan...",
+                    opts: ["Ketaatan tanpa syarat pada elit agama yang berkuasa", "Pancaran Cinta (Mahabbah) ilahi yang bermuara pada kebahagiaan eksistensial", "Pencarian kekuasaan politik umat secara global", "Penolakan mutlak terhadap segala bentuk kenikmatan duniawi"],
+                    ans: 1,
+                    category: "tasawuf",
+                    exp: "Buku 'Islam Risalah Cinta' merangkum gagasan inti tasawuf bahwa Tuhan adalah wujud Maha Cinta ('Aku adalah perbendaharaan tersembunyi yang rindu untuk dikenal'). Beragama seharusnya merupakan respons cinta makhluk kepada Sang Pencipta, yang melahirkan kebahagiaan, bukan kepatuhan mekanis berbasis ketakutan."
+                },
+                {
+                    q: "Dalam karya 'Philosophy in the Islamic World', Peter Adamson secara tegas menggunakan metodologi kesejarahan untuk membantah mitos Orientalis klasik yang menyatakan bahwa...",
+                    opts: ["Filsafat Islam tidak pernah ada, melainkan murni plagiasi dari Yunani", "Al-Ghazali adalah pendiri sejati tradisi filsafat rasional Islam", "Filsafat mati dan berakhir selamanya setelah kritik keras Al-Ghazali dan wafatnya Ibnu Rusyd di Andalusia", "Dunia Islam menolak sepenuhnya ilmu logika Aristotelian"],
+                    ans: 2,
+                    category: "sejarah",
+                    exp: "Adamson membuktikan (dengan konsep 'Without any gaps') bahwa narasi kematian filsafat Islam itu salah. Setelah era Andalusia (Ibnu Rusyd), filsafat justru mekar pesat di dunia Islam bagian timur (Persia dan India) melalui tradisi Iluminasi (Suhrawardi) dan Teosofi Transenden (Mulla Sadra)."
+                },
+                {
+                    q: "Tujuan sejati Al-Ghazali saat menulis masterpiece kontroversialnya, 'Tahafut al-Falasifah' (Kerancuan Para Filsuf) adalah...",
+                    opts: ["Menghancurkan seluruh cabang ilmu sains, kedokteran, dan matematika agar umat fokus beribadah", "Mendemonstrasikan inkonsistensi rasional para filsuf Neoplatonik (seperti Ibnu Sina) dalam 20 masalah metafisika agar akidah umat terselamatkan", "Mendirikan mazhab Mu'tazilah baru di Baghdad", "Melarang penggunaan logika silogisme secara absolut dalam perumusan fikih"],
+                    ans: 1,
+                    category: "filsafat",
+                    exp: "Al-Ghazali sama sekali tidak anti-sains atau anti-logika (beliau menulis buku 'Mi'yar al-Ilm' sebagai standar logika). Ia hanya menyerang klaim-klaim metafisika spesifik dari para filsuf (seperti alam itu kekal, Tuhan tidak tahu hal-hal partikular, dan kebangkitan jasmani itu mustahil) karena dianggap tidak memiliki landasan pembuktian (burhani) yang kuat dan menyalahi wahyu."
+                },
+                {
+                    q: "Sebagai respons balik, Ibnu Rusyd (Averroes) di kemudian hari menulis traktat hukum 'Fasl al-Maqal' yang menyimpulkan secara yurisprudensi (Fikih) bahwa aktivitas berfilsafat itu hukumnya...",
+                    opts: ["Haram mutlak bagi siapapun tanpa pengecualian", "Sunnah (Dianjurkan) bagi para pencari sufi", "Wajib secara syar'i bagi individu yang memiliki kapasitas penalaran demonstratif (burhani)", "Mubah (Boleh) asalkan tidak dipublikasikan ke masyarakat awam"],
+                    ans: 2,
+                    category: "filsafat",
+                    exp: "Dalam 'Fasl al-Maqal', Ibnu Rusyd menggunakan kaidah ushul fikih. Al-Quran memerintahkan manusia (Ulul Albab) untuk merenungkan alam ('I'tibar'). Metode perenungan paling sempurna adalah demonstrasi logis (Burhani/Filsafat). Oleh karena itu, bagi yang mampu, belajar filsafat adalah kewajiban agama, bukan bid'ah."
+                },
+                {
+                    q: "Sintesis terbesar dalam peradaban intelektual Islam antara pemikiran peripatetik (Aristotelian), teologi (Kalam), dan tasawuf (Intuisi) pada abad ke-17 M dicapai oleh Mulla Sadra melalui doktrin utamanya yaitu...",
+                    opts: ["Asalat al-Mahiyyah (Primasinya Esensi/Bentuk Ide)", "Asalat al-Wujud (Primasinya Eksistensi/Ada)", "Wahdat as-Syuhud (Kesatuan Penyaksian Mistik)", "Emanasi Sepuluh Akal Murni"],
+                    ans: 1,
+                    category: "filsafat",
+                    exp: "Mulla Sadra merevolusi ontologi Islam melalui 'Hikmah Muta'aliyah'. Ia meruntuhkan pandangan Suhrawardi dengan menyatakan bahwa 'Esensi' (konsep di kepala kita) hanyalah ilusi/batas mental. Satu-satunya realitas tunggal yang mutlak nyata, dinamis, dan terus bergerak evolusioner menuju kesempurnaan (Tuhan) hanyalah 'Wujud' (Eksistensi)."
+                },
+                {
+                    q: "Perpustakaan monumental sekaligus akademi terjemahan yang didirikan pada masa kejayaan Dinasti Abbasiyah di Baghdad (Abad ke-9 M), tempat bertemunya para sarjana lintas agama, dikenal dengan nama...",
+                    opts: ["Al-Azhar", "Baitul Hikmah (House of Wisdom)", "Madrasah Nizamiyyah", "Darul Arqam"],
+                    ans: 1,
+                    category: "sejarah",
+                    exp: "Baitul Hikmah yang diprakarsai Khalifah Al-Ma'mun adalah pusat intelektual dunia saat itu. Di sinilah karya-karya Yunani (Plato, Aristoteles, Galen) diterjemahkan ke bahasa Arab oleh para sarjana seperti Hunayn bin Ishaq (seorang Kristen Nestorian), membuktikan inklusivitas ilmu di era emas Islam."
+                },
+                {
+                    q: "Al-Kindi, sosok yang diakui sebagai 'Filsuf Arab Pertama', memiliki jasa besar dalam menyeimbangkan antara tradisi Yunani dan doktrin Islam. Salah satu argumen utamanya adalah...",
+                    opts: ["Tuhan adalah entitas materi yang paling halus", "Alam semesta adalah kekal (qadim) bersama Tuhan", "Filsafat (pengetahuan tentang kebenaran) sama sekali tidak bertentangan dengan ajaran rasul, dan membuktikan Tuhan sebagai 'Sebab Pertama'", "Wahyu tidak diperlukan jika manusia sudah menguasai ilmu logika"],
+                    ans: 2,
+                    category: "filsafat",
+                    exp: "Al-Kindi meletakkan batu pertama filsafat Islam dengan menegaskan bahwa kebenaran adalah satu, dari manapun asalnya. Ia menolak gagasan Yunani bahwa alam itu kekal; ia membuktikan dengan matematika dan logika bahwa alam itu memiliki awal (tercipta dari ketiadaan/creatio ex nihilo) oleh Tuhan Yang Esa (The True One)."
+                },
+                {
+                    q: "Dalam konsep Sosiologi Agama yang sering dirujuk Haidar Bagir (berasal dari Ernest Gellner), terdapat dikotomi antara 'Low Islam' dan 'High Islam'. Manakah pernyataan yang BENAR merepresentasikan 'Low Islam'?",
+                    opts: ["Praktik agama yang sinkretis, menyatu secara organik dengan budaya lokal, mengedepankan welas asih, dan tidak mementingkan simbolisme identitas kaku.", "Varian Islam puritan yang sangat ketat menolak segala bentuk tradisi lokal dan tasawuf.", "Pemahaman Islam tingkat rendah yang dianut oleh orang-orang bodoh di perdesaan yang tidak bisa membaca Al-Quran.", "Gerakan politik radikal yang bertujuan mendirikan khilafah global dengan cara kekerasan."],
+                    ans: 0,
+                    category: "tasawuf",
+                    exp: "Istilah 'Low' di sini bukanlah peyoratif (hinaan). 'Low Islam' adalah keberagamaan yang membumi (low-profile), di mana agama melebur ke dalam sendi budaya nusantara, bersifat inklusif, toleran, dan mengedepankan tasawuf (cinta). Sebaliknya, 'High Islam' cenderung eksklusif, politis, puritan, dan sibuk menarik garis batas 'kami vs mereka'."
+                },
+                {
+                    q: "Syihabuddin Yahya As-Suhrawardi dieksekusi pada usia muda karena ajaran filsafatnya yang mendobrak kemapanan. Ia mendirikan Mazhab Isyraqiyyah (Iluminasi) yang titik pijak epistemologinya adalah...",
+                    opts: ["Hanya mengandalkan eksperimen laboratorium (Empirisme ekstrim)", "Menolak seluruh logika rasional dan hanya melakukan tapa brata di gua", "Bahwa pengetahuan sejati (Cahaya/Nur) didapat tidak hanya lewat penalaran diskursif, tetapi harus dipadukan dengan intuisi mistik (Penyucian jiwa)", "Keyakinan bahwa akal manusia adalah fragmen langsung dari zat Allah"],
+                    ans: 2,
+                    category: "tasawuf",
+                    exp: "Suhrawardi mengkritik filsafat Aristotelian (Peripatetik) yang terlalu kering dan kaku. Ia meramu filsafat cahaya. Menurutnya, rasionalitas (logika) itu wajib sebagai fondasi, tetapi untuk mencapai Hakikat Tertinggi, seorang filsuf harus melakukan penyucian jiwa (Tazkiyah) agar 'Cahaya Ilahi' (Isyraq) memancar ke dalam akalnya."
+                },
+                {
+                    q: "Al-Farabi mendapat gelar prestisius 'Mu'allim Ats-Tsani' (Guru Kedua, setelah Aristoteles) karena keberhasilannya dalam merumuskan...",
+                    opts: ["Sistem medis komprehensif pertama di dunia", "Sistem filsafat politik dan tata negara Islam, di mana Kepala Negara ideal (Al-Madinah Al-Fadhilah) adalah gabungan kualitas seorang Nabi dan Filsuf", "Ilmu aljabar dan algoritma mutakhir", "Metodologi penulisan sejarah yang memisahkan mitos dari fakta"],
+                    ans: 1,
+                    category: "sejarah",
+                    exp: "Al-Farabi memadukan konsep 'Republic' Plato dengan konsep Kenabian Islam. Menurutnya, masyarakat ideal (Negara Utama/Utópia) hanya bisa terwujud jika dipimpin oleh seseorang yang memiliki kesempurnaan intelektual (filsuf) sekaligus kesempurnaan imajinatif/spiritual untuk menerima wahyu (Nabi/Imam), yang bertujuan membimbing warga menuju kebahagiaan abadi."
+                }
+            ];
+
+            // ========================================
+            // D. UI DOM CACHE
+            // ========================================
+            const UI = {};
+            function cacheDOM() {
+                // Screens
+                UI.scrRegister = document.getElementById('screen-register');
+                UI.scrRules = document.getElementById('screen-rules');
+                UI.scrQuiz = document.getElementById('screen-quiz');
+                UI.scrResult = document.getElementById('screen-result');
+                
+                // Inputs & Text
+                UI.inpName = document.getElementById('userName');
+                UI.inpNPM = document.getElementById('userNPM');
+                UI.greeting = document.getElementById('userGreetingText');
+                
+                // Quiz Elements
+                UI.qText = document.getElementById('questionText');
+                UI.optGrid = document.getElementById('optionsGrid');
+                UI.btnNext = document.getElementById('btnNext');
+                UI.enterHint = document.getElementById('enterHint');
+                
+                // Progress & Timer
+                UI.qTracker = document.getElementById('qTracker');
+                UI.qProgress = document.getElementById('qProgress');
+                UI.timerWrapper = document.getElementById('timerWrapper');
+                UI.timerCircle = document.getElementById('timerCircle');
+                UI.timerText = document.getElementById('timerText');
+                
+                // Anti Cheat
+                UI.antiCheat = document.getElementById('antiCheatOverlay');
+                UI.strike1 = document.getElementById('strike1');
+                UI.strike2 = document.getElementById('strike2');
+                UI.strike3 = document.getElementById('strike3');
+                
+                // Lifelines
+                UI.ll5050 = document.getElementById('ll-5050');
+                UI.llTime = document.getElementById('ll-time');
+                UI.llSkip = document.getElementById('ll-skip');
             }
 
-            switchScreen(screenName) {
-                Object.values(this.screens).forEach(s => s.classList.remove('active'));
-                this.screens[screenName].classList.add('active');
+            // ========================================
+            // E. CORE LOGIC METHODS
+            // ========================================
+            
+            function showScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById('screen-' + screenId).classList.add('active');
             }
 
-            loadQuestion() {
-                const data = this.db[this.state.currentQ];
-                this.state.selectedOption = null;
+            // 1. Validasi Registrasi
+            function submitRegistration() {
+                const name = UI.inpName.value.trim();
+                const npm = UI.inpNPM.value.trim();
+
+                if(name.length < 3) {
+                    toastError("Nama harus diisi minimal 3 karakter.");
+                    return;
+                }
+                if(npm.length < 8) {
+                    toastError("NPM Gunadarma tidak valid (Min 8 Angka).");
+                    return;
+                }
+
+                state.user.name = name;
+                state.user.npm = npm;
                 
-                // Update UI
-                this.ui.qText.innerHTML = `${this.state.currentQ + 1}. ${data.q}`;
-                this.ui.qTracker.innerText = `Soal ${this.state.currentQ + 1} / ${this.db.length}`;
-                this.ui.qProgress.style.width = `${((this.state.currentQ) / this.db.length) * 100}%`;
+                // Siapkan tampilan sertifikat secara diam-diam
+                document.getElementById('certNameDisplay').innerText = name.toUpperCase();
+                document.getElementById('certNPMDisplay').innerText = "NPM: " + npm;
+                document.getElementById('resultNameDisplay').innerText = `Peserta: ${name} (${npm})`;
                 
-                // Clear & Render Options
-                this.ui.optGrid.innerHTML = '';
-                this.ui.btnNext.style.display = 'none';
-                this.ui.enterHint.classList.remove('show');
+                UI.greeting.innerHTML = `Selamat Datang, <strong>${name.split(' ')[0]}</strong>!`;
+                AudioEngine.init();
+                showScreen('rules');
+            }
+
+            // 2. Mulai Ujian
+            function startQuiz() {
+                showScreen('quiz');
+                state.isActive = true;
+                state.answers = new Array(database.length).fill(null);
                 
-                const labels = ['A', 'B', 'C', 'D'];
-                data.opts.forEach((opt, idx) => {
+                // Inisialisasi Audio Engine akibat user interaction klik
+                AudioEngine.init();
+                
+                loadQuestion();
+                startTimer();
+                toastSuccess("Ujian Dimulai. Fokus!");
+            }
+
+            // 3. Render Pertanyaan
+            function loadQuestion() {
+                const data = database[state.currentQ];
+                state.selectedOption = null;
+                
+                // Update UI Progress
+                UI.qText.innerHTML = `${state.currentQ + 1}. ${data.q}`;
+                UI.qTracker.innerText = `Soal ${state.currentQ + 1} / ${database.length}`;
+                UI.qProgress.style.width = `${((state.currentQ) / database.length) * 100}%`;
+                
+                // Kosongkan Grid Opsi
+                UI.optGrid.innerHTML = '';
+                UI.btnNext.style.display = 'none';
+                UI.enterHint.classList.remove('show');
+                
+                const hotkeys = ['A', 'B', 'C', 'D'];
+                data.opts.forEach((optText, index) => {
                     const btn = document.createElement('button');
                     btn.className = 'option-btn';
-                    btn.innerHTML = `<span class="option-hotkey">${labels[idx]}</span> <span style="flex:1;">${opt}</span>`;
-                    btn.onclick = () => this.selectOption(idx, btn);
-                    this.ui.optGrid.appendChild(btn);
+                    btn.id = `optBtn-${index}`;
+                    btn.innerHTML = `<span class="option-hotkey">${hotkeys[index]}</span> <span style="flex:1;">${optText}</span>`;
+                    btn.onclick = () => selectOption(index, btn);
+                    UI.optGrid.appendChild(btn);
                 });
             }
 
-            selectOption(index, btnEl) {
-                if(!this.state.isActive) return;
+            // 4. Pilih Opsi
+            function selectOption(index, btnElement) {
+                if(!state.isActive) return;
                 
-                // UI Update
                 document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-                btnEl.classList.add('selected');
+                btnElement.classList.add('selected');
                 
-                // State Update
-                this.state.selectedOption = index;
-                this.state.answers[this.state.currentQ] = index;
+                state.selectedOption = index;
+                state.answers[state.currentQ] = index;
                 
-                // Show Next / Hint
-                this.ui.btnNext.style.display = 'inline-flex';
-                this.ui.enterHint.classList.add('show');
+                UI.btnNext.style.display = 'inline-flex';
+                UI.enterHint.classList.add('show');
+                AudioEngine.playTone(800, 'sine', 0.05, 0.1); // Sound effect click
             }
 
-            nextQuestion() {
-                if(this.state.selectedOption === null) return; // Cannot proceed without answering
+            function nextQuestion() {
+                if(state.selectedOption === null) return; 
                 
-                if (this.state.currentQ < this.db.length - 1) {
-                    this.state.currentQ++;
-                    this.ui.qProgress.style.width = `${((this.state.currentQ) / this.db.length) * 100}%`;
-                    this.loadQuestion();
+                if (state.currentQ < database.length - 1) {
+                    state.currentQ++;
+                    UI.qProgress.style.width = `${((state.currentQ) / database.length) * 100}%`;
+                    loadQuestion();
                 } else {
-                    this.finishQuiz();
+                    finishQuiz();
                 }
             }
 
-            /* ================= TIMER ================= */
-            
-            startTimer() {
-                const circumference = 163; // 2 * pi * r (r=26)
+            // ========================================
+            // F. LIFELINE SYSTEM
+            // ========================================
+            function useLifeline(type) {
+                if(!state.isActive) return;
                 
-                this.state.timerInt = setInterval(() => {
-                    this.state.timeLeft--;
-                    this.ui.timerText.innerText = this.state.timeLeft;
+                const currentData = database[state.currentQ];
+
+                if(type === '5050' && !state.lifelines.used5050) {
+                    state.lifelines.used5050 = true;
+                    UI.ll5050.disabled = true;
+                    AudioEngine.lifeline();
                     
-                    // SVG Circle Dashoffset math
-                    const dashoffset = circumference - (this.state.timeLeft / this.timeLimit) * circumference;
-                    this.ui.timerCircle.style.strokeDashoffset = dashoffset;
+                    // Logika hapus 2 salah
+                    let wrongIndexes = [0,1,2,3].filter(i => i !== currentData.ans);
+                    // Acak array dan ambil 2 pertama
+                    wrongIndexes = wrongIndexes.sort(() => 0.5 - Math.random()).slice(0,2);
                     
-                    if(this.state.timeLeft <= 15) {
-                        this.ui.timerWrapper.classList.add('danger');
-                    }
+                    wrongIndexes.forEach(idx => {
+                        const btn = document.getElementById(`optBtn-${idx}`);
+                        if(btn) btn.classList.add('disabled-5050');
+                    });
+                    toastSuccess("50:50 Diaktifkan. Dua opsi salah dihapus.");
+                }
+                
+                else if(type === 'time' && !state.lifelines.usedTime) {
+                    state.lifelines.usedTime = true;
+                    UI.llTime.disabled = true;
+                    AudioEngine.lifeline();
                     
-                    if(this.state.timeLeft <= 0) {
-                        this.finishQuiz(true);
+                    state.timeLeft += 30;
+                    if(state.timeLeft > CONFIG.timeLimit) state.timeLeft = CONFIG.timeLimit;
+                    updateTimerUI();
+                    
+                    UI.timerWrapper.classList.remove('danger');
+                    UI.timerWrapper.classList.remove('warning');
+                    toastSuccess("+30 Detik Ditambahkan!");
+                }
+                
+                else if(type === 'skip' && !state.lifelines.usedSkip) {
+                    state.lifelines.usedSkip = true;
+                    UI.llSkip.disabled = true;
+                    AudioEngine.lifeline();
+                    
+                    // Auto pilih jawaban benar
+                    state.answers[state.currentQ] = currentData.ans;
+                    toastSuccess("Soal dilewati dan dihitung Benar!");
+                    
+                    setTimeout(() => {
+                        if (state.currentQ < database.length - 1) {
+                            state.currentQ++;
+                            loadQuestion();
+                        } else {
+                            finishQuiz();
+                        }
+                    }, 1000);
+                }
+            }
+
+            // ========================================
+            // G. TIMER ENGINE
+            // ========================================
+            function startTimer() {
+                updateTimerUI();
+                state.timerInterval = setInterval(() => {
+                    state.timeLeft--;
+                    updateTimerUI();
+                    
+                    if(state.timeLeft <= 0) {
+                        finishQuiz(true); // Timeout
                     }
                 }, 1000);
             }
 
-            /* ================= KEYBOARD SUPPORT ================= */
-            handleKeyboard(e) {
-                if(!this.state.isActive) return;
+            function updateTimerUI() {
+                const circumference = 213; // dari CSS 2*pi*34
+                UI.timerText.innerText = state.timeLeft;
                 
-                const key = e.key.toLowerCase();
-                const buttons = document.querySelectorAll('.option-btn');
+                const dashoffset = circumference - (state.timeLeft / CONFIG.timeLimit) * circumference;
+                UI.timerCircle.style.strokeDashoffset = dashoffset;
                 
-                if(key === 'a' && buttons[0]) this.selectOption(0, buttons[0]);
-                if(key === 'b' && buttons[1]) this.selectOption(1, buttons[1]);
-                if(key === 'c' && buttons[2]) this.selectOption(2, buttons[2]);
-                if(key === 'd' && buttons[3]) this.selectOption(3, buttons[3]);
-                
-                if(key === 'enter' && this.state.selectedOption !== null) {
-                    e.preventDefault();
-                    this.nextQuestion();
+                if(state.timeLeft <= 30 && state.timeLeft > 10) {
+                    UI.timerWrapper.classList.add('warning');
+                } else if(state.timeLeft <= 10) {
+                    UI.timerWrapper.classList.remove('warning');
+                    UI.timerWrapper.classList.add('danger');
+                    AudioEngine.tick(); // Detik menegangkan
                 }
             }
 
-            /* ================= ANTI CHEAT SYSTEM ================= */
-            handleVisibilityChange() {
-                if(this.state.isActive && document.hidden) {
-                    this.state.strikes++;
-                    this.ui.antiCheat.classList.add('active');
+            // ========================================
+            // H. ANTI CHEAT ENGINE
+            // ========================================
+            function handleVisibilityChange() {
+                if(state.isActive && document.hidden) {
+                    state.strikes++;
+                    UI.antiCheat.classList.add('active');
+                    AudioEngine.fail();
                     
-                    // Update Strike Box UI
-                    if(this.state.strikes <= 3) {
-                        document.getElementById(`strike${this.state.strikes}`).classList.add('filled');
+                    // Update Strike Boxes
+                    if(state.strikes <= 3) {
+                        document.getElementById(`strike${state.strikes}`).classList.add('filled');
                     }
                     
-                    if(this.state.strikes >= this.maxStrikes) {
-                        // AUTO FAIL
-                        this.state.score = 0;
-                        this.finishQuiz(false, true);
-                        this.ui.antiCheat.classList.remove('active'); // Close overlay to show fail screen
+                    if(state.strikes >= CONFIG.maxStrikes) {
+                        // DISKUALIFIKASI TOTAL
+                        state.score = 0;
+                        UI.antiCheat.classList.remove('active');
+                        finishQuiz(false, true);
                     }
                 }
             }
 
-            /* ================= GRADING & RESULTS ================= */
-            finishQuiz(isTimeOut = false, isCheat = false) {
-                clearInterval(this.state.timerInt);
-                this.state.isActive = false;
-                this.ui.qProgress.style.width = '100%';
+            function closeWarning() {
+                UI.antiCheat.classList.remove('active');
+            }
+
+            // ========================================
+            // I. GRADING & ANALYTICS (CANVAS)
+            // ========================================
+            function finishQuiz(isTimeout = false, isCheat = false) {
+                clearInterval(state.timerInterval);
+                state.isActive = false;
+                UI.qProgress.style.width = '100%';
                 
-                // Calculation
+                if(isTimeout) toastError("Waktu Habis! Mengkalkulasi nilai...");
+                
                 let correctCount = 0;
-                this.db.forEach((item, i) => {
-                    if(this.state.answers[i] === item.ans) correctCount++;
+                let wrongCount = 0;
+                let answeredCount = 0;
+                
+                // Analisa Kategori
+                state.categories.sejarah.correct = 0;
+                state.categories.filsafat.correct = 0;
+                state.categories.tasawuf.correct = 0;
+
+                database.forEach((item, i) => {
+                    if(state.answers[i] !== null) answeredCount++;
+                    
+                    if(state.answers[i] === item.ans) {
+                        correctCount++;
+                        state.categories[item.category].correct++;
+                    } else if (state.answers[i] !== null) {
+                        wrongCount++;
+                    }
                 });
                 
-                this.state.score = isCheat ? 0 : (correctCount / this.db.length) * 100;
+                state.score = isCheat ? 0 : Math.round((correctCount / database.length) * 100);
                 
-                this.renderResultScreen(isCheat);
-                this.saveHighScore();
+                // Update Analytics Text
+                document.getElementById('statAnswered').innerText = `${answeredCount} / ${database.length}`;
+                document.getElementById('statCorrect').innerText = correctCount;
+                document.getElementById('statWrong').innerText = wrongCount;
+                document.getElementById('statTime').innerText = `${state.timeLeft}s`;
+
+                renderResultScreen(isCheat);
+                if(!isCheat) drawRadarChart();
             }
 
-            renderResultScreen(isCheat) {
-                this.switchScreen('result');
+            function renderResultScreen(isCheat) {
+                showScreen('result');
                 
-                // Animate Score SVG
-                const finalOffset = 565 - (this.state.score / 100) * 565;
+                // Circular Score Animation
+                const circumference = 628;
+                const finalOffset = circumference - (state.score / 100) * circumference;
                 setTimeout(() => {
                     document.getElementById('scoreCircleFill').style.strokeDashoffset = finalOffset;
                 }, 500);
 
-                // Animate Number Counter
+                // Number Counter Animation
                 let currentNum = 0;
                 const numEl = document.getElementById('scoreNumber');
                 const interval = setInterval(() => {
-                    if(currentNum >= this.state.score) {
+                    if(currentNum >= state.score) {
                         clearInterval(interval);
-                        numEl.innerText = this.state.score;
+                        numEl.innerText = state.score;
                     } else {
-                        currentNum += 2;
+                        currentNum += Math.ceil(state.score / 20); // Kecepatan counter
+                        if(currentNum > state.score) currentNum = state.score;
                         numEl.innerText = currentNum;
                     }
-                }, 20);
+                }, 40);
 
-                // Grade Logic
+                // Grade & Cert Logic
                 const badge = document.getElementById('gradeBadge');
                 const btnPrint = document.getElementById('btnPrintCert');
+                const certScore = document.getElementById('certScoreDisplay');
                 
                 badge.className = 'grade-badge'; // reset
                 
@@ -631,75 +1736,214 @@
                     badge.innerText = "DISKUALIFIKASI";
                     badge.classList.add('grade-rasib');
                     document.getElementById('cheatFailMsg').style.display = 'block';
-                    document.getElementById('scoreCircleFill').style.stroke = '#ef4444';
-                    numEl.style.color = '#ef4444';
+                    document.getElementById('scoreCircleFill').style.stroke = 'var(--clr-danger-500)';
+                    numEl.style.color = 'var(--clr-danger-500)';
                     btnPrint.style.display = 'none';
-                    document.getElementById('certScoreDisplay').innerText = `0 (DISKUALIFIKASI KECURANGAN)`;
+                    certScore.innerText = `0 (PELANGGARAN AKADEMIK)`;
+                    AudioEngine.fail();
                 } else {
-                    if(this.state.score >= 90) {
-                        badge.innerText = "MUMTAZ (Sangat Baik)";
+                    if(state.score >= CONFIG.excellentScore) {
+                        badge.innerText = "MUMTAZ (Luar Biasa)";
                         badge.classList.add('grade-mumtaz');
-                        this.fireConfetti();
-                        document.getElementById('certScoreDisplay').innerText = `${this.state.score} (MUMTAZ)`;
-                    } else if (this.state.score >= 60) {
+                        fireConfetti();
+                        AudioEngine.success();
+                        certScore.innerText = `${state.score} (MUMTAZ)`;
+                    } else if (state.score >= CONFIG.passScore) {
                         badge.innerText = "JAYYID (Baik)";
                         badge.classList.add('grade-jayyid');
-                        this.fireConfetti();
-                        document.getElementById('certScoreDisplay').innerText = `${this.state.score} (JAYYID)`;
+                        fireConfetti();
+                        AudioEngine.success();
+                        certScore.innerText = `${state.score} (JAYYID)`;
                     } else {
                         badge.innerText = "RASIB (Gagal)";
                         badge.classList.add('grade-rasib');
-                        document.getElementById('scoreCircleFill').style.stroke = '#ef4444';
-                        btnPrint.style.display = 'none'; // Gagal = No Certificate
+                        document.getElementById('scoreCircleFill').style.stroke = 'var(--clr-danger-500)';
+                        btnPrint.style.display = 'none'; 
+                        AudioEngine.fail();
                     }
                 }
 
-                // Render Pembahasan
+                renderReviewBoxes();
+            }
+
+            function renderReviewBoxes() {
                 const revBox = document.getElementById('reviewContent');
                 revBox.innerHTML = '';
-                this.db.forEach((item, i) => {
-                    const isCorrect = this.state.answers[i] === item.ans;
-                    const userAnsText = this.state.answers[i] !== null ? item.opts[this.state.answers[i]] : 'Kosong/Waktu Habis';
+                
+                database.forEach((item, i) => {
+                    const isCorrect = state.answers[i] === item.ans;
+                    const isSkipped = state.answers[i] === null;
+                    let statusClass = isCorrect ? 'correct' : (isSkipped ? 'skipped' : 'wrong');
                     
+                    let userAnsText = 'Waktu Habis / Lewati';
+                    if(!isSkipped) userAnsText = item.opts[state.answers[i]];
+                    
+                    let iconHtml = isSkipped ? '<i class="fa-solid fa-minus-circle" style="color:#64748b"></i>' : 
+                                   (isCorrect ? '<i class="fa-solid fa-check-circle" style="color:#10b981"></i>' : '<i class="fa-solid fa-times-circle" style="color:#ef4444"></i>');
+
                     const div = document.createElement('div');
-                    div.className = `review-item ${isCorrect ? 'correct' : 'wrong'}`;
+                    div.className = `review-item ${statusClass}`;
                     div.innerHTML = `
                         <div class="review-q">${i+1}. ${item.q}</div>
-                        <div class="review-ans" style="color: ${isCorrect ? '#10b981' : '#ef4444'}">
-                            Pilihan Anda: ${userAnsText} ${isCorrect ? '<i class="fa-solid fa-check-circle"></i>' : '<i class="fa-solid fa-times-circle"></i>'}
+                        <div class="review-ans" style="border-color: ${isCorrect ? '#10b981' : (isSkipped ? '#64748b' : '#ef4444')}; background: ${isCorrect ? 'rgba(16,185,129,0.05)' : (isSkipped ? 'rgba(100,116,139,0.05)' : 'rgba(239,68,68,0.05)')}">
+                            <span>Pilihan Anda: <strong>${userAnsText}</strong></span>
+                            ${iconHtml}
                         </div>
-                        ${!isCorrect ? `<div class="review-ans" style="color: #047857;">Jawaban Benar: ${item.opts[item.ans]}</div>` : ''}
-                        <div class="review-exp">${item.exp}</div>
+                        ${!isCorrect ? `<div class="review-ans" style="border-color:#10b981; background:rgba(16,185,129,0.05);">
+                            <span>Jawaban Benar: <strong>${item.opts[item.ans]}</strong></span>
+                            <i class="fa-solid fa-check-circle" style="color:#10b981"></i>
+                        </div>` : ''}
+                        <div class="review-exp"><i class="fa-solid fa-lightbulb" style="color:var(--clr-accent-500); margin-right:8px;"></i> ${item.exp}</div>
                     `;
                     revBox.appendChild(div);
                 });
             }
 
-            fireConfetti() {
+            // 10. Canvas Drawing: Radar Chart untuk Analitik Kategori
+            function drawRadarChart() {
+                const canvas = document.getElementById('radarChart');
+                if(!canvas.getContext) return;
+                const ctx = canvas.getContext('2d');
+                
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const maxRadius = 80;
+                
+                // Data mapping
+                const catNames = ["Sejarah", "Filsafat", "Tasawuf"];
+                const catScores = [
+                    state.categories.sejarah.correct / state.categories.sejarah.total,
+                    state.categories.filsafat.correct / state.categories.filsafat.total,
+                    state.categories.tasawuf.correct / state.categories.tasawuf.total
+                ];
+
+                const sides = 3;
+                const angle = Math.PI * 2 / sides;
+                
+                // Draw Background Grid (3 levels)
+                ctx.strokeStyle = "rgba(100, 116, 139, 0.2)";
+                ctx.lineWidth = 1;
+                for(let level = 1; level <= 3; level++) {
+                    let r = maxRadius * (level/3);
+                    ctx.beginPath();
+                    for(let i=0; i<sides; i++) {
+                        let a = angle * i - Math.PI/2;
+                        let x = centerX + Math.cos(a) * r;
+                        let y = centerY + Math.sin(a) * r;
+                        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+
+                // Draw Axes & Labels
+                ctx.strokeStyle = "rgba(100, 116, 139, 0.3)";
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-main');
+                ctx.font = "bold 12px Poppins";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                for(let i=0; i<sides; i++) {
+                    let a = angle * i - Math.PI/2;
+                    let x = centerX + Math.cos(a) * maxRadius;
+                    let y = centerY + Math.sin(a) * maxRadius;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+
+                    // Label placement
+                    let lx = centerX + Math.cos(a) * (maxRadius + 20);
+                    let ly = centerY + Math.sin(a) * (maxRadius + 20);
+                    ctx.fillText(catNames[i], lx, ly);
+                }
+
+                // Draw User Performance Polygon
+                ctx.beginPath();
+                for(let i=0; i<sides; i++) {
+                    let a = angle * i - Math.PI/2;
+                    // Minimal radius agar grafik tetap keliatan meski 0
+                    let val = Math.max(0.1, catScores[i]); 
+                    let x = centerX + Math.cos(a) * (maxRadius * val);
+                    let y = centerY + Math.sin(a) * (maxRadius * val);
+                    
+                    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+                }
+                ctx.closePath();
+
+                // Style the polygon
+                ctx.fillStyle = "rgba(16, 185, 129, 0.4)";
+                ctx.fill();
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = "#10b981";
+                ctx.stroke();
+            }
+
+            function fireConfetti() {
                 var duration = 4 * 1000;
                 var end = Date.now() + duration;
                 (function frame() {
-                    confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#10b981', '#d97706', '#047857'] });
-                    confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#10b981', '#d97706', '#047857'] });
+                    confetti({ particleCount: 6, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#10b981', '#d97706', '#047857', '#ffffff'] });
+                    confetti({ particleCount: 6, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#10b981', '#d97706', '#047857', '#ffffff'] });
                     if (Date.now() < end) requestAnimationFrame(frame);
                 }());
             }
 
-            saveHighScore() {
-                const prev = parseInt(localStorage.getItem('k4_high_score')) || 0;
-                if(this.state.score > prev) {
-                    localStorage.setItem('k4_high_score', this.state.score);
+            // Keyboard Bindings
+            window.addEventListener('keydown', (e) => {
+                if(!state.isActive) return;
+                const key = e.key.toLowerCase();
+                const buttons = document.querySelectorAll('.option-btn:not(.disabled-5050)');
+                
+                if(key === 'a') document.getElementById('optBtn-0')?.click();
+                if(key === 'b') document.getElementById('optBtn-1')?.click();
+                if(key === 'c') document.getElementById('optBtn-2')?.click();
+                if(key === 'd') document.getElementById('optBtn-3')?.click();
+                
+                if(key === 'enter' && state.selectedOption !== null) {
+                    e.preventDefault();
+                    nextQuestion();
                 }
+            });
+
+            // Utilities
+            function toastSuccess(msg) {
+                const b = document.getElementById('toast-box');
+                const t = document.createElement('div'); t.className = 'toast';
+                t.style.borderLeftColor = 'var(--clr-primary-500)';
+                t.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--clr-primary-500)"></i> <span>${msg}</span>`;
+                b.appendChild(t); setTimeout(() => t.remove(), 3500);
             }
-        }
 
-        // Initialize Engine
-        const GodModeQuiz = new IslamicGodModeQuiz();
+            function toastError(msg) {
+                const b = document.getElementById('toast-box');
+                const t = document.createElement('div'); t.className = 'toast';
+                t.style.borderLeftColor = 'var(--clr-danger-500)';
+                t.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color:var(--clr-danger-500)"></i> <span>${msg}</span>`;
+                b.appendChild(t); setTimeout(() => t.remove(), 3500);
+            }
 
-        // Helper function for anti cheat overlay
-        function closeAntiCheatWarning() {
-            document.getElementById('antiCheatOverlay').classList.remove('active');
-        }
+            // Public Methods Exposure
+            return {
+                init: function() {
+                    cacheDOM();
+                    document.addEventListener('visibilitychange', handleVisibilityChange);
+                },
+                switchScreen,
+                submitRegistration,
+                startQuiz,
+                useLifeline,
+                nextQuestion,
+                closeWarning
+            };
+
+        })();
+
+        // Document Ready Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            IslamicGodModeQuiz.init();
+        });
     </script>
 </body>
 </html>

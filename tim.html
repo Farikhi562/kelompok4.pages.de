@@ -3,495 +3,2004 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Profil Anggota Kelompok IV - Proyek Akhir Agama Islam">
-    <title>Profil Kelompok IV | Agama Islam</title>
+    <meta name="description" content="NEXA Team Hub - Profil Anggota Kelompok IV untuk Proyek Akhir Agama Islam.">
+    <meta name="author" content="Muhamad Fauzan Al Farikhi & NEXA Tech Labs">
+    <title>Struktur Kelompok IV | Filsafat Islam</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Space+Mono:wght@400;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="animations.css">
-
     <style>
-        /* --- GLOBAL OVERRIDES --- */
-        body { background-color: var(--bg-body, #f8fafc); overflow-x: hidden; scroll-behavior: smooth; }
+        /* --- 1. CORE VARIABLES & THEME ENGINE --- */
+        :root {
+            /* Light Theme */
+            --bg-body: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-alt: #f1f5f9;
+            --bg-terminal: #0f172a;
+            
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --text-terminal: #10b981;
+            
+            --clr-primary-300: #6ee7b7;
+            --clr-primary-500: #10b981;
+            --clr-primary-700: #047857;
+            --clr-primary-900: #022c22;
+            
+            --clr-accent-400: #fbbf24;
+            --clr-accent-500: #d97706;
+            --clr-accent-700: #b45309;
+            
+            --clr-danger-500: #ef4444;
+            --clr-info-500: #3b82f6;
+            
+            --border-light: rgba(0,0,0,0.06);
+            --border-strong: rgba(0,0,0,0.15);
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -3px rgba(0,0,0,0.1);
+            --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.15);
+            --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.3);
+            
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Poppins', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            --font-arabic: 'Amiri', serif;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-        /* --- PRELOADER --- */
-        #preloader { position: fixed; inset: 0; background: var(--bg-body, #0f172a); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
-        .bismillah { font-family: 'Amiri', serif; font-size: 3rem; color: var(--clr-primary-500, #10b981); animation: pulse 2s infinite; }
-        
-        /* --- NEXUS PARTICLE CANVAS --- */
-        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.4; pointer-events: none; }
-        [data-theme="dark"] #particle-canvas { opacity: 0.15; }
+        [data-theme="dark"] {
+            /* Dark Theme Override */
+            --bg-body: #020617;
+            --bg-surface: #0f172a;
+            --bg-surface-alt: #1e293b;
+            --bg-terminal: #000000;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-terminal: #6ee7b7;
+            
+            --border-light: rgba(255,255,255,0.05);
+            --border-strong: rgba(255,255,255,0.15);
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.3);
+            --shadow-md: 0 10px 25px -3px rgba(0,0,0,0.5);
+            --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.7);
+        }
 
-        /* --- HERO SECTION --- */
-        .team-hero { padding: 120px 5% 40px; text-align: center; position: relative; z-index: 2; }
-        .team-title { font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; color: var(--clr-primary-700, #047857); margin-bottom: 10px; }
-        [data-theme="dark"] .team-title { color: #10b981; }
-        .team-subtitle { color: var(--text-muted, #64748b); font-size: 1.1rem; font-weight: 600; margin-bottom: 30px; }
+        /* --- 2. GLOBAL RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            position: relative;
+        }
+
+        ::selection {
+            background: var(--clr-primary-500);
+            color: white;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--clr-primary-500), var(--clr-primary-700));
+            border-radius: 10px;
+        }
+
+        /* --- 3. PRELOADER (BISMILLAH) --- */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-terminal);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .bismillah-text {
+            font-family: var(--font-arabic);
+            font-size: clamp(3rem, 6vw, 5rem);
+            color: var(--clr-primary-500);
+            animation: pulseGlow 2s infinite alternate;
+            text-shadow: var(--shadow-glow);
+            margin-bottom: 30px;
+        }
+
+        .loader-bar-container {
+            width: 300px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-accent-500));
+            transition: width 0.1s linear;
+        }
+
+        .loader-status {
+            margin-top: 15px;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 20px rgba(16,185,129,0.6)); }
+        }
+
+        /* --- 4. NEXUS PARTICLE BACKGROUND --- */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* --- 5. SMART NAVBAR --- */
+        .k4-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px) saturate(1.5);
+            border-bottom: 1px solid var(--border-light);
+            padding: 15px 5%;
+            transition: var(--transition-smooth);
+        }
+
+        [data-theme="dark"] .k4-nav {
+            background: rgba(15,23,42,0.85);
+        }
+
+        .k4-nav.scrolled {
+            padding: 10px 5%;
+            box-shadow: var(--shadow-md);
+        }
+
+        .k4-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .k4-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .k4-brand img {
+            height: 45px;
+            transition: var(--transition-bounce);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+        .k4-brand:hover img {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .k4-brand span {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: 1.3rem;
+            color: var(--clr-primary-700);
+            letter-spacing: 1px;
+        }
+
+        [data-theme="dark"] .k4-brand span {
+            color: var(--clr-primary-500);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-base {
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-family: var(--font-body);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition-bounce);
+            font-size: 0.95rem;
+            border: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--border-strong);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-surface-alt);
+            border-color: var(--clr-primary-500);
+            transform: translateY(-2px);
+        }
+
+        .btn-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-strong);
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-icon:hover {
+            background: var(--clr-primary-500);
+            color: white;
+            border-color: var(--clr-primary-500);
+            transform: translateY(-3px) rotate(15deg);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* --- 6. HERO SECTION --- */
+        .hero-section {
+            padding: 160px 5% 60px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .badge-pro {
+            background: rgba(16,185,129,0.1);
+            color: var(--clr-primary-700);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-family: var(--font-mono);
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(16,185,129,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+        }
+
+        [data-theme="dark"] .badge-pro {
+            color: var(--clr-primary-300);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, var(--clr-primary-500), var(--clr-accent-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
 
         .quote-box {
-            max-width: 800px; margin: 0 auto; background: var(--bg-surface, rgba(255,255,255,0.8));
-            backdrop-filter: blur(10px); padding: 25px; border-radius: 15px; border-left: 5px solid var(--clr-accent-500, #d97706);
-            color: var(--text-muted, #475569); box-shadow: 0 10px 30px rgba(0,0,0,0.05); font-style: italic;
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--bg-surface);
+            backdrop-filter: blur(15px);
+            padding: 35px;
+            border-radius: 24px;
+            border-left: 6px solid var(--clr-accent-500);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
         }
-        [data-theme="dark"] .quote-box { background: rgba(15, 23, 42, 0.8); color: #94a3b8; }
 
-        /* --- TOOLBAR --- */
-        .toolbar { max-width: 1200px; margin: 2rem auto; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; position: relative; z-index: 2; }
-        .search-box { position: relative; flex: 1; max-width: 400px; }
-        .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-        .search-box input { width: 100%; padding: 12px 15px 12px 45px; border-radius: 20px; border: 1px solid var(--border-strong, #cbd5e1); background: var(--bg-surface, white); color: var(--text-main); outline: none; font-family: 'Poppins', sans-serif; transition: 0.3s; }
-        [data-theme="dark"] .search-box input { background: #1e293b; border-color: #334155; }
-        .search-box input:focus { border-color: var(--clr-accent-500, #d97706); box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2); }
-        
-        .tools-right { display: flex; gap: 10px; }
-        .select-sort { padding: 10px 15px; border-radius: 15px; border: 1px solid var(--border-strong, #cbd5e1); background: var(--bg-surface, white); color: var(--text-main); outline: none; cursor: pointer; font-family: 'Poppins', sans-serif; }
-        [data-theme="dark"] .select-sort { background: #1e293b; border-color: #334155; }
-        .btn-view { width: 45px; height: 45px; border-radius: 12px; border: 1px solid var(--border-strong); background: var(--bg-surface); color: var(--text-main); cursor: pointer; transition: 0.3s; }
-        .btn-view:hover { background: var(--clr-primary-500); color: white; border-color: var(--clr-primary-500); }
-
-        /* --- 3D TEAM CARDS --- */
-        .team-grid { max-width: 1200px; margin: 0 auto 80px; padding: 0 5%; display: grid; gap: 40px; position: relative; z-index: 2; transition: all 0.3s; perspective: 1000px; }
-        .team-grid.grid-view { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-        .team-grid.list-view { grid-template-columns: 1fr; }
-
-        .team-card {
-            background: var(--bg-surface, rgba(255,255,255,0.9)); backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light, rgba(0,0,0,0.05)); border-radius: 24px; padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05); cursor: pointer; position: relative;
-            transform-style: preserve-3d; transition: transform 0.1s ease, box-shadow 0.3s;
+        .quote-box::before {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            font-size: 6rem;
+            color: var(--border-light);
+            z-index: 0;
+            opacity: 0.5;
         }
-        [data-theme="dark"] .team-card { background: rgba(15,23,42,0.8); border-color: rgba(255,255,255,0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
-        .team-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-accent-500)); border-radius: 24px 24px 0 0; }
-        
-        .img-wrapper { width: 130px; height: 130px; margin: 0 auto 20px; border-radius: 50%; padding: 5px; background: linear-gradient(135deg, var(--clr-primary-500), var(--clr-accent-500)); transform: translateZ(30px); }
-        .member-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid var(--bg-surface, white); }
-        [data-theme="dark"] .member-img { border-color: #1e293b; }
-        
-        .grid-view .team-card { text-align: center; }
-        .list-view .team-card { display: flex; align-items: center; gap: 30px; padding: 20px 30px; text-align: left; transform: none !important; }
-        .list-view .img-wrapper { margin: 0; width: 100px; height: 100px; transform: none; }
-        
-        .npm-badge { display: inline-block; background: rgba(217, 119, 6, 0.1); color: var(--clr-accent-600, #b45309); padding: 5px 15px; border-radius: 20px; font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 800; margin-bottom: 10px; transform: translateZ(20px); }
-        [data-theme="dark"] .npm-badge { color: #f59e0b; }
-        .team-card h3 { font-size: 1.4rem; color: var(--text-main); margin-bottom: 5px; transform: translateZ(25px); }
-        .team-role { color: var(--clr-primary-600, #059669); font-weight: 700; font-size: 0.95rem; transform: translateZ(20px); }
 
-        /* --- GUESTBOOK --- */
-        .guestbook-section { max-width: 800px; margin: 0 auto 80px; padding: 0 5%; position: relative; z-index: 2; }
-        .gb-card { background: var(--bg-surface, white); border: 1px solid var(--border-light); border-radius: 24px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        [data-theme="dark"] .gb-card { background: #1e293b; border-color: #334155; }
-        .gb-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--border-strong); background: var(--bg-body); color: var(--text-main); margin-bottom: 20px; outline: none; resize: vertical; min-height: 120px; font-family: 'Poppins', sans-serif; }
-        [data-theme="dark"] .gb-input { background: #0f172a; border-color: #475569; }
-        .btn-submit { background: var(--clr-primary-500); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; font-size: 1.05rem; }
-        .btn-submit:hover { background: var(--clr-primary-700); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
-        
-        .comments-list { margin-top: 30px; max-height: 350px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 15px; }
-        .comment-item { background: var(--bg-body); padding: 20px; border-radius: 15px; border-left: 4px solid var(--clr-accent-500); font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); }
-        [data-theme="dark"] .comment-item { background: #0f172a; }
+        .quote-text {
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--text-main);
+            position: relative;
+            z-index: 1;
+            line-height: 1.7;
+            font-family: var(--font-arabic);
+        }
 
-        /* --- ADVANCED MODAL --- */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 100000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; }
-        .modal.active { opacity: 1; visibility: visible; }
-        .modal-content { background: var(--bg-surface, white); width: 100%; max-width: 850px; border-radius: 24px; padding: 40px; position: relative; transform: scale(0.95) translateY(20px); transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
-        [data-theme="dark"] .modal-content { background: #0f172a; border: 1px solid #1e293b; }
-        .modal.active .modal-content { transform: scale(1) translateY(0); }
-        .close-btn { position: absolute; top: 25px; right: 25px; background: var(--bg-body); border: none; width: 40px; height: 40px; border-radius: 50%; color: var(--text-muted); cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .close-btn:hover { background: #ef4444; color: white; transform: rotate(90deg); }
-        
-        .modal-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
-        @media(max-width: 768px) { .modal-grid { grid-template-columns: 1fr; } .modal-content { padding: 30px 20px; } }
-        
-        .modal-left { text-align: center; }
-        .modal-left img.profile { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 5px solid var(--clr-primary-500); margin-bottom: 15px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2); }
-        
-        .qr-wrapper { margin-top: 25px; padding: 15px; background: white; border-radius: 15px; display: inline-block; border: 1px solid #e2e8f0; }
-        .qr-wrapper img { width: 120px; height: 120px; }
-        
-        .skill-group { margin-top: 25px; }
-        .skill-title { font-size: 0.9rem; font-weight: 700; display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--text-main); }
-        .skill-bar { width: 100%; height: 10px; background: var(--border-strong); border-radius: 10px; overflow: hidden; }
-        .skill-fill { height: 100%; background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-accent-500)); width: 0; transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        /* --- 7. CONTROL TOOLBAR --- */
+        .toolbar-wrapper {
+            max-width: 1300px;
+            margin: 0 auto 40px;
+            padding: 0 5%;
+            position: relative;
+            z-index: 2;
+        }
 
+        .toolbar-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: var(--bg-surface);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+
+        .search-container {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border-radius: 15px;
+            border: 2px solid var(--border-strong);
+            background: var(--bg-surface-alt);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--clr-primary-500);
+            background: var(--bg-surface);
+            box-shadow: 0 0 0 4px rgba(16,185,129,0.15);
+        }
+
+        .tools-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .sort-select {
+            padding: 14px 20px;
+            border-radius: 15px;
+            border: 2px solid var(--border-strong);
+            background: var(--bg-surface-alt);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .sort-select:hover {
+            border-color: var(--clr-primary-500);
+        }
+
+        /* --- 8. TEAM GRID & 3D CARDS --- */
+        .team-container {
+            max-width: 1300px;
+            margin: 0 auto 100px;
+            padding: 0 5%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .team-grid {
+            display: grid;
+            gap: 40px;
+            transition: var(--transition-smooth);
+            perspective: 1500px;
+        }
+
+        .team-grid.grid-view {
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+
+        .team-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .member-card {
+            background: var(--bg-surface);
+            border-radius: 24px;
+            padding: 40px 30px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease, box-shadow 0.4s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-accent-500));
+            border-radius: 24px 24px 0 0;
+            opacity: 0.8;
+            transition: var(--transition-smooth);
+        }
+
+        .member-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .member-card:hover::before {
+            opacity: 1;
+            height: 12px;
+        }
+
+        .avatar-ring {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clr-primary-500), var(--clr-accent-500));
+            padding: 5px;
+            margin-bottom: 25px;
+            transform: translateZ(40px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--bg-surface);
+            background: var(--bg-surface-alt);
+        }
+
+        .member-npm {
+            background: var(--bg-surface-alt);
+            color: var(--text-muted);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            transform: translateZ(30px);
+            border: 1px solid var(--border-strong);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .member-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            transform: translateZ(35px);
+            line-height: 1.3;
+        }
+
+        .member-role {
+            color: var(--clr-primary-700);
+            font-weight: 700;
+            font-size: 1rem;
+            transform: translateZ(25px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        [data-theme="dark"] .member-role {
+            color: var(--clr-primary-300);
+        }
+
+        /* List View Adjustments */
+        .team-grid.list-view .member-card {
+            flex-direction: row;
+            text-align: left;
+            padding: 30px;
+            gap: 40px;
+            transform: none !important;
+        }
+
+        .team-grid.list-view .avatar-ring {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 0;
+            transform: none;
+        }
+
+        .team-grid.list-view .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* --- 9. ADVANCED MEMBER MODAL --- */
+        .nexa-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px);
+            z-index: 100000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .nexa-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nexa-modal-content {
+            background: var(--bg-surface);
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 30px;
+            position: relative;
+            transform: scale(0.9) translateY(30px);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nexa-modal-overlay.active .nexa-modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-btn-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--bg-surface-alt);
+            border: 1px solid var(--border-strong);
+            color: var(--text-main);
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-bounce);
+        }
+
+        .modal-btn-close:hover {
+            background: var(--clr-danger-500);
+            color: white;
+            border-color: var(--clr-danger-500);
+            transform: rotate(90deg);
+        }
+
+        .modal-header-banner {
+            background: linear-gradient(135deg, var(--clr-primary-900), var(--clr-primary-700));
+            padding: 60px 40px;
+            border-radius: 30px 30px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%2310b981" fill-opacity="0.1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+        }
+
+        .modal-body-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            padding: 40px;
+            margin-top: -80px;
+        }
+
+        @media (max-width: 850px) {
+            .modal-body-grid {
+                grid-template-columns: 1fr;
+                margin-top: -40px;
+            }
+        }
+
+        .modal-profile-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .modal-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 8px solid var(--bg-surface);
+            object-fit: cover;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 20px;
+            background: var(--bg-surface-alt);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-surface-alt);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: var(--transition-bounce);
+            border: 1px solid var(--border-strong);
+        }
+
+        .social-btn:hover {
+            background: var(--clr-primary-500);
+            color: white;
+            border-color: var(--clr-primary-500);
+            transform: translateY(-5px);
+        }
+
+        .modal-info-col {
+            padding-top: 20px;
+        }
+
+        .modal-name {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        .modal-role-badge {
+            display: inline-block;
+            background: var(--glow);
+            color: var(--clr-primary-700);
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-strong);
+        }
+
+        [data-theme="dark"] .modal-role-badge {
+            color: var(--clr-primary-300);
+        }
+
+        .modal-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 35px;
+            text-align: justify;
+        }
+
+        .matrix-title {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed var(--border-light);
+            padding-bottom: 10px;
+        }
+
+        .skill-item {
+            margin-bottom: 20px;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .skill-track {
+            width: 100%;
+            height: 12px;
+            background: var(--bg-surface-alt);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-strong);
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-accent-500));
+            width: 0%;
+            border-radius: 10px;
+            transition: width 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .skill-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* --- 10. PROJECT TIMELINE (HISTORIOGRAFI) --- */
+        .timeline-section {
+            background: var(--bg-surface-alt);
+            padding: 100px 5%;
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .timeline-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50px;
+            width: 4px;
+            background: var(--border-strong);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-container::before { left: 30px; }
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            padding-left: 120px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-item { padding-left: 80px; }
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 36px;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 4px solid var(--clr-primary-500);
+            box-shadow: 0 0 0 4px var(--glow);
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-marker { left: 16px; }
+        }
+
+        .timeline-content {
+            background: var(--bg-surface);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 10px;
+            border-style: solid;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent var(--bg-surface) transparent transparent;
+        }
+
+        .time-badge {
+            display: inline-block;
+            background: var(--clr-primary-900);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* --- 11. GLOSARIUM AKADEMIK (ACCORDION) --- */
+        .glossary-section {
+            padding: 100px 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .accordion-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-strong);
+            margin-bottom: 15px;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .accordion-header {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            background: var(--bg-surface-alt);
+        }
+
+        .accordion-header i {
+            transition: transform 0.3s ease;
+            color: var(--clr-primary-500);
+        }
+
+        .accordion-item.active .accordion-header {
+            background: var(--clr-primary-500);
+            color: white;
+        }
+
+        .accordion-item.active .accordion-header i {
+            transform: rotate(180deg);
+            color: white;
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background: var(--bg-surface);
+        }
+
+        .accordion-content {
+            padding: 25px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        /* --- 12. GUESTBOOK / DISCUSSION BOARD --- */
+        .guestbook-section {
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            padding: 0 5%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gb-container {
+            background: var(--bg-surface);
+            border-radius: 30px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+        }
+
+        @media (max-width: 900px) {
+            .gb-container { grid-template-columns: 1fr; }
+        }
+
+        .gb-form-side {
+            background: linear-gradient(135deg, var(--bg-surface-alt), var(--bg-surface));
+            padding: 40px;
+            border-right: 1px solid var(--border-light);
+        }
+
+        .gb-input-group {
+            margin-bottom: 20px;
+        }
+
+        .gb-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .gb-input, .gb-textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid var(--border-strong);
+            background: var(--bg-surface);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            transition: 0.3s;
+            outline: none;
+        }
+
+        .gb-input:focus, .gb-textarea:focus {
+            border-color: var(--clr-primary-500);
+            box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+        }
+
+        .gb-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .gb-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--clr-primary-500);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gb-btn:hover {
+            background: var(--clr-primary-700);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(16,185,129,0.3);
+        }
+
+        .gb-list-side {
+            padding: 40px;
+            background: var(--bg-surface);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .gb-item {
+            background: var(--bg-surface-alt);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--clr-accent-500);
+            transition: 0.3s;
+        }
+
+        .gb-item:hover {
+            transform: translateX(5px);
+            background: var(--bg-surface);
+            box-shadow: var(--shadow-md);
+        }
+
+        .gb-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+
+        .gb-author { font-weight: 800; color: var(--clr-primary-700); }
+        [data-theme="dark"] .gb-author { color: var(--clr-primary-300); }
+        .gb-date { color: var(--text-muted); }
+        .gb-text { color: var(--text-main); line-height: 1.6; font-size: 0.95rem; }
+
+        /* --- 13. FLOATING TERMINAL LOG --- */
+        .terminal-widget {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 350px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid #333;
+            border-radius: 15px;
+            z-index: 99999;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transition: var(--transition-bounce);
+            transform: translateY(150%);
+        }
+
+        .terminal-widget.active {
+            transform: translateY(0);
+        }
+
+        .terminal-header {
+            background: #111;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .term-title {
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .term-actions { display: flex; gap: 8px; }
+        .term-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; }
+        .dot-r { background: #ff5f56; } .dot-y { background: #ffbd2e; } .dot-g { background: #27c93f; }
+
+        .terminal-body {
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #10b981;
+            line-height: 1.6;
+        }
+
+        .terminal-body p { margin-bottom: 5px; }
+        .term-user { color: #3b82f6; }
+        .term-path { color: #d97706; }
+        .term-error { color: #ef4444; }
+
+        /* TOAST UTILITY */
+        #toast-box {
+            position: fixed;
+            top: 90px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000000;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--bg-surface);
+            color: var(--text-main);
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            pointer-events: auto;
+            animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        .k4-footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-light);
+            padding: 40px 5%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
 
     <div id="preloader">
-        <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
-        <p style="font-weight: 700; color: var(--clr-primary-500); margin-top: 15px; font-family: 'Space Mono', monospace; letter-spacing: 2px;">INISIALISASI DATA KELOMPOK...</p>
+        <div class="bismillah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
+        <div class="loader-bar-container">
+            <div class="loader-bar-fill" id="loaderFill"></div>
+        </div>
+        <div class="loader-status" id="loaderStatus">INISIALISASI DATA KELOMPOK IV... 0%</div>
     </div>
 
     <canvas id="particle-canvas"></canvas>
 
-    <k4-navbar current-page="tim"></k4-navbar>
+    <nav class="k4-nav" id="mainNav">
+        <div class="k4-nav-inner">
+            <a href="index.html" class="k4-brand">
+                <img src="assets/images/brand/gunadarma-logo.png" alt="UG" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'">
+                <span>Kelompok IV</span>
+            </a>
+            <div class="nav-actions">
+                <a href="index.html" class="btn-base btn-outline" id="navHomeBtn">Beranda</a>
+                <button class="btn-icon" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-moon"></i></button>
+            </div>
+        </div>
+    </nav>
 
-    <section class="team-hero anim-fade-up">
-        <h1 class="team-title">Struktur Kelompok IV</h1>
-        <p class="team-subtitle">Universitas Gunadarma • Mata Kuliah Agama Islam (Bapak Mulyadi)</p>
+    <section class="hero-section">
+        <div class="badge-pro"><i class="fa-solid fa-microchip"></i> NEXA God-Mode Architecture</div>
+        <h1 class="hero-title">Struktur <span>Manajerial & Akademik</span></h1>
+        <p class="hero-subtitle">Disusun khusus untuk pemenuhan Proyek Akhir Mata Kuliah Agama Islam (Semester 2) di Universitas Gunadarma, di bawah bimbingan Bapak Mulyadi.</p>
         
         <div class="quote-box">
-            <i class="fa-solid fa-quote-left" style="color: var(--clr-accent-500); font-size: 1.8rem; margin-bottom: 15px; display: block;"></i>
-            <p id="dailyQuote" style="font-size: 1.1rem; line-height: 1.6;">"Memuat hikmah hari ini..."</p>
+            <p class="quote-text" id="heroQuote">"Sistem yang baik tidak hanya berjalan, tapi berkembang. Hindari bottleneck, fokus pada eksekusi bertahap." - Muhamad Fauzan Al Farikhi</p>
         </div>
     </section>
 
-    <section class="toolbar anim-fade-up delay-100">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Cari nama, NPM, atau peran spesifik...">
+    <div class="toolbar-wrapper">
+        <div class="toolbar-inner">
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Cari berdasarkan nama, NPM, atau spesialisasi...">
+            </div>
+            <div class="tools-group">
+                <button class="btn-icon" id="ttsToggle" title="Sambutan AI Interaktif"><i class="fa-solid fa-volume-high"></i></button>
+                <select class="sort-select" id="sortSelect">
+                    <option value="default">Urutkan: Hierarki Tim</option>
+                    <option value="nameAsc">Alfabet (A-Z)</option>
+                    <option value="npmAsc">NPM (Kecil - Besar)</option>
+                </select>
+                <button class="btn-icon" id="viewToggle" title="Ubah Tata Letak"><i class="fa-solid fa-list"></i></button>
+            </div>
         </div>
-        <div class="tools-right">
-            <button class="btn-view" id="ttsToggle" title="Sambutan AI"><i class="fa-solid fa-volume-high"></i></button>
-            <select class="select-sort" id="sortSelect">
-                <option value="default">Urutkan: Default</option>
-                <option value="nameAsc">Nama (A-Z)</option>
-                <option value="npmAsc">NPM (Urutkan)</option>
-            </select>
-            <button class="btn-view" id="viewToggle" title="Ubah Tata Letak"><i class="fa-solid fa-list"></i></button>
-        </div>
+    </div>
+
+    <section class="team-container">
+        <div class="team-grid grid-view" id="teamContainer">
+            </div>
     </section>
 
-    <main class="team-grid grid-view anim-fade-up delay-200" id="teamContainer">
-        </main>
+    <section class="timeline-section">
+        <div class="section-header">
+            <h2 style="font-family: var(--font-display); font-size: 2.5rem; color: var(--clr-primary-700); margin-bottom: 10px;">Garis Waktu Proyek</h2>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Fase eksekusi bertahap pengembangan materi Filsafat Islam.</p>
+        </div>
+        
+        <div class="timeline-container" id="timelineContainer">
+            </div>
+    </section>
 
-    <section class="guestbook-section anim-fade-up delay-300">
-        <div class="gb-card">
-            <h3 style="color: var(--clr-primary-700); margin-bottom: 10px; font-size: 1.5rem;"><i class="fa-solid fa-terminal"></i> Log Penilaian & Diskusi</h3>
-            <p style="font-size: 1rem; color: var(--text-muted); margin-bottom: 25px;">Sistem menyimpan catatan secara lokal. Silakan tinggalkan *feedback* akademik Anda di sini.</p>
-            
-            <textarea id="gbInput" class="gb-input" placeholder=">> Ketikkan evaluasi, masukan, atau nilai untuk Kelompok IV..."></textarea>
-            <button class="btn-submit" id="btnSubmitGb">Simpan ke Basis Data <i class="fa-solid fa-database" style="margin-left: 8px;"></i></button>
-            
-            <div class="comments-list" id="commentsList">
+    <section class="glossary-section">
+        <div class="section-header">
+            <h2 style="font-family: var(--font-display); font-size: 2.5rem; color: var(--clr-primary-700); margin-bottom: 10px;">Glosarium Akademik</h2>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Istilah esensial dalam pengkajian Agama Islam dan Filsafat.</p>
+        </div>
+        
+        <div class="accordion-container" id="accordionContainer">
+            </div>
+    </section>
+
+    <section class="guestbook-section">
+        <div class="section-header">
+            <h2 style="font-family: var(--font-display); font-size: 2.5rem; color: var(--clr-primary-700); margin-bottom: 10px;">Buku Tamu & Evaluasi</h2>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Tinggalkan jejak, masukan, atau penilaian untuk presentasi kami.</p>
+        </div>
+        
+        <div class="gb-container">
+            <div class="gb-form-side">
+                <div class="gb-input-group">
+                    <label class="gb-label"><i class="fa-solid fa-user"></i> Nama Identitas</label>
+                    <input type="text" id="gbName" class="gb-input" placeholder="Bapak Mulyadi / Nama Pengunjung...">
+                </div>
+                <div class="gb-input-group">
+                    <label class="gb-label"><i class="fa-solid fa-pen-nib"></i> Evaluasi / Pesan</label>
+                    <textarea id="gbMessage" class="gb-textarea" placeholder="Tuliskan ulasan mendalam Anda terkait materi atau UI/UX proyek ini..."></textarea>
+                </div>
+                <button class="gb-btn" id="btnSubmitGb">
+                    Simpan ke Basis Data <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="gb-list-side" id="commentsList">
                 </div>
         </div>
     </section>
 
-    <div class="modal" id="memberModal">
-        <div class="modal-content">
-            <button class="close-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
-            <div class="modal-grid">
-                <div class="modal-left">
-                    <img id="modalImg" src="" alt="Profile" class="profile">
-                    <h3 id="modalName" style="color: var(--text-main); font-size: 1.4rem; font-weight: 800;"></h3>
-                    <div class="npm-badge" id="modalNpm" style="margin-top: 10px; font-size: 1rem;"></div>
-                    
-                    <div class="qr-wrapper">
-                        <img id="qrCodeImg" src="" alt="vCard QR Code">
-                        <div style="font-size: 0.8rem; color: #64748b; margin-top: 8px; font-weight: 700;"><i class="fa-solid fa-qrcode"></i> Scan ID</div>
+    <div class="nexa-modal-overlay" id="memberModal">
+        <div class="nexa-modal-content">
+            <button class="modal-btn-close" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="modal-header-banner">
+                </div>
+            
+            <div class="modal-body-grid">
+                <div class="modal-profile-col">
+                    <img id="modalImg" src="" alt="Profile" class="modal-avatar">
+                    <div class="social-links">
+                        <a href="#" class="social-btn"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="social-btn"><i class="fa-solid fa-envelope"></i></a>
                     </div>
                 </div>
-                <div>
-                    <h4 style="color: var(--clr-primary-500); letter-spacing: 2px; font-size: 1rem; margin-bottom: 15px; text-transform: uppercase;" id="modalRole"></h4>
-                    <p id="modalDesc" style="color: var(--text-muted); text-align: justify; line-height: 1.8; font-size: 1.05rem; padding-bottom: 20px; border-bottom: 1px dashed var(--border-strong);"></p>
+                
+                <div class="modal-info-col">
+                    <h2 class="modal-name" id="modalName">Nama Lengkap</h2>
+                    <div class="modal-role-badge" id="modalRole">Role Position</div>
+                    <div style="font-family: var(--font-mono); font-weight: 700; color: var(--clr-accent-500); margin-bottom: 20px;">
+                        <i class="fa-solid fa-id-card"></i> NPM: <span id="modalNpm">00000000</span>
+                    </div>
                     
-                    <div id="modalSkills" class="skill-group">
+                    <p class="modal-desc" id="modalDesc">Deskripsi kontribusi member akan ditampilkan di sini.</p>
+                    
+                    <div class="matrix-title"><i class="fa-solid fa-chart-simple"></i> Matriks Keahlian & Kontribusi</div>
+                    <div id="modalSkills">
                         </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <k4-footer></k4-footer>
+    <div class="terminal-widget" id="terminalWidget">
+        <div class="terminal-header">
+            <div class="term-title"><i class="fa-solid fa-terminal"></i> NEXA_SYS_LOG</div>
+            <div class="term-actions">
+                <div class="term-dot dot-r" id="termClose"></div>
+                <div class="term-dot dot-y"></div>
+                <div class="term-dot dot-g"></div>
+            </div>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+            </div>
+    </div>
 
-    <script src="components/navbar.js"></script>
-    <script src="components/footer.js"></script>
-    <script src="data.js"></script>
-    <script src="core.js"></script>
-    <script src="search.js"></script>
+    <div id="toast-box"></div>
+
+    <footer class="k4-footer">
+        <img src="assets/images/brand/gunadarma-logo.png" alt="UG" style="height: 60px; margin-bottom: 20px; filter: grayscale(100%); opacity: 0.5;" onerror="this.style.display='none'">
+        <p style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.9rem;">
+            © 2026 <strong>Kelompok IV</strong> | NEXA God-Mode Architecture V5.0
+        </p>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            /* ==========================================================
-               1. DATA KELOMPOK IV (LOCKED 5 MEMBERS AS REQUESTED)
-               ========================================================== */
+            // ==========================================================
+            // 1. NEXA AUDIO ENGINE (GOD MODE + AUTOPLAY BYPASS)
+            // ==========================================================
+            const AudioEngine = {
+                ctx: null,
+                init: async function() {
+                    try {
+                        if (!this.ctx) {
+                            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                        }
+                        // Paksa resume jika statusnya suspended (Standard Browser Security)
+                        if (this.ctx.state === 'suspended') {
+                            await this.ctx.resume();
+                        }
+                    } catch (e) {
+                        console.error("AudioContext initialization failed:", e);
+                    }
+                },
+                playTone: async function(frequency, type, duration, vol=0.2) {
+                    await this.init(); 
+                    if(!this.ctx || this.ctx.state === 'suspended') return;
+
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(frequency, this.ctx.currentTime);
+                    
+                    // Envelope untuk menghindari pop
+                    gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                },
+                click: function() { this.playTone(800, 'sine', 0.1, 0.1); },
+                pop: function() { 
+                    this.playTone(400, 'sine', 0.1, 0.2); 
+                    setTimeout(() => this.playTone(1200, 'sine', 0.3, 0.15), 50); 
+                },
+                boot: function() {
+                    this.playTone(300, 'square', 0.2, 0.1);
+                    setTimeout(() => this.playTone(600, 'square', 0.2, 0.1), 200);
+                    setTimeout(() => this.playTone(900, 'sine', 0.5, 0.2), 400);
+                }
+            };
+
+            // ==========================================================
+            // 2. DATA KELOMPOK IV (COMPREHENSIVE)
+            // ==========================================================
             const teamData = [
                 {
                     id: 1,
                     name: "Muhamad Fauzan Al Farikhi",
                     npm: "50425672",
-                    role: "Ketua & Analis Data",
+                    role: "Ketua & Arsitek Sistem (CEO NEXA)",
                     img: "assets/images/team/fauzan.jpg", 
-                    desc: "Bertanggung jawab atas arsitektur utama penyajian materi. Fauzan mengarahkan alur *discovery* konseptual dan menarasikan literatur Islam klasik menjadi format digital yang relevan tanpa *bottleneck* operasional.",
-                    contributions: [{ name: "Koordinasi Strategis", level: 98 }, { name: "Analisis Arsitektur Web", level: 95 }]
+                    desc: "Sebagai inisiator arsitektur 'God Mode', Fauzan mengelola eksekusi bertahap tanpa toleransi terhadap bottleneck. Bertanggung jawab menterjemahkan konsep rumit Filsafat Islam menjadi ekosistem digital interaktif yang *seamless* dan memenuhi standar akademik tinggi Universitas Gunadarma.",
+                    contributions: [
+                        { name: "Sistem Arsitektur Web", level: 98 },
+                        { name: "Manajemen Tim", level: 95 },
+                        { name: "Integrasi Data Filsafat", level: 90 }
+                    ]
                 },
                 {
                     id: 2,
                     name: "Yusuf Maulana Wahyudi",
                     npm: "51425323",
-                    role: "Desainer & UI/UX",
+                    role: "UI/UX & Desain Interaktif",
                     img: "assets/images/team/yusuf.jpg",
-                    desc: "Mengeksekusi desain antarmuka dan presentasi. Mengimplementasikan keseimbangan visual berbasis tipografi elegan dan palet *Emerald Green* untuk memberikan nuansa akademis yang segar.",
-                    contributions: [{ name: "UI/UX & Desain", level: 95 }, { name: "Pengembangan Aset", level: 90 }]
+                    desc: "Ahli estetika digital. Yusuf merancang palet warna *Emerald Green* dan tata letak *Glassmorphism* untuk menjembatani nuansa klasik khazanah Islam dengan antarmuka modern yang memanjakan mata pembaca.",
+                    contributions: [
+                        { name: "UI/UX Engineering", level: 96 },
+                        { name: "Graphic Asset Creation", level: 92 },
+                        { name: "Frontend Styling", level: 88 }
+                    ]
                 },
                 {
                     id: 3,
                     name: "Mahardieka Yusuf Nugraha",
                     npm: "50425600",
-                    role: "Pencari Referensi Hadits",
+                    role: "Kurator Literatur Syar'i",
                     img: "assets/images/team/dieka.jpg",
-                    desc: "Validasi adalah kunci. Mahardieka bertugas memastikan setiap poin filosofis memiliki *backbone* dalil Al-Quran atau As-Sunnah yang kuat (Sahih/Hasan).",
-                    contributions: [{ name: "Riset Literatur Syar'i", level: 94 }, { name: "Verifikasi Data", level: 88 }]
+                    desc: "Mahardieka berfungsi sebagai jangkar teologis tim. Ia bertugas memverifikasi setiap dalil, hadits, dan kutipan filsuf yang digunakan dalam proyek agar memiliki sanad (referensi) yang sahih dan dapat dipertanggungjawabkan secara akademik.",
+                    contributions: [
+                        { name: "Riset Dalil Al-Quran/Hadits", level: 95 },
+                        { name: "Verifikasi Sejarah", level: 90 },
+                        { name: "Kurasi Kutipan Tokoh", level: 85 }
+                    ]
                 },
                 {
                     id: 4,
                     name: "Muhammad Fairuz Kurniawan",
                     npm: "50425749",
-                    role: "Penyusun Makalah",
+                    role: "Penulis Makalah Utama",
                     img: "assets/images/team/fairuz.jpg",
-                    desc: "Mentransformasikan data riset mentah menjadi narasi akademis yang koheren. Berfokus pada struktur penulisan ilmiah yang sistematis dan sesuai kaidah PUEBI.",
-                    contributions: [{ name: "Academic Writing", level: 92 }, { name: "Struktur Logika", level: 90 }]
+                    desc: "Sang perangkai kata. Fairuz mengubah raw data penelitian ke dalam format karya tulis ilmiah yang koheren, terstruktur, dan sesuai dengan kaidah PUEBI yang disyaratkan oleh institusi.",
+                    contributions: [
+                        { name: "Academic Writing", level: 94 },
+                        { name: "Struktur Logika Makalah", level: 90 },
+                        { name: "Penyusunan Sitasi", level: 88 }
+                    ]
                 },
                 {
                     id: 5,
                     name: "Qinnan Ashiddiq Arianto",
                     npm: "51425003",
-                    role: "Editor & Quality Control",
+                    role: "Quality Control & Editor",
                     img: "assets/images/team/qinnan.jpg",
-                    desc: "Gatekeeper terakhir. Qinnan melakukan *proofreading* komprehensif pada seluruh artifak proyek (Website, Makalah, dan PPT) untuk menihilkan kesalahan fatal sebelum diserahkan.",
-                    contributions: [{ name: "Quality Assurance", level: 96 }, { name: "Proofreading", level: 92 }]
+                    desc: "Garda terakhir sebelum *deployment*. Qinnan mengaudit seluruh presentasi, dokumen, dan *website* untuk memastikan tidak ada kesalahan ketik, ambiguitas materi, atau *bug* navigasi yang dapat mengurangi nilai dari Bapak Mulyadi.",
+                    contributions: [
+                        { name: "Proofreading Dokumen", level: 97 },
+                        { name: "Bug Testing Web", level: 93 },
+                        { name: "Keselarasan Materi", level: 95 }
+                    ]
                 }
             ];
 
-            /* ==========================================================
-               2. DOM ELEMENTS & INITIALIZATION
-               ========================================================== */
-            const container = document.getElementById('teamContainer');
-            const searchInput = document.getElementById('searchInput');
-            const sortSelect = document.getElementById('sortSelect');
-            const viewToggle = document.getElementById('viewToggle');
-            const modal = document.getElementById('memberModal');
+            // ==========================================================
+            // 3. TIMELINE DATA
+            // ==========================================================
+            const timelineData = [
+                { time: "Minggu 1-2", title: "Inisiasi & Pembagian Tugas", desc: "Pembentukan Kelompok IV, penentuan topik besar 'Filsafat Islam', dan delegasi tugas teknis maupun akademis." },
+                { time: "Minggu 3-5", title: "Discovery & Pengumpulan Dalil", desc: "Mahardieka dan Fairuz membedah buku 'Islam Risalah Cinta' karya Haidar Bagir serta menyusun kerangka teori." },
+                { time: "Minggu 6-8", title: "Prototyping NEXA Engine", desc: "Fauzan membangun arsitektur *God Mode* awal, sementara Yusuf mengeksekusi desain *wireframe* ke format UI/UX." },
+                { time: "Minggu 9-10", title: "Integrasi & Quality Control", desc: "Penggabungan materi makalah ke dalam ekosistem web interaktif. Qinnan melakukan audit penuh pada sistem dan teks." }
+            ];
 
-            // Remove preloader smoothly
-            setTimeout(() => {
-                const loader = document.getElementById('preloader');
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 500);
-            }, 800);
+            // ==========================================================
+            // 4. GLOSSARY DATA
+            // ==========================================================
+            const glossaryData = [
+                { term: "Burhani", definition: "Metode epistemologi dalam filsafat Islam yang bersandar pada kekuatan rasio, akal, dan demonstrasi logis (silogisme) untuk mencapai kebenaran yang meyakinkan." },
+                { term: "Irfani", definition: "Metode pendekatan kebenaran melalui pengalaman batin, intuisi (kasyaf), dan penyucian jiwa (tazkiyatun nafs). Identik dengan tradisi Tasawuf." },
+                { term: "Bayani", definition: "Metode pemahaman yang bersandar murni pada teks wahyu (Al-Quran dan Hadits) beserta analisis linguistik (nahwu-sharaf) untuk menggali hukum." },
+                { term: "Asalat al-Wujud", definition: "Doktrin utama Mulla Sadra yang menyatakan bahwa 'Wujud' (eksistensi) adalah satu-satunya realitas yang sejati dan fundamental, sedangkan 'Mahiyah' (esensi) hanyalah konstruksi mental belaka." },
+                { term: "Mahabbah", definition: "Konsep sentral dalam tasawuf yang berarti 'Cinta Ilahi'. Tingkatan spiritual di mana seorang hamba menyembah Tuhan bukan karena takut neraka atau mengharap surga, melainkan murni karena cinta." }
+            ];
 
-            /* ==========================================================
-               3. NEXUS PARTICLE ENGINE (Optimized)
-               ========================================================== */
+            // ==========================================================
+            // 5. DOM ELEMENTS CACHING
+            // ==========================================================
+            const DOM = {
+                preloader: document.getElementById('preloader'),
+                loaderFill: document.getElementById('loaderFill'),
+                loaderStatus: document.getElementById('loaderStatus'),
+                nav: document.getElementById('mainNav'),
+                teamContainer: document.getElementById('teamContainer'),
+                searchInput: document.getElementById('searchInput'),
+                sortSelect: document.getElementById('sortSelect'),
+                viewToggle: document.getElementById('viewToggle'),
+                ttsToggle: document.getElementById('ttsToggle'),
+                modal: document.getElementById('memberModal'),
+                closeModal: document.getElementById('closeModal'),
+                timelineContainer: document.getElementById('timelineContainer'),
+                accordionContainer: document.getElementById('accordionContainer'),
+                gbName: document.getElementById('gbName'),
+                gbMessage: document.getElementById('gbMessage'),
+                btnSubmitGb: document.getElementById('btnSubmitGb'),
+                commentsList: document.getElementById('commentsList'),
+                terminalWidget: document.getElementById('terminalWidget'),
+                terminalBody: document.getElementById('terminalBody'),
+                termClose: document.getElementById('termClose')
+            };
+
+            // ==========================================================
+            // 6. UTILITIES (TOAST)
+            // ==========================================================
+            function toast(msg, type = 'info') {
+                const box = document.getElementById('toast-box');
+                const t = document.createElement('div');
+                t.className = 'toast';
+                
+                let icon = 'fa-info-circle', color = 'var(--clr-info-500)';
+                if(type === 'success') { icon = 'fa-check-circle'; color = 'var(--clr-primary-500)'; }
+                if(type === 'error') { icon = 'fa-exclamation-triangle'; color = 'var(--clr-danger-500)'; }
+                
+                t.style.borderLeftColor = color;
+                t.innerHTML = `<i class="fa-solid ${icon}" style="color:${color}; font-size:1.2rem;"></i> <span style="flex:1;">${msg}</span>`;
+                
+                box.appendChild(t);
+                setTimeout(() => t.remove(), 4000);
+            }
+
+            // ==========================================================
+            // 7. TERMINAL SYSTEM LOGGER
+            // ==========================================================
+            function termLog(msg, type = "info") {
+                const p = document.createElement('p');
+                let prefix = `<span class="term-user">nexa@ug</span>:<span class="term-path">~</span>$ `;
+                if(type === "error") prefix += `<span class="term-error">[ERR]</span> `;
+                p.innerHTML = prefix + msg;
+                DOM.terminalBody.appendChild(p);
+                DOM.terminalBody.scrollTop = DOM.terminalBody.scrollHeight;
+            }
+
+            DOM.termClose.addEventListener('click', () => {
+                DOM.terminalWidget.classList.remove('active');
+                AudioEngine.click();
+            });
+
+            // ==========================================================
+            // 8. BOOT SEQUENCE & PRELOADER
+            // ==========================================================
+            let progress = 0;
+            const bootInterval = setInterval(() => {
+                progress += Math.floor(Math.random() * 20) + 10;
+                if(progress >= 100) progress = 100;
+                
+                DOM.loaderFill.style.width = `${progress}%`;
+                DOM.loaderStatus.innerText = `SINKRONISASI DATA KELOMPOK IV... ${progress}%`;
+                
+                if(progress >= 100) {
+                    clearInterval(bootInterval);
+                    setTimeout(() => {
+                        DOM.loaderStatus.innerText = "SISTEM SIAP. BISMILLAH.";
+                        DOM.preloader.style.opacity = '0';
+                        setTimeout(() => {
+                            DOM.preloader.style.display = 'none';
+                            DOM.terminalWidget.classList.add('active');
+                            termLog("System booted successfully.");
+                            termLog("Loading God-Mode Architecture V5.0...");
+                            termLog("Mounting data Agama_Islam_Smt2.db...");
+                        }, 800);
+                    }, 500);
+                }
+            }, 100);
+
+            // ==========================================================
+            // 9. PARTICLE BACKGROUND ENGINE
+            // ==========================================================
             const canvas = document.getElementById('particle-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
-            
+            const mouse = { x: null, y: null, radius: 100 };
+
             function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
 
-            class Node {
+            window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+            window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+
+            class Particle {
                 constructor() {
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 1;
+                    this.baseX = this.x;
+                    this.baseY = this.y;
+                    this.density = (Math.random() * 30) + 1;
                     this.vx = (Math.random() - 0.5) * 0.5;
                     this.vy = (Math.random() - 0.5) * 0.5;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(16, 185, 129, 0.4)';
+                    ctx.fill();
                 }
                 update() {
                     this.x += this.vx; this.y += this.vy;
                     if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
                     if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                }
-                draw() {
-                    ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(16, 185, 129, 0.5)'; ctx.fill();
+
+                    // Mouse Repulsion
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+                    if(distance < mouse.radius) {
+                        let forceDirX = dx / distance;
+                        let forceDirY = dy / distance;
+                        let maxDist = mouse.radius;
+                        let force = (maxDist - distance) / maxDist;
+                        let dirX = forceDirX * force * this.density;
+                        let dirY = forceDirY * force * this.density;
+                        this.x -= dirX;
+                        this.y -= dirY;
+                    }
+                    this.draw();
                 }
             }
-            
-            for(let i=0; i<40; i++) particles.push(new Node());
-            
-            function animateNexus() {
+
+            for(let i=0; i<60; i++) particles.push(new Particle());
+
+            function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => { p.update(); p.draw(); });
+                particles.forEach(p => p.update());
+                
+                // Connect particles
                 for(let i=0; i<particles.length; i++) {
                     for(let j=i+1; j<particles.length; j++) {
-                        const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
-                        if(dist < 150) {
+                        let dx = particles[i].x - particles[j].x;
+                        let dy = particles[i].y - particles[j].y;
+                        let dist = Math.sqrt(dx*dx + dy*dy);
+                        if(dist < 120) {
                             ctx.beginPath();
-                            ctx.strokeStyle = `rgba(16, 185, 129, ${0.15 - dist/1000})`;
+                            ctx.strokeStyle = `rgba(16, 185, 129, ${0.1 - dist/1200})`;
+                            ctx.lineWidth = 1;
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
                             ctx.stroke();
                         }
                     }
                 }
-                requestAnimationFrame(animateNexus);
+                requestAnimationFrame(animateParticles);
             }
-            animateNexus();
+            animateParticles();
 
-            /* ==========================================================
-               4. TEAM RENDERER & 3D TILT ENGINE
-               ========================================================== */
+            // ==========================================================
+            // 10. RENDERERS (TEAM, TIMELINE, ACCORDION)
+            // ==========================================================
+            
             function renderTeam(data) {
-                container.innerHTML = '';
+                DOM.teamContainer.innerHTML = '';
                 if(data.length === 0) {
-                    container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted); font-family:\'Space Mono\', monospace;">[!] Data tidak ditemukan dalam basis data.</div>';
+                    DOM.teamContainer.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:50px; font-weight:700; color:var(--text-muted);">[!] Entity not found in database.</div>';
+                    termLog("Search query returned 0 results.", "error");
                     return;
                 }
 
-                data.forEach((member) => {
+                data.forEach(member => {
                     const card = document.createElement('div');
-                    card.className = 'team-card';
+                    card.className = 'member-card';
                     const imgSrc = member.img ? member.img : `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=047857&color=fff`;
                     
                     card.innerHTML = `
-                        <div class="img-wrapper">
-                            <img src="${imgSrc}" class="member-img" alt="${member.name}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=047857&color=fff'">
+                        <div class="avatar-ring">
+                            <img src="${imgSrc}" alt="${member.name}" class="avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=047857&color=fff'">
                         </div>
-                        <div>
-                            <div class="npm-badge"><i class="fa-solid fa-fingerprint"></i> ${member.npm}</div>
-                            <h3>${member.name}</h3>
-                            <div class="team-role">${member.role}</div>
+                        <div class="card-content">
+                            <div class="member-npm"><i class="fa-solid fa-fingerprint"></i> ${member.npm}</div>
+                            <h3 class="member-name">${member.name}</h3>
+                            <div class="member-role">${member.role}</div>
                         </div>
                     `;
 
-                    // 3D Tilt Logic
+                    // Tilt Effect
                     card.addEventListener('mousemove', (e) => {
-                        if(container.classList.contains('list-view')) return;
+                        if(DOM.teamContainer.classList.contains('list-view')) return;
                         const rect = card.getBoundingClientRect();
                         const x = e.clientX - rect.left - rect.width / 2;
                         const y = e.clientY - rect.top - rect.height / 2;
-                        card.style.transform = `rotateX(${-y / 15}deg) rotateY(${x / 15}deg) scale(1.02)`;
+                        card.style.transform = `rotateX(${-y / 20}deg) rotateY(${x / 20}deg) scale(1.02)`;
                     });
                     card.addEventListener('mouseleave', () => {
                         card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
                     });
-                    
-                    card.addEventListener('click', () => openModal(member));
-                    container.appendChild(card);
+
+                    // Modal Trigger + Audio
+                    card.addEventListener('click', () => {
+                        AudioEngine.pop();
+                        termLog(`Fetching profile data for ID:${member.npm}...`);
+                        openModal(member);
+                    });
+
+                    DOM.teamContainer.appendChild(card);
                 });
             }
 
-            renderTeam(teamData);
+            function renderTimeline() {
+                DOM.timelineContainer.innerHTML = '';
+                timelineData.forEach(item => {
+                    DOM.timelineContainer.innerHTML += `
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <span class="time-badge"><i class="fa-solid fa-calendar-days"></i> ${item.time}</span>
+                                <h3 style="margin-bottom:10px; color:var(--text-main); font-weight:800;">${item.title}</h3>
+                                <p style="color:var(--text-muted); line-height:1.6;">${item.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
 
-            /* ==========================================================
-               5. SEARCH, SORT, AND VIEW TOGGLE
-               ========================================================== */
-            function handleFilters() {
-                const term = searchInput.value.toLowerCase();
-                const sortVal = sortSelect.value;
+            function renderGlossary() {
+                DOM.accordionContainer.innerHTML = '';
+                glossaryData.forEach((item, index) => {
+                    const accItem = document.createElement('div');
+                    accItem.className = 'accordion-item';
+                    accItem.innerHTML = `
+                        <div class="accordion-header">
+                            <span><i class="fa-solid fa-bookmark" style="margin-right:10px;"></i> ${item.term}</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-body">
+                            <div class="accordion-content">${item.definition}</div>
+                        </div>
+                    `;
+                    
+                    accItem.querySelector('.accordion-header').addEventListener('click', () => {
+                        AudioEngine.click();
+                        const isActive = accItem.classList.contains('active');
+                        // Close all others
+                        document.querySelectorAll('.accordion-item').forEach(el => {
+                            el.classList.remove('active');
+                            el.querySelector('.accordion-body').style.maxHeight = null;
+                        });
+                        
+                        if(!isActive) {
+                            accItem.classList.add('active');
+                            const body = accItem.querySelector('.accordion-body');
+                            body.style.maxHeight = body.scrollHeight + "px";
+                        }
+                    });
+                    
+                    DOM.accordionContainer.appendChild(accItem);
+                });
+            }
+
+            // Initial Renders
+            renderTeam(teamData);
+            renderTimeline();
+            renderGlossary();
+            termLog("UI Components rendered successfully.");
+
+            // ==========================================================
+            // 11. TOOLBAR LOGIC (FILTER & SORT)
+            // ==========================================================
+            function executeFilters() {
+                const term = DOM.searchInput.value.toLowerCase();
+                const sortStrategy = DOM.sortSelect.value;
                 
-                let filtered = teamData.filter(m => m.name.toLowerCase().includes(term) || m.npm.includes(term) || m.role.toLowerCase().includes(term));
+                let filtered = teamData.filter(m => 
+                    m.name.toLowerCase().includes(term) || 
+                    m.npm.includes(term) || 
+                    m.role.toLowerCase().includes(term)
+                );
                 
-                if(sortVal === 'nameAsc') filtered.sort((a,b) => a.name.localeCompare(b.name));
-                else if(sortVal === 'npmAsc') filtered.sort((a,b) => a.npm.localeCompare(b.npm));
+                if(sortStrategy === 'nameAsc') {
+                    filtered.sort((a,b) => a.name.localeCompare(b.name));
+                } else if(sortStrategy === 'npmAsc') {
+                    filtered.sort((a,b) => a.npm.localeCompare(b.npm));
+                } // default = keep original order based on ID
                 
                 renderTeam(filtered);
             }
-            
-            searchInput.addEventListener('input', handleFilters);
-            sortSelect.addEventListener('change', handleFilters);
 
-            viewToggle.addEventListener('click', () => {
-                container.classList.toggle('grid-view');
-                container.classList.toggle('list-view');
-                viewToggle.innerHTML = container.classList.contains('grid-view') ? '<i class="fa-solid fa-list"></i>' : '<i class="fa-solid fa-border-all"></i>';
+            DOM.searchInput.addEventListener('input', () => {
+                AudioEngine.click();
+                executeFilters();
             });
 
-            /* ==========================================================
-               6. MODAL & QR CODE GENERATOR (vCard)
-               ========================================================== */
+            DOM.sortSelect.addEventListener('change', () => {
+                AudioEngine.click();
+                termLog(`Applying sort strategy: ${DOM.sortSelect.value}`);
+                executeFilters();
+            });
+
+            DOM.viewToggle.addEventListener('click', () => {
+                AudioEngine.click();
+                const isGrid = DOM.teamContainer.classList.contains('grid-view');
+                if(isGrid) {
+                    DOM.teamContainer.classList.replace('grid-view', 'list-view');
+                    DOM.viewToggle.innerHTML = '<i class="fa-solid fa-border-all"></i>';
+                    termLog("Layout switched to List View.");
+                } else {
+                    DOM.teamContainer.classList.replace('list-view', 'grid-view');
+                    DOM.viewToggle.innerHTML = '<i class="fa-solid fa-list"></i>';
+                    termLog("Layout switched to Grid View.");
+                }
+            });
+
+            // ==========================================================
+            // 12. MODAL LOGIC
+            // ==========================================================
             function openModal(member) {
                 document.getElementById('modalName').innerText = member.name;
-                document.getElementById('modalNpm').innerHTML = `<i class="fa-solid fa-id-badge"></i> ${member.npm}`;
                 document.getElementById('modalRole').innerText = member.role;
-                document.getElementById('modalDesc').innerText = member.desc;
-                document.getElementById('modalImg').src = member.img ? member.img : `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=047857&color=fff`;
+                document.getElementById('modalNpm').innerText = member.npm;
+                document.getElementById('modalDesc').innerHTML = member.desc; // Allow bold italic markdown parsing later if needed
+                
+                const imgSrc = member.img ? member.img : `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=047857&color=fff`;
+                document.getElementById('modalImg').src = imgSrc;
 
-                // Generate QR Code via GoQR API
-                const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${member.name}\nORG:Kelompok IV Univ. Gunadarma\nTITLE:${member.role}\nNOTE:NPM ${member.npm}\nEND:VCARD`;
-                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(vCardData)}`;
-                document.getElementById('qrCodeImg').src = qrUrl;
-
-                // Render Skills Bar
+                // Render Skills Matrix
                 const skillsBox = document.getElementById('modalSkills');
-                skillsBox.innerHTML = '<h4 style="margin-bottom:15px; color:var(--text-main); font-family:\'Space Mono\', monospace;"><i class="fa-solid fa-microchip"></i> MATRIKS KONTRIBUSI</h4>';
+                skillsBox.innerHTML = '';
                 member.contributions.forEach(skill => {
                     skillsBox.innerHTML += `
-                        <div class="skill-title"><span>${skill.name}</span><span>${skill.level}%</span></div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="${skill.level}%" style="width:0;"></div></div>
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span>${skill.name}</span>
+                                <span style="color:var(--clr-primary-500);">${skill.level}%</span>
+                            </div>
+                            <div class="skill-track">
+                                <div class="skill-fill" data-width="${skill.level}%" style="width:0;"></div>
+                            </div>
+                        </div>
                     `;
                 });
 
-                modal.classList.add('active');
+                DOM.modal.classList.add('active');
                 
-                // Trigger animation after slight delay
+                // Trigger skill bar animation
                 setTimeout(() => {
                     document.querySelectorAll('.skill-fill').forEach(bar => {
                         bar.style.width = bar.getAttribute('data-width');
                     });
                 }, 100);
             }
-            
-            document.getElementById('closeModal').addEventListener('click', () => {
-                modal.classList.remove('active');
+
+            DOM.closeModal.addEventListener('click', () => {
+                AudioEngine.click();
+                DOM.modal.classList.remove('active');
             });
 
-            /* ==========================================================
-               7. GUESTBOOK SYSTEM (LocalStorage)
-               ========================================================== */
-            const gbInput = document.getElementById('gbInput');
-            const btnSubmitGb = document.getElementById('btnSubmitGb');
-            const commentsList = document.getElementById('commentsList');
-            
+            // ==========================================================
+            // 13. GUESTBOOK / DISCUSSION SYSTEM (LOCALSTORAGE)
+            // ==========================================================
             function loadComments() {
-                const comments = JSON.parse(localStorage.getItem('k4_guestbook')) || [];
-                if(comments.length === 0) {
-                    commentsList.innerHTML = '<div style="color:var(--text-muted); font-style:italic;">Belum ada log evaluasi.</div>';
+                const db = JSON.parse(localStorage.getItem('nexa_guestbook_v5')) || [];
+                DOM.commentsList.innerHTML = '';
+                
+                if(db.length === 0) {
+                    DOM.commentsList.innerHTML = '<div style="color:var(--text-muted); font-style:italic; text-align:center; padding:40px;">Belum ada log evaluasi tercatat.</div>';
                     return;
                 }
                 
-                commentsList.innerHTML = comments.map(c => `
-                    <div class="comment-item">
-                        <div style="font-size:0.8rem; font-weight:700; color:var(--clr-primary-500); margin-bottom:5px; font-family:\'Space Mono\', monospace;">[LOG ENTRY: ${c.date}]</div>
-                        <div>${c.text}</div>
-                    </div>
-                `).join('');
+                db.forEach(c => {
+                    DOM.commentsList.innerHTML += `
+                        <div class="gb-item">
+                            <div class="gb-meta">
+                                <span class="gb-author"><i class="fa-solid fa-user-shield"></i> ${c.name}</span>
+                                <span class="gb-date">${c.date}</span>
+                            </div>
+                            <div class="gb-text">${c.text}</div>
+                        </div>
+                    `;
+                });
             }
 
-            btnSubmitGb.addEventListener('click', () => {
-                if(!gbInput.value.trim()) {
-                    if(window.appToast) window.appToast("Input evaluasi tidak boleh kosong!", "error");
+            DOM.btnSubmitGb.addEventListener('click', () => {
+                AudioEngine.click();
+                const nameVal = DOM.gbName.value.trim() || "Anonim Akademisi";
+                const msgVal = DOM.gbMessage.value.trim();
+                
+                if(!msgVal) {
+                    toast("Evaluasi tidak boleh kosong!", "error");
+                    termLog("Guestbook submission failed: Empty message.", "error");
                     return;
                 }
-                const comments = JSON.parse(localStorage.getItem('k4_guestbook')) || [];
-                const now = new Date();
-                const timeString = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
                 
-                comments.unshift({ text: gbInput.value, date: timeString });
-                localStorage.setItem('k4_guestbook', JSON.stringify(comments));
-                gbInput.value = '';
+                const db = JSON.parse(localStorage.getItem('nexa_guestbook_v5')) || [];
+                const now = new Date();
+                const timeString = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()} ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+                
+                db.unshift({ name: nameVal, text: msgVal, date: timeString });
+                localStorage.setItem('nexa_guestbook_v5', JSON.stringify(db));
+                
+                DOM.gbName.value = '';
+                DOM.gbMessage.value = '';
                 loadComments();
                 
-                if(window.appToast) window.appToast("Log evaluasi berhasil disimpan ke basis data lokal.", "success");
+                toast("Data evaluasi berhasil di-commit ke basis data.", "success");
+                termLog(`New guestbook entry committed by: ${nameVal}`);
             });
+
             loadComments();
 
-            /* ==========================================================
-               8. ISLAMIC QUOTE & AI VOICE (Web Speech)
-               ========================================================== */
-            const quotes = [
-                "Agama adalah akal, tidak ada agama bagi yang tidak berakal. (HR. Baihaqi)",
-                "Ilmu tanpa amal adalah kegilaan, dan amal tanpa ilmu adalah kesia-siaan. (Imam Al-Ghazali)",
-                "Menuntut ilmu itu wajib atas setiap muslim. (HR. Ibnu Majah)",
-                "Tuhan tidak melihat bentuk rupa dan hartamu, tapi melihat hati dan amalmu. (HR. Muslim)"
-            ];
-            document.getElementById('dailyQuote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
-
-            const ttsToggle = document.getElementById('ttsToggle');
-            ttsToggle.addEventListener('click', () => {
+            // ==========================================================
+            // 14. TEXT TO SPEECH (NEXA AI)
+            // ==========================================================
+            DOM.ttsToggle.addEventListener('click', async () => {
+                await AudioEngine.init();
+                AudioEngine.playTone(1500, 'sine', 0.5, 0.15); // Beep pembuka
+                
                 if('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel(); // Stop current if any
-                    const text = "Assalamualaikum warahmatullah wabarakatuh. Selamat datang di data center profil Kelompok 4. Disusun oleh Fauzan, Yusuf, Mahardieka, Fairuz, dan Qinnan untuk pemenuhan tugas Bapak Mulyadi.";
+                    window.speechSynthesis.cancel();
+                    const text = "Sistem God Mode diaktifkan. Assalamualaikum warahmatullah wabarakatuh. Selamat datang di data center profil Kelompok 4. Sistem ini diarsiteki oleh Muhamad Fauzan Al Farikhi untuk pemenuhan tugas Bapak Mulyadi di Universitas Gunadarma.";
                     const utterance = new SpeechSynthesisUtterance(text);
                     utterance.lang = 'id-ID';
+                    utterance.pitch = 1.0;
+                    utterance.rate = 0.95;
                     window.speechSynthesis.speak(utterance);
-                    if(window.appToast) window.appToast("Memutar sambutan audio AI...", "info");
+                    toast("NEXA AI Voice diaktifkan.", "success");
+                    termLog("SpeechSynthesis interface initiated. Transmitting audio...");
+                } else {
+                    toast("Browser tidak mendukung fitur SpeechSynthesis.", "error");
+                    termLog("SpeechSynthesis API not supported in current client.", "error");
+                }
+            });
+
+            // ==========================================================
+            // 15. SCROLL EFFECTS & NAVBAR STYLING
+            // ==========================================================
+            window.addEventListener('scroll', () => {
+                if(window.scrollY > 50) {
+                    DOM.nav.classList.add('scrolled');
+                } else {
+                    DOM.nav.classList.remove('scrolled');
+                }
+            });
+
+            // Navbar click audio
+            document.getElementById('navHomeBtn').addEventListener('click', () => AudioEngine.click());
+            
+            // Theme toggle (Visual only for demo, real implementation needs CSS var switching)
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                AudioEngine.click();
+                const html = document.documentElement;
+                if(html.getAttribute('data-theme') === 'light') {
+                    html.setAttribute('data-theme', 'dark');
+                    termLog("System theme switched to DARK mode.");
+                } else {
+                    html.setAttribute('data-theme', 'light');
+                    termLog("System theme switched to LIGHT mode.");
                 }
             });
 

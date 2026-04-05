@@ -1,0 +1,27 @@
+{
+  "name": "nexa-hikmah-api",
+  "version": "4.0.0",
+  "description": "Serverless API for Baitul Hikmah Project by NEXA Tech Labs",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev src/index.js",
+    "deploy": "wrangler deploy src/index.js",
+    "db:create": "wrangler d1 create nexa_hikmah_db",
+    "db:setup": "wrangler d1 execute nexa_hikmah_db --local --file=./schema.sql",
+    "db:setup:remote": "wrangler d1 execute nexa_hikmah_db --remote --file=./schema.sql"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "hono",
+    "nexa"
+  ],
+  "author": "Muhamad Fauzan Al Farikhi <CEO NEXA Tech Labs>",
+  "license": "MIT",
+  "dependencies": {
+    "hono": "^4.2.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.40.0"
+  }
+}

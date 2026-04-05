@@ -3,562 +3,1279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eksplorasi Baitul Hikmah | Kelompok IV</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+    <title>Baitul Hikmah | Kelompok IV</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root{--bg:#0f172a;--bg2:rgba(15,23,42,.92);--bg3:#1e293b;--tx:#f8fafc;--tx2:#94a3b8;--p3:#6ee7b7;--p5:#10b981;--p7:#047857;--p9:#022c22;--a5:#d97706;--a7:#b45309;--bl:rgba(255,255,255,.05);--bs:rgba(16,185,129,.2);--sh:rgba(0,0,0,.3);--gw:rgba(16,185,129,.15);--fd:'Playfair Display',serif;--fb:'DM Sans',sans-serif;--fa:'Amiri',serif;--fc:'Cinzel',serif}
-        [data-theme="light"]{--bg:#faf9f6;--bg2:rgba(255,255,255,.92);--bg3:#ffffff;--tx:#0f172a;--tx2:#64748b;--bl:rgba(0,0,0,.06);--bs:rgba(6,78,59,.15);--sh:rgba(0,0,0,.08);--gw:rgba(6,78,59,.1)}
-        [data-theme="sepia"]{--bg:#f5ebe0;--bg2:rgba(245,235,224,.92);--bg3:#fdf6e3;--tx:#3d2c1e;--tx2:#8b7355;--p5:#7c6c3c;--p7:#5c4d2e;--a5:#c2410c;--bl:rgba(0,0,0,.06);--bs:rgba(124,108,60,.2);--sh:rgba(0,0,0,.08);--gw:rgba(124,108,60,.1)}
-        ::selection{background:var(--a5);color:#fff}
-        *{margin:0;padding:0;box-sizing:border-box;cursor:none}
-        body{font-family:var(--fb);background:var(--bg);color:var(--tx);overflow-x:hidden;transition:background .4s,color .4s}
-        a,button,input,select,.filter-btn,.book-wrapper,.zen-btn,.nav-btn,.action-btn,.nav-link,.k4-brand{cursor:none}
-        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--p5);border-radius:5px}
-        @media(hover:none)and(pointer:coarse){*{cursor:auto!important}.cur-dot,.cur-ring,.cur-trail{display:none!important}}
+        /* ==========================================================
+           1. NEXA CORE VARIABLES & THEME ENGINE
+           ========================================================== */
+        :root {
+            --bg: #0f172a;
+            --bg2: rgba(15,23,42,0.92);
+            --bg3: #1e293b;
+            --tx: #f8fafc;
+            --tx2: #94a3b8;
+            --p3: #6ee7b7;
+            --p5: #10b981;
+            --p7: #047857;
+            --p9: #022c22;
+            --a5: #d97706;
+            --a7: #b45309;
+            
+            --bl: rgba(255,255,255,0.05); /* Border Light */
+            --bs: rgba(16,185,129,0.2);   /* Border Strong */
+            --sh: rgba(0,0,0,0.3);        /* Shadow */
+            --gw: rgba(16,185,129,0.15);  /* Glow */
+            
+            --fd: 'Playfair Display', serif;
+            --fb: 'DM Sans', sans-serif;
+            --fa: 'Amiri', serif;
+            --fc: 'Cinzel', serif;
+            --fm: 'Space Mono', monospace;
+        }
+        
+        [data-theme="light"] {
+            --bg: #faf9f6;
+            --bg2: rgba(255,255,255,0.92);
+            --bg3: #ffffff;
+            --tx: #0f172a;
+            --tx2: #64748b;
+            --bl: rgba(0,0,0,0.06);
+            --bs: rgba(6,78,59,0.15);
+            --sh: rgba(0,0,0,0.08);
+            --gw: rgba(6,78,59,0.1);
+        }
 
-        /* ===== CURSOR WITH TRAIL ===== */
-        .cur-dot{position:fixed;width:8px;height:8px;background:var(--a5);border-radius:50%;pointer-events:none;z-index:999998;transform:translate(-50%,-50%);box-shadow:0 0 14px rgba(217,119,6,.7);mix-blend-mode:normal;transition:width .2s,height .2s,background .2s}
-        .cur-dot.click{width:14px;height:14px;background:var(--p5)}
-        .cur-ring{position:fixed;width:40px;height:40px;border:2px solid var(--p5);border-radius:50%;pointer-events:none;z-index:999997;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s,background .25s}
-        .cur-ring.hover{width:64px;height:64px;border-color:var(--a5);background:rgba(217,119,6,.06)}
-        .cur-trail{position:fixed;width:4px;height:4px;background:var(--p5);border-radius:50%;pointer-events:none;z-index:999996;opacity:.4;transition:opacity .5s}
+        [data-theme="sepia"] {
+            --bg: #f5ebe0;
+            --bg2: rgba(245,235,224,0.92);
+            --bg3: #fdf6e3;
+            --tx: #3d2c1e;
+            --tx2: #8b7355;
+            --p5: #7c6c3c;
+            --p7: #5c4d2e;
+            --a5: #c2410c;
+            --bl: rgba(0,0,0,0.06);
+            --bs: rgba(124,108,60,0.2);
+            --sh: rgba(0,0,0,0.08);
+            --gw: rgba(124,108,60,0.1);
+        }
 
-        /* ===== PRELOADER ===== */
-        #preloader{position:fixed;inset:0;background:var(--bg);z-index:999999;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .8s,visibility .8s}
-        #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-        .pre-arabic{font-family:var(--fa);font-size:clamp(1.8rem,5vw,3rem);color:var(--p5);animation:preP 2.5s ease-in-out infinite;text-align:center}
-        @keyframes preP{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.03)}}
-        .pre-ornament{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--a5),transparent);margin:16px auto}
-        .pre-bar{width:220px;height:3px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;margin-top:14px}
-        .pre-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--p5),var(--a5));border-radius:3px;box-shadow:0 0 12px var(--gw)}
-        .pre-status{font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:var(--a5);margin-top:10px;font-weight:700}
-        .pre-percent{font-family:var(--fc);font-size:1.8rem;font-weight:900;color:var(--p5);margin-top:8px}
+        ::selection { background: var(--a5); color: #fff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        body {
+            font-family: var(--fb);
+            background: var(--bg);
+            color: var(--tx);
+            overflow-x: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
 
-        /* ===== PROGRESS BAR ===== */
-        #scrollProg{position:fixed;top:0;left:0;height:3px;z-index:999990;background:linear-gradient(90deg,var(--p5),var(--a5),var(--p7));width:0%;box-shadow:0 0 8px var(--gw)}
+        a, button, input, select { cursor: none; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--p5); border-radius: 6px; }
 
-        /* ===== GEOMETRIC BG CANVAS ===== */
-        #geoCanvas{position:fixed;inset:0;z-index:-1;opacity:.2;pointer-events:none}
-        .noise{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");background-repeat:repeat;background-size:200px}
+        /* Disable custom cursor on mobile */
+        @media (hover: none) and (pointer: coarse) {
+            * { cursor: auto !important; }
+            .cur-dot, .cur-ring { display: none !important; }
+        }
 
-        /* ===== NAVBAR ===== */
-        .k4-nav{position:sticky;top:0;z-index:9999;background:var(--bg2);backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid var(--bl);padding:0 5%;transition:box-shadow .3s}
-        .k4-nav.scrolled{box-shadow:0 4px 24px var(--sh)}
-        .k4-nav-inner{max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;height:60px}
-        .k4-brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--p5);font-family:var(--fc);font-weight:700;font-size:1rem}
-        .k4-brand img{height:30px;object-fit:contain}
-        .nav-menu{display:flex;gap:4px;align-items:center}
-        .nav-link{text-decoration:none;color:var(--tx2);font-size:.75rem;font-weight:600;padding:7px 12px;border-radius:8px;transition:all .3s;white-space:nowrap;position:relative}
-        .nav-link:hover,.nav-link.active{color:var(--p5);background:var(--gw)}
-        .nav-link.active::after{content:'';position:absolute;bottom:2px;left:25%;right:25%;height:2px;background:var(--p5);border-radius:2px}
-        .nav-tools{display:flex;gap:6px;align-items:center}
-        .nav-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--bs);background:transparent;color:var(--tx2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;font-size:.8rem}
-        .nav-btn:hover{background:var(--p5);color:white;border-color:var(--p5)}
-        .nav-btn.active-mode{background:var(--a5);color:white;border-color:var(--a5)}
-        .mobile-toggle{display:none;background:none;border:none;color:var(--tx);font-size:1.3rem;cursor:pointer}
-        @media(max-width:900px){.nav-menu{display:none;position:absolute;top:60px;left:0;right:0;background:var(--bg2);backdrop-filter:blur(20px);flex-direction:column;padding:12px;border-bottom:1px solid var(--bl);gap:2px;box-shadow:0 10px 30px var(--sh)}.nav-menu.open{display:flex}.mobile-toggle{display:block}}
+        /* ==========================================================
+           2. NEXA CUSTOM CURSOR ENGINE
+           ========================================================== */
+        .cur-dot {
+            position: fixed; width: 8px; height: 8px; background: var(--a5);
+            border-radius: 50%; pointer-events: none; z-index: 999998;
+            transform: translate(-50%, -50%); box-shadow: 0 0 14px rgba(217,119,6,0.7);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+        }
+        .cur-dot.click { width: 14px; height: 14px; background: var(--p5); }
+        
+        .cur-ring {
+            position: fixed; width: 40px; height: 40px; border: 2px solid var(--p5);
+            border-radius: 50%; pointer-events: none; z-index: 999997;
+            transform: translate(-50%, -50%);
+            transition: width 0.25s, height 0.25s, border-color 0.25s, background 0.25s;
+        }
+        .cur-ring.hover {
+            width: 64px; height: 64px; border-color: var(--a5);
+            background: rgba(217,119,6,0.05); backdrop-filter: blur(2px);
+        }
 
-        /* ===== COMPLETION DASHBOARD ===== */
-        .dash{padding:20px 5%;border-bottom:1px solid var(--bl);display:flex;align-items:center;justify-content:center;gap:clamp(16px,4vw,40px);flex-wrap:wrap}
-        .dash-ring{position:relative;width:70px;height:70px}
-        .dash-ring svg{transform:rotate(-90deg)}
-        .dash-ring circle{fill:none;stroke-width:5}
-        .dash-ring .bg-ring{stroke:var(--bl)}
-        .dash-ring .fg-ring{stroke:var(--p5);stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
-        .dash-percent{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fc);font-weight:900;font-size:.9rem;color:var(--p5)}
-        .dash-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tx2);font-weight:700;text-align:center}
-        .dash-stat{text-align:center}
-        .dash-stat-num{font-family:var(--fd);font-size:1.8rem;font-weight:900;color:var(--p5);line-height:1}
-        .dash-stat-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tx2);font-weight:600;margin-top:2px}
+        /* ==========================================================
+           3. CINEMATIC PRELOADER
+           ========================================================== */
+        #preloader {
+            position: fixed; inset: 0; background: var(--bg); z-index: 999999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        
+        .pre-arabic {
+            font-family: var(--fa); font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--p5); animation: pulseGlow 2s ease-in-out infinite; text-align: center;
+            text-shadow: 0 0 20px var(--gw);
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+        
+        .pre-ornament {
+            width: 120px; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--a5), transparent);
+            margin: 20px auto;
+        }
+        
+        .pre-text { color: var(--p5); font-size: 0.9rem; font-family: var(--fm); font-weight: 700; letter-spacing: 2px; }
+        
+        .pre-bar {
+            width: 250px; height: 4px; background: rgba(255,255,255,0.05);
+            border-radius: 4px; overflow: hidden; margin-top: 15px; position: relative;
+        }
+        .pre-fill {
+            height: 100%; width: 0%; background: linear-gradient(90deg, var(--p5), var(--a5));
+            border-radius: 4px; box-shadow: 0 0 15px var(--gw); transition: width 0.1s linear;
+        }
+        .pre-percent { font-family: var(--fc); font-size: 2rem; font-weight: 900; color: var(--p5); margin-top: 10px; }
+        .pre-status { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--a5); margin-top: 5px; font-weight: 800; }
 
-        /* ===== HERO ===== */
-        .explore-hero{position:relative;padding:100px 5% 70px;text-align:center;background:radial-gradient(ellipse at 50% 120%,var(--p9),var(--bg));overflow:hidden;border-bottom:1px solid var(--bs)}
-        #heroCanvas{position:absolute;inset:0;z-index:0;pointer-events:none}
-        .hero-content{position:relative;z-index:2}
-        .explore-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 16px;border-radius:30px;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.2);color:var(--a5);font-weight:700;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;margin-bottom:14px}
-        .explore-title{font-family:var(--fc);font-size:clamp(1.8rem,5vw,3.5rem);color:var(--p3);margin-bottom:10px;text-shadow:0 0 25px rgba(16,185,129,.3);letter-spacing:2px;font-weight:900}
-        .explore-subtitle{color:var(--tx2);font-size:.9rem;max-width:600px;margin:0 auto 24px;line-height:1.8}
-        .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
-        .btn-astrolabe{background:linear-gradient(135deg,var(--a5),var(--a7));color:white;border:2px solid rgba(255,255,255,.12);padding:12px 28px;border-radius:50px;font-size:.9rem;font-weight:800;cursor:pointer;box-shadow:0 10px 25px rgba(217,119,6,.3);display:inline-flex;align-items:center;gap:10px;transition:all .4s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden}
-        .btn-astrolabe:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 15px 35px rgba(217,119,6,.5)}
-        .btn-astrolabe::before{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(to right,transparent,rgba(255,255,255,.25),transparent);transform:skewX(-20deg);transition:.6s}
-        .btn-astrolabe:hover::before{left:150%}
-        .astrolabe-icon{font-size:1.1rem;transition:transform 2s cubic-bezier(.25,1,.5,1)}
-        .btn-astrolabe.spinning .astrolabe-icon{transform:rotate(1080deg)}
-        .btn-fav{background:transparent;border:1px solid var(--bs);color:var(--p5);padding:12px 28px;border-radius:50px;font-size:.9rem;font-weight:800;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:8px}
-        .btn-fav:hover{background:var(--p5);color:white;border-color:var(--p5)}
-        .search-bar{max-width:480px;margin:0 auto;position:relative}
-        .search-bar input{width:100%;padding:11px 18px 11px 40px;border-radius:14px;border:1px solid var(--bs);background:var(--bg2);color:var(--tx);font-size:.85rem;font-family:var(--fb);outline:none;transition:all .3s;backdrop-filter:blur(10px)}
-        .search-bar input:focus{border-color:var(--p5);box-shadow:0 0 20px var(--gw)}
-        .search-bar input::placeholder{color:var(--tx2)}
-        .search-bar i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--tx2);font-size:.85rem}
-        .search-bar .search-count{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:.7rem;color:var(--tx2);font-weight:700}
+        /* ==========================================================
+           4. LAYERED BACKGROUND CANVAS ENGINE
+           ========================================================== */
+        #geoCanvas { position: fixed; inset: 0; z-index: -1; opacity: 0.25; pointer-events: none; }
+        .noise-layer {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        }
 
-        /* ===== CONTROLS ===== */
-        .control-panel{background:var(--bg2);backdrop-filter:blur(20px);border-bottom:1px solid var(--bl);padding:12px 5%;position:sticky;top:60px;z-index:90;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-        .filter-group{display:flex;gap:6px;flex-wrap:wrap;flex:1}
-        .filter-btn{background:transparent;border:1px solid var(--bs);color:var(--tx2);padding:6px 16px;border-radius:30px;cursor:pointer;font-weight:600;font-size:.75rem;transition:all .3s;position:relative;overflow:hidden}
-        .filter-btn::before{content:'';position:absolute;inset:0;background:var(--p7);opacity:0;transition:opacity .3s}
-        .filter-btn.active::before,.filter-btn:hover::before{opacity:1}
-        .filter-btn.active,.filter-btn:hover{color:white;border-color:var(--p5);box-shadow:0 0 10px var(--gw)}
-        .filter-btn span{position:relative;z-index:1}
-        .filter-btn .f-count{font-size:.6rem;background:rgba(255,255,255,.2);padding:1px 6px;border-radius:10px;margin-left:4px}
-        .sort-group select{background:var(--bg);color:var(--tx);border:1px solid var(--bs);padding:7px 14px;border-radius:10px;outline:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:.8rem}
-        .view-toggle{display:flex;gap:4px}
-        .view-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--bs);background:transparent;color:var(--tx2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;font-size:.8rem}
-        .view-btn.active{background:var(--p5);color:white;border-color:var(--p5)}
+        /* Top Progress Bar */
+        #scrollProg {
+            position: fixed; top: 0; left: 0; height: 3px; z-index: 999990;
+            background: linear-gradient(90deg, var(--p5), var(--a5), var(--p7));
+            width: 0%; box-shadow: 0 0 10px var(--gw);
+        }
 
-        /* ===== 3D BOOK GRID ===== */
-        .library-container{max-width:1400px;margin:0 auto;padding:40px 5%;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:32px;perspective:1500px;transition:all .4s}
-        .library-container.list-view{grid-template-columns:1fr;gap:16px;max-width:900px}
-        .library-container.list-view .book-wrapper{height:120px}
-        .library-container.list-view .book-3d{transform:none!important}
-        .library-container.list-view .book-wrapper:hover .book-3d{transform:none!important}
-        .library-container.list-view .book-cover{border-radius:14px;flex-direction:row;padding:16px 20px;gap:16px;align-items:center}
-        .library-container.list-view .book-spine,.library-container.list-view .book-pages,.library-container.list-view .read-stamp,.library-container.list-view .book-category{display:none}
-        .library-container.list-view .book-title{font-size:1.1rem;text-align:left;margin-bottom:0}
-        .library-container.list-view .book-author{text-align:left;margin-bottom:0;font-size:.75rem}
-        .library-container.list-view .book-era{margin-top:0;font-size:.65rem}
-        .book-wrapper{height:420px;position:relative;transform-style:preserve-3d;transition:transform .5s,opacity .5s;cursor:pointer}
-        .book-wrapper.hide-item{display:none}
-        .book-3d{position:absolute;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.175,.885,.32,1.275);transform:rotateY(-15deg) rotateX(5deg)}
-        .book-wrapper:hover .book-3d{transform:rotateY(0) rotateX(0) scale(1.04) translateY(-8px)}
-        .book-cover{position:absolute;width:100%;height:100%;background:linear-gradient(135deg,var(--book-color-1,#1e293b),var(--book-color-2,#0f172a));border-radius:2px 16px 16px 2px;box-shadow:inset 4px 0 10px rgba(0,0,0,.5),inset -1px 0 2px rgba(255,255,255,.15),5px 12px 25px rgba(0,0,0,.35);transform:translateZ(20px);padding:24px 18px;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.06);overflow:hidden}
-        .book-cover::before{content:'';position:absolute;inset:0;background-image:url('https://www.transparenttextures.com/patterns/aged-paper.png');opacity:.07;mix-blend-mode:overlay;pointer-events:none}
-        .book-spine{position:absolute;width:34px;height:100%;background:linear-gradient(to right,var(--book-color-2),var(--book-color-1));transform:rotateY(-90deg) translateZ(20px);transform-origin:left;border-radius:10px 0 0 10px;box-shadow:inset -2px 0 5px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center}
-        .spine-text{color:rgba(255,255,255,.35);writing-mode:vertical-rl;text-orientation:mixed;font-family:var(--fa);letter-spacing:2px;font-size:.75rem}
-        .book-pages{position:absolute;width:calc(100% - 10px);height:96%;top:2%;left:5px;background:#fdf6e3;transform:translateZ(-15px);border-radius:0 10px 10px 0;box-shadow:inset -5px 0 10px rgba(0,0,0,.1);background-image:repeating-linear-gradient(to bottom,transparent,transparent 2px,rgba(0,0,0,.03) 3px)}
-        .book-category{font-size:.6rem;color:var(--a5);font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px}
-        .book-title{font-size:1.4rem;color:#fff;font-family:var(--fa);line-height:1.3;text-align:center;margin-bottom:6px;text-shadow:1px 2px 4px rgba(0,0,0,.5)}
-        .book-author{font-size:.8rem;color:var(--p3);font-weight:600;text-align:center;margin-bottom:auto}
-        .book-era{text-align:center;font-size:.7rem;color:rgba(255,255,255,.45);background:rgba(0,0,0,.25);padding:4px 8px;border-radius:5px}
-        .book-read-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(0,0,0,.2);z-index:5;transform:translateZ(21px);border-radius:0 0 16px 0}
-        .book-read-fill{height:100%;background:var(--p5);border-radius:0 0 16px 0;transition:width .5s}
-        .read-stamp{position:absolute;top:8px;right:-18px;background:var(--p5);color:white;font-size:.5rem;font-weight:800;padding:4px 28px;transform:rotate(45deg);box-shadow:0 2px 5px rgba(0,0,0,.3);display:none;z-index:20;letter-spacing:1px}
-        .book-wrapper.is-read .read-stamp{display:block}
-        .book-wrapper.is-read .book-cover{filter:grayscale(15%)}
-        .book-fav-star{position:absolute;top:10px;left:10px;z-index:21;font-size:1rem;color:rgba(255,255,255,.2);transform:translateZ(21px);transition:all .3s}
-        .book-wrapper.is-fav .book-fav-star{color:var(--a5);text-shadow:0 0 10px rgba(217,119,6,.5)}
-        .no-results{text-align:center;padding:60px 20px;color:var(--tx2);font-size:1rem;grid-column:1/-1}
+        /* ==========================================================
+           5. SMART NAVBAR
+           ========================================================== */
+        .k4-nav {
+            position: sticky; top: 0; z-index: 9999; background: var(--bg2);
+            backdrop-filter: blur(20px) saturate(1.5); border-bottom: 1px solid var(--bl);
+            padding: 0 5%; transition: box-shadow 0.3s;
+        }
+        .k4-nav.scrolled { box-shadow: 0 10px 30px var(--sh); }
+        .k4-nav-inner {
+            max-width: 1400px; margin: 0 auto; display: flex;
+            justify-content: space-between; align-items: center; height: 70px;
+        }
+        
+        .k4-brand {
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
+            color: var(--p5); font-family: var(--fc); font-weight: 800; font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+        .k4-brand i { font-size: 1.5rem; color: var(--a5); }
+        
+        .nav-menu { display: flex; gap: 5px; align-items: center; }
+        .nav-link {
+            text-decoration: none; color: var(--tx2); font-size: 0.85rem; font-weight: 700;
+            padding: 8px 16px; border-radius: 10px; transition: all 0.3s;
+            text-transform: uppercase; letter-spacing: 1px; position: relative;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--p5); background: var(--gw); }
+        
+        .nav-tools { display: flex; gap: 8px; align-items: center; }
+        .nav-btn {
+            width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--bs);
+            background: transparent; color: var(--tx2); display: flex; align-items: center;
+            justify-content: center; transition: all 0.3s; font-size: 1rem;
+        }
+        .nav-btn:hover { background: var(--p5); color: white; border-color: var(--p5); transform: translateY(-2px); }
+        .nav-btn.active-mode { background: var(--a5); color: white; border-color: var(--a5); }
+        
+        .mobile-toggle { display: none; background: none; border: none; color: var(--tx); font-size: 1.5rem; }
 
-        /* ===== FAVORITES SHELF ===== */
-        .fav-shelf{padding:30px 5%;border-bottom:1px solid var(--bl);display:none}
-        .fav-shelf.has-favs{display:block}
-        .fav-shelf-title{font-family:var(--fd);font-size:1.2rem;font-weight:900;color:var(--a5);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-        .fav-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
-        .fav-scroll::-webkit-scrollbar{display:none}
-        .fav-mini{min-width:140px;height:180px;border-radius:10px;overflow:hidden;cursor:pointer;position:relative;transition:transform .3s;flex-shrink:0}
-        .fav-mini:hover{transform:translateY(-4px)}
-        .fav-mini-cover{width:100%;height:100%;background:linear-gradient(135deg,var(--book-color-1),var(--book-color-2));display:flex;flex-direction:column;justify-content:center;align-items:center;padding:12px;text-align:center}
-        .fav-mini-title{font-family:var(--fa);font-size:.85rem;color:white;line-height:1.3}
-        .fav-mini-author{font-size:.6rem;color:var(--p3);margin-top:4px;font-weight:600}
-        .fav-mini-remove{position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.5);color:white;border:none;font-size:.6rem;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s}
-        .fav-mini:hover .fav-mini-remove{opacity:1}
+        @media (max-width: 900px) {
+            .nav-menu {
+                display: none; position: absolute; top: 70px; left: 0; right: 0;
+                background: var(--bg2); backdrop-filter: blur(20px); flex-direction: column;
+                padding: 20px; border-bottom: 1px solid var(--bl); box-shadow: 0 20px 40px var(--sh);
+            }
+            .nav-menu.open { display: flex; }
+            .mobile-toggle { display: block; }
+        }
 
-        /* ===== SCROLL TO TOP ===== */
-        .scroll-top{position:fixed;bottom:24px;left:24px;z-index:999;width:46px;height:46px;border-radius:50%;background:var(--bg2);border:1px solid var(--bs);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;opacity:0;visibility:hidden;transform:translateY(10px)}
-        .scroll-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
-        .scroll-top:hover{background:var(--p5);color:white;border-color:var(--p5)}
-        .scroll-top svg{width:32px;height:32px;transform:rotate(-90deg)}
-        .scroll-top .prog-ring{fill:none;stroke:var(--p5);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .1s}
-        .scroll-top .bg-ring{fill:none;stroke:var(--bl);stroke-width:3}
-        .scroll-top i{position:absolute;font-size:.8rem;color:var(--tx)}
+        /* ==========================================================
+           6. COMPLETION DASHBOARD
+           ========================================================== */
+        .dash {
+            padding: 30px 5%; border-bottom: 1px solid var(--bl); background: rgba(0,0,0,0.02);
+            display: flex; align-items: center; justify-content: center; gap: clamp(20px, 5vw, 60px); flex-wrap: wrap;
+        }
+        .dash-ring { position: relative; width: 90px; height: 90px; }
+        .dash-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+        .dash-ring circle { fill: none; stroke-width: 4; }
+        .dash-ring .bg-ring { stroke: var(--bl); }
+        .dash-ring .fg-ring { stroke: var(--p5); stroke-linecap: round; transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        .dash-percent {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            font-family: var(--fc); font-weight: 900; font-size: 1.2rem; color: var(--p5);
+        }
+        .dash-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--tx2); font-weight: 800; text-align: center; }
+        
+        .dash-stat { text-align: center; padding: 0 20px; border-right: 1px solid var(--bl); }
+        .dash-stat:last-child { border-right: none; }
+        .dash-stat-num { font-family: var(--fd); font-size: 2.5rem; font-weight: 900; color: var(--p5); line-height: 1; }
+        .dash-stat-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--tx2); font-weight: 700; margin-top: 5px; }
 
-        /* ===== UG BRANDING ===== */
-        .ug-branding{padding:50px 5% 30px;text-align:center;border-top:1px solid var(--bl)}
-        .ug-logo-wrap{display:inline-block;position:relative;margin-bottom:12px}
-        .ug-logo-wrap::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:110px;height:110px;background:radial-gradient(circle,var(--gw),transparent 70%);z-index:-1;animation:breathe 4s infinite}
-        @keyframes breathe{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.1)}}
-        .ug-logo{width:80px;height:auto;filter:drop-shadow(0 6px 12px rgba(0,0,0,.3));transition:transform .5s}
-        .ug-logo:hover{transform:scale(1.1) rotate(5deg)}
-        .ug-t{font-family:var(--fc);font-size:1.3rem;color:var(--p5);font-weight:800;letter-spacing:2px;margin-bottom:2px}
-        .ug-s{color:var(--tx2);font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+        /* ==========================================================
+           7. FAVORITES SHELF
+           ========================================================== */
+        .fav-shelf { padding: 40px 5%; border-bottom: 1px solid var(--bl); display: none; background: rgba(16,185,129,0.02); }
+        .fav-shelf.has-favs { display: block; }
+        .fav-shelf-title { font-family: var(--fc); font-size: 1.5rem; font-weight: 900; color: var(--a5); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        
+        .fav-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
+        .fav-scroll::-webkit-scrollbar { display: none; }
+        
+        .fav-mini {
+            min-width: 160px; height: 220px; border-radius: 12px; overflow: hidden; cursor: pointer;
+            position: relative; transition: transform 0.3s; flex-shrink: 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
+        }
+        .fav-mini:hover { transform: translateY(-8px) scale(1.02); }
+        .fav-mini-cover {
+            width: 100%; height: 100%; background: linear-gradient(135deg, var(--book-color-1), var(--book-color-2));
+            display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; text-align: center;
+        }
+        .fav-mini-title { font-family: var(--fa); font-size: 1rem; color: white; line-height: 1.3; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .fav-mini-author { font-size: 0.7rem; color: var(--p3); margin-top: 8px; font-weight: 700; text-transform: uppercase; }
+        .fav-mini-remove {
+            position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%;
+            background: rgba(0,0,0,0.6); color: white; border: none; font-size: 0.8rem;
+            display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s, background 0.2s;
+        }
+        .fav-mini:hover .fav-mini-remove { opacity: 1; }
+        .fav-mini-remove:hover { background: #ef4444; }
 
-        /* ===== ZEN READER ===== */
-        .zen-modal{position:fixed;inset:0;background:rgba(2,6,23,.95);backdrop-filter:blur(10px);z-index:100000;display:flex;justify-content:center;overflow-y:auto;opacity:0;visibility:hidden;transition:.4s;perspective:1000px}
-        .zen-modal.active{opacity:1;visibility:visible}
-        .zen-paper{background:#fdf6e3;background-image:url('https://www.transparenttextures.com/patterns/cream-paper.png');width:100%;max-width:800px;min-height:100vh;padding:60px 7%;position:relative;box-shadow:0 0 50px rgba(0,0,0,.5);color:#334155;transform:rotateX(6deg) translateY(30px);transform-origin:top;transition:.6s cubic-bezier(.175,.885,.32,1.275)}
-        .zen-modal.active .zen-paper{transform:rotateX(0) translateY(0)}
-        .zen-tools{position:fixed;top:20px;right:5%;display:flex;gap:10px;z-index:100001}
-        .zen-btn{width:42px;height:42px;border-radius:50%;background:var(--bg2);border:1px solid var(--bs);color:var(--tx);font-size:1rem;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.2);transition:.3s;display:flex;align-items:center;justify-content:center}
-        .zen-btn:hover{background:var(--p5);color:white;transform:scale(1.1)}
-        .zen-btn.close:hover{background:#ef4444;border-color:#ef4444;transform:rotate(90deg)}
-        .zen-btn.tts-on{background:var(--p5)!important;color:white!important;animation:ttsGw 2s infinite}
-        @keyframes ttsGw{0%,100%{box-shadow:0 0 8px var(--gw)}50%{box-shadow:0 0 20px var(--gw)}}
-        .zen-header{text-align:center;margin-bottom:36px;border-bottom:2px solid #cbd5e1;padding-bottom:20px;position:relative}
-        .zen-header::after{content:'❁';position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);background:#fdf6e3;padding:0 8px;color:#94a3b8;font-size:1.2rem}
-        .zen-title{font-family:var(--fa);font-size:clamp(1.8rem,4vw,2.8rem);color:#0f172a;margin-bottom:6px;line-height:1.2}
-        .zen-author{color:#b45309;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:2px}
-        .zen-meta{display:flex;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap}
-        .zen-meta-badge{font-size:.7rem;color:#64748b;background:#f1f5f9;padding:3px 12px;border-radius:16px;display:inline-flex;align-items:center;gap:4px}
-        .zen-content{font-size:1rem;line-height:2;text-align:justify}
-        .zen-content p{margin-bottom:18px}
-        .zen-content p:first-child::first-letter{font-size:3rem;font-family:var(--fa);float:left;margin-right:6px;line-height:1;color:#064e3b}
-        .zen-quote{font-family:var(--fa);font-size:1.3rem;color:#064e3b;text-align:center;margin:28px 0;position:relative;padding:0 36px}
-        .zen-quote::before,.zen-quote::after{content:'"';font-size:3rem;position:absolute;color:rgba(6,78,59,.12);top:-12px}
-        .zen-quote::before{left:0}.zen-quote::after{right:0}
-        .zen-progress{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:800px;height:3px;background:rgba(0,0,0,.1);z-index:100002}
-        .zen-progress-fill{height:100%;background:linear-gradient(90deg,var(--p5),var(--a5));width:0%;transition:width .1s}
-        @media(max-width:768px){.zen-paper{padding:40px 5%}.zen-title{font-size:1.6rem}.zen-tools{top:auto;bottom:16px;right:50%;transform:translateX(50%);background:rgba(0,0,0,.5);padding:6px;border-radius:30px;backdrop-filter:blur(10px)}}
+        /* ==========================================================
+           8. HERO SECTION
+           ========================================================== */
+        .explore-hero {
+            position: relative; padding: 120px 5% 90px; text-align: center;
+            background: radial-gradient(ellipse at 50% 120%, var(--p9), var(--bg));
+            overflow: hidden; border-bottom: 1px solid var(--bs);
+        }
+        #heroCanvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .hero-content { position: relative; z-index: 2; }
+        
+        .explore-badge {
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 30px;
+            background: rgba(217,119,6,0.1); border: 1px solid rgba(217,119,6,0.3);
+            color: var(--a5); font-weight: 800; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.2em; margin-bottom: 20px; font-family: var(--fm);
+        }
+        
+        .explore-title {
+            font-family: var(--fc); font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: var(--p3); margin-bottom: 15px; text-shadow: 0 0 30px rgba(16,185,129,0.4);
+            letter-spacing: 2px; font-weight: 900; line-height: 1.1;
+        }
+        
+        .explore-subtitle { color: var(--tx2); font-size: 1.1rem; max-width: 700px; margin: 0 auto 35px; line-height: 1.8; }
+        
+        .hero-btns { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+        
+        .btn-astrolabe {
+            background: linear-gradient(135deg, var(--a5), var(--a7)); color: white;
+            border: 2px solid rgba(255,255,255,0.15); padding: 14px 32px; border-radius: 50px;
+            font-size: 1rem; font-weight: 800; box-shadow: 0 10px 30px rgba(217,119,6,0.3);
+            display: inline-flex; align-items: center; gap: 12px; transition: all 0.4s;
+            position: relative; overflow: hidden;
+        }
+        .btn-astrolabe:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(217,119,6,0.5); }
+        .btn-astrolabe::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-20deg); transition: 0.6s;
+        }
+        .btn-astrolabe:hover::before { left: 150%; }
+        .astrolabe-icon { font-size: 1.3rem; transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1); }
+        .btn-astrolabe.spinning .astrolabe-icon { transform: rotate(1080deg); }
+        
+        .btn-fav {
+            background: rgba(16,185,129,0.1); border: 1px solid var(--p5); color: var(--p5);
+            padding: 14px 32px; border-radius: 50px; font-size: 1rem; font-weight: 800;
+            transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;
+        }
+        .btn-fav:hover { background: var(--p5); color: white; transform: translateY(-3px); }
 
-        /* ===== KEYBOARD SHORTCUTS ===== */
-        .kbd-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:999999;display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:.3s}
-        .kbd-modal.active{opacity:1;visibility:visible}
-        .kbd-box{background:var(--bg3);border-radius:20px;padding:28px;max-width:440px;width:90%;border:1px solid var(--bl);transform:scale(.9);transition:transform .3s}
-        .kbd-modal.active .kbd-box{transform:scale(1)}
-        .kbd-box h3{font-family:var(--fd);color:var(--p5);font-size:1.3rem;margin-bottom:16px;font-weight:900}
-        .kbd-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bl)}
-        .kbd-row:last-child{border:none}
-        .kbd-key{background:var(--bg);border:1px solid var(--bl);padding:3px 10px;border-radius:5px;font-family:monospace;font-weight:700;font-size:.8rem;color:var(--p5)}
+        .search-bar { max-width: 550px; margin: 0 auto; position: relative; }
+        .search-bar input {
+            width: 100%; padding: 16px 20px 16px 50px; border-radius: 20px;
+            border: 2px solid var(--bs); background: var(--bg2); color: var(--tx);
+            font-size: 1rem; font-family: var(--fb); outline: none; transition: all 0.3s;
+            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .search-bar input:focus { border-color: var(--p5); box-shadow: 0 0 25px var(--gw); }
+        .search-bar input::placeholder { color: var(--tx2); }
+        .search-bar i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--p5); font-size: 1.1rem; }
+        .search-bar .search-count {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            font-size: 0.75rem; color: var(--tx2); font-weight: 800; font-family: var(--fm);
+            background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 10px;
+        }
 
-        /* ===== CELEBRATION ===== */
-        .celebration{position:fixed;inset:0;z-index:999998;pointer-events:none;display:none}
-        .celebration.active{display:block}
-        .confetti{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall 3s forwards}
-        @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+        /* ==========================================================
+           9. FILTER & SORT CONTROLS
+           ========================================================== */
+        .control-panel {
+            background: var(--bg2); backdrop-filter: blur(20px); border-bottom: 1px solid var(--bl);
+            padding: 15px 5%; position: sticky; top: 70px; z-index: 90;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+        }
+        
+        .filter-group { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+        .filter-btn {
+            background: transparent; border: 1px solid var(--bs); color: var(--tx2);
+            padding: 8px 20px; border-radius: 30px; font-weight: 700; font-size: 0.85rem;
+            transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .filter-btn::before { content: ''; position: absolute; inset: 0; background: var(--p7); opacity: 0; transition: opacity 0.3s; }
+        .filter-btn.active::before, .filter-btn:hover::before { opacity: 1; }
+        .filter-btn.active, .filter-btn:hover { color: white; border-color: var(--p5); box-shadow: 0 0 15px var(--gw); transform: translateY(-2px); }
+        .filter-btn span { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; }
+        .filter-btn .f-count { font-size: 0.7rem; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 12px; font-family: var(--fm); }
+        
+        .controls-right { display: flex; gap: 12px; align-items: center; }
+        .sort-group select {
+            background: var(--bg); color: var(--tx); border: 1px solid var(--bs);
+            padding: 10px 16px; border-radius: 12px; outline: none; font-family: var(--fb);
+            font-weight: 700; font-size: 0.85rem;
+        }
+        
+        .view-toggle { display: flex; gap: 5px; background: var(--bg); padding: 4px; border-radius: 12px; border: 1px solid var(--bs); }
+        .view-btn {
+            width: 36px; height: 36px; border-radius: 8px; border: none; background: transparent;
+            color: var(--tx2); display: flex; align-items: center; justify-content: center; transition: all 0.3s;
+        }
+        .view-btn.active { background: var(--p5); color: white; box-shadow: 0 4px 10px var(--gw); }
 
-        /* ===== TOAST ===== */
-        #toast-box{position:fixed;bottom:80px;right:20px;display:flex;flex-direction:column;gap:6px;z-index:100000}
-        .toast{background:linear-gradient(135deg,var(--p7),#065f46);color:white;padding:10px 18px;border-radius:12px;font-weight:600;font-size:.75rem;display:flex;align-items:center;gap:6px;animation:tIn .4s forwards,tOut .4s 2.6s forwards;box-shadow:0 6px 20px rgba(0,0,0,.2)}
-        @keyframes tIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
-        @keyframes tOut{to{transform:translateX(120%);opacity:0}}
+        /* ==========================================================
+           10. THE 3D LIBRARY GRID (CORE NEXA FEATURE)
+           ========================================================== */
+        .library-container {
+            max-width: 1400px; margin: 0 auto; padding: 50px 5% 80px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px; perspective: 1500px; transition: all 0.4s;
+        }
+        
+        /* List View Modifier */
+        .library-container.list-view { grid-template-columns: 1fr; gap: 20px; max-width: 1000px; }
+        .library-container.list-view .book-wrapper { height: 140px; }
+        .library-container.list-view .book-3d { transform: none !important; }
+        .library-container.list-view .book-wrapper:hover .book-3d { transform: translateY(-5px) !important; }
+        .library-container.list-view .book-cover { border-radius: 16px; flex-direction: row; padding: 20px 30px; gap: 25px; align-items: center; justify-content: space-between; }
+        .library-container.list-view .book-spine, .library-container.list-view .book-pages, .library-container.list-view .read-stamp { display: none; }
+        .library-container.list-view .book-title { font-size: 1.5rem; text-align: left; margin-bottom: 0; }
+        .library-container.list-view .book-author { text-align: left; margin-bottom: 0; font-size: 1rem; }
+        .library-container.list-view .book-era { margin-top: 0; font-size: 0.85rem; }
+        .library-container.list-view .book-category { border: none; padding: 0; margin: 0; background: rgba(0,0,0,0.3); padding: 5px 12px; border-radius: 20px; }
 
-        .k4-footer{text-align:center;padding:30px 5%;border-top:1px solid var(--bl);color:var(--tx2);font-size:.75rem}
-        .k4-footer a{color:var(--p5);text-decoration:none}
+        .book-wrapper { height: 440px; position: relative; transform-style: preserve-3d; transition: transform 0.5s, opacity 0.5s; }
+        .book-wrapper.hide-item { display: none; }
+        
+        .book-3d {
+            position: absolute; width: 100%; height: 100%; transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: rotateY(-18deg) rotateX(5deg);
+        }
+        .book-wrapper:hover .book-3d { transform: rotateY(0) rotateX(0) scale(1.05) translateY(-10px); }
+        
+        .book-cover {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--book-color-1), var(--book-color-2));
+            border-radius: 2px 18px 18px 2px;
+            box-shadow: inset 4px 0 10px rgba(0,0,0,0.5), inset -1px 0 2px rgba(255,255,255,0.2), 8px 15px 30px rgba(0,0,0,0.4);
+            transform: translateZ(25px); padding: 30px 20px; display: flex; flex-direction: column;
+            border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
+        }
+        .book-cover::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            opacity: 0.1; mix-blend-mode: overlay; pointer-events: none;
+        }
+        
+        .book-spine {
+            position: absolute; width: 40px; height: 100%;
+            background: linear-gradient(to right, var(--book-color-2), var(--book-color-1));
+            transform: rotateY(-90deg) translateZ(25px); transform-origin: left;
+            border-radius: 12px 0 0 12px; box-shadow: inset -2px 0 5px rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .spine-text {
+            color: rgba(255,255,255,0.4); writing-mode: vertical-rl; text-orientation: mixed;
+            font-family: var(--fa); letter-spacing: 3px; font-size: 0.85rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .book-pages {
+            position: absolute; width: calc(100% - 12px); height: 96%; top: 2%; left: 6px;
+            background: #fdf6e3; transform: translateZ(-20px); border-radius: 0 12px 12px 0;
+            box-shadow: inset -5px 0 15px rgba(0,0,0,0.15);
+            background-image: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.04) 3px);
+        }
+        
+        .book-category {
+            font-size: 0.65rem; color: var(--a5); font-weight: 800; text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 15px; text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; font-family: var(--fm);
+        }
+        .book-title {
+            font-size: 1.6rem; color: #fff; font-family: var(--fa); line-height: 1.3;
+            text-align: center; margin-bottom: 10px; text-shadow: 1px 2px 5px rgba(0,0,0,0.6);
+        }
+        .book-author { font-size: 0.9rem; color: var(--p3); font-weight: 700; text-align: center; margin-bottom: auto; text-transform: uppercase; letter-spacing: 1px; }
+        .book-era { text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.6); background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 8px; font-family: var(--fm); }
+        
+        .book-read-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: rgba(0,0,0,0.3); z-index: 5; transform: translateZ(26px); border-radius: 0 0 18px 0; }
+        .book-read-fill { height: 100%; background: var(--p5); border-radius: 0 0 18px 0; transition: width 0.5s; box-shadow: 0 0 10px var(--p5); }
+        
+        .read-stamp {
+            position: absolute; top: 12px; right: -25px; background: var(--p5); color: white;
+            font-size: 0.6rem; font-weight: 900; padding: 5px 35px; transform: rotate(45deg);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.4); display: none; z-index: 20; letter-spacing: 2px; font-family: var(--fm);
+        }
+        .book-wrapper.is-read .read-stamp { display: block; }
+        .book-wrapper.is-read .book-cover { filter: grayscale(20%); }
+        
+        .book-fav-star { position: absolute; top: 12px; left: 12px; z-index: 21; font-size: 1.2rem; color: rgba(255,255,255,0.2); transform: translateZ(26px); transition: all 0.3s; }
+        .book-wrapper.is-fav .book-fav-star { color: var(--a5); text-shadow: 0 0 15px rgba(217,119,6,0.8); }
+        
+        .no-results { text-align: center; padding: 80px 20px; color: var(--tx2); font-size: 1.2rem; grid-column: 1/-1; font-family: var(--fm); }
 
-        .reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.16,1,.3,1)}.reveal.active{opacity:1;transform:translateY(0)}
+        /* ==========================================================
+           11. ZEN READER & NEXA AI INSIGHT
+           ========================================================== */
+        .zen-modal {
+            position: fixed; inset: 0; background: rgba(2,6,23,0.95); backdrop-filter: blur(15px);
+            z-index: 100000; display: flex; justify-content: center; overflow-y: auto;
+            opacity: 0; visibility: hidden; transition: 0.5s; perspective: 1200px;
+        }
+        .zen-modal.active { opacity: 1; visibility: visible; }
+        
+        .zen-paper {
+            background: #fdf6e3; background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            width: 100%; max-width: 850px; min-height: 100vh; padding: 80px 8%; position: relative;
+            box-shadow: 0 0 80px rgba(0,0,0,0.6); color: #1e293b;
+            transform: rotateX(8deg) translateY(50px); transform-origin: top; transition: 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .zen-modal.active .zen-paper { transform: rotateX(0) translateY(0); }
+        
+        .zen-tools { position: fixed; top: 25px; right: 4%; display: flex; gap: 12px; z-index: 100001; }
+        .zen-btn {
+            width: 48px; height: 48px; border-radius: 50%; background: var(--bg2); border: 1px solid var(--bs);
+            color: var(--tx); font-size: 1.1rem; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .zen-btn:hover { background: var(--p5); color: white; transform: scale(1.15) rotate(5deg); }
+        .zen-btn.close:hover { background: #ef4444; border-color: #ef4444; transform: scale(1.15) rotate(90deg); }
+        .zen-btn.tts-on { background: var(--p5) !important; color: white !important; animation: ttsGw 2s infinite; }
+        
+        .zen-header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #cbd5e1; padding-bottom: 25px; position: relative; }
+        .zen-header::after { content: '❁'; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); background: #fdf6e3; padding: 0 10px; color: #94a3b8; font-size: 1.5rem; }
+        .zen-title { font-family: var(--fa); font-size: clamp(2rem, 5vw, 3.5rem); color: #0f172a; margin-bottom: 10px; line-height: 1.2; text-shadow: 1px 1px 0px rgba(0,0,0,0.1); }
+        .zen-author { color: #b45309; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; font-family: var(--fb); }
+        
+        .zen-meta { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+        .zen-meta-badge { font-size: 0.75rem; color: #475569; background: #f1f5f9; padding: 5px 15px; border-radius: 20px; font-family: var(--fm); font-weight: 700; border: 1px solid #cbd5e1; }
+        
+        .zen-content { font-size: 1.1rem; line-height: 2.1; text-align: justify; color: #334155; }
+        .zen-content p { margin-bottom: 22px; }
+        .zen-content p:first-child::first-letter { font-size: 4rem; font-family: var(--fa); float: left; margin-right: 10px; line-height: 1; color: #047857; text-shadow: 2px 2px 0px rgba(4,120,87,0.2); }
+        
+        .zen-quote {
+            font-family: var(--fa); font-size: 1.5rem; color: #064e3b; text-align: center;
+            margin: 40px 0; position: relative; padding: 0 40px; line-height: 1.6;
+        }
+        .zen-quote::before, .zen-quote::after { content: '"'; font-size: 4rem; position: absolute; color: rgba(6,78,59,0.15); top: -15px; }
+        .zen-quote::before { left: 0; } .zen-quote::after { right: 0; }
+        
+        .zen-progress { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 850px; height: 5px; background: rgba(0,0,0,0.1); z-index: 100002; }
+        .zen-progress-fill { height: 100%; background: linear-gradient(90deg, var(--p5), var(--a5)); width: 0%; transition: width 0.1s; }
+
+        /* NEXA AI INSIGHT BOX */
+        .ai-insight-box {
+            position: fixed; left: 4%; top: 25px; width: 350px; background: var(--bg2);
+            backdrop-filter: blur(20px); border: 1px solid var(--p5); border-radius: 20px;
+            padding: 25px; color: var(--tx); z-index: 100005; box-shadow: 0 15px 40px rgba(16,185,129,0.3);
+            opacity: 0; visibility: hidden; transform: translateX(-30px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .ai-insight-box.active { opacity: 1; visibility: visible; transform: translateX(0); }
+        .ai-header { color: var(--p5); font-weight: 900; margin-bottom: 15px; font-family: var(--fc); border-bottom: 1px solid var(--bs); padding-bottom: 10px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
+        .ai-content { font-size: 0.9rem; line-height: 1.7; color: var(--tx2); font-family: var(--fb); min-height: 100px; }
+        .typewriter-cursor { display: inline-block; width: 8px; height: 15px; background: var(--p5); animation: blink 1s step-end infinite; margin-left: 2px; vertical-align: middle; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* ==========================================================
+           12. UTILITIES: TOAST, SCROLL TO TOP, CELEBRATION
+           ========================================================== */
+        #toast-box { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 100000; }
+        .toast {
+            background: linear-gradient(135deg, var(--p7), #065f46); color: white; padding: 14px 24px;
+            border-radius: 15px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 10px;
+            animation: tIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, tOut 0.4s 3s forwards;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+        }
+        @keyframes tIn { from { transform: translateX(120%) scale(0.9); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+        @keyframes tOut { to { transform: translateX(120%) scale(0.9); opacity: 0; } }
+
+        .scroll-top {
+            position: fixed; bottom: 30px; left: 30px; z-index: 999; width: 56px; height: 56px;
+            border-radius: 50%; background: var(--bg2); border: 2px solid var(--bs);
+            display: flex; align-items: center; justify-content: center; transition: all 0.4s;
+            opacity: 0; visibility: hidden; transform: translateY(20px); backdrop-filter: blur(10px);
+        }
+        .scroll-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .scroll-top:hover { background: var(--p5); color: white; border-color: var(--p5); transform: translateY(-5px); box-shadow: 0 10px 25px var(--gw); }
+        .scroll-top svg { width: 44px; height: 44px; transform: rotate(-90deg); position: absolute; }
+        .scroll-top .prog-ring { fill: none; stroke: var(--p5); stroke-width: 2.5; stroke-linecap: round; transition: stroke-dashoffset 0.1s; }
+        .scroll-top .bg-ring { fill: none; stroke: var(--bl); stroke-width: 2.5; }
+        .scroll-top i { position: absolute; font-size: 1.1rem; color: var(--tx); }
+        .scroll-top:hover i { color: white; }
+
+        .celebration { position: fixed; inset: 0; z-index: 999998; pointer-events: none; display: none; }
+        .celebration.active { display: block; }
+        .confetti { position: absolute; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0); opacity: 1; } 100% { transform: translateY(100vh) rotate(1080deg); opacity: 0; } }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ==========================================================
+           13. KEYBOARD SHORTCUTS MODAL
+           ========================================================== */
+        .kbd-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            z-index: 999999; display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: 0.4s;
+        }
+        .kbd-modal.active { opacity: 1; visibility: visible; }
+        .kbd-box {
+            background: var(--bg3); border-radius: 24px; padding: 35px; max-width: 500px; width: 90%;
+            border: 1px solid var(--bl); transform: scale(0.9) translateY(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .kbd-modal.active .kbd-box { transform: scale(1) translateY(0); }
+        .kbd-box h3 { font-family: var(--fc); color: var(--p5); font-size: 1.6rem; margin-bottom: 25px; font-weight: 900; text-align: center; }
+        .kbd-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--bl); }
+        .kbd-row:last-child { border: none; }
+        .kbd-key {
+            background: var(--bg); border: 1px solid var(--bs); padding: 5px 12px; border-radius: 8px;
+            font-family: var(--fm); font-weight: 700; font-size: 0.9rem; color: var(--p5); box-shadow: 0 4px 0 var(--bg);
+        }
+
+        /* Branding Footer */
+        .ug-branding { padding: 60px 5% 40px; text-align: center; border-top: 1px solid var(--bl); background: rgba(0,0,0,0.02); }
+        .ug-logo { width: 90px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); transition: 0.5s; margin-bottom: 15px; }
+        .ug-logo:hover { transform: scale(1.1) rotate(5deg); }
+        .k4-footer { text-align: center; padding: 25px 5%; border-top: 1px solid var(--bl); color: var(--tx2); font-size: 0.85rem; font-family: var(--fm); }
+        .k4-footer a { color: var(--p5); text-decoration: none; font-weight: 700; }
     </style>
 </head>
 <body>
+
 <div id="preloader">
     <div class="pre-arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
     <div class="pre-ornament"></div>
-    <p style="color:var(--p5);font-size:.85rem;font-family:var(--fd);font-style:italic;font-weight:600">Membuka Gerbang Baitul Hikmah...</p>
+    <p class="pre-text">MEMBUKA GERBANG BAITUL HIKMAH</p>
     <div class="pre-bar"><div class="pre-fill" id="preFill"></div></div>
     <div class="pre-percent" id="prePercent">0%</div>
-    <div class="pre-status" id="preStatus">MEMUAT MANUSKRIP...</div>
+    <div class="pre-status" id="preStatus">SINKRONISASI DATA HISTORIOGRAFI...</div>
 </div>
 
 <div class="cur-dot" id="curDot"></div>
 <div class="cur-ring" id="curRing"></div>
 <div id="scrollProg"></div>
 <canvas id="geoCanvas"></canvas>
-<div class="noise"></div>
+<div class="noise-layer"></div>
 
 <nav class="k4-nav" id="mainNav">
     <div class="k4-nav-inner">
-        <a href="index.html" class="k4-brand"><img src="assets/img/brand/gunadarma-logo.png" alt="UG" onerror="this.style.display='none'"><span>Kelompok IV</span></a>
-        <button class="mobile-toggle" id="mobTog"><i class="fa-solid fa-bars"></i></button>
+        <a href="index.html" class="k4-brand"><i class="fa-solid fa-book-open-reader"></i> <span>Kelompok IV</span></a>
+        <button class="mobile-toggle" id="mobTog"><i class="fa-solid fa-bars-staggered"></i></button>
         <div class="nav-menu" id="navMenu">
             <a href="index.html" class="nav-link">Beranda</a>
             <a href="tim.html" class="nav-link">Tim</a>
-            <a href="timeline.html" class="nav-link">Timeline</a>
-            <a href="explore.html" class="nav-link active">Perpustakaan</a>
-            <a href="tokoh.html" class="nav-link">Tokoh</a>
-            <a href="kuis.html" class="nav-link">Kuis</a>
+            <a href="timeline.html" class="nav-link">Garis Waktu</a>
+            <a href="explore.html" class="nav-link active">Baitul Hikmah</a>
+            <a href="tokoh.html" class="nav-link">Peta Tokoh</a>
+            <a href="kuis.html" class="nav-link">Uji Pemahaman</a>
         </div>
         <div class="nav-tools">
-            <button class="nav-btn" id="btnTheme" title="Tema"><i class="fa-solid fa-moon"></i></button>
-            <button class="nav-btn" id="btnSepia" title="Mode Baca" data-mode="sepia"><i class="fa-solid fa-book"></i></button>
-            <button class="nav-btn" id="btnKbd" title="Shortcut (?)"><i class="fa-solid fa-keyboard"></i></button>
+            <button class="nav-btn" id="btnTheme" title="Tema: Terang/Gelap"><i class="fa-solid fa-moon"></i></button>
+            <button class="nav-btn" id="btnSepia" title="Mode Baca Klasik"><i class="fa-solid fa-scroll"></i></button>
+            <button class="nav-btn" id="btnKbd" title="Pintasan Keyboard"><i class="fa-solid fa-keyboard"></i></button>
         </div>
     </div>
 </nav>
 
-<!-- COMPLETION DASHBOARD -->
 <div class="dash" id="dashBoard">
-    <div class="dash-ring"><svg viewBox="0 0 36 36"><circle class="bg-ring" cx="18" cy="18" r="15.5"/><circle class="fg-ring" id="dashRing" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg><div class="dash-percent" id="dashPct">0%</div></div>
-    <div><div class="dash-label">Progres Baca</div></div>
-    <div class="dash-stat"><div class="dash-stat-num" id="dashRead">0</div><div class="dash-stat-label">Dibaca</div></div>
-    <div class="dash-stat"><div class="dash-stat-num" id="dashFav">0</div><div class="dash-stat-label">Favorit</div></div>
-    <div class="dash-stat"><div class="dash-stat-num counter" data-target="12">0</div><div class="dash-stat-label">Koleksi</div></div>
+    <div class="dash-ring">
+        <svg viewBox="0 0 36 36">
+            <circle class="bg-ring" cx="18" cy="18" r="15.5"/>
+            <circle class="fg-ring" id="dashRing" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/>
+        </svg>
+        <div class="dash-percent" id="dashPct">0%</div>
+    </div>
+    <div><div class="dash-label">Progres Literasi</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="dashRead">0</div><div class="dash-stat-label">Kitab Dibaca</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="dashFav">0</div><div class="dash-stat-label">Rak Favorit</div></div>
+    <div class="dash-stat"><div class="dash-stat-num counter" data-target="12">0</div><div class="dash-stat-label">Total Koleksi</div></div>
 </div>
 
-<!-- FAVORITES SHELF -->
 <div class="fav-shelf" id="favShelf">
-    <div class="fav-shelf-title"><i class="fa-solid fa-star" style="color:var(--a5)"></i> Rak Favorit Anda</div>
-    <div class="fav-scroll" id="favScroll"></div>
+    <div class="fav-shelf-title"><i class="fa-solid fa-star" style="color:var(--a5)"></i> Koleksi Pribadi Anda</div>
+    <div class="fav-scroll" id="favScroll">
+        </div>
 </div>
 
-<!-- HERO -->
 <section class="explore-hero">
     <canvas id="heroCanvas"></canvas>
     <div class="hero-content">
-        <div class="explore-badge reveal"><i class="fa-solid fa-scroll"></i> Kelompok 4 — Filsafat Islam</div>
-        <h1 class="explore-title reveal" style="transition-delay:.08s">Perpustakaan Baitul Hikmah</h1>
-        <p class="explore-subtitle reveal" style="transition-delay:.15s">Menelusuri mahakarya pemikiran Islam klasik hingga kontemporer. Membedah diskursus filsafat, tasawuf, dan sains tanpa celah (<em>without any gaps</em>).</p>
-        <div class="hero-btns reveal" style="transition-delay:.22s">
-            <button class="btn-astrolabe" id="btnAstrolabe"><i class="fa-solid fa-compass astrolabe-icon"></i> Acak Pengetahuan</button>
-            <button class="btn-fav" onclick="scrollToFavs()"><i class="fa-solid fa-star"></i> Rak Favorit</button>
+        <div class="explore-badge reveal"><i class="fa-solid fa-landmark-dome"></i> Mahakarya Peradaban Islam</div>
+        <h1 class="explore-title reveal" style="transition-delay:0.1s">Perpustakaan Baitul Hikmah</h1>
+        <p class="explore-subtitle reveal" style="transition-delay:0.2s">Eksplorasi literatur <em>Without Any Gaps</em>. Dari rasionalitas Al-Kindi hingga Teosofi Transenden Mulla Sadra. Membedah diskursus filsafat, kedokteran, hingga sosiologi klasik.</p>
+        
+        <div class="hero-btns reveal" style="transition-delay:0.3s">
+            <button class="btn-astrolabe" id="btnAstrolabe"><i class="fa-solid fa-compass astrolabe-icon"></i> Putar Astrolabe (Acak)</button>
+            <button class="btn-fav" onclick="scrollToFavs()"><i class="fa-solid fa-bookmark"></i> Lihat Rak Favorit</button>
         </div>
-        <div class="search-bar reveal" style="transition-delay:.3s">
+        
+        <div class="search-bar reveal" style="transition-delay:0.4s">
             <i class="fa-solid fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Cari kitab, tokoh, atau era...">
-            <span class="search-count" id="searchCount"></span>
+            <input type="text" id="searchInput" placeholder="Cari kitab, nama tokoh, atau ketik 'Abad 11'...">
+            <span class="search-count" id="searchCount">12 Hasil</span>
         </div>
     </div>
 </section>
 
-<!-- CONTROLS -->
 <div class="control-panel" id="ctrlPanel">
-    <div class="filter-group" id="filterGroup"></div>
-    <div style="display:flex;gap:8px;align-items:center">
+    <div class="filter-group" id="filterGroup">
+        </div>
+    <div class="controls-right">
         <div class="view-toggle">
-            <button class="view-btn active" data-view="grid" title="Grid"><i class="fa-solid fa-grip"></i></button>
-            <button class="view-btn" data-view="list" title="List"><i class="fa-solid fa-list"></i></button>
+            <button class="view-btn active" data-view="grid" title="Tampilan Grid"><i class="fa-solid fa-border-all"></i></button>
+            <button class="view-btn" data-view="list" title="Tampilan List"><i class="fa-solid fa-list-ul"></i></button>
         </div>
         <select id="sortSelect" class="sort-group" onchange="sortLib()">
-            <option value="default">Relevansi</option>
-            <option value="eraAsc">Era: Klasik</option>
-            <option value="eraDesc">Era: Modern</option>
-            <option value="titleAsc">A-Z</option>
+            <option value="default">Urutkan: Relevansi</option>
+            <option value="eraAsc">Kronologi: Klasik ➔ Modern</option>
+            <option value="eraDesc">Kronologi: Modern ➔ Klasik</option>
+            <option value="titleAsc">Alfabet: A ➔ Z</option>
         </select>
     </div>
 </div>
 
-<main class="library-container" id="libraryGrid"></main>
+<main class="library-container" id="libraryGrid">
+    </main>
 
-<section class="ug-branding">
-    <div class="ug-logo-wrap"><img src="assets/img/brand/gunadarma-logo.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'" alt="Gunadarma" class="ug-logo"></div>
-    <h2 class="ug-t">UNIVERSITAS GUNADARMA</h2>
-    <div class="ug-s">Fakultas Teknologi Industri • Teknik Informatika</div>
-</section>
-
-<footer class="k4-footer">
-    <p>© 2026 Kelompok IV | <a href="index.html">Beranda</a> · <a href="timeline.html">Timeline</a> · <a href="tim.html">Tim</a> · <a href="tokoh.html">Tokoh</a> · <a href="kuis.html">Kuis</a></p>
-</footer>
-
-<!-- SCROLL TO TOP -->
-<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <svg viewBox="0 0 36 36"><circle class="bg-ring" cx="18" cy="18" r="15.5"/><circle class="prog-ring" id="scrollRing" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
-    <i class="fa-solid fa-arrow-up"></i>
-</div>
-
-<!-- ZEN READER -->
 <div class="zen-modal" id="zenModal">
-    <div class="zen-tools" id="zenTools">
-        <button class="zen-btn" id="btnFontDown" title="Kecilkan Teks" onclick="changeFontSize(-1)"><i class="fa-solid fa-minus"></i></button>
-        <button class="zen-btn" id="btnFontUp" title="Besarkan Teks" onclick="changeFontSize(1)"><i class="fa-solid fa-plus"></i></button>
-        <button class="zen-btn" id="btnTTS" title="Dengarkan" onclick="toggleTTS()"><i class="fa-solid fa-headphones"></i></button>
-        <button class="zen-btn" id="btnFavZen" title="Favorit" onclick="toggleFavFromZen()"><i class="fa-regular fa-star"></i></button>
-        <button class="zen-btn" id="btnShare" title="Bagikan" onclick="shareBook()"><i class="fa-solid fa-share-nodes"></i></button>
-        <button class="zen-btn close" title="Tutup" onclick="closeZen()"><i class="fa-solid fa-xmark"></i></button>
+    
+    <div class="ai-insight-box" id="aiInsightBox">
+        <div class="ai-header"><i class="fa-solid fa-brain"></i> NEXA AI - Bedah Kitab</div>
+        <div class="ai-content">
+            <span id="aiInsightContent"></span><span class="typewriter-cursor" id="aiCursor"></span>
+        </div>
+        <button class="nav-btn" onclick="document.getElementById('aiInsightBox').classList.remove('active')" style="margin-top:20px; width:100%; border-radius:10px; background:rgba(0,0,0,0.2);">Tutup Panel Analisis</button>
     </div>
+
+    <div class="zen-tools" id="zenTools">
+        <button class="zen-btn" title="NEXA AI Insight" onclick="triggerAIInsight()" style="background:var(--p7); color:white; border-color:var(--p5);"><i class="fa-solid fa-robot"></i></button>
+        <div style="width: 2px; height: 30px; background: var(--bs); margin: auto 5px;"></div>
+        <button class="zen-btn" title="Perkecil Teks" onclick="changeFontSize(-1)"><i class="fa-solid fa-font"></i><i class="fa-solid fa-minus" style="font-size:0.6rem; margin-left:2px;"></i></button>
+        <button class="zen-btn" title="Perbesar Teks" onclick="changeFontSize(1)"><i class="fa-solid fa-font"></i><i class="fa-solid fa-plus" style="font-size:0.6rem; margin-left:2px;"></i></button>
+        <button class="zen-btn" id="btnTTS" title="Dengarkan Audio (TTS)" onclick="toggleTTS()"><i class="fa-solid fa-ear-listen"></i></button>
+        <button class="zen-btn" id="btnFavZen" title="Simpan ke Favorit" onclick="toggleFavFromZen()"><i class="fa-regular fa-bookmark"></i></button>
+        <button class="zen-btn close" title="Tutup Buku (Esc)" onclick="closeZen()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
     <div class="zen-paper" id="zenPaper">
         <div class="zen-header">
-            <div style="font-size:.7rem;color:#64748b;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px" id="zenCat">KATEGORI</div>
-            <h1 class="zen-title" id="zenTitle">Judul</h1>
-            <div class="zen-author" id="zenAuthor">Penulis</div>
+            <div id="zenCat" style="font-size:0.8rem; color:#64748b; font-weight:800; letter-spacing:3px; text-transform:uppercase; margin-bottom:15px; font-family:var(--fm);">KATEGORI</div>
+            <h1 class="zen-title" id="zenTitle">Judul Kitab</h1>
+            <div class="zen-author" id="zenAuthor">Nama Penulis</div>
             <div class="zen-meta">
-                <span class="zen-meta-badge" id="zenEra"><i class="fa-solid fa-hourglass-half"></i> Era</span>
-                <span class="zen-meta-badge" id="zenTime"><i class="fa-regular fa-clock"></i> -- mnt baca</span>
+                <span class="zen-meta-badge" id="zenEra"><i class="fa-solid fa-hourglass-half"></i> Era Historis</span>
+                <span class="zen-meta-badge" id="zenTime"><i class="fa-regular fa-clock"></i> Waktu Baca</span>
             </div>
         </div>
-        <div class="zen-content" id="zenContent"></div>
+        <div class="zen-content" id="zenContent">
+            </div>
     </div>
     <div class="zen-progress"><div class="zen-progress-fill" id="zenProgFill"></div></div>
 </div>
 
-<!-- KEYBOARD SHORTCUTS -->
 <div class="kbd-modal" id="kbdModal">
     <div class="kbd-box">
-        <h3><i class="fa-solid fa-keyboard" style="color:var(--a5)"></i> Pintasan Keyboard</h3>
-        <div class="kbd-row"><span class="kbd-key">/</span><span style="color:var(--tx2);font-size:.8rem">Fokus pencarian</span></div>
-        <div class="kbd-row"><span class="kbd-key">D</span><span style="color:var(--tx2);font-size:.8rem">Dark / Light</span></div>
-        <div class="kbd-row"><span class="kbd-key">S</span><span style="color:var(--tx2);font-size:.8rem">Mode Sepia</span></div>
-        <div class="kbd-row"><span class="kbd-key">G</span><span style="color:var(--tx2);font-size:.8rem">Grid / List</span></div>
-        <div class="kbd-row"><span class="kbd-key">R</span><span style="color:var(--tx2);font-size:.8rem">Acak Buku</span></div>
-        <div class="kbd-row"><span class="kbd-key">?</span><span style="color:var(--tx2);font-size:.8rem">Panel ini</span></div>
-        <div class="kbd-row"><span class="kbd-key">Esc</span><span style="color:var(--tx2);font-size:.8rem">Tutup</span></div>
-        <div style="text-align:center;margin-top:14px"><button class="nav-btn" onclick="document.getElementById('kbdModal').classList.remove('active')" style="width:auto;padding:6px 16px;font-size:.75rem;border-radius:8px"><i class="fa-solid fa-xmark"></i> Tutup</button></div>
+        <h3><i class="fa-solid fa-keyboard"></i> Pintasan Keyboard (NEXA)</h3>
+        <div class="kbd-row"><span class="kbd-key">/</span><span style="color:var(--tx2);font-size:0.9rem">Fokus kotak pencarian</span></div>
+        <div class="kbd-row"><span class="kbd-key">D</span><span style="color:var(--tx2);font-size:0.9rem">Toggle Mode Gelap/Terang</span></div>
+        <div class="kbd-row"><span class="kbd-key">S</span><span style="color:var(--tx2);font-size:0.9rem">Toggle Mode Sepia (Klasik)</span></div>
+        <div class="kbd-row"><span class="kbd-key">G</span><span style="color:var(--tx2);font-size:0.9rem">Ganti Tampilan Grid/List</span></div>
+        <div class="kbd-row"><span class="kbd-key">R</span><span style="color:var(--tx2);font-size:0.9rem">Putar Astrolabe (Acak Buku)</span></div>
+        <div class="kbd-row"><span class="kbd-key">Esc</span><span style="color:var(--tx2);font-size:0.9rem">Tutup Buku / Panel ini</span></div>
+        <div style="text-align:center; margin-top:25px;">
+            <button class="nav-btn" onclick="document.getElementById('kbdModal').classList.remove('active')" style="width:auto; padding:8px 25px; border-radius:12px;"><i class="fa-solid fa-check"></i> Mengerti</button>
+        </div>
     </div>
+</div>
+
+<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg viewBox="0 0 36 36"><circle class="bg-ring" cx="18" cy="18" r="15.5"/><circle class="prog-ring" id="scrollRing" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    <i class="fa-solid fa-jet-fighter-up"></i>
 </div>
 
 <div class="celebration" id="celebration"></div>
 <div id="toast-box"></div>
 
+<section class="ug-branding">
+    <img src="assets/images/brand/gunadarma-logo.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'" alt="Gunadarma" class="ug-logo">
+    <h2 style="font-family:var(--fc); color:var(--p5); font-weight:900; letter-spacing:2px; font-size:1.5rem;">UNIVERSITAS GUNADARMA</h2>
+    <div style="color:var(--tx2); font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:0.85rem; margin-top:5px;">Fakultas Teknologi Industri • Teknik Informatika</div>
+</section>
+<footer class="k4-footer">
+    <p>© 2026 Kelompok IV | <a href="index.html">Beranda</a> · <a href="timeline.html">Timeline</a> · <a href="tim.html">Tim</a> · <a href="tokoh.html">Tokoh</a> · <a href="kuis.html">Kuis</a></p>
+</footer>
+
 <script>
-const DB=[
-{id:"k-01",cat:"filsafat",catL:"Filsafat Peripatetik",title:"Al-Falsafah al-Ula",author:"Al-Kindi",era:850,eraL:"Abad 9 M",colors:["#1e3a8a","#172554"],content:`<p>Dikenal sebagai "Filsafat Pertama", karya ini adalah batu loncatan di mana Al-Kindi berusaha membuktikan bahwa tidak ada pertentangan antara pencarian rasional kebenaran dan wahyu ilahi.</p><p>Al-Kindi menggunakan kerangka Aristoteles mengenai sebab-akibat untuk membuktikan keberadaan Tuhan, namun menolak gagasan bahwa alam semesta kekal (qadim). Baginya, alam semesta diciptakan dari ketiadaan oleh Kehendak Tuhan.</p><div class="zen-quote">Kita tidak boleh merasa malu untuk mengakui kebenaran dari mana pun asalnya, sekalipun dari bangsa yang jauh.</div><p>Melalui buku ini, Al-Kindi meletakkan fondasi teologis yang aman bagi perkembangan sains dan rasionalitas di dunia Islam, menjembatani Athena dan Baghdad.</p>`},
-{id:"k-02",cat:"politik",catL:"Filsafat Politik",title:"Ara' Ahl al-Madinah al-Fadhilah",author:"Al-Farabi",era:950,eraL:"Abad 10 M",colors:["#5b21b6","#4c1d95"],content:`<p>Al-Farabi merumuskan konsep utopia Islam terinspirasi dari "The Republic" Plato, namun memberikan nyawa tauhid ke dalam sistem politiknya.</p><p>Negara (Madinah) adalah entitas organik, mirip anatomi tubuh manusia di mana jantung (pemimpin) mengatur organ lainnya.</p><div class="zen-quote">Masyarakat yang utama adalah mereka yang bekerja sama untuk mencapai kebahagiaan sejati, bukan sekadar bertahan hidup.</div><p>Syarat mutlak: pemimpinnya harus seorang Nabi atau Filsuf Tertinggi yang akalnya sudah mencapai tahap Akal Mustafad.</p>`},
-{id:"k-03",cat:"medis",catL:"Sains & Kedokteran",title:"Al-Qanun fi al-Tibb",author:"Ibnu Sina",era:1025,eraL:"Abad 11 M",colors:["#064e3b","#022c22"],content:`<p>Kitab Suci kedokteran selama lebih dari enam abad. Ibnu Sina merinci 760 jenis obat, anatomi mata, sifat menular tuberkulosis, hingga anestesi pra-operasi.</p><div class="zen-quote">Kedokteran adalah ilmu tentang keadaan tubuh manusia, untuk menjaga kesehatan dan memulihkannya ketika hilang.</div><p>Pendekatan holistik: hubungan pikiran dan tubuh (psikosomatis), menjelaskan bagaimana emosi ekstrem menyebabkan penyakit fisik.</p>`},
-{id:"k-04",cat:"filsafat",catL:"Filsafat Murni",title:"Al-Shifa (Book of Healing)",author:"Ibnu Sina",era:1027,eraL:"Abad 11 M",colors:["#b45309","#78350f"],content:`<p>Ensiklopedia filsafat terbesar oleh satu orang. Di sini Ibnu Sina mematangkan Wajib al-Wujud (Wujud yang Niscaya) dan eksperimen pemikiran "Flying Man".</p><div class="zen-quote">Waktu bukanlah realitas mandiri, melainkan alat ukur pergerakan yang tak kasat mata yang terikat pada materi.</div><p>Argumen ontologisnya diadopsi Thomas Aquinas di Barat. Buku ini untuk "menyembuhkan" jiwa dari kebodohan.</p>`},
-{id:"k-05",cat:"tasawuf",catL:"Tasawuf & Kritik",title:"Tahafut al-Falasifah",author:"Al-Ghazali",era:1095,eraL:"Abad 11 M",colors:["#991b1b","#7f1d1d"],content:`<p>Al-Ghazali mengidentifikasi 20 masalah filosofis dan menyatakan para filsuf kafir pada 3 poin utama: alam qadim, Tuhan tidak tahu rincian, dan mengingkari kebangkitan jasmani.</p><div class="zen-quote">Barangsiapa mempelajari matematika dan terpesona ketepatannya, jangan sampai ia berpikir semua ilmu sama pastinya.</div><p>Karya ini sering disalahpahami sebagai "kematian filsafat Islam", padahal ini justru puncak kritik filosofis itu sendiri.</p>`},
-{id:"k-06",cat:"tasawuf",catL:"Tasawuf & Akhlak",title:"Ihya Ulumuddin",author:"Al-Ghazali",era:1105,eraL:"Abad 12 M",colors:["#047857","#064e3b"],content:`<p>Magnum opus Al-Ghazali pasca krisis spiritual. Menjembatani Fikih (hukum lahiriah) dan Tasawuf (pengalaman batiniah) yang kering.</p><div class="zen-quote">Mengetahui definisi cinta secara rasional tidak akan pernah sama rasanya dengan menjadi seorang pecinta yang dimabuk rindu kepada Tuhannya.</div><p>Mengamankan posisi tasawuf ortodoks ke dalam tradisi intelektual Sunni hingga saat ini.</p>`},
-{id:"k-07",cat:"filsafat",catL:"Pembelaan Filsafat",title:"Fasl al-Maqal",author:"Ibnu Rusyd",era:1179,eraL:"Abad 12 M",colors:["#c2410c","#9a3412"],content:`<p>Ditulis di Kordoba. Kesimpulannya: belajar filsafat adalah wajib (wajib syar'i) bagi yang punya kapasitas akal.</p><div class="zen-quote">Kebenaran rasional tidak mungkin bertentangan dengan kebenaran wahyu; keduanya harus selaras dan saling bersaksi.</div><p>Jika terjadi pertentangan, teks wahyu harus ditakwilkan. Sangat berpengaruh di Eropa (Averroisme).</p>`},
-{id:"k-08",cat:"filsafat",catL:"Sastra Filosofis",title:"Hayy bin Yaqdhan",author:"Ibnu Tufail",era:1180,eraL:"Abad 12 M",colors:["#0f766e","#115e59"],content:`<p>Novel filosofis tentang bayi yang tumbuh sendirian di pulau, menemukan Tuhan melalui akal murni tanpa guru, bahasa, atau agama formal.</p><div class="zen-quote">Ketika ia menatap langit, ia menyadari keteraturan sempurna ini tidak mungkin tanpa Penggerak Utama yang tidak bergerak.</div><p>Mendahului Robinson Crusoe berabad-abad. Akal murni sampai pada kesimpulan yang sama dengan para Nabi.</p>`},
-{id:"k-09",cat:"tasawuf",catL:"Filsafat Iluminasi",title:"Hikmat al-Ishraq",author:"Suhrawardi",era:1186,eraL:"Abad 12 M",colors:["#b45309","#451a03"],content:`<p>Mazhab Isyraq: menggabungkan logika dan pencerahan spiritual langsung (dzawq). Ontologi Cahaya: Tuhan = Nur al-Anwar.</p><div class="zen-quote">Kegelapan hanyalah ketiadaan cahaya. Begitu pula keburukan, ia hanyalah ketiadaan kebaikan.</div><p>Membantah narasi orientalis bahwa filsafat Islam mati setelah Al-Ghazali. Di Persia filsafat justru berevolusi.</p>`},
-{id:"k-10",cat:"sejarah",catL:"Sosiologi & Sejarah",title:"Muqaddimah",author:"Ibnu Khaldun",era:1377,eraL:"Abad 14 M",colors:["#57534e","#292524"],content:`<p>Manusia pertama yang menjadikan Sejarah sebagai sains sistematis. Konsep 'Asabiyyah (solidaritas sosial) menjelaskan siklus peradaban.</p><div class="zen-quote">Kekaisaran dan dinasti memiliki umur alami sama seperti manusia. Mereka tumbuh, mencapai puncak, menua, dan mati.</div><p>Pondasi sosiologi, demografi, dan ekonomi. Mendahului Adam Smith soal teori nilai tenaga kerja.</p>`},
-{id:"k-11",cat:"filsafat",catL:"Teosofi Transenden",title:"Al-Hikmah al-Muta'aliyah",author:"Mulla Sadra",era:1628,eraL:"Abad 17 M",colors:["#312e81","#1e1b4b"],content:`<p>Puncak perpaduan filsafat, kalam, dan tasawuf. Prinsip Asalat al-Wujud (Primasinya Wujud) dan Harakah Jauhariyah (Gerak Substantif).</p><div class="zen-quote">Alam semesta berada dalam proses gerak substantif evolusioner yang terus merindu kembali kepada Kesempurnaan Ilahi.</div><p>Fondasi kurikulum filsafat Islam di universitas dan hauzah hingga hari ini.</p>`},
-{id:"k-12",cat:"tasawuf",catL:"Referensi Modern",title:"Islam Risalah Cinta & Kebahagiaan",author:"Haidar Bagir",era:2012,eraL:"Kontemporer",colors:["#831843","#4c0519"],content:`<p>Referensi utama Kelompok IV. Menyaring intisari tasawuf klasik untuk manusia modern. Poros utama: Cinta (Mahabbah).</p><div class="zen-quote">Tuhan adalah Maha Cinta. Segala penderitaan hanyalah riak kecil dalam samudra rahmat-Nya yang tak bertepi.</div><p>Memadukan Al-Ghazali dan Mulla Sadra untuk menjawab krisis eksistensial abad ke-21.</p>`}
+/* 1. FULL DATABASE (12 KITAB LENGKAP) */
+const DB = [
+    {id:"k-01", cat:"filsafat", catL:"Filsafat Peripatetik", title:"Al-Falsafah al-Ula", author:"Al-Kindi", era:850, eraL:"Abad 9 M", colors:["#1e3a8a","#172554"],
+     content:`<p>Karya monumental yang dikenal sebagai "Filsafat Pertama". Ini adalah batu loncatan di mana Al-Kindi berusaha keras untuk membuktikan bahwa tidak ada pertentangan antara pencarian rasional kebenaran (filsafat Yunani) dan wahyu ilahi (Islam).</p><p>Al-Kindi menggunakan kerangka Aristoteles mengenai sebab-akibat untuk membuktikan keberadaan Tuhan (Sebab Pertama). Namun, ia secara tegas menolak gagasan Aristoteles bahwa alam semesta itu kekal (qadim). Baginya, alam semesta diciptakan dari ketiadaan (creatio ex nihilo) semata-mata oleh Kehendak Tuhan yang mutlak.</p><div class="zen-quote">Kita tidak boleh merasa malu untuk mengakui kebenaran dari mana pun asalnya, sekalipun itu datang dari bangsa-bangsa yang jauh.</div><p>Melalui buku ini, Al-Kindi meletakkan fondasi teologis yang sangat aman bagi perkembangan sains dan rasionalitas di dunia Islam, menjadi jembatan intelektual pertama antara Athena dan Baghdad.</p>`,
+     ai:"Kitab ini mendobrak sentimen anti-filsafat pada abad ke-9. Al-Kindi merumuskan argumen kosmologis yang valid secara logika namun tetap mempertahankan doktrin penciptaan Islam. Pilar pertama dari historiografi 'Without Any Gaps'."},
+    
+    {id:"k-02", cat:"politik", catL:"Filsafat Politik", title:"Ara' Ahl al-Madinah al-Fadhilah", author:"Al-Farabi", era:950, eraL:"Abad 10 M", colors:["#5b21b6","#4c1d95"],
+     content:`<p>Al-Farabi merumuskan konsep utopia Islam yang secara tidak langsung terinspirasi dari "The Republic" karya Plato, namun ia memberikan nyawa tauhid dan kenabian ke dalam sistem politiknya.</p><p>Menurutnya, negara (Madinah) adalah sebuah entitas organik, mirip dengan anatomi tubuh manusia. Di mana jantung (sebagai pemimpin) mengatur, menyuplai, dan menyeimbangkan organ-organ lainnya agar tubuh berfungsi secara harmonis.</p><div class="zen-quote">Masyarakat yang utama (Al-Madinah Al-Fadhilah) adalah mereka yang warga negaranya bekerja sama untuk mencapai kebahagiaan sejati, bukan sekadar bertahan hidup atau mengejar materi.</div><p>Syarat mutlak dalam sistem Al-Farabi: Pemimpin tertinggi haruslah seorang Nabi atau seorang Filsuf Paripurna yang akalnya sudah mencapai tahap Akal Mustafad (menerima pancaran langsung dari Akal Aktif/Malaikat Jibril).</p>`,
+     ai:"Al-Farabi adalah yang pertama mengkategorikan ilmu politik dalam epistemologi Islam. Ia tidak memisahkan antara etika, spiritualitas, dan pemerintahan. Negara baginya adalah kendaraan menuju kebahagiaan akhirat."},
+
+    {id:"k-03", cat:"medis", catL:"Sains & Kedokteran", title:"Al-Qanun fi al-Tibb", author:"Ibnu Sina", era:1025, eraL:"Abad 11 M", colors:["#064e3b","#022c22"],
+     content:`<p>Sebuah mahakarya ensiklopedis yang menjadi "Kitab Suci" kedokteran di Eropa dan Timur Tengah selama lebih dari enam abad. Ibnu Sina merinci 760 jenis obat-obatan, anatomi mata yang kompleks, sifat menular dari tuberkulosis, hingga penggunaan anestesi pra-operasi.</p><div class="zen-quote">Kedokteran adalah ilmu tentang keadaan tubuh manusia, baik dalam kondisi sehat maupun sakit, yang bertujuan untuk menjaga kesehatan dan memulihkannya ketika ia hilang.</div><p>Salah satu kontribusi terbesarnya adalah pendekatan holistik. Ibnu Sina merumuskan konsep psikosomatis, yang menjelaskan bagaimana emosi yang ekstrem, stres, dan kondisi psikologis dapat secara langsung menyebabkan kerusakan/penyakit fisik pada organ tubuh.</p>`,
+     ai:"Al-Qanun bukan sekadar buku resep obat, melainkan sintesis metodologi empiris (eksperimen klinis) dengan kerangka teori logika rasional. Membuktikan bahwa pemikir Islam memimpin sains dunia pada abad pertengahan."},
+
+    {id:"k-04", cat:"filsafat", catL:"Filsafat Epistemologi", title:"Al-Shifa (The Book of Healing)", author:"Ibnu Sina", era:1027, eraL:"Abad 11 M", colors:["#b45309","#78350f"],
+     content:`<p>Ini adalah ensiklopedia filsafat terbesar yang pernah ditulis oleh satu orang. Di dalam kitab inilah Ibnu Sina mematangkan argumen kosmologisnya tentang <em>Wajib al-Wujud</em> (Wujud yang Niscaya), memisahkan antara esensi (apa itu sesuatu) dan eksistensi (bahwa sesuatu itu ada).</p><p>Ia juga memperkenalkan eksperimen pemikiran <em>"Flying Man"</em> (Manusia Terbang) untuk membuktikan bahwa jiwa manusia itu nyata, independen, dan berbeda dari tubuh fisik.</p><div class="zen-quote">Waktu bukanlah realitas mandiri yang berdiri sendiri, melainkan ia adalah alat ukur dari pergerakan yang tak kasat mata yang senantiasa terikat pada materi.</div><p>Sistem ontologis yang dibangun dalam Al-Shifa begitu kuat hingga diadopsi (dan diadaptasi) oleh tokoh-tokoh besar Kristen di Barat seperti Thomas Aquinas. Ironisnya, buku ini dinamakan "Penyembuhan" karena tujuannya adalah untuk menyembuhkan jiwa dari penyakit kebodohan.</p>`,
+     ai:"Puncak tertinggi filsafat Peripatetik. Argumen 'Wajib al-Wujud' Ibnu Sina adalah inovasi terbesar dalam sejarah pembuktian rasional eksistensi Tuhan, yang tidak pernah dipikirkan oleh Aristoteles sebelumnya."},
+
+    {id:"k-05", cat:"tasawuf", catL:"Teologi & Kritik", title:"Tahafut al-Falasifah", author:"Al-Ghazali", era:1095, eraL:"Abad 11 M", colors:["#991b1b","#7f1d1d"],
+     content:`<p>Sebuah pukulan telak bagi hegemoni rasionalisme kaku. Dalam kitab ini, Al-Ghazali mengidentifikasi 20 masalah filosofis para filsuf Neoplatonik (khususnya Ibnu Sina dan Al-Farabi).</p><p>Ia mengkritik tajam dan bahkan menyatakan mereka kafir pada 3 poin utama: meyakini bahwa alam semesta ini qadim (tidak berawal), menyatakan bahwa Tuhan hanya mengetahui hal-hal universal dan bukan rincian partikular, serta mengingkari kebangkitan fisik/jasmani di hari kiamat.</p><div class="zen-quote">Barangsiapa mempelajari matematika dan terpesona oleh ketepatan buktinya, jangan sampai ia secara keliru berpikir bahwa semua ilmu (termasuk metafisika) bisa sama pastinya dengan matematika.</div><p>Karya ini sering disalahpahami oleh orientalis Barat sebagai "kematian filsafat Islam". Padahal, metode keraguan dan dekonstruksi yang dipakai Al-Ghazali di sini justru merupakan puncak dari tradisi kritik filosofis itu sendiri.</p>`,
+     ai:"Buku ini bukan anti-akal. Al-Ghazali menggunakan logika tingkat tinggi (silogisme) untuk menghancurkan kesombongan logika itu sendiri ketika mencoba merambah ranah metafisika ilahi yang di luar batas kapasitas rasio manusia."},
+
+    {id:"k-06", cat:"tasawuf", catL:"Tasawuf & Akhlak", title:"Ihya Ulumuddin", author:"Al-Ghazali", era:1105, eraL:"Abad 12 M", colors:["#047857","#064e3b"],
+     content:`<p>Magnum opus yang lahir dari rahim krisis spiritual Al-Ghazali. Kitab ini berhasil menjembatani dan menyatukan Fikih (hukum lahiriah yang cenderung kaku) dengan Tasawuf (pengalaman batiniah/spiritual).</p><p>Ia mengobati "penyakit" keilmuan pada masanya di mana para ulama hanya mengejar debat hukum demi jabatan, melupakan esensi keikhlasan dan pembersihan hati (Tazkiyatun Nafs).</p><div class="zen-quote">Mengetahui definisi cinta secara rasional dan menghafal dalil-dalilnya tidak akan pernah sama rasanya dengan menjadi seorang pecinta sejati yang dimabuk rindu kepada Tuhannya.</div><p>Keberhasilan buku ini mengamankan posisi tasawuf yang moderat ke dalam tradisi intelektual Sunni ortodoks, menjadikannya kurikulum wajib di madrasah dan pesantren hingga saat ini.</p>`,
+     ai:"Al-Ghazali menggeser paradigma umat Islam dari pemahaman beragama yang murni kognitif-legalistik, menuju pemahaman beragama yang berpusat pada 'rasa' (dzawq) dan pemurnian kalbu."},
+
+    {id:"k-07", cat:"filsafat", catL:"Hukum & Filsafat", title:"Fasl al-Maqal", author:"Ibnu Rusyd", era:1179, eraL:"Abad 12 M", colors:["#c2410c","#9a3412"],
+     content:`<p>Ditulis di Kordoba, Andalusia, karya ini adalah risalah hukum (fatwa) yang brilian. Ibnu Rusyd (Averroes) berusaha membela filsafat dari serang Al-Ghazali. Kesimpulan utamanya: belajar filsafat bukan sekadar mubah (boleh), melainkan wajib syar'i bagi mereka yang memiliki kapasitas intelektual.</p><div class="zen-quote">Kebenaran rasional tidak mungkin bertentangan dengan kebenaran wahyu; keduanya bagaikan saudara sepersusuan yang harus selaras dan saling bersaksi satu sama lain.</div><p>Ibnu Rusyd menegaskan bahwa jika terjadi pertentangan kasat mata antara kesimpulan akal demonstratif (burhani) dengan teks wahyu, maka teks wahyu tersebut harus ditakwilkan (ditafsirkan makna batin/metaforisnya), karena Tuhan tidak mungkin mengajarkan kemustahilan logis.</p>`,
+     ai:"Ibnu Rusyd merumuskan kerangka epistemologi ganda yang harmonis. Pengaruhnya menjalar ke Eropa, memicu gerakan Averroisme Latin yang pada akhirnya meletakkan dasar bagi era Renaissance di Barat."},
+
+    {id:"k-08", cat:"filsafat", catL:"Sastra Filosofis", title:"Hayy bin Yaqdhan", author:"Ibnu Tufail", era:1180, eraL:"Abad 12 M", colors:["#0f766e","#115e59"],
+     content:`<p>Sebuah novel filosofis pionir yang menceritakan tentang bayi bernama Hayy yang tumbuh sendirian di pulau tak berpenghuni, diasuh oleh seekor rusa betina. Melalui observasi alam (empirisme) dan kontemplasi rasional, Hayy menemukan keberadaan Tuhan tanpa pernah melihat manusia lain, tanpa bahasa manusia, atau agama formal.</p><div class="zen-quote">Ketika ia menatap keteraturan pergerakan benda-benda langit, rasio murninya menyadari bahwa keteraturan sempurna ini tidak mungkin ada tanpa Penggerak Utama yang tidak bergerak (Prime Mover).</div><p>Kisah ini mendahului konsep "Tabula Rasa" John Locke dan kisah Robinson Crusoe berabad-abad lamanya. Ibnu Tufail ingin membuktikan bahwa akal murni yang sehat, pada puncaknya, akan sampai pada kesimpulan kebenaran yang persis sama dengan wahyu para Nabi.</p>`,
+     ai:"Novel ini adalah eksperimen pemikiran (thought experiment) terhebat di abad ke-12. Menggabungkan teori evolusi sosiologis, anatomi komparatif, dan pencarian teologis dalam satu narasi fiksi yang memukau."},
+
+    {id:"k-09", cat:"tasawuf", catL:"Filsafat Iluminasi", title:"Hikmat al-Ishraq", author:"Suhrawardi", era:1186, eraL:"Abad 12 M", colors:["#451a03","#78350f"],
+     content:`<p>Kitab ini mendirikan Mazhab Isyraq (Iluminasi). Suhrawardi mendobrak batas rasionalisme Ibnu Sina yang dianggap kaku, dengan menggabungkan kekuatan logika diskursif dan pencerahan spiritual intuitif (dzawq).</p><p>Ontologinya murni berpusat pada "Cahaya". Baginya, Tuhan adalah Cahaya dari Segala Cahaya (Nur al-Anwar), dan seluruh entitas di alam semesta ini eksis berdasarkan gradasi atau tingkat intensitas cahaya yang mereka terima dari-Nya.</p><div class="zen-quote">Kegelapan pada hakikatnya tidak memiliki wujud positif; ia hanyalah ketiadaan cahaya. Begitu pula dengan keburukan, ia hanyalah absennya kebaikan.</div><p>Kemunculan mazhab ini membantah keras narasi orientalis bahwa filsafat Islam mati setelah Al-Ghazali. Di wilayah Persia, filsafat justru berevolusi menjadi sesuatu yang lebih kaya dan mistik.</p>`,
+     ai:"Suhrawardi menggantikan konsep 'wujud' (existence) Aristotelian dengan konsep 'cahaya' (light). Sebuah revolusi metafisika yang menuntut filsuf untuk tidak hanya berpikir di balik meja, tapi juga menyucikan jiwa."},
+
+    {id:"k-10", cat:"sejarah", catL:"Sosiologi & Sejarah", title:"Al-Muqaddimah", author:"Ibnu Khaldun", era:1377, eraL:"Abad 14 M", colors:["#292524","#1c1917"],
+     content:`<p>Karya monumental dari ilmuwan Afrika Utara yang menjadikan Sejarah tidak lagi sekadar dongeng masa lalu, melainkan sebuah sains empiris yang sistematis. Ibnu Khaldun merumuskan konsep <em>'Asabiyyah</em> (solidaritas sosial atau kohesi kelompok) sebagai mesin penggerak kebangkitan dan keruntuhan peradaban.</p><div class="zen-quote">Kekaisaran dan dinasti memiliki umur alami sama seperti manusia. Mereka lahir, tumbuh menjadi kuat, mencapai puncak kejayaan, lalu perlahan menua karena kemewahan, dan akhirnya mati digantikan oleh yang lebih kuat.</div><p>Muqaddimah diakui secara universal sebagai pondasi bagi ilmu sosiologi, demografi, ekonomi, dan filsafat sejarah. Pemikirannya mendahului teori nilai tenaga kerja Karl Marx dan Adam Smith berabad-abad lamanya.</p>`,
+     ai:"Ibnu Khaldun menemukan hukum kausalitas dalam sejarah manusia. Ia mengajarkan bahwa untuk memahami 'apa' yang terjadi di masa lalu, kita harus meneliti 'bagaimana' sosiologi dan ekonomi masyarakatnya bekerja."},
+
+    {id:"k-11", cat:"filsafat", catL:"Teosofi Transenden", title:"Al-Hikmah al-Muta'aliyah", author:"Mulla Sadra", era:1628, eraL:"Abad 17 M", colors:["#1e1b4b","#312e81"],
+     content:`<p>Puncak tertinggi dari sejarah pemikiran Islam Timur. Mulla Sadra berhasil mensintesiskan filsafat rasional (Peripatetik), teologi Kalam, intuisi Tasawuf (Ibn Arabi), dan wahyu Al-Quran ke dalam satu sistem raksasa yang disebut Teosofi Transenden.</p><p>Dua konsep revolusionernya adalah <em>Asalat al-Wujud</em> (Primasinya Wujud, bahwa eksistensi mendahului esensi) dan <em>Harakah Jauhariyah</em> (Gerak Substantif).</p><div class="zen-quote">Alam semesta ini tidaklah statis. Substansi dari segala materi senantiasa berada dalam proses gerak evolusioner yang dinamis, terus merindu dan bergerak menanjak kembali kepada Kesempurnaan Ilahi.</div><p>Karya ini membuktikan kontinuitas tanpa celah dari intelektualisme Islam. Ini masih menjadi kurikulum filsafat strata tertinggi di universitas-universitas Iran hingga hari ini.</p>`,
+     ai:"Mulla Sadra menyelesaikan perdebatan ratusan tahun antara Filsuf dan Sufi. Ia membuktikan secara matematis dan filosofis apa yang dialami oleh para Sufi dalam ekstase spiritual mereka."},
+
+    {id:"k-12", cat:"tasawuf", catL:"Referensi Modern", title:"Islam Risalah Cinta & Kebahagiaan", author:"Haidar Bagir", era:2012, eraL:"Kontemporer", colors:["#4c0519","#831843"],
+     content:`<p>Kitab referensi utama Kelompok IV. Karya ini berfungsi sebagai jembatan yang menyaring intisari tasawuf dan filsafat Islam klasik, menyajikannya dengan bahasa dan relevansi untuk mengatasi krisis eksistensial manusia modern.</p><p>Poros utamanya adalah <em>Mahabbah</em> (Cinta). Penulis menepis pandangan keagamaan yang dipenuhi ancaman dan ketakutan, mengembalikannya pada esensi Islam sebagai rahmat bagi semesta.</p><div class="zen-quote">Tuhan pada hakikatnya adalah Maha Cinta. Segala bentuk penderitaan dan kepedihan di dunia ini hanyalah riak-riak kecil yang bersifat sementara di dalam samudra rahmat-Nya yang tak bertepi.</div><p>Melalui buku ini, pemikiran Al-Ghazali, Ibn Arabi, dan Mulla Sadra diracik menjadi resep kebahagiaan praktis (Positive Psychology) untuk kehidupan di abad ke-21 yang serba materialistis.</p>`,
+     ai:"Buku ini menegaskan kesimpulan dari Kelompok IV: Bahwa tradisi intelektual Islam tidak berhenti di masa lalu. Filsafat dan tasawuf tetap menjadi jawaban paling rasional untuk dahaga spiritual manusia hari ini."}
 ];
 
-const cats=[{f:'all',l:'Semua'},{f:'filsafat',l:'Filsafat'},{f:'tasawuf',l:'Tasawuf'},{f:'medis',l:'Sains'},{f:'politik',l:'Politik'},{f:'sejarah',l:'Sejarah'}];
-let curData=[...DB],ttsOn=false,curUtt=null,curTxt="",curBookId=null,zenFontSize=1;
+const cats = [
+    {f:'all', l:'Semua Koleksi'}, {f:'filsafat', l:'Filsafat Murni'},
+    {f:'tasawuf', l:'Tasawuf & Teologi'}, {f:'medis', l:'Sains & Medis'},
+    {f:'politik', l:'Politik & Sosiologi'}, {f:'sejarah', l:'Sejarah'}
+];
 
-function toast(m){const b=document.getElementById('toast-box'),t=document.createElement('div');t.className='toast';t.innerHTML=`<i class="fa-solid fa-circle-info"></i> ${m}`;b.appendChild(t);setTimeout(()=>t.remove(),3100)}
-window.appToast=toast;
+let curData = [...DB], ttsOn = false, curUtt = null, curBookId = null, zenFontSize = 1.1;
 
-// ===== FILTER BUTTONS WITH COUNTS =====
-function buildFilters(){const g=document.getElementById('filterGroup');g.innerHTML='';cats.forEach(c=>{const cnt=c.f==='all'?DB.length:DB.filter(b=>b.cat===c.f).length;const btn=document.createElement('button');btn.className=`filter-btn${c.f==='all'?' active':''}`;btn.dataset.filter=c.f;btn.innerHTML=`<span>${c.l}<span class="f-count">${cnt}</span></span>`;btn.onclick=()=>{document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');applyFilter()};g.appendChild(btn)})}
-
-// ===== RENDER =====
-function renderLib(data){
-    const g=document.getElementById('libraryGrid');g.innerHTML='';
-    document.getElementById('searchCount').textContent=data.length+' hasil';
-    if(!data.length){g.innerHTML='<div class="no-results"><i class="fa-solid fa-book-open" style="font-size:2rem;display:block;margin-bottom:10px;opacity:.3"></i>Tidak ditemukan koleksi.</div>';return}
-    data.forEach((b,i)=>{
-        const isRead=localStorage.getItem(`read_${b.id}`)==='true';
-        const isFav=localStorage.getItem(`fav_${b.id}`)==='true';
-        const c=document.createElement('div');
-        c.className=`book-wrapper item-${b.cat} reveal${isRead?' is-read':''}${isFav?' is-fav':''}`;
-        c.style.transitionDelay=`${(i%8)*.06}s`;
-        c.style.setProperty('--book-color-1',b.colors[0]);c.style.setProperty('--book-color-2',b.colors[1]);
-        const words=b.content.replace(/<[^>]*>/g,'').split(' ').length;
-        c.innerHTML=`<div class="read-stamp">✓ Dibaca</div><div class="book-fav-star"><i class="fa-solid fa-star"></i></div><div class="book-3d"><div class="book-pages"></div><div class="book-spine"><div class="spine-text">${b.title}</div></div><div class="book-cover"><div class="book-category">${b.catL}</div><h2 class="book-title">${b.title}</h2><div class="book-author">${b.author}</div><div class="book-era">${b.eraL} · ${Math.ceil(words/200)} mnt</div><div class="book-read-bar"><div class="book-read-fill" style="width:${isRead?'100':'0'}%"></div></div></div></div>`;
-        c.onclick=()=>openZen(b.id);g.appendChild(c)});
-    setTimeout(()=>{document.querySelectorAll('.book-wrapper.reveal').forEach(el=>revObs.observe(el))},50);
-    updateDash();renderFavShelf()
+/* 2. TOAST NOTIFICATION */
+function toast(m) {
+    const b = document.getElementById('toast-box'), t = document.createElement('div');
+    t.className = 'toast'; t.innerHTML = `<i class="fa-solid fa-bolt"></i> ${m}`;
+    b.appendChild(t); setTimeout(() => t.remove(), 3400);
 }
+window.appToast = toast;
 
-function sortLib(){const v=document.getElementById('sortSelect').value;if(v==='eraAsc')curData.sort((a,b)=>a.era-b.era);else if(v==='eraDesc')curData.sort((a,b)=>b.era-a.era);else if(v==='titleAsc')curData.sort((a,b)=>a.title.localeCompare(b.title));else curData=[...DB];applyFilter()}
-function applyFilter(){const f=document.querySelector('.filter-btn.active').dataset.filter;const q=document.getElementById('searchInput').value.toLowerCase();let d=f==='all'?[...curData]:curData.filter(b=>b.cat===f);if(q)d=d.filter(b=>b.title.toLowerCase().includes(q)||b.author.toLowerCase().includes(q)||b.catL.toLowerCase().includes(q)||b.eraL.toLowerCase().includes(q));renderLib(d)}
-
-document.getElementById('searchInput').addEventListener('input',()=>applyFilter());
-
-// ===== VIEW TOGGLE =====
-document.querySelectorAll('.view-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.view-btn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');const g=document.getElementById('libraryGrid');g.classList.toggle('list-view',btn.dataset.view==='list')})});
-
-// ===== DASHBOARD =====
-function updateDash(){const readCount=DB.filter(b=>localStorage.getItem(`read_${b.id}`)==='true').length;const favCount=DB.filter(b=>localStorage.getItem(`fav_${b.id}`)==='true').length;const pct=Math.round(readCount/DB.length*100);document.getElementById('dashRead').textContent=readCount;document.getElementById('dashFav').textContent=favCount;document.getElementById('dashPct').textContent=pct+'%';const circ=97.4;document.getElementById('dashRing').style.strokeDashoffset=circ-(circ*pct/100);if(readCount===DB.length&&!sessionStorage.getItem('celebrated')){celebrate();sessionStorage.setItem('celebrated','1')}}
-
-// ===== FAVORITES SHELF =====
-function renderFavShelf(){const shelf=document.getElementById('favShelf');const scroll=document.getElementById('favScroll');const favs=DB.filter(b=>localStorage.getItem(`fav_${b.id}`)==='true');shelf.classList.toggle('has-favs',favs.length>0);scroll.innerHTML='';
-favs.forEach(b=>{const d=document.createElement('div');d.className='fav-mini';d.style.setProperty('--book-color-1',b.colors[0]);d.style.setProperty('--book-color-2',b.colors[1]);d.innerHTML=`<div class="fav-mini-cover"><div class="fav-mini-title">${b.title}</div><div class="fav-mini-author">${b.author}</div></div><button class="fav-mini-remove" onclick="event.stopPropagation();removeFav('${b.id}')"><i class="fa-solid fa-xmark"></i></button>`;d.onclick=()=>openZen(b.id);scroll.appendChild(d)})}
-function removeFav(id){localStorage.removeItem(`fav_${id}`);toast('Dihapus dari favorit');applyFilter()}
-function scrollToFavs(){document.getElementById('favShelf').scrollIntoView({behavior:'smooth',block:'start'})}
-
-// ===== ZEN READER =====
-function openZen(id){const b=DB.find(x=>x.id===id);if(!b)return;curBookId=id;document.getElementById('zenCat').textContent=b.catL;document.getElementById('zenTitle').textContent=b.title;document.getElementById('zenAuthor').textContent=b.author;document.getElementById('zenEra').innerHTML=`<i class="fa-solid fa-hourglass-half"></i> ${b.eraL}`;const words=b.content.replace(/<[^>]*>/g,'').split(' ').length;document.getElementById('zenTime').innerHTML=`<i class="fa-regular fa-clock"></i> ${Math.ceil(words/200)} mnt baca`;document.getElementById('zenContent').innerHTML=b.content;document.getElementById('zenPaper').style.fontSize=zenFontSize+'rem';const tmp=document.createElement('div');tmp.innerHTML=b.content;curTxt=`Buku ${b.title}, karya ${b.author}. ${tmp.innerText}`;const isFav=localStorage.getItem(`fav_${id}`)==='true';document.getElementById('btnFavZen').innerHTML=isFav?'<i class="fa-solid fa-star" style="color:#d97706"></i>':'<i class="fa-regular fa-star"></i>';document.getElementById('zenModal').classList.add('active');document.body.style.overflow='hidden';if(localStorage.getItem(`read_${id}`)!=='true'){localStorage.setItem(`read_${id}`,'true');setTimeout(applyFilter,400)}
-const modal=document.getElementById('zenModal');modal.onscroll=()=>{const p=modal.scrollTop/(modal.scrollHeight-modal.clientHeight)*100;document.getElementById('zenProgFill').style.width=Math.min(100,p)+'%'}}
-function closeZen(){document.getElementById('zenModal').classList.remove('active');document.body.style.overflow='auto';stopTTS();document.getElementById('zenProgFill').style.width='0%'}
-function changeFontSize(d){zenFontSize=Math.max(.8,Math.min(1.4,zenFontSize+d*.1));document.getElementById('zenPaper').style.fontSize=zenFontSize.toFixed(1)+'rem';toast(`Ukuran teks: ${Math.round(zenFontSize*100)}%`)}
-function toggleFavFromZen(){if(!curBookId)return;const is=localStorage.getItem(`fav_${curBookId}`)==='true';if(is){localStorage.removeItem(`fav_${curBookId}`);document.getElementById('btnFavZen').innerHTML='<i class="fa-regular fa-star"></i>';toast('Dihapus dari favorit')}else{localStorage.setItem(`fav_${curBookId}`,'true');document.getElementById('btnFavZen').innerHTML='<i class="fa-solid fa-star" style="color:#d97706"></i>';toast('Ditambahkan ke favorit!')}applyFilter()}
-function shareBook(){const b=DB.find(x=>x.id===curBookId);if(!b)return;const txt=`📖 ${b.title} — ${b.author} (${b.eraL})\nDari Perpustakaan Baitul Hikmah Kelompok IV`;if(navigator.share)navigator.share({title:b.title,text:txt,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(txt).then(()=>toast('Disalin ke clipboard!'))}}
-
-// ===== TTS =====
-function toggleTTS(){if(!('speechSynthesis'in window)){toast('Browser tidak mendukung TTS');return}const btn=document.getElementById('btnTTS');if(ttsOn){stopTTS()}else{speechSynthesis.cancel();curUtt=new SpeechSynthesisUtterance(curTxt);curUtt.lang='id-ID';curUtt.rate=.92;curUtt.onend=()=>stopTTS();speechSynthesis.speak(curUtt);ttsOn=true;btn.classList.add('tts-on');toast('Audio AI membaca...')}}
-function stopTTS(){speechSynthesis.cancel();ttsOn=false;document.getElementById('btnTTS').classList.remove('tts-on')}
-
-// ===== ASTROLABE =====
-document.getElementById('btnAstrolabe').addEventListener('click',()=>{const btn=document.getElementById('btnAstrolabe');if(btn.classList.contains('spinning'))return;btn.classList.add('spinning');toast('Memutar Astrolabe...');setTimeout(()=>{btn.classList.remove('spinning');const b=DB[Math.floor(Math.random()*DB.length)];openZen(b.id);toast(`Astrolabe memilih: ${b.title}`)},2000)});
-
-// ===== THEME =====
-function setTheme(t){document.documentElement.dataset.theme=t;document.getElementById('btnTheme').innerHTML=t==='dark'?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>';document.getElementById('btnSepia').classList.toggle('active-mode',t==='sepia');localStorage.setItem('k4theme',t);toast(t==='dark'?'Mode Gelap':t==='sepia'?'Mode Sepia':'Mode Terang')}
-document.getElementById('btnTheme').addEventListener('click',()=>{const c=document.documentElement.dataset.theme;setTheme(c==='dark'?'light':'dark')});
-document.getElementById('btnSepia').addEventListener('click',()=>{const c=document.documentElement.dataset.theme;setTheme(c==='sepia'?'dark':'sepia')});
-if(localStorage.getItem('k4theme'))setTheme(localStorage.getItem('k4theme'));
-
-// ===== KEYBOARD =====
-document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea,select'))return;if(e.key==='/'){{e.preventDefault();document.getElementById('searchInput').focus()}}if(e.key==='d'||e.key==='D')document.getElementById('btnTheme').click();if(e.key==='s'||e.key==='S')document.getElementById('btnSepia').click();if(e.key==='g'||e.key==='G'){const btns=document.querySelectorAll('.view-btn');btns.forEach(b=>b.classList.toggle('active'));document.getElementById('libraryGrid').classList.toggle('list-view')}if(e.key==='r'||e.key==='R')document.getElementById('btnAstrolabe').click();if(e.key==='?')document.getElementById('kbdModal').classList.toggle('active');if(e.key==='Escape'){document.getElementById('kbdModal').classList.remove('active');if(document.getElementById('zenModal').classList.contains('active'))closeZen()}});
-document.getElementById('btnKbd').addEventListener('click',()=>document.getElementById('kbdModal').classList.toggle('active'));
-document.getElementById('mobTog').addEventListener('click',()=>document.getElementById('navMenu').classList.toggle('open'));
-
-// ===== CELEBRATION =====
-function celebrate(){const c=document.getElementById('celebration');c.classList.add('active');const colors=['#10b981','#d97706','#ef4444','#3b82f6','#8b5cf6','#f59e0b'];for(let i=0;i<80;i++){const p=document.createElement('div');p.className='confetti';p.style.left=Math.random()*100+'%';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.animationDelay=Math.random()*2+'s';p.style.animationDuration=(2+Math.random()*2)+'s';c.appendChild(p)}toast('🎉 Semua kitab telah dibaca! Masya Allah!');setTimeout(()=>{c.classList.remove('active');c.innerHTML=''},5000)}
-
-// ===== CURSOR =====
-const dot=document.getElementById('curDot'),ring=document.getElementById('curRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
-document.addEventListener('mousedown',()=>dot.classList.add('click'));document.addEventListener('mouseup',()=>dot.classList.remove('click'));
-(function aR(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(aR)})();
-document.querySelectorAll('a,button,.book-wrapper,.filter-btn,.nav-btn,.view-btn,.zen-btn,.nav-link,.fav-mini,select,input').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hover'));el.addEventListener('mouseleave',()=>ring.classList.remove('hover'))});
-
-// ===== SCROLL =====
-window.addEventListener('scroll',()=>{const s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight,p=s/h;document.getElementById('scrollProg').style.width=(p*100)+'%';document.getElementById('mainNav').classList.toggle('scrolled',s>20);const st=document.getElementById('scrollTop');st.classList.toggle('visible',s>400);document.getElementById('scrollRing').style.strokeDashoffset=97.4-(97.4*p)});
-
-// ===== REVEAL =====
-const revObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('active');revObs.unobserve(x.target)}})},{threshold:.06});
-document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
-
-// ===== COUNTER =====
-const cObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){const c=x.target,t=+c.dataset.target;let v=0;const s=t/25;(function u(){v+=s;if(v<t){c.innerText=Math.ceil(v);requestAnimationFrame(u)}else c.innerText=t})();cObs.unobserve(c)}})},{threshold:.5});
-document.querySelectorAll('.counter').forEach(c=>cObs.observe(c));
-
-// ===== HERO CANVAS =====
-const hcv=document.getElementById('heroCanvas'),hcx=hcv.getContext('2d');let hpts=[];
-function initHC(){hcv.width=hcv.parentElement.offsetWidth;hcv.height=hcv.parentElement.offsetHeight;hpts=Array.from({length:Math.min(50,Math.floor(hcv.width/16))},()=>({x:Math.random()*hcv.width,y:Math.random()*hcv.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2}))}
-function drawHC(){hcx.clearRect(0,0,hcv.width,hcv.height);const dk=document.documentElement.dataset.theme!=='light';hpts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>hcv.width)p.vx*=-1;if(p.y<0||p.y>hcv.height)p.vy*=-1;hcx.beginPath();hcx.arc(p.x,p.y,p.r,0,Math.PI*2);hcx.fillStyle=dk?'rgba(110,231,183,.35)':'rgba(6,78,59,.2)';hcx.fill()});for(let i=0;i<hpts.length;i++)for(let j=i+1;j<hpts.length;j++){const d=Math.hypot(hpts[i].x-hpts[j].x,hpts[i].y-hpts[j].y);if(d<110){hcx.beginPath();hcx.moveTo(hpts[i].x,hpts[i].y);hcx.lineTo(hpts[j].x,hpts[j].y);hcx.strokeStyle=dk?`rgba(16,185,129,${.12-d/920})`:`rgba(6,78,59,${.06-d/1800})`;hcx.lineWidth=.5;hcx.stroke()}}requestAnimationFrame(drawHC)}
-window.addEventListener('resize',initHC);
-
-// ===== BG CANVAS =====
-const gcv=document.getElementById('geoCanvas'),gcx=gcv.getContext('2d');
-function initGC(){gcv.width=window.innerWidth;gcv.height=window.innerHeight}initGC();window.addEventListener('resize',initGC);
-let gAngle=0;
-function drawGC(){gcx.clearRect(0,0,gcv.width,gcv.height);const dk=document.documentElement.dataset.theme!=='light';gcx.strokeStyle=dk?'rgba(16,185,129,.04)':'rgba(6,78,59,.03)';gcx.lineWidth=.5;
-for(let i=0;i<6;i++){const cx=gcv.width/2,cy=gcv.height/2,r=150+i*80;gcx.beginPath();for(let a=0;a<6;a++){const ang=(Math.PI/3)*a+gAngle+i*.1;const x=cx+r*Math.cos(ang),y=cy+r*Math.sin(ang);a===0?gcx.moveTo(x,y):gcx.lineTo(x,y)}gcx.closePath();gcx.stroke()}
-gAngle+=.001;requestAnimationFrame(drawGC)}
-
-// ===== PRELOADER (FIXED: ANTI-STUCK + SAFETY TIMEOUT) =====
-function initPre() {
+/* 3. INITIALIZE PRELOADER (ANTI-STUCK IMMEDIATE EXECUTION) */
+function startPreloader() {
     const preloader = document.getElementById('preloader');
     const fillBar = document.getElementById('preFill');
-    const statusEl = document.getElementById('preStatus');
     const percentEl = document.getElementById('prePercent');
-    const steps = ['MEMUAT MANUSKRIP...','MENDEKODE TEKS ARAB...','MENYUSUN PERPUSTAKAAN...','BISMILLAH, SIAP!'];
+    const statusEl = document.getElementById('preStatus');
     let progress = 0;
-    let intervalId = null;
-    let safetyTimeout = null;
-    let hideScheduled = false;
-
-    const finishPreloader = () => {
-        if (hideScheduled) return;
-        hideScheduled = true;
-        if (intervalId) clearInterval(intervalId);
-        if (safetyTimeout) clearTimeout(safetyTimeout);
-        setTimeout(() => {
-            if (preloader && !preloader.classList.contains('hidden')) {
-                preloader.classList.add('hidden');
-            }
-        }, 700);
-    };
-
-    intervalId = setInterval(() => {
-        progress += Math.random() * 22 + 6;
+    
+    // Smooth fast loading logic
+    let interval = setInterval(() => {
+        progress += Math.floor(Math.random() * 15) + 5;
         if (progress >= 100) {
             progress = 100;
-            fillBar.style.width = '100%';
-            percentEl.textContent = '100%';
-            statusEl.textContent = steps[3];
-            finishPreloader();
-        } else {
-            fillBar.style.width = progress + '%';
-            const stepIndex = Math.min(Math.floor(progress / 25), 3);
-            statusEl.textContent = steps[stepIndex];
-            percentEl.textContent = Math.floor(progress) + '%';
+            clearInterval(interval);
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 800);
+            }, 600);
         }
-    }, 280);
+        fillBar.style.width = progress + '%';
+        percentEl.textContent = progress + '%';
+        
+        if(progress > 40) statusEl.textContent = 'MENGANALISIS MANUSKRIP KLASIK...';
+        if(progress > 75) statusEl.textContent = 'MENDEKODE ARSITEKTUR 3D...';
+        if(progress === 100) statusEl.textContent = 'BISMILLAH, BAITUL HIKMAH TERBUKA!';
+    }, 120);
+}
+startPreloader();
 
-    safetyTimeout = setTimeout(() => {
-        if (!hideScheduled && preloader && !preloader.classList.contains('hidden')) {
-            progress = 100;
-            if (fillBar) fillBar.style.width = '100%';
-            if (percentEl) percentEl.textContent = '100%';
-            if (statusEl) statusEl.textContent = steps[3];
-            finishPreloader();
-        }
-    }, 5000);
+/* 4. BUILD FILTERS & RENDER LIBRARY */
+function buildFilters() {
+    const g = document.getElementById('filterGroup'); g.innerHTML = '';
+    cats.forEach(c => {
+        const cnt = c.f === 'all' ? DB.length : DB.filter(b => b.cat === c.f).length;
+        const btn = document.createElement('button');
+        btn.className = `filter-btn${c.f === 'all' ? ' active' : ''}`;
+        btn.dataset.filter = c.f;
+        btn.innerHTML = `<span>${c.l} <span class="f-count">${cnt}</span></span>`;
+        btn.onclick = () => {
+            document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
+            btn.classList.add('active'); applyFilter();
+        };
+        g.appendChild(btn);
+    });
 }
 
-// ===== INIT ALL =====
+function renderLib(data) {
+    const g = document.getElementById('libraryGrid'); g.innerHTML = '';
+    document.getElementById('searchCount').textContent = data.length + ' Hasil';
+    
+    if(!data.length) {
+        g.innerHTML = '<div class="no-results"><i class="fa-solid fa-book-skull" style="font-size:3rem; display:block; margin-bottom:15px; opacity:0.3;"></i>Tidak ditemukan manuskrip yang cocok dengan pencarian Anda.</div>';
+        return;
+    }
+    
+    data.forEach((b, i) => {
+        const isRead = localStorage.getItem(`read_${b.id}`) === 'true';
+        const isFav = localStorage.getItem(`fav_${b.id}`) === 'true';
+        const c = document.createElement('div');
+        c.className = `book-wrapper reveal${isRead ? ' is-read' : ''}${isFav ? ' is-fav' : ''}`;
+        c.style.transitionDelay = `${(i % 8) * 0.08}s`;
+        c.style.setProperty('--book-color-1', b.colors[0]); c.style.setProperty('--book-color-2', b.colors[1]);
+        
+        const readTime = Math.ceil((b.content.length / 5) / 200); // Rough WPM calculation
+        
+        c.innerHTML = `
+            <div class="read-stamp">Telah Dibaca</div>
+            <div class="book-fav-star"><i class="fa-solid fa-star"></i></div>
+            <div class="book-3d">
+                <div class="book-pages"></div>
+                <div class="book-spine"><div class="spine-text">${b.title}</div></div>
+                <div class="book-cover">
+                    <div class="book-category">${b.catL}</div>
+                    <h2 class="book-title">${b.title}</h2>
+                    <div class="book-author">${b.author}</div>
+                    <div class="book-era">${b.eraL} · ±${readTime} mnt</div>
+                    <div class="book-read-bar"><div class="book-read-fill" style="width:${isRead ? '100' : '0'}%"></div></div>
+                </div>
+            </div>`;
+        c.onclick = () => openZen(b.id);
+        g.appendChild(c);
+    });
+    
+    // Re-observe new elements for reveal animation
+    setTimeout(() => { document.querySelectorAll('.book-wrapper.reveal').forEach(el => revObs.observe(el)); }, 50);
+    updateDash(); renderFavShelf();
+}
+
+function sortLib() {
+    const v = document.getElementById('sortSelect').value;
+    if(v === 'eraAsc') curData.sort((a,b) => a.era - b.era);
+    else if(v === 'eraDesc') curData.sort((a,b) => b.era - a.era);
+    else if(v === 'titleAsc') curData.sort((a,b) => a.title.localeCompare(b.title));
+    else curData = [...DB]; // Default
+    applyFilter();
+}
+
+function applyFilter() {
+    const f = document.querySelector('.filter-btn.active').dataset.filter;
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    let d = f === 'all' ? [...curData] : curData.filter(b => b.cat === f);
+    if(q) {
+        d = d.filter(b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q) || b.catL.toLowerCase().includes(q) || b.eraL.toLowerCase().includes(q));
+    }
+    renderLib(d);
+}
+
+document.getElementById('searchInput').addEventListener('input', applyFilter);
+
+/* View Toggle (Grid/List) */
+document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('libraryGrid').classList.toggle('list-view', btn.dataset.view === 'list');
+    });
+});
+
+/* 5. DASHBOARD & FAVORITES LOGIC */
+function updateDash() {
+    const readCount = DB.filter(b => localStorage.getItem(`read_${b.id}`) === 'true').length;
+    const favCount = DB.filter(b => localStorage.getItem(`fav_${b.id}`) === 'true').length;
+    const pct = Math.round((readCount / DB.length) * 100);
+    
+    document.getElementById('dashRead').textContent = readCount;
+    document.getElementById('dashFav').textContent = favCount;
+    document.getElementById('dashPct').textContent = pct + '%';
+    
+    const circ = 97.4; // SVG Circle circumference
+    document.getElementById('dashRing').style.strokeDashoffset = circ - (circ * pct / 100);
+    
+    // Celebration trigger
+    if(readCount === DB.length && !sessionStorage.getItem('k4celebrated')) {
+        celebrate(); sessionStorage.setItem('k4celebrated', '1');
+    }
+}
+
+function renderFavShelf() {
+    const shelf = document.getElementById('favShelf');
+    const scroll = document.getElementById('favScroll');
+    const favs = DB.filter(b => localStorage.getItem(`fav_${b.id}`) === 'true');
+    
+    shelf.classList.toggle('has-favs', favs.length > 0);
+    scroll.innerHTML = '';
+    
+    favs.forEach(b => {
+        const d = document.createElement('div');
+        d.className = 'fav-mini';
+        d.style.setProperty('--book-color-1', b.colors[0]); d.style.setProperty('--book-color-2', b.colors[1]);
+        d.innerHTML = `
+            <div class="fav-mini-cover">
+                <div class="fav-mini-title">${b.title}</div>
+                <div class="fav-mini-author">${b.author}</div>
+            </div>
+            <button class="fav-mini-remove" onclick="event.stopPropagation(); removeFav('${b.id}')" title="Hapus dari Rak">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>`;
+        d.onclick = () => openZen(b.id);
+        scroll.appendChild(d);
+    });
+}
+
+function removeFav(id) {
+    localStorage.removeItem(`fav_${id}`);
+    toast('Manuskrip dihapus dari Rak Favorit');
+    applyFilter();
+}
+
+function scrollToFavs() {
+    const shelf = document.getElementById('favShelf');
+    if(shelf.classList.contains('has-favs')) {
+        shelf.scrollIntoView({behavior: 'smooth', block: 'center'});
+    } else { toast('Rak Favorit Anda masih kosong.'); }
+}
+
+/* 6. ZEN READER & NEXA AI ENGINE */
+let aiTypingInterval = null;
+
+function openZen(id) {
+    const b = DB.find(x => x.id === id); if(!b) return;
+    curBookId = id;
+    
+    document.getElementById('zenCat').textContent = b.catL;
+    document.getElementById('zenTitle').textContent = b.title;
+    document.getElementById('zenAuthor').textContent = b.author;
+    document.getElementById('zenEra').innerHTML = `<i class="fa-solid fa-hourglass-half"></i> ${b.eraL}`;
+    document.getElementById('zenTime').innerHTML = `<i class="fa-regular fa-clock"></i> ±${Math.ceil((b.content.length/5)/200)} mnt baca`;
+    
+    document.getElementById('zenContent').innerHTML = b.content;
+    document.getElementById('zenPaper').style.fontSize = zenFontSize + 'rem';
+    
+    const isFav = localStorage.getItem(`fav_${id}`) === 'true';
+    document.getElementById('btnFavZen').innerHTML = isFav ? '<i class="fa-solid fa-bookmark" style="color:var(--a5)"></i>' : '<i class="fa-regular fa-bookmark"></i>';
+    
+    document.getElementById('aiInsightBox').classList.remove('active');
+    clearInterval(aiTypingInterval);
+    
+    document.getElementById('zenModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    if(localStorage.getItem(`read_${id}`) !== 'true') {
+        localStorage.setItem(`read_${id}`, 'true');
+        setTimeout(applyFilter, 500); // Refresh grid UI subtly
+    }
+    
+    // Scroll progress listener inside Zen Reader
+    const modal = document.getElementById('zenModal');
+    modal.onscroll = () => {
+        const p = modal.scrollTop / (modal.scrollHeight - modal.clientHeight) * 100;
+        document.getElementById('zenProgFill').style.width = Math.min(100, p) + '%';
+    };
+}
+
+function closeZen() {
+    document.getElementById('zenModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+    stopTTS(); clearInterval(aiTypingInterval);
+    document.getElementById('zenProgFill').style.width = '0%';
+}
+
+function changeFontSize(d) {
+    zenFontSize = Math.max(0.8, Math.min(1.6, zenFontSize + (d * 0.1)));
+    document.getElementById('zenPaper').style.fontSize = zenFontSize.toFixed(1) + 'rem';
+    toast(`Ukuran Teks Reader: ${Math.round(zenFontSize * 100)}%`);
+}
+
+function toggleFavFromZen() {
+    if(!curBookId) return;
+    const is = localStorage.getItem(`fav_${curBookId}`) === 'true';
+    if(is) {
+        localStorage.removeItem(`fav_${curBookId}`);
+        document.getElementById('btnFavZen').innerHTML = '<i class="fa-regular fa-bookmark"></i>';
+        toast('Dihapus dari Favorit');
+    } else {
+        localStorage.setItem(`fav_${curBookId}`, 'true');
+        document.getElementById('btnFavZen').innerHTML = '<i class="fa-solid fa-bookmark" style="color:var(--a5)"></i>';
+        toast('Kitab disimpan ke Favorit!');
+    }
+    applyFilter();
+}
+
+/* NEXA AI Typewriter Logic */
+function triggerAIInsight() {
+    const box = document.getElementById('aiInsightBox');
+    const contentBox = document.getElementById('aiInsightContent');
+    const b = DB.find(x => x.id === curBookId);
+    
+    if(box.classList.contains('active')) { box.classList.remove('active'); return; }
+    
+    box.classList.add('active');
+    contentBox.innerHTML = '';
+    clearInterval(aiTypingInterval);
+    
+    const rawText = b.ai || "Sistem NEXA AI sedang menyusun analisis struktural mengenai manuskrip ini...";
+    let i = 0;
+    
+    // Typewriter effect
+    aiTypingInterval = setInterval(() => {
+        contentBox.innerHTML += rawText.charAt(i);
+        i++;
+        if (i >= rawText.length) { clearInterval(aiTypingInterval); }
+    }, 30); // Speed of typing
+}
+
+/* TEXT TO SPEECH */
+function toggleTTS() {
+    if(!('speechSynthesis' in window)) { toast('Browser Anda tidak mendukung Web Audio API.'); return; }
+    const btn = document.getElementById('btnTTS');
+    const b = DB.find(x => x.id === curBookId);
+    
+    if(ttsOn) { stopTTS(); } else {
+        speechSynthesis.cancel();
+        // Clean HTML tags from content for reading
+        const tmp = document.createElement('div'); tmp.innerHTML = b.content;
+        const textToRead = `Memuat arsip audio untuk kitab ${b.title}, karya agung ${b.author}. ${tmp.innerText}`;
+        
+        curUtt = new SpeechSynthesisUtterance(textToRead);
+        curUtt.lang = 'id-ID'; curUtt.rate = 0.95;
+        curUtt.onend = () => stopTTS();
+        speechSynthesis.speak(curUtt);
+        ttsOn = true; btn.classList.add('tts-on');
+        toast('Audio Synthesis NEXA Aktif. Mulai membaca...');
+    }
+}
+function stopTTS() {
+    speechSynthesis.cancel(); ttsOn = false;
+    document.getElementById('btnTTS').classList.remove('tts-on');
+}
+
+/* ASTROLABE (RANDOM BOOK) */
+document.getElementById('btnAstrolabe').addEventListener('click', () => {
+    const btn = document.getElementById('btnAstrolabe');
+    if(btn.classList.contains('spinning')) return;
+    btn.classList.add('spinning'); toast('Mengkalkulasi rasi bintang Astrolabe...');
+    
+    setTimeout(() => {
+        btn.classList.remove('spinning');
+        const b = DB[Math.floor(Math.random() * DB.length)];
+        openZen(b.id);
+        toast(`Astrolabe menemukan: ${b.title}`);
+    }, 2000);
+});
+
+/* 7. THEME MANAGER & KEYBOARD SHORTCUTS */
+function setTheme(t) {
+    document.documentElement.dataset.theme = t;
+    document.getElementById('btnTheme').innerHTML = t === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    document.getElementById('btnSepia').classList.toggle('active-mode', t === 'sepia');
+    localStorage.setItem('k4theme', t);
+    toast(t === 'dark' ? 'Mode Gelap Aktif' : t === 'sepia' ? 'Mode Klasik (Sepia) Aktif' : 'Mode Terang Aktif');
+}
+
+document.getElementById('btnTheme').addEventListener('click', () => {
+    const c = document.documentElement.dataset.theme; setTheme(c === 'dark' ? 'light' : 'dark');
+});
+document.getElementById('btnSepia').addEventListener('click', () => {
+    const c = document.documentElement.dataset.theme; setTheme(c === 'sepia' ? 'dark' : 'sepia');
+});
+
+// Init Theme on Load
+if(localStorage.getItem('k4theme')) setTheme(localStorage.getItem('k4theme'));
+
+document.addEventListener('keydown', e => {
+    // Ignore if typing in search
+    if(e.target.closest('input')) {
+        if(e.key === 'Escape') e.target.blur(); return;
+    }
+    
+    if(e.key === '/') { e.preventDefault(); document.getElementById('searchInput').focus(); }
+    if(e.key === 'd' || e.key === 'D') document.getElementById('btnTheme').click();
+    if(e.key === 's' || e.key === 'S') document.getElementById('btnSepia').click();
+    if(e.key === 'r' || e.key === 'R') document.getElementById('btnAstrolabe').click();
+    if(e.key === 'g' || e.key === 'G') {
+        const gridBtn = document.querySelector('.view-btn[data-view="grid"]');
+        const listBtn = document.querySelector('.view-btn[data-view="list"]');
+        if(gridBtn.classList.contains('active')) listBtn.click(); else gridBtn.click();
+    }
+    if(e.key === 'Escape') {
+        document.getElementById('kbdModal').classList.remove('active');
+        if(document.getElementById('zenModal').classList.contains('active')) closeZen();
+    }
+});
+document.getElementById('btnKbd').addEventListener('click', () => document.getElementById('kbdModal').classList.add('active'));
+document.getElementById('mobTog').addEventListener('click', () => document.getElementById('navMenu').classList.toggle('open'));
+
+/* 8. VISUAL EFFECTS: SCROLL, CELEBRATION, REVEAL OBSERVER */
+window.addEventListener('scroll', () => {
+    const s = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight, p = s/h;
+    document.getElementById('scrollProg').style.width = (p * 100) + '%';
+    document.getElementById('mainNav').classList.toggle('scrolled', s > 20);
+    
+    const st = document.getElementById('scrollTop');
+    st.classList.toggle('visible', s > 500);
+    document.getElementById('scrollRing').style.strokeDashoffset = 97.4 - (97.4 * p);
+});
+
+const revObs = new IntersectionObserver(e => {
+    e.forEach(x => { if(x.isIntersecting) { x.target.classList.add('active'); revObs.unobserve(x.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+// Number Counter Animation
+const cObs = new IntersectionObserver(e => {
+    e.forEach(x => {
+        if(x.isIntersecting) {
+            const c = x.target, t = +c.dataset.target; let v = 0; const s = t/30;
+            (function u() { v += s; if(v < t) { c.innerText = Math.ceil(v); requestAnimationFrame(u); } else c.innerText = t; })();
+            cObs.unobserve(c);
+        }
+    });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(c => cObs.observe(c));
+
+function celebrate() {
+    const c = document.getElementById('celebration'); c.classList.add('active');
+    const colors = ['#10b981', '#d97706', '#ef4444', '#3b82f6', '#f8fafc', '#f59e0b'];
+    for(let i=0; i<120; i++) {
+        const p = document.createElement('div'); p.className = 'confetti';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.animationDelay = Math.random() * 2 + 's';
+        p.style.animationDuration = (3 + Math.random() * 3) + 's';
+        c.appendChild(p);
+    }
+    toast('🎉 PENCAPAIAN DIBUKA: Scholar of Baitul Hikmah! Semua manuskrip telah dibaca.');
+    setTimeout(() => { c.classList.remove('active'); c.innerHTML = ''; }, 6000);
+}
+
+/* 9. 3-LAYER CANVAS ENGINE (HERO & GEOMETRIC) */
+const hcv = document.getElementById('heroCanvas'), hcx = hcv.getContext('2d');
+let hpts = [];
+function initHC() {
+    hcv.width = hcv.parentElement.offsetWidth; hcv.height = hcv.parentElement.offsetHeight;
+    hpts = Array.from({length: Math.min(60, Math.floor(hcv.width/18))}, () => ({
+        x: Math.random() * hcv.width, y: Math.random() * hcv.height,
+        vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, r: Math.random() * 2.5
+    }));
+}
+function drawHC() {
+    hcx.clearRect(0,0,hcv.width,hcv.height);
+    const dk = document.documentElement.dataset.theme !== 'light';
+    hpts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if(p.x < 0 || p.x > hcv.width) p.vx *= -1; if(p.y < 0 || p.y > hcv.height) p.vy *= -1;
+        hcx.beginPath(); hcx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        hcx.fillStyle = dk ? 'rgba(110,231,183,0.4)' : 'rgba(6,78,59,0.3)'; hcx.fill();
+    });
+    for(let i=0; i<hpts.length; i++) {
+        for(let j=i+1; j<hpts.length; j++) {
+            const d = Math.hypot(hpts[i].x - hpts[j].x, hpts[i].y - hpts[j].y);
+            if(d < 120) {
+                hcx.beginPath(); hcx.moveTo(hpts[i].x, hpts[i].y); hcx.lineTo(hpts[j].x, hpts[j].y);
+                hcx.strokeStyle = dk ? `rgba(16,185,129,${0.15 - d/800})` : `rgba(6,78,59,${0.08 - d/1500})`;
+                hcx.lineWidth = 0.8; hcx.stroke();
+            }
+        }
+    }
+    requestAnimationFrame(drawHC);
+}
+
+const gcv = document.getElementById('geoCanvas'), gcx = gcv.getContext('2d');
+function initGC() { gcv.width = window.innerWidth; gcv.height = window.innerHeight; }
+let gAngle = 0;
+function drawGC() {
+    gcx.clearRect(0,0,gcv.width,gcv.height);
+    const dk = document.documentElement.dataset.theme !== 'light';
+    gcx.strokeStyle = dk ? 'rgba(16,185,129,0.06)' : 'rgba(6,78,59,0.04)'; gcx.lineWidth = 1;
+    
+    // Draw rotating mandala/geometric circles
+    for(let i=0; i<8; i++) {
+        const cx = gcv.width/2, cy = gcv.height/2, r = 200 + i*90;
+        gcx.beginPath();
+        for(let a=0; a<8; a++) {
+            const ang = (Math.PI/4) * a + gAngle + (i*0.05);
+            const x = cx + r * Math.cos(ang), y = cy + r * Math.sin(ang);
+            if(a===0) gcx.moveTo(x,y); else gcx.lineTo(x,y);
+        }
+        gcx.closePath(); gcx.stroke();
+    }
+    gAngle += 0.0008; requestAnimationFrame(drawGC);
+}
+
+window.addEventListener('resize', () => { initHC(); initGC(); });
+
+/* INIT ON LOAD */
 window.addEventListener('load', () => {
-    initPre();
     buildFilters();
-    initHC();
-    drawHC();
-    drawGC();
+    initHC(); drawHC();
+    initGC(); drawGC();
     renderLib(curData);
 });
 </script>
