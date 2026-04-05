@@ -441,7 +441,6 @@ function scrollToFavs(){document.getElementById('favShelf').scrollIntoView({beha
 
 // ===== ZEN READER =====
 function openZen(id){const b=DB.find(x=>x.id===id);if(!b)return;curBookId=id;document.getElementById('zenCat').textContent=b.catL;document.getElementById('zenTitle').textContent=b.title;document.getElementById('zenAuthor').textContent=b.author;document.getElementById('zenEra').innerHTML=`<i class="fa-solid fa-hourglass-half"></i> ${b.eraL}`;const words=b.content.replace(/<[^>]*>/g,'').split(' ').length;document.getElementById('zenTime').innerHTML=`<i class="fa-regular fa-clock"></i> ${Math.ceil(words/200)} mnt baca`;document.getElementById('zenContent').innerHTML=b.content;document.getElementById('zenPaper').style.fontSize=zenFontSize+'rem';const tmp=document.createElement('div');tmp.innerHTML=b.content;curTxt=`Buku ${b.title}, karya ${b.author}. ${tmp.innerText}`;const isFav=localStorage.getItem(`fav_${id}`)==='true';document.getElementById('btnFavZen').innerHTML=isFav?'<i class="fa-solid fa-star" style="color:#d97706"></i>':'<i class="fa-regular fa-star"></i>';document.getElementById('zenModal').classList.add('active');document.body.style.overflow='hidden';if(localStorage.getItem(`read_${id}`)!=='true'){localStorage.setItem(`read_${id}`,'true');setTimeout(applyFilter,400)}
-// Zen scroll progress
 const modal=document.getElementById('zenModal');modal.onscroll=()=>{const p=modal.scrollTop/(modal.scrollHeight-modal.clientHeight)*100;document.getElementById('zenProgFill').style.width=Math.min(100,p)+'%'}}
 function closeZen(){document.getElementById('zenModal').classList.remove('active');document.body.style.overflow='auto';stopTTS();document.getElementById('zenProgFill').style.width='0%'}
 function changeFontSize(d){zenFontSize=Math.max(.8,Math.min(1.4,zenFontSize+d*.1));document.getElementById('zenPaper').style.fontSize=zenFontSize.toFixed(1)+'rem';toast(`Ukuran teks: ${Math.round(zenFontSize*100)}%`)}
@@ -471,7 +470,7 @@ function celebrate(){const c=document.getElementById('celebration');c.classList.
 
 // ===== CURSOR =====
 const dot=document.getElementById('curDot'),ring=document.getElementById('curRing');
-let mx=0,my=0,rx=0,ry=0;const trails=[];
+let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
 document.addEventListener('mousedown',()=>dot.classList.add('click'));document.addEventListener('mouseup',()=>dot.classList.remove('click'));
 (function aR(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(aR)})();
@@ -502,11 +501,66 @@ function drawGC(){gcx.clearRect(0,0,gcv.width,gcv.height);const dk=document.docu
 for(let i=0;i<6;i++){const cx=gcv.width/2,cy=gcv.height/2,r=150+i*80;gcx.beginPath();for(let a=0;a<6;a++){const ang=(Math.PI/3)*a+gAngle+i*.1;const x=cx+r*Math.cos(ang),y=cy+r*Math.sin(ang);a===0?gcx.moveTo(x,y):gcx.lineTo(x,y)}gcx.closePath();gcx.stroke()}
 gAngle+=.001;requestAnimationFrame(drawGC)}
 
-// ===== PRELOADER =====
-function initPre(){const p=document.getElementById('preloader'),f=document.getElementById('preFill'),s=document.getElementById('preStatus'),pc=document.getElementById('prePercent');const steps=['MEMUAT MANUSKRIP...','MENDEKODE TEKS ARAB...','MENYUSUN PERPUSTAKAAN...','BISMILLAH, SIAP!'];let pg=0;const iv=setInterval(()=>{pg+=Math.random()*22+6;if(pg>100)pg=100;f.style.width=pg+'%';f.style.transition='width .3s';s.textContent=steps[Math.min(Math.floor(pg/25),3)];pc.textContent=Math.floor(pg)+'%';if(pg>=100){clearInterval(iv);setTimeout(()=>p.classList.add('hidden'),700)}},280)}
+// ===== PRELOADER (FIXED: ANTI-STUCK + SAFETY TIMEOUT) =====
+function initPre() {
+    const preloader = document.getElementById('preloader');
+    const fillBar = document.getElementById('preFill');
+    const statusEl = document.getElementById('preStatus');
+    const percentEl = document.getElementById('prePercent');
+    const steps = ['MEMUAT MANUSKRIP...','MENDEKODE TEKS ARAB...','MENYUSUN PERPUSTAKAAN...','BISMILLAH, SIAP!'];
+    let progress = 0;
+    let intervalId = null;
+    let safetyTimeout = null;
+    let hideScheduled = false;
 
-// ===== INIT =====
-window.addEventListener('load',()=>{initPre();buildFilters();initHC();drawHC();drawGC();renderLib(curData)});
+    const finishPreloader = () => {
+        if (hideScheduled) return;
+        hideScheduled = true;
+        if (intervalId) clearInterval(intervalId);
+        if (safetyTimeout) clearTimeout(safetyTimeout);
+        setTimeout(() => {
+            if (preloader && !preloader.classList.contains('hidden')) {
+                preloader.classList.add('hidden');
+            }
+        }, 700);
+    };
+
+    intervalId = setInterval(() => {
+        progress += Math.random() * 22 + 6;
+        if (progress >= 100) {
+            progress = 100;
+            fillBar.style.width = '100%';
+            percentEl.textContent = '100%';
+            statusEl.textContent = steps[3];
+            finishPreloader();
+        } else {
+            fillBar.style.width = progress + '%';
+            const stepIndex = Math.min(Math.floor(progress / 25), 3);
+            statusEl.textContent = steps[stepIndex];
+            percentEl.textContent = Math.floor(progress) + '%';
+        }
+    }, 280);
+
+    safetyTimeout = setTimeout(() => {
+        if (!hideScheduled && preloader && !preloader.classList.contains('hidden')) {
+            progress = 100;
+            if (fillBar) fillBar.style.width = '100%';
+            if (percentEl) percentEl.textContent = '100%';
+            if (statusEl) statusEl.textContent = steps[3];
+            finishPreloader();
+        }
+    }, 5000);
+}
+
+// ===== INIT ALL =====
+window.addEventListener('load', () => {
+    initPre();
+    buildFilters();
+    initHC();
+    drawHC();
+    drawGC();
+    renderLib(curData);
+});
 </script>
 </body>
 </html>
