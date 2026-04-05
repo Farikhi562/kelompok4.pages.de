@@ -3,593 +3,1384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pusat Referensi & Mesin Sitasi - Proyek Akhir Agama Islam Kelompok IV">
-    <title>Pusat Referensi | Kelompok IV</title>
-    
+    <meta name="description" content="NEXA Reference Hub - Perpustakaan Digital & Daftar Pustaka Kelompok IV">
+    <meta name="author" content="Muhamad Fauzan Al Farikhi & NEXA Tech Labs">
+    <title>Kepustakaan | Filsafat Islam IV</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Space+Mono:wght@400;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="animations.css">
-
     <style>
-        /* --- GLOBAL OVERRIDES --- */
-        body { background-color: var(--bg-body, #f8fafc); overflow-x: hidden; scroll-behavior: smooth; }
+        /* --- 1. CORE VARIABLES & THEME ENGINE --- */
+        :root {
+            --primary: #064e3b;
+            --primary-light: #059669;
+            --secondary: #047857;
+            --accent: #d97706;
+            --accent-glow: #f59e0b;
+            
+            --bg-main: #f8fafc;
+            --bg-deep: #f1f5f9;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-terminal: #0f172a;
+            
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --text-terminal: #10b981;
+            
+            --border-light: rgba(6, 78, 59, 0.1);
+            --border-strong: rgba(6, 78, 59, 0.2);
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -3px rgba(0,0,0,0.1);
+            --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.15);
+            --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.2);
+            
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+            --font-arabic: 'Amiri', serif;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-        /* --- HERO SECTION FOR REFERENCES --- */
-        .ref-hero {
-            position: relative; padding: 150px 5% 80px; text-align: center;
-            background: linear-gradient(135deg, var(--clr-primary-900, #022c22), var(--bg-body, #0f172a));
-            color: white; overflow: hidden; border-bottom: 1px solid var(--border-strong, rgba(255,255,255,0.1));
+        [data-theme="dark"] {
+            --bg-main: #020617;
+            --bg-deep: #0f172a;
+            --bg-card: rgba(15, 23, 42, 0.85);
+            --bg-terminal: #000000;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            --border-light: rgba(255, 255, 255, 0.05);
+            --border-strong: rgba(255, 255, 255, 0.15);
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.3);
+            --shadow-md: 0 10px 25px -3px rgba(0,0,0,0.5);
+            --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.7);
+            --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.15);
         }
-        .ref-hero::before {
-            content: ''; position: absolute; inset: 0; background: url('https://www.transparenttextures.com/patterns/stardust.png'); opacity: 0.3; animation: slideBg 100s linear infinite; pointer-events: none;
+
+        /* --- 2. GLOBAL RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor implementation */
         }
-        @keyframes slideBg { 0% { background-position: 0 0; } 100% { background-position: 1000px 1000px; } }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: var(--transition-smooth);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: white;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 8px; }
+
+        @media (hover: none) and (pointer: coarse) {
+            * { cursor: auto !important; }
+            .cursor-dot, .cursor-ring { display: none !important; }
+        }
+
+        /* --- 3. CUSTOM CURSOR --- */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999998;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--accent);
+        }
         
-        .ref-title { font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; color: var(--clr-primary-300, #6ee7b7); margin-bottom: 15px; letter-spacing: 2px; text-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; z-index: 2; }
-        .ref-subtitle { font-size: 1.1rem; color: var(--text-muted, #94a3b8); max-width: 700px; margin: 0 auto; line-height: 1.8; position: relative; z-index: 2; }
-
-        /* --- MAIN LAYOUT --- */
-        .ref-container { display: flex; max-width: 1400px; margin: -40px auto 100px; padding: 0 5%; gap: 40px; position: relative; z-index: 10; align-items: flex-start; }
-        @media (max-width: 992px) { .ref-container { flex-direction: column; margin-top: 20px; } }
-
-        /* --- SMART SIDEBAR --- */
-        .ref-sidebar {
-            width: 320px; background: var(--bg-surface, #ffffff); border-radius: 24px; padding: 30px 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid var(--border-light, #e2e8f0);
-            position: sticky; top: 100px; flex-shrink: 0; transition: 0.3s;
+        .cursor-ring {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--primary);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999997;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, border-color 0.2s, background 0.2s;
         }
-        [data-theme="dark"] .ref-sidebar { background: #1e293b; border-color: #334155; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         
-        .sidebar-header { font-size: 0.85rem; font-weight: 800; color: var(--clr-accent-500, #d97706); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; padding-left: 15px; display: flex; align-items: center; gap: 10px; }
+        .cursor-ring.hover {
+            width: 60px;
+            height: 60px;
+            border-color: var(--accent);
+            background: rgba(217, 119, 6, 0.05);
+        }
+
+        /* --- 4. PRELOADER (HOLOCRON BOOT) --- */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-terminal);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .pre-arabic {
+            font-family: var(--font-arabic);
+            font-size: clamp(3rem, 6vw, 4rem);
+            color: var(--primary-light);
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+            margin-bottom: 20px;
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        .pre-bar {
+            width: 300px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .pre-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent));
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        .pre-text {
+            font-family: var(--font-mono);
+            color: var(--primary-light);
+            font-size: 0.8rem;
+            margin-top: 15px;
+            letter-spacing: 2px;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.98); opacity: 0.8; }
+            100% { transform: scale(1.02); opacity: 1; filter: drop-shadow(0 0 15px var(--primary-light)); }
+        }
+
+        /* --- 5. PARTICLE BACKGROUND --- */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* --- 6. NAVBAR --- */
+        .navbar {
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px) saturate(1.5);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand img {
+            height: 40px;
+            transition: var(--transition-bounce);
+        }
+
+        .brand:hover img {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .brand-text {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            border: 1px solid var(--border-strong);
+            background: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            transition: var(--transition-bounce);
+        }
+
+        .btn-icon:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* --- 7. HERO SECTION --- */
+        .hero {
+            padding: 100px 5% 50px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .badge-pro {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.2);
+            border-radius: 30px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        /* --- 8. SEARCH & FILTER TOOLBAR --- */
+        .toolbar {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 5%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .toolbar-inner {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border-strong);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border-radius: 12px;
+            border: 2px solid var(--border-light);
+            background: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            background: var(--bg-main);
+            box-shadow: 0 0 0 4px rgba(6, 78, 59, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-strong);
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-weight: 600;
+            font-family: var(--font-body);
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-filter:hover, .btn-filter.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+
+        /* --- 9. LIBRARY GRID (3D CARDS) --- */
+        .library-grid {
+            max-width: 1400px;
+            margin: 0 auto 100px;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .book-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-strong);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease, box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 20px 20px 0 0;
+            opacity: 0.5;
+            transition: var(--transition-smooth);
+        }
+
+        .book-card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(217, 119, 6, 0.3);
+        }
+
+        .book-card:hover::before {
+            opacity: 1;
+            height: 10px;
+        }
+
+        .book-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transform: translateZ(20px);
+        }
+
+        .book-type {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            background: var(--bg-deep);
+            color: var(--text-muted);
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .book-year {
+            font-weight: 700;
+            color: var(--accent);
+            font-family: var(--font-mono);
+        }
+
+        .book-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1.3;
+            transform: translateZ(30px);
+        }
+
+        [data-theme="dark"] .book-title {
+            color: var(--primary-light);
+        }
+
+        .book-author {
+            font-size: 1rem;
+            color: var(--text-main);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transform: translateZ(25px);
+        }
+
+        .book-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            transform: translateZ(15px);
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            background: rgba(6, 78, 59, 0.05);
+            color: var(--primary);
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .tag {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-light);
+        }
+
+        .book-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+            border-top: 1px dashed var(--border-strong);
+            padding-top: 20px;
+            transform: translateZ(10px);
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-strong);
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-bounce);
+        }
+
+        .btn-action.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-sm);
+        }
         
-        .ref-tab-btn {
-            width: 100%; text-align: left; padding: 18px 20px; margin-bottom: 12px; border-radius: 16px;
-            border: 1px solid transparent; background: transparent; font-size: 1.05rem; font-weight: 600;
-            color: var(--text-main, #1e293b); cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden;
+        .btn-action.primary:hover {
+            background: var(--secondary);
+            box-shadow: var(--shadow-glow);
         }
-        [data-theme="dark"] .ref-tab-btn { color: #f8fafc; }
-        
-        .ref-tab-btn i { font-size: 1.3rem; color: var(--text-muted, #94a3b8); transition: 0.3s; width: 25px; text-align: center; }
-        .ref-tab-btn::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(90deg, rgba(16,185,129,0.1), transparent); transition: 0.4s; z-index: 0; }
-        
-        .ref-tab-btn:hover { border-color: var(--border-strong, #cbd5e1); transform: translateX(5px); }
-        [data-theme="dark"] .ref-tab-btn:hover { border-color: #475569; }
-        
-        .ref-tab-btn.active { background: var(--clr-primary-500, #10b981); color: white; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transform: translateX(10px); }
-        .ref-tab-btn.active i { color: white; }
-        .ref-tab-btn span { position: relative; z-index: 1; }
 
-        /* --- CONTENT AREA --- */
-        .ref-content-area {
-            flex: 1; background: var(--bg-surface, #ffffff); border-radius: 30px; padding: 50px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); border: 1px solid var(--border-light, #e2e8f0);
-            min-height: 800px; position: relative; overflow: hidden; width: 100%;
+        /* --- 10. ADVANCED MODAL (HOLOCRON ARCHIVE) --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 100000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+            padding: 20px;
         }
-        [data-theme="dark"] .ref-content-area { background: #0f172a; border-color: #1e293b; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6); }
 
-        .ref-pane { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .ref-pane.active { display: block; opacity: 1; transform: translateY(0); animation: paneEnter 0.6s forwards; }
-        @keyframes paneEnter { to { opacity: 1; transform: translateY(0); } }
-
-        /* --- 3D BOOK SHOWCASE (GOD MODE) --- */
-        .showcase-header { display: flex; gap: 40px; margin-bottom: 40px; border-bottom: 2px dashed var(--border-light, #e2e8f0); padding-bottom: 40px; align-items: center; }
-        @media (max-width: 768px) { .showcase-header { flex-direction: column; text-align: center; } }
-
-        /* The 3D Book Engine */
-        .book-3d-wrapper { perspective: 1000px; width: 200px; height: 300px; flex-shrink: 0; }
-        .book-3d-object {
-            width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
-            transition: transform 0.1s ease; transform: rotateY(-15deg) rotateX(5deg);
-            box-shadow: -10px 20px 30px rgba(0,0,0,0.3); border-radius: 5px 15px 15px 5px;
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
-        .book-front {
-            position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, var(--book-c1), var(--book-c2));
-            border-radius: 5px 15px 15px 5px; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: white; text-align: center; padding: 20px; transform: translateZ(15px); border: 1px solid rgba(255,255,255,0.1);
-        }
-        .book-front::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0.2) 0%, transparent 20%); border-radius: inherit; }
-        .book-spine {
-            position: absolute; width: 30px; height: 100%; background: var(--book-c2);
-            transform: rotateY(-90deg) translateZ(15px); transform-origin: left; border-radius: 10px 0 0 10px;
-        }
-        .book-pages {
-            position: absolute; width: 190px; height: 290px; background: #fdf6e3; top: 5px; left: 10px;
-            transform: translateZ(-15px); border-radius: 0 10px 10px 0;
-            background-image: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.05) 3px);
-        }
-        .b-icon { font-size: 3rem; margin-bottom: 15px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
-        .b-title { font-family: 'Amiri', serif; font-size: 1.5rem; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 
-        .book-meta { flex: 1; }
-        .meta-title { font-size: 2.2rem; font-weight: 800; color: var(--text-main, #0f172a); line-height: 1.2; margin-bottom: 10px; }
-        [data-theme="dark"] .meta-title { color: white; }
-        .meta-author { font-size: 1.2rem; color: var(--clr-primary-500, #10b981); font-weight: 700; margin-bottom: 20px; font-family: 'Space Mono', monospace; }
-        .badges-wrapper { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
-        .data-badge { background: var(--bg-body, #f1f5f9); border: 1px solid var(--border-strong, #cbd5e1); color: var(--text-muted, #64748b); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        [data-theme="dark"] .data-badge { background: #1e293b; border-color: #334155; color: #cbd5e1; }
+        .modal-content {
+            background: var(--bg-main);
+            width: 100%;
+            max-width: 900px;
+            border-radius: 24px;
+            overflow: hidden;
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-strong);
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-        /* --- DYNAMIC CITATION MACHINE --- */
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 40px;
+            position: relative;
+            color: white;
+        }
+
+        .btn-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition-bounce);
+        }
+
+        .btn-close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .modal-body {
+            padding: 40px;
+            overflow-y: auto;
+            background: var(--bg-card);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 10px;
+        }
+
+        [data-theme="dark"] .section-title {
+            color: var(--primary-light);
+        }
+
+        .modal-abstract {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .modal-quote-box {
+            background: rgba(217, 119, 6, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 30px;
+        }
+
+        .modal-quote-text {
+            font-family: var(--font-arabic);
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
         .citation-box {
-            background: rgba(217, 119, 6, 0.05); border: 1px solid rgba(217, 119, 6, 0.2);
-            border-radius: 15px; padding: 20px; position: relative; margin-top: 20px;
+            background: var(--bg-deep);
+            border: 1px solid var(--border-strong);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
-        .citation-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(217, 119, 6, 0.2); padding-bottom: 10px; }
-        .citation-title { font-weight: 800; color: var(--clr-accent-500, #d97706); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        .citation-select { background: var(--bg-surface, white); border: 1px solid var(--border-strong, #cbd5e1); color: var(--text-main, #0f172a); padding: 5px 10px; border-radius: 8px; font-weight: 600; font-family: 'Space Mono', monospace; cursor: pointer; outline: none; }
-        [data-theme="dark"] .citation-select { background: #0f172a; border-color: #334155; color: white; }
-        .citation-text { font-family: 'Times New Roman', serif; font-size: 1.1rem; line-height: 1.6; color: var(--text-main, #1e293b); margin-bottom: 15px; padding: 10px; background: var(--bg-surface, white); border-radius: 8px; }
-        [data-theme="dark"] .citation-text { background: #1e293b; color: #cbd5e1; }
-        .btn-copy { background: var(--clr-accent-500, #d97706); color: white; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-copy:hover { background: var(--clr-accent-700, #b45309); transform: translateY(-2px); }
 
-        /* --- TYPOGRAPHY & CONTENT --- */
-        .academic-content h3 { color: var(--clr-primary-700, #047857); font-size: 1.4rem; font-weight: 800; margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
-        [data-theme="dark"] .academic-content h3 { color: #10b981; }
-        .academic-content p { color: var(--text-muted, #475569); font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; text-align: justify; }
-        [data-theme="dark"] .academic-content p { color: #94a3b8; }
-        .academic-content ul { padding-left: 20px; color: var(--text-muted, #475569); margin-bottom: 20px; }
-        .academic-content li { margin-bottom: 10px; line-height: 1.7; font-size: 1.05rem; }
-        [data-theme="dark"] .academic-content ul { color: #94a3b8; }
+        .citation-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
 
-        /* --- QURANIC EXPLORER UI --- */
-        .quran-header { text-align: center; margin-bottom: 50px; }
-        .quran-header h2 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--clr-primary-700, #047857); margin-bottom: 10px; }
-        [data-theme="dark"] .quran-header h2 { color: #10b981; }
-        .quran-header p { color: var(--text-muted); font-size: 1.1rem; }
-
-        .verse-card {
-            background: var(--bg-body, #f1f5f9); border-radius: 20px; padding: 40px; margin-bottom: 40px;
-            position: relative; border-left: 5px solid var(--clr-accent-500, #d97706); box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
+        .cit-tab {
+            padding: 6px 15px;
+            background: transparent;
+            border: 1px solid var(--border-strong);
+            border-radius: 20px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
             transition: 0.3s;
         }
-        [data-theme="dark"] .verse-card { background: #020617; border-left-color: #d97706; box-shadow: inset 0 0 20px rgba(0,0,0,0.2); }
-        .verse-card:hover { transform: translateX(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 
-        .verse-badge { position: absolute; top: -15px; left: 30px; background: var(--clr-primary-500, #10b981); color: white; padding: 5px 20px; border-radius: 20px; font-weight: 800; font-family: 'Space Mono', monospace; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); }
-        
-        .verse-arabic { font-family: 'Amiri', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--text-main, #0f172a); text-align: right; line-height: 2; margin-bottom: 20px; direction: rtl; }
-        [data-theme="dark"] .verse-arabic { color: #f8fafc; }
-        
-        .verse-translation { font-size: 1.15rem; color: var(--text-muted, #475569); line-height: 1.8; font-style: italic; margin-bottom: 25px; padding-right: 10%; }
-        [data-theme="dark"] .verse-translation { color: #94a3b8; }
+        .cit-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
 
-        .tafsir-box { background: rgba(16, 185, 129, 0.05); border: 1px dashed rgba(16, 185, 129, 0.3); border-radius: 15px; padding: 25px; display: none; animation: fadeUp 0.4s; }
-        .tafsir-box.show { display: block; }
-        .tafsir-title { font-weight: 800; color: var(--clr-primary-700, #047857); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        [data-theme="dark"] .tafsir-title { color: #10b981; }
+        .citation-text {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-main);
+            padding: 15px;
+            background: var(--bg-main);
+            border-radius: 8px;
+            border: 1px dashed var(--border-strong);
+            position: relative;
+            word-break: break-word;
+        }
 
-        .verse-controls { display: flex; gap: 15px; }
-        .btn-audio, .btn-tafsir { background: var(--bg-surface, white); border: 1px solid var(--border-strong, #cbd5e1); padding: 10px 20px; border-radius: 12px; font-weight: 700; color: var(--text-main, #1e293b); cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
-        [data-theme="dark"] .btn-audio, [data-theme="dark"] .btn-tafsir { background: #1e293b; border-color: #334155; color: white; }
-        .btn-audio:hover { background: var(--clr-primary-500, #10b981); color: white; border-color: var(--clr-primary-500, #10b981); }
-        .btn-tafsir:hover { background: var(--clr-accent-500, #d97706); color: white; border-color: var(--clr-accent-500, #d97706); }
-        .btn-audio.playing { background: var(--clr-primary-500, #10b981); color: white; animation: pulseGlow 1.5s infinite; }
+        .btn-copy {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--bg-deep);
+            border: 1px solid var(--border-strong);
+            color: var(--text-main);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
 
-        /* --- TOAST NOTIFICATION --- */
-        #smartToast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--text-main, #0f172a); color: white; padding: 15px 30px; border-radius: 50px; font-weight: 700; display: flex; align-items: center; gap: 12px; z-index: 100000; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        #smartToast.show { bottom: 40px; }
-        [data-theme="dark"] #smartToast { background: white; color: #0f172a; }
+        .btn-copy:hover {
+            background: var(--primary);
+            color: white;
+        }
 
-        /* --- GUNADARMA MEGA BRANDING --- */
-        .ug-mega-section { padding: 80px 5%; text-align: center; background: var(--bg-body, #f8fafc); border-top: 1px solid var(--border-light, #e2e8f0); position: relative; z-index: 5; }
-        [data-theme="dark"] .ug-mega-section { background: #020617; border-color: #1e293b; }
-        .ug-logo { width: 120px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 20px; transition: 0.5s; }
-        .ug-logo:hover { transform: scale(1.1); }
-        .ug-title { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--clr-primary-700, #047857); font-weight: 800; letter-spacing: 2px; }
-        [data-theme="dark"] .ug-title { color: #10b981; }
+        /* --- 11. TERMINAL & TOASTS --- */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999999;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary);
+            color: var(--text-main);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            pointer-events: auto;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 40px 5%;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-light);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
 
     </style>
 </head>
 <body>
 
-    <k4-navbar current-page="referensi"></k4-navbar>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
 
-    <header class="ref-hero">
-        <h1 class="ref-title anim-fade-down">NEXA Data Center</h1>
-        <p class="ref-subtitle anim-fade-up delay-100">Pusat Pustaka Akademik & Mesin Sitasi Otomatis. Mengeksplorasi sumber primer dan sekunder pembentuk historiografi filsafat Islam.</p>
-    </header>
-
-    <div class="ref-container">
-        
-        <aside class="ref-sidebar anim-fade-up delay-200">
-            <div class="sidebar-header"><i class="fa-solid fa-server"></i> Direktori Data</div>
-            <button class="ref-tab-btn active" data-target="buku1">
-                <i class="fa-solid fa-book-open-reader"></i> <span>Risalah Cinta</span>
-            </button>
-            <button class="ref-tab-btn" data-target="buku2">
-                <i class="fa-solid fa-landmark-dome"></i> <span>History of Philosophy</span>
-            </button>
-            <button class="ref-tab-btn" data-target="quran">
-                <i class="fa-solid fa-book-quran"></i> <span>Dalil Al-Quran</span>
-            </button>
-            
-            <div style="margin-top: 40px; padding: 20px; background: rgba(16, 185, 129, 0.05); border-radius: 15px; border: 1px dashed rgba(16, 185, 129, 0.3); text-align: center;">
-                <i class="fa-solid fa-circle-check" style="color: var(--clr-primary-500); font-size: 2rem; margin-bottom: 10px;"></i>
-                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">Tervalidasi Akademik</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Sesuai arahan Bpk. Mulyadi</div>
-            </div>
-        </aside>
-
-        <main class="ref-content-area anim-fade-up delay-300">
-            
-            <section id="buku1" class="ref-pane active">
-                <div class="showcase-header">
-                    <div class="book-3d-wrapper" onmousemove="tiltBook(event, this)" onmouseleave="resetTilt(this)">
-                        <div class="book-3d-object" style="--book-c1: #9f1239; --book-c2: #4c0519;">
-                            <div class="book-pages"></div>
-                            <div class="book-spine"></div>
-                            <div class="book-front">
-                                <i class="fa-solid fa-heart-pulse b-icon"></i>
-                                <div class="b-title">Risalah Cinta</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="book-meta">
-                        <h1 class="meta-title">Islam Risalah Cinta dan Kebahagiaan</h1>
-                        <div class="meta-author"><i class="fa-solid fa-feather-pointed"></i> Dr. Haidar Bagir</div>
-                        <div class="badges-wrapper">
-                            <span class="data-badge"><i class="fa-solid fa-calendar-check"></i> Cetakan 2016</span>
-                            <span class="data-badge"><i class="fa-solid fa-building"></i> Penerbit Mizan</span>
-                            <span class="data-badge"><i class="fa-solid fa-tag"></i> Tasawuf Kontemporer</span>
-                        </div>
-                        
-                        <div class="citation-box">
-                            <div class="citation-header">
-                                <div class="citation-title"><i class="fa-solid fa-quote-left"></i> Auto-Citation Engine</div>
-                                <select class="citation-select" id="citSelect1" onchange="updateCitation('buku1')">
-                                    <option value="apa">APA 7th</option>
-                                    <option value="mla">MLA 9th</option>
-                                    <option value="chicago">Chicago</option>
-                                    <option value="harvard">Harvard</option>
-                                </select>
-                            </div>
-                            <div class="citation-text" id="citText1">Bagir, H. (2016). Islam Risalah Cinta dan Kebahagiaan (Edisi Baru). Noura Books.</div>
-                            <button class="btn-copy" onclick="copyCitation('citText1')"><i class="fa-solid fa-copy"></i> Copy Citation</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="academic-content">
-                    <h3><i class="fa-solid fa-microscope"></i> Analisis Konseptual</h3>
-                    <p>
-                        Buku ini dikembangkan oleh Haidar Bagir sebagai respons filosofis dan sufistik terhadap wajah keberagamaan modern yang sering kali ditampilkan secara kaku, formalistik, dan penuh ketakutan (fear-based religion). Dengan pijakan keilmuan epistemologi <strong>Irfan</strong> (tasawuf filosofis) dari tokoh seperti Ibnu Arabi dan Mulla Sadra, penulis mendekonstruksi pemahaman tersebut.
-                    </p>
-                    <p>
-                        Gagasan sentralnya adalah bahwa fondasi penciptaan alam semesta adalah <strong>Mahabbah (Cinta)</strong>. Tuhan, sebagai wujud yang Maha Sempurna dan Maha Indah, berkehendak untuk "dikenal" melalui ciptaan-Nya. Oleh karena itu, perjalanan seorang manusia beragama hakikatnya adalah perjalanan merespons cinta tersebut, yang puncaknya bermuara pada kebahagiaan eksistensial, bukan sekadar janji surga material.
-                    </p>
-                    
-                    <h3><i class="fa-solid fa-list-check"></i> Intisari Penerapan (Tugas Mata Kuliah)</h3>
-                    <ul>
-                        <li><strong>Takhalli & Tajalli:</strong> Konsep pembersihan jiwa dari ego (Takhalli) agar dapat memantulkan sifat-sifat welas asih Ilahi (Tajalli) dalam interaksi sosial.</li>
-                        <li><strong>Agama sebagai Terapeutik:</strong> Di tengah era kecemasan (anxiety) dan nihilisme, tasawuf menawarkan terapi batin yang mengembalikan makna hidup manusia.</li>
-                        <li><strong>Sintesis Fikih & Tasawuf:</strong> Menghindari ekstremitas syariat tanpa ruh, maupun kebatinan tanpa aturan, selaras dengan paradigma Imam Al-Ghazali.</li>
-                    </ul>
-
-                    <div style="margin-top: 40px; display: flex; gap: 15px;">
-                        <button class="btn-copy" style="background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-strong);" onclick="appToast('Mengunduh resume PDF...', 'success')"><i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> Resume Kelompok (PDF)</button>
-                        <button class="btn-copy" style="background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-strong);" onclick="appToast('Membuka file presentasi...', 'success')"><i class="fa-solid fa-file-powerpoint" style="color: #f97316;"></i> Slide Presentasi (PPTX)</button>
-                    </div>
-                </div>
-            </section>
-
-            <section id="buku2" class="ref-pane">
-                <div class="showcase-header">
-                    <div class="book-3d-wrapper" onmousemove="tiltBook(event, this)" onmouseleave="resetTilt(this)">
-                        <div class="book-3d-object" style="--book-c1: #064e3b; --book-c2: #022c22;">
-                            <div class="book-pages"></div>
-                            <div class="book-spine"></div>
-                            <div class="book-front">
-                                <i class="fa-solid fa-globe b-icon"></i>
-                                <div class="b-title" style="font-size:1.1rem; margin-top:20px;">History of Philosophy<br>Islamic World</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="book-meta">
-                        <h1 class="meta-title">Philosophy in the Islamic World</h1>
-                        <div class="meta-author"><i class="fa-solid fa-feather-pointed"></i> Prof. Peter Adamson</div>
-                        <div class="badges-wrapper">
-                            <span class="data-badge"><i class="fa-solid fa-calendar-check"></i> Cetakan 2016</span>
-                            <span class="data-badge"><i class="fa-solid fa-building"></i> Oxford Univ. Press</span>
-                            <span class="data-badge"><i class="fa-solid fa-tag"></i> Historiografi Global</span>
-                        </div>
-                        
-                        <div class="citation-box">
-                            <div class="citation-header">
-                                <div class="citation-title"><i class="fa-solid fa-quote-left"></i> Auto-Citation Engine</div>
-                                <select class="citation-select" id="citSelect2" onchange="updateCitation('buku2')">
-                                    <option value="apa">APA 7th</option>
-                                    <option value="mla">MLA 9th</option>
-                                    <option value="chicago">Chicago</option>
-                                    <option value="harvard">Harvard</option>
-                                </select>
-                            </div>
-                            <div class="citation-text" id="citText2">Adamson, P. (2016). Philosophy in the Islamic World: A history of philosophy without any gaps. Oxford University Press.</div>
-                            <button class="btn-copy" onclick="copyCitation('citText2')"><i class="fa-solid fa-copy"></i> Copy Citation</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="academic-content">
-                    <h3><i class="fa-solid fa-microscope"></i> Dekonstruksi Sejarah</h3>
-                    <p>
-                        Karya Profesor Peter Adamson (Universitas LMU Munich) ini adalah pukulan mematikan bagi narasi historiografi Orientalis kuno. Narasi usang sering menyebutkan bahwa filsafat Islam (Falsafah) hanyalah sekadar "tukang pos" yang menjaga filsafat Yunani selama Abad Pertengahan Gelap Eropa, dan kemudian mati total setelah kritikan Al-Ghazali dan wafatnya Ibnu Rusyd di Andalusia (abad 12 M).
-                    </p>
-                    <p>
-                        Adamson membuktikan sebaliknya dengan prinsip <em>"Without any gaps"</em>. Ia memaparkan bahwa filsafat justru terasimilasi kuat ke dalam institusi pendidikan Islam (Madrasah) melalui disiplin Ilmu Kalam (Teologi Rasional) dan berkembang melahirkan sintesis raksasa di wilayah Timur (Persia dan Kesultanan Mughal India) hingga masa modern.
-                    </p>
-                    
-                    <h3><i class="fa-solid fa-timeline"></i> Periode Kunci Pembahasan</h3>
-                    <ul>
-                        <li><strong>Fase Helenistik & Penerjemahan:</strong> Mengupas era Baitul Hikmah Baghdad, peran penerjemah Kristen Suriah, hingga perumusan awal oleh Al-Kindi dan Al-Farabi.</li>
-                        <li><strong>Sistem Avicennan:</strong> Bagaimana metafisika Ibnu Sina (Avicenna) menjadi standar emas dan target kritik bagi generasi setelahnya (termasuk Al-Ghazali dan Fakhruddin ar-Razi).</li>
-                        <li><strong>Era Iluminasi & Safawiyah:</strong> Munculnya Suhrawardi dengan filsafat cahaya (Isyraq), hingga puncaknya pada Mulla Sadra (abad 17 M) yang menyatukan rasio, teks wahyu, dan intuisi mistik.</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section id="quran" class="ref-pane">
-                <div class="quran-header">
-                    <h2>Fondasi Epistemologi</h2>
-                    <p>Ayat-ayat suci sebagai landasan legal-teologis (syar'i) bagi para filsuf Muslim dalam melakukan perenungan rasional.</p>
-                </div>
-
-                <div class="verse-card">
-                    <div class="verse-badge">QS. Ali 'Imran [3]: 190</div>
-                    <div class="verse-controls" style="position: absolute; top: 30px; left: 30px;">
-                        <button class="btn-audio" onclick="playAudioTafsir('audio1', this)"><i class="fa-solid fa-play"></i> Dengarkan</button>
-                        <button class="btn-tafsir" onclick="toggleTafsir('tafsir1')"><i class="fa-solid fa-book-open"></i> Buka Tafsir</button>
-                    </div>
-                    
-                    <div class="verse-arabic" style="margin-top: 50px;">
-                        إِنَّ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ وَاخْتِلَافِ اللَّيْلِ وَالنَّهَارِ لَآيَاتٍ لِأُولِي الْأَلْبَابِ
-                    </div>
-                    <div class="verse-translation">
-                        "Sesungguhnya dalam penciptaan langit dan bumi, dan silih bergantinya malam dan siang terdapat tanda-tanda bagi orang-orang yang berakal (Ulul Albab)."
-                    </div>
-
-                    <div class="tafsir-box" id="tafsir1">
-                        <div class="tafsir-title"><i class="fa-solid fa-lightbulb"></i> Implikasi Filosofis (Konteks Ibnu Rusyd):</div>
-                        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">
-                            Dalam karyanya <em>Fasl al-Maqal</em>, Ibnu Rusyd menggunakan ayat ini (beserta QS. Al-A'raf: 185 dan Al-Hasyr: 2) sebagai dalil bahwa Syariat secara tegas <strong>mewajibkan</strong> manusia untuk merenungkan (i'tibar) alam semesta. Metode perenungan yang paling sempurna dan bebas dari kesalahan adalah metode rasional-demonstratif (Burhani), yang tak lain adalah <strong>Filsafat</strong>. Dengan demikian, berfilsafat adalah memenuhi perintah Al-Quran bagi mereka yang mampu.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="verse-card">
-                    <div class="verse-badge">QS. Al-Baqarah [2]: 269</div>
-                    <div class="verse-controls" style="position: absolute; top: 30px; left: 30px;">
-                        <button class="btn-audio" onclick="playAudioTafsir('audio2', this)"><i class="fa-solid fa-play"></i> Dengarkan</button>
-                        <button class="btn-tafsir" onclick="toggleTafsir('tafsir2')"><i class="fa-solid fa-book-open"></i> Buka Tafsir</button>
-                    </div>
-                    
-                    <div class="verse-arabic" style="margin-top: 50px;">
-                        يُؤْتِي الْحِكْمَةَ مَنْ يَشَاءُ ۚ وَمَنْ يُؤْتَ الْحِكْمَةَ فَقَدْ أُوتِيَ خَيْرًا كَثِيرًا ۗ وَمَا يَذَّكَّرُ إِلَّا أُولُو الْأَلْبَابِ
-                    </div>
-                    <div class="verse-translation">
-                        "Dia memberikan hikmah (ilmu yang berguna) kepada siapa yang dikehendaki-Nya. Barangsiapa yang diberi hikmah, sungguh telah diberi kebajikan yang banyak. Dan tiadalah yang dapat mengambil pelajaran kecuali orang-orang yang berakal."
-                    </div>
-
-                    <div class="tafsir-box" id="tafsir2">
-                        <div class="tafsir-title"><i class="fa-solid fa-lightbulb"></i> Integrasi Epistemologi (Konteks Al-Kindi):</div>
-                        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">
-                            Kata "Hikmah" diadopsi secara luas oleh para filsuf Islam (yang dijuluki <em>Al-Hukama</em>, para pemilik hikmah) sebagai padanan kata dari <em>Philosophia</em> (Cinta Kebijaksanaan). Al-Kindi, filsuf Arab pertama, bersandar pada konsep hikmah ini untuk meruntuhkan keengganan umat Islam di awal abad ke-9 M dalam menerima sains dan filsafat dari peradaban Yunani dan India Kuno. Kebenaran adalah kebenaran, terlepas dari lisan siapa ia diucapkan.
-                        </p>
-                    </div>
-                </div>
-
-            </section>
-
-        </main>
+    <div id="preloader">
+        <div class="pre-arabic">اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ</div>
+        <div class="pre-bar">
+            <div class="pre-fill" id="preloaderFill"></div>
+        </div>
+        <div class="pre-text" id="preloaderText">INITIALIZING HOLOCRON DATABASE...</div>
     </div>
 
-    <section class="ug-mega-section anim-fade-up">
-        <img src="assets/images/brand/gunadarma-logo.png" 
-             onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'" 
-             alt="Logo Universitas Gunadarma" 
-             class="ug-logo">
-        <h2 class="ug-title">UNIVERSITAS GUNADARMA</h2>
-        <div style="font-size: 1.1rem; color: var(--clr-accent-500); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;">Fakultas Teknologi Industri • Teknik Informatika</div>
-        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 600px; margin: 0 auto;">Pusat Referensi ini dibangun secara khusus untuk menunjang presentasi Kelompok IV Mata Kuliah Agama Islam (Diampu oleh Bapak Mulyadi). Digagas oleh Muhamad Fauzan Al Farikhi.</p>
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand">
+            <img src="assets/img/brand/gunadarma-logo.png" alt="UG" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'">
+            <span class="brand-text">NEXA Library</span>
+        </a>
+        <div class="nav-actions">
+            <button class="btn-icon" id="btnTheme" title="Ganti Tema"><i class="fa-solid fa-moon"></i></button>
+            <a href="tim.html" class="btn-icon" title="Profil Tim"><i class="fa-solid fa-users"></i></a>
+            <a href="sejarah.html" class="btn-icon" title="Kembali ke Timeline"><i class="fa-solid fa-hourglass-half"></i></a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="badge-pro"><i class="fa-solid fa-database"></i> Database Referensi V5.0</div>
+        <h1>Kepustakaan & Literatur</h1>
+        <p>Arsip digital referensi primer dan sekunder yang digunakan Kelompok IV dalam merekonstruksi historiografi Filsafat Islam. Dilengkapi dengan generator sitasi standar akademik.</p>
     </section>
 
-    <k4-footer></k4-footer>
+    <section class="toolbar">
+        <div class="toolbar-inner">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Cari judul buku, penulis, atau kata kunci...">
+            </div>
+            <div class="filter-group">
+                <button class="btn-filter active" data-filter="all"><i class="fa-solid fa-layer-group"></i> Semua</button>
+                <button class="btn-filter" data-filter="book"><i class="fa-solid fa-book"></i> Buku Utama</button>
+                <button class="btn-filter" data-filter="journal"><i class="fa-solid fa-file-lines"></i> Jurnal Ilmiah</button>
+                <button class="btn-filter" data-filter="classic"><i class="fa-solid fa-scroll"></i> Kitab Klasik</button>
+            </div>
+        </div>
+    </section>
 
-    <div id="smartToast"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i> <span>Selesai!</span></div>
+    <main class="library-grid" id="libraryContainer">
+        </main>
 
-    <script src="components/navbar.js"></script>
-    <script src="components/footer.js"></script>
-    <script src="data.js"></script>
-    <script src="core.js"></script>
-    <script src="search.js"></script>
+    <div class="modal-overlay" id="bookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="btn-close" id="btnCloseModal"><i class="fa-solid fa-xmark"></i></button>
+                <div style="font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; color: var(--accent-glow);" id="modalType">BOOK</div>
+                <h2 class="modal-title" id="modalTitle">Judul Buku</h2>
+                <div class="modal-meta">
+                    <span id="modalAuthor"><i class="fa-solid fa-pen-nib"></i> Penulis</span>
+                    <span id="modalYear"><i class="fa-regular fa-calendar"></i> Tahun</span>
+                    <span id="modalPublisher"><i class="fa-solid fa-building"></i> Penerbit</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+                    <button class="btn-action primary" id="btnPlayAudio" style="flex: none; padding: 10px 20px;"><i class="fa-solid fa-volume-high"></i> Bacakan Abstrak</button>
+                    <div id="modalTags" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;"></div>
+                </div>
+
+                <div class="section-title"><i class="fa-solid fa-align-left"></i> Abstrak / Ringkasan</div>
+                <p class="modal-abstract" id="modalAbstract"></p>
+
+                <div class="modal-quote-box">
+                    <p class="modal-quote-text" id="modalQuote"></p>
+                </div>
+
+                <div class="section-title"><i class="fa-solid fa-quote-right"></i> Generator Sitasi</div>
+                <div class="citation-box">
+                    <div class="citation-tabs">
+                        <button class="cit-tab active" data-style="apa">APA 7th</button>
+                        <button class="cit-tab" data-style="mla">MLA 9th</button>
+                        <button class="cit-tab" data-style="chicago">Chicago</button>
+                    </div>
+                    <div class="citation-text">
+                        <span id="citText"></span>
+                        <button class="btn-copy" id="btnCopyCit"><i class="fa-regular fa-copy"></i> Salin</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastBox"></div>
+
+    <footer class="footer">
+        <p>© 2026 <strong>Kelompok IV</strong> | Universitas Gunadarma</p>
+        <p style="margin-top: 5px; font-family: var(--font-mono); font-size: 0.8rem;">NEXA Citation Engine V5.0</p>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            /* -----------------------------------------------------------
-               1. SMART TAB ROUTING SYSTEM (Hash Support)
-               ----------------------------------------------------------- */
-            const tabs = document.querySelectorAll('.ref-tab-btn');
-            const panes = document.querySelectorAll('.ref-pane');
-
-            function activateTab(targetId) {
-                // Remove active class
-                tabs.forEach(t => t.classList.remove('active'));
-                panes.forEach(p => p.classList.remove('active'));
-
-                // Add active class to target
-                const btn = document.querySelector(`.ref-tab-btn[data-target="${targetId}"]`);
-                const pane = document.getElementById(targetId);
-
-                if(btn && pane) {
-                    btn.classList.add('active');
-                    pane.classList.add('active');
-                    // Update URL hash safely without jumping
-                    history.replaceState(null, null, `#${targetId}`);
-                }
-            }
-
-            // Click Event Listener
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => activateTab(tab.getAttribute('data-target')));
-            });
-
-            // Check URL Hash on Load
-            const hash = window.location.hash.replace('#', '');
-            if (hash && document.getElementById(hash)) {
-                activateTab(hash);
-            }
-
-            /* -----------------------------------------------------------
-               2. DYNAMIC CITATION MACHINE
-               ----------------------------------------------------------- */
-            const citationDB = {
-                buku1: {
-                    apa: "Bagir, H. (2016). Islam Risalah Cinta dan Kebahagiaan (Edisi Baru). Noura Books.",
-                    mla: "Bagir, Haidar. Islam Risalah Cinta Dan Kebahagiaan. Edisi Baru, Noura Books, 2016.",
-                    chicago: "Bagir, Haidar. Islam Risalah Cinta dan Kebahagiaan. Edisi Baru. Jakarta: Noura Books, 2016.",
-                    harvard: "Bagir, H., 2016. Islam Risalah Cinta dan Kebahagiaan. Edisi Baru. Jakarta: Noura Books."
+            // ==========================================================
+            // 1. NEXA AUDIO ENGINE
+            // ==========================================================
+            const AudioEngine = {
+                ctx: null,
+                init: async function() {
+                    try {
+                        if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                        if (this.ctx.state === 'suspended') await this.ctx.resume();
+                    } catch (e) { console.warn("Audio disabled"); }
                 },
-                buku2: {
-                    apa: "Adamson, P. (2016). Philosophy in the Islamic World: A history of philosophy without any gaps. Oxford University Press.",
-                    mla: "Adamson, Peter. Philosophy in the Islamic World: A History of Philosophy Without Any Gaps. Oxford University Press, 2016.",
-                    chicago: "Adamson, Peter. Philosophy in the Islamic World: A History of Philosophy Without Any Gaps. Oxford: Oxford University Press, 2016.",
-                    harvard: "Adamson, P., 2016. Philosophy in the Islamic World: A history of philosophy without any gaps. Oxford: Oxford University Press."
-                }
+                playTone: async function(freq, type, dur, vol=0.1) {
+                    await this.init(); 
+                    if(!this.ctx || this.ctx.state === 'suspended') return;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + dur);
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.start(); osc.stop(this.ctx.currentTime + dur);
+                },
+                click: function() { this.playTone(800, 'sine', 0.05, 0.1); },
+                hover: function() { this.playTone(1200, 'sine', 0.03, 0.02); },
+                open: function() { 
+                    this.playTone(400, 'square', 0.1, 0.1); 
+                    setTimeout(() => this.playTone(800, 'sine', 0.3, 0.1), 50); 
+                },
+                close: function() { this.playTone(300, 'sawtooth', 0.2, 0.1); }
             };
 
-            // Expose to window so inline onclick can use it
-            window.updateCitation = function(bookId) {
-                let format;
-                let textElId;
-
-                if(bookId === 'buku1') {
-                    format = document.getElementById('citSelect1').value;
-                    textElId = 'citText1';
-                } else if (bookId === 'buku2') {
-                    format = document.getElementById('citSelect2').value;
-                    textElId = 'citText2';
+            // ==========================================================
+            // 2. MASSIVE DATABASE ARRAY (REFERENSI ILMIAH)
+            // ==========================================================
+            const libraryData = [
+                {
+                    id: "ref_001",
+                    type: "book",
+                    title: "Buku Saku Filsafat Islam",
+                    author: "Haidar Bagir",
+                    year: "2005",
+                    publisher: "Mizan Pustaka",
+                    location: "Bandung",
+                    isbn: "978-979-433-415-8",
+                    tags: ["Pengantar", "Sejarah", "Klasik"],
+                    abstract: "Buku ini memberikan pengantar yang komprehensif namun ringkas mengenai sejarah perkembangan filsafat di dunia Islam. Mulai dari masuknya penerjemahan Yunani di era Abbasiyah, kemunculan Al-Kindi, hingga perdebatan sengit antara Al-Ghazali dan para filsuf paripatetik. Sangat relevan sebagai buku pegangan dasar untuk memahami peta pemikiran Islam.",
+                    quote: "Filsafat Islam bukanlah sekadar replikasi dari filsafat Yunani, melainkan sebuah sintesis kreatif yang dijiwai oleh pandangan dunia (worldview) tauhid.",
+                    chapters: ["Definisi Filsafat Islam", "Al-Kindi & Al-Farabi", "Ibnu Sina", "Kritik Al-Ghazali"]
+                },
+                {
+                    id: "ref_002",
+                    type: "book",
+                    title: "Philosophy in the Islamic World",
+                    author: "Peter Adamson",
+                    year: "2016",
+                    publisher: "Oxford University Press",
+                    location: "Oxford",
+                    isbn: "978-0199577491",
+                    tags: ["Sejarah Kritis", "Analisis Barat", "Pasca-Klasik"],
+                    abstract: "Karya monumental dari Peter Adamson yang membantah mitos bahwa filsafat Islam mati setelah Al-Ghazali atau Ibnu Rusyd. Adamson melacak tradisi filosofis yang terus hidup dan berkembang ke wilayah Persia (Iran), Andalusia, hingga Kekaisaran Ottoman dan Mughal. Referensi utama untuk argumen 'Without Any Gaps'.",
+                    quote: "The story of philosophy in the Islamic world does not end with Averroes; in many ways, its most vibrant chapters were just beginning in the East.",
+                    chapters: ["The Formative Period", "Andalusia", "The Later Eastern Tradition"]
+                },
+                {
+                    id: "ref_003",
+                    type: "classic",
+                    title: "Tahafut al-Falasifah (Kerancuan Para Filsuf)",
+                    author: "Abu Hamid Al-Ghazali",
+                    year: "1095",
+                    publisher: "Maktabah Al-Azhariyah (Reprint)",
+                    location: "Kairo",
+                    isbn: "N/A",
+                    tags: ["Teologi", "Kritik", "Kalam"],
+                    abstract: "Karya paling polemis dalam sejarah pemikiran Islam. Al-Ghazali menyerang 20 proposisi filsafat Neoplatonik (khususnya pemikiran Ibnu Sina dan Al-Farabi) yang dianggap bertentangan dengan ajaran ortodoks Islam. Tiga di antaranya bahkan dikafirkan: kekekalan alam, ketidaktahuan Tuhan pada hal partikular, dan kebangkitan murni ruhani.",
+                    quote: "Mereka (para filsuf) terperangkap dalam jaring ilusi logika mereka sendiri ketika mencoba menjangkau hakikat ketuhanan yang hanya bisa dipahami melalui wahyu dan intuisi.",
+                    chapters: ["Kekekalan Alam Semesta", "Ilmu Tuhan", "Kebangkitan Jasmani"]
+                },
+                {
+                    id: "ref_004",
+                    type: "classic",
+                    title: "Tahafut al-Tahafut (Kerancuan dari Kerancuan)",
+                    author: "Ibnu Rusyd (Averroes)",
+                    year: "1180",
+                    publisher: "Dar al-Ma'arif",
+                    location: "Kairo",
+                    isbn: "N/A",
+                    tags: ["Aristotelian", "Bantahan", "Andalusia"],
+                    abstract: "Buku ini adalah respons langsung dan pembelaan Ibnu Rusyd terhadap serangan Al-Ghazali dalam 'Tahafut al-Falasifah'. Ibnu Rusyd dengan brilian menggunakan pendekatan Aristotelian murni untuk membongkar kelemahan argumen teologis Al-Ghazali, mencoba mendamaikan antara kebenaran rasio (demonstratif) dan kebenaran syariat.",
+                    quote: "Kebenaran (rasio) tidak mungkin bertentangan dengan kebenaran (wahyu); melainkan ia harus selaras dan saling memberikan kesaksian.",
+                    chapters: ["Metode Demonstratif", "Pertahanan Filsafat", "Takwil Teks Suci"]
+                },
+                {
+                    id: "ref_005",
+                    type: "book",
+                    title: "Sejarah Filsafat Islam",
+                    author: "Majid Fakhry",
+                    year: "2001",
+                    publisher: "Pustaka Jaya",
+                    location: "Jakarta",
+                    isbn: "978-979-419-278-9",
+                    tags: ["Sejarah Lengkap", "Akademis"],
+                    abstract: "Buku teks standar di banyak perguruan tinggi yang membahas kronologi pemikiran filsafat di dunia Islam. Dari penerjemahan teks-teks Yunani-Suryani, hingga munculnya Mazhab Isyraqiyah (Iluminasi) Suhrawardi dan Hikmah Muta'aliyah Mulla Sadra.",
+                    quote: "Perkembangan filsafat Islam adalah bukti teguhnya semangat rasionalisme yang tumbuh dari dalam rahim peradaban Islam itu sendiri.",
+                    chapters: ["Transmisi Yunani", "Filsafat Paripatetik", "Reaksi Teologis", "Filsafat Iluminasi"]
+                },
+                {
+                    id: "ref_006",
+                    type: "journal",
+                    title: "Epistemologi Burhani, Bayani, dan Irfani dalam Pemikiran Islam",
+                    author: "Muhammad Abed Al-Jabiri",
+                    year: "2000",
+                    publisher: "Jurnal Pemikiran Islam Vol. 4",
+                    location: "Yogyakarta",
+                    isbn: "ISSN: 1412-234X",
+                    tags: ["Epistemologi", "Jurnal", "Kritis"],
+                    abstract: "Artikel jurnal ini membedah tiga struktur nalar utama dalam kebudayaan Arab-Islam menurut Al-Jabiri. Bayani bersandar pada teks, Irfani bersandar pada intuisi mistis, dan Burhani bersandar pada logika demonstratif (filsafat).",
+                    quote: "Kebangkitan nalar Arab-Islam hanya dimungkinkan jika tradisi Burhani dihidupkan kembali sebagai alat analitis utama yang bebas dari dogma.",
+                    chapters: ["Nalar Bayani", "Nalar Irfani", "Nalar Burhani"]
+                },
+                {
+                    id: "ref_007",
+                    type: "book",
+                    title: "The Transcendent Philosophy of Mulla Sadra",
+                    author: "Seyyed Hossein Nasr",
+                    year: "1978",
+                    publisher: "Imperial Iranian Academy",
+                    location: "Tehran",
+                    isbn: "978-0873950450",
+                    tags: ["Mulla Sadra", "Metafisika", "Pasca-Klasik"],
+                    abstract: "Analisis mendalam terhadap puncak sintesis filsafat Islam oleh Mulla Sadra. Menggabungkan argumen rasional (Paripatetik), intuisi spiritual (Tasawuf/Iluminasi), dan teologi syi'ah menjadi satu kesatuan sistem yang disebut Hikmah Muta'aliyah.",
+                    quote: "Bagi Sadra, wujud bukanlah konsep abstrak, melainkan realitas tunggal yang bergradasi dan terus mengalir, di mana esensi hanyalah bayangan mental dari wujud tersebut.",
+                    chapters: ["Asalat al-Wujud", "Harakah Jauhariyah", "Eskatologi"]
                 }
+            ];
 
-                if(citationDB[bookId] && citationDB[bookId][format]) {
-                    document.getElementById(textElId).innerText = citationDB[bookId][format];
-                    appToast(`Format Sitasi diubah ke ${format.toUpperCase()}`, 'info');
-                }
+            // ==========================================================
+            // 3. DOM ELEMENTS CACHING
+            // ==========================================================
+            const DOM = {
+                preloader: document.getElementById('preloader'),
+                preloaderFill: document.getElementById('preloaderFill'),
+                preloaderText: document.getElementById('preloaderText'),
+                container: document.getElementById('libraryContainer'),
+                searchInput: document.getElementById('searchInput'),
+                filterBtns: document.querySelectorAll('.btn-filter'),
+                modal: document.getElementById('bookModal'),
+                btnCloseModal: document.getElementById('btnCloseModal'),
+                toastBox: document.getElementById('toastBox'),
+                cursorDot: document.getElementById('cursorDot'),
+                cursorRing: document.getElementById('cursorRing'),
+                btnTheme: document.getElementById('btnTheme')
+            };
+
+            // ==========================================================
+            // 4. UTILITIES (TOAST & CURSOR)
+            // ==========================================================
+            function showToast(msg, type = "success") {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                const icon = type === 'success' ? 'fa-check-circle' : 'fa-circle-info';
+                toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
+                DOM.toastBox.appendChild(toast);
+                setTimeout(() => toast.remove(), 3500);
             }
 
-            /* -----------------------------------------------------------
-               3. 3D TILT EFFECT ENGINE (Mouse Tracking)
-               ----------------------------------------------------------- */
-            window.tiltBook = function(event, element) {
-                const book = element.querySelector('.book-3d-object');
-                const rect = element.getBoundingClientRect();
-                
-                // Get mouse position relative to element center
-                const x = event.clientX - rect.left - (rect.width / 2);
-                const y = event.clientY - rect.top - (rect.height / 2);
-                
-                // Calculate rotation limits (max 20 degrees)
-                const rotateY = (x / (rect.width / 2)) * 20;
-                const rotateX = -(y / (rect.height / 2)) * 20;
-                
-                // Apply inline transform (combining with base 3D orientation)
-                book.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(1.05)`;
-            }
-
-            window.resetTilt = function(element) {
-                const book = element.querySelector('.book-3d-object');
-                // Revert to base orientation
-                book.style.transform = `rotateY(-15deg) rotateX(5deg) scale(1)`;
-            }
-
-            /* -----------------------------------------------------------
-               4. QURANIC EXPLORER ENGINE (Tafsir & Audio Sim)
-               ----------------------------------------------------------- */
-            window.toggleTafsir = function(id) {
-                const box = document.getElementById(id);
-                if(box.classList.contains('show')) {
-                    box.classList.remove('show');
-                } else {
-                    // Close others first (Optional, let's keep it independent for now)
-                    box.classList.add('show');
-                }
-            }
-
-            // Audio Synthesis Simulation (Web Speech API)
-            let currentUtterance = null;
+            // Custom Cursor Logic
+            let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+            let ringX = mouseX, ringY = mouseY;
             
-            window.playAudioTafsir = function(audioId, btnElement) {
-                // If browser doesn't support TTS
-                if(!('speechSynthesis' in window)) {
-                    appToast("Browser Anda tidak mendukung Audio AI.", "error");
-                    return;
-                }
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                DOM.cursorDot.style.left = `${mouseX}px`;
+                DOM.cursorDot.style.top = `${mouseY}px`;
+            });
 
-                const isPlaying = btnElement.classList.contains('playing');
-                
-                // Reset all audio buttons
-                document.querySelectorAll('.btn-audio').forEach(b => {
-                    b.classList.remove('playing');
-                    b.innerHTML = '<i class="fa-solid fa-play"></i> Dengarkan';
+            function renderCursor() {
+                ringX += (mouseX - ringX) * 0.15;
+                ringY += (mouseY - ringY) * 0.15;
+                DOM.cursorRing.style.left = `${ringX}px`;
+                DOM.cursorRing.style.top = `${ringY}px`;
+                requestAnimationFrame(renderCursor);
+            }
+            renderCursor();
+
+            function attachCursorHover() {
+                document.querySelectorAll('a, button, .book-card, input').forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        DOM.cursorRing.classList.add('hover');
+                        if(!el.tagName.toLowerCase().includes('input')) AudioEngine.hover();
+                    });
+                    el.addEventListener('mouseleave', () => DOM.cursorRing.classList.remove('hover'));
                 });
-                window.speechSynthesis.cancel();
-
-                if(isPlaying) {
-                    // User clicked stop
-                    return;
-                }
-
-                // Get text to read (Translation)
-                const card = btnElement.closest('.verse-card');
-                const textToRead = card.querySelector('.verse-translation').innerText;
-
-                currentUtterance = new SpeechSynthesisUtterance(textToRead);
-                currentUtterance.lang = 'id-ID';
-                currentUtterance.rate = 0.9; // Calm reading pace
-
-                currentUtterance.onstart = () => {
-                    btnElement.classList.add('playing');
-                    btnElement.innerHTML = '<i class="fa-solid fa-stop"></i> Berhenti';
-                    appToast("Memutar terjemahan AI...", "info");
-                };
-
-                currentUtterance.onend = () => {
-                    btnElement.classList.remove('playing');
-                    btnElement.innerHTML = '<i class="fa-solid fa-play"></i> Dengarkan';
-                };
-
-                window.speechSynthesis.speak(currentUtterance);
             }
 
-            /* -----------------------------------------------------------
-               5. SMART TOAST NOTIFICATION
-               ----------------------------------------------------------- */
-            window.copyCitation = function(elementId) {
-                const text = document.getElementById(elementId).innerText;
+            // ==========================================================
+            // 5. THEME TOGGLE
+            // ==========================================================
+            DOM.btnTheme.addEventListener('click', () => {
+                AudioEngine.click();
+                const html = document.documentElement;
+                const isDark = html.getAttribute('data-theme') === 'dark';
+                html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+                DOM.btnTheme.innerHTML = isDark ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+                showToast(`Mode ${isDark ? 'Terang' : 'Gelap'} diaktifkan`);
+            });
+
+            // ==========================================================
+            // 6. RENDER LIBRARY GRID (3D TILT CARDS)
+            // ==========================================================
+            function renderLibrary(data) {
+                DOM.container.innerHTML = '';
+                
+                if(data.length === 0) {
+                    DOM.container.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--text-muted);">
+                            <i class="fa-solid fa-folder-open" style="font-size: 3rem; margin-bottom: 20px; color: var(--border-strong);"></i>
+                            <h3>Tidak ada referensi yang ditemukan.</h3>
+                            <p>Coba gunakan kata kunci lain.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                data.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'book-card';
+                    card.style.animation = `slideInRight 0.5s ${index * 0.1}s both`;
+                    
+                    let iconType = 'fa-book';
+                    if(item.type === 'journal') iconType = 'fa-file-lines';
+                    if(item.type === 'classic') iconType = 'fa-scroll';
+
+                    const tagsHtml = item.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+                    card.innerHTML = `
+                        <div class="book-header">
+                            <div class="book-type"><i class="fa-solid ${iconType}"></i> ${item.type}</div>
+                            <div class="book-year">${item.year}</div>
+                        </div>
+                        <h3 class="book-title">${item.title}</h3>
+                        <div class="book-author"><i class="fa-solid fa-pen-nib" style="color: var(--accent);"></i> ${item.author}</div>
+                        <div class="book-tags">${tagsHtml}</div>
+                        <div class="book-actions">
+                            <button class="btn-action primary btn-detail" data-id="${item.id}">
+                                <i class="fa-solid fa-book-open"></i> Detail Referensi
+                            </button>
+                        </div>
+                    `;
+
+                    // 3D Tilt Logic
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+                        card.style.transform = `perspective(1000px) rotateX(${-y / 20}deg) rotateY(${x / 20}deg) scale3d(1.02, 1.02, 1.02)`;
+                    });
+                    
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
+                    });
+
+                    DOM.container.appendChild(card);
+                });
+
+                // Attach events to new buttons
+                document.querySelectorAll('.btn-detail').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = e.currentTarget.getAttribute('data-id');
+                        openModal(id);
+                    });
+                });
+                
+                attachCursorHover();
+            }
+
+            // ==========================================================
+            // 7. SEARCH & FILTER LOGIC
+            // ==========================================================
+            function executeSearch() {
+                const term = DOM.searchInput.value.toLowerCase();
+                const activeFilter = document.querySelector('.btn-filter.active').getAttribute('data-filter');
+
+                let filtered = libraryData.filter(item => {
+                    const matchText = item.title.toLowerCase().includes(term) || 
+                                      item.author.toLowerCase().includes(term) || 
+                                      item.tags.some(t => t.toLowerCase().includes(term));
+                    const matchType = activeFilter === 'all' || item.type === activeFilter;
+                    return matchText && matchType;
+                });
+
+                renderLibrary(filtered);
+            }
+
+            DOM.searchInput.addEventListener('input', () => {
+                AudioEngine.click();
+                executeSearch();
+            });
+
+            DOM.filterBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    AudioEngine.click();
+                    DOM.filterBtns.forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    executeSearch();
+                });
+            });
+
+            // ==========================================================
+            // 8. CITATION ENGINE (APA, MLA, CHICAGO)
+            // ==========================================================
+            function generateCitation(item, style) {
+                const authorParts = item.author.split(' ');
+                const lastName = authorParts.pop();
+                const firstName = authorParts.join(' ');
+                
+                if (style === 'apa') {
+                    // Format: Lastname, F. (Year). Title. Publisher.
+                    const initial = firstName.charAt(0) ? `${firstName.charAt(0)}.` : '';
+                    return `${lastName}, ${initial} (${item.year}). <em>${item.title}</em>. ${item.publisher}.`;
+                } 
+                else if (style === 'mla') {
+                    // Format: Lastname, Firstname. Title. Publisher, Year.
+                    return `${lastName}, ${firstName}. <em>${item.title}</em>. ${item.publisher}, ${item.year}.`;
+                } 
+                else if (style === 'chicago') {
+                    // Format: Lastname, Firstname. Title. Location: Publisher, Year.
+                    return `${lastName}, ${firstName}. <em>${item.title}</em>. ${item.location}: ${item.publisher}, ${item.year}.`;
+                }
+                return "Format not found.";
+            }
+
+            // ==========================================================
+            // 9. MODAL LOGIC & AI TEXT-TO-SPEECH
+            // ==========================================================
+            let currentBookId = null;
+
+            function openModal(id) {
+                AudioEngine.open();
+                const item = libraryData.find(b => b.id === id);
+                if(!item) return;
+                
+                currentBookId = id;
+                document.getElementById('modalType').innerText = item.type;
+                document.getElementById('modalTitle').innerText = item.title;
+                document.getElementById('modalAuthor').innerHTML = `<i class="fa-solid fa-pen-nib"></i> ${item.author}`;
+                document.getElementById('modalYear').innerHTML = `<i class="fa-regular fa-calendar"></i> ${item.year}`;
+                document.getElementById('modalPublisher').innerHTML = `<i class="fa-solid fa-building"></i> ${item.publisher}`;
+                
+                document.getElementById('modalTags').innerHTML = item.tags.map(t => `<span class="tag">${t}</span>`).join('');
+                document.getElementById('modalAbstract').innerText = item.abstract;
+                document.getElementById('modalQuote').innerText = `"${item.quote}"`;
+
+                // Set default citation (APA)
+                document.querySelectorAll('.cit-tab').forEach((t, i) => t.classList.toggle('active', i===0));
+                document.getElementById('citText').innerHTML = generateCitation(item, 'apa');
+
+                DOM.modal.classList.add('active');
+            }
+
+            DOM.btnCloseModal.addEventListener('click', () => {
+                AudioEngine.close();
+                DOM.modal.classList.remove('active');
+                if('speechSynthesis' in window) window.speechSynthesis.cancel();
+            });
+
+            // Citation Tabs Click
+            document.querySelectorAll('.cit-tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    AudioEngine.click();
+                    document.querySelectorAll('.cit-tab').forEach(t => t.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    
+                    const style = e.currentTarget.getAttribute('data-style');
+                    const item = libraryData.find(b => b.id === currentBookId);
+                    document.getElementById('citText').innerHTML = generateCitation(item, style);
+                });
+            });
+
+            // Copy Citation
+            document.getElementById('btnCopyCit').addEventListener('click', () => {
+                AudioEngine.click();
+                const text = document.getElementById('citText').innerText;
                 navigator.clipboard.writeText(text).then(() => {
-                    appToast("Teks Sitasi Tersalin ke Clipboard!", "success");
-                }).catch(err => {
-                    console.error('Copy failed: ', err);
+                    showToast("Sitasi berhasil disalin ke clipboard!");
                 });
+            });
+
+            // AI Voice Reader
+            document.getElementById('btnPlayAudio').addEventListener('click', () => {
+                AudioEngine.click();
+                if('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel(); // Stop current
+                    const text = document.getElementById('modalAbstract').innerText;
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'id-ID';
+                    utterance.rate = 0.95;
+                    window.speechSynthesis.speak(utterance);
+                    showToast("Memutar audio abstrak...");
+                } else {
+                    showToast("Browser tidak mendukung Text-to-Speech", "error");
+                }
+            });
+
+            // ==========================================================
+            // 10. PARTICLE BACKGROUND ENGINE
+            // ==========================================================
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.size = Math.random() * 2;
+                }
+                update() {
+                    this.x += this.vx; this.y += this.vy;
+                    if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    ctx.fillStyle = isDark ? 'rgba(16, 185, 129, 0.5)' : 'rgba(6, 78, 59, 0.3)';
+                    ctx.fill();
+                }
             }
 
-            window.appToast = function(message, type = 'success') {
-                const toast = document.getElementById('smartToast');
-                const icon = type === 'success' ? '<i class="fa-solid fa-circle-check" style="color: #10b981;"></i>' : 
-                             type === 'error' ? '<i class="fa-solid fa-circle-xmark" style="color: #ef4444;"></i>' :
-                             '<i class="fa-solid fa-circle-info" style="color: #3b82f6;"></i>';
+            for(let i=0; i<40; i++) particles.push(new Particle());
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
                 
-                toast.innerHTML = `${icon} <span>${message}</span>`;
-                toast.classList.add('show');
-                
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
+                // Connect lines
+                for(let i=0; i<particles.length; i++) {
+                    for(let j=i+1; j<particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if(dist < 150) {
+                            ctx.beginPath();
+                            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                            ctx.strokeStyle = isDark ? `rgba(16, 185, 129, ${0.15 - dist/1000})` : `rgba(6, 78, 59, ${0.1 - dist/1500})`;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animateParticles);
             }
+            animateParticles();
+
+            // ==========================================================
+            // 11. BOOT SEQUENCE
+            // ==========================================================
+            let progress = 0;
+            const bootInterval = setInterval(() => {
+                progress += Math.random() * 15 + 5;
+                if(progress > 100) progress = 100;
+                DOM.preloaderFill.style.width = `${progress}%`;
+                
+                if(progress > 50) DOM.preloaderText.innerText = "MOUNTING CITATION ENGINE...";
+                if(progress > 80) DOM.preloaderText.innerText = "LINKING HOLOCRON DATA...";
+                
+                if(progress === 100) {
+                    clearInterval(bootInterval);
+                    DOM.preloaderText.innerText = "SYSTEM READY. BISMILLAH.";
+                    setTimeout(() => {
+                        DOM.preloader.style.opacity = '0';
+                        setTimeout(() => {
+                            DOM.preloader.style.display = 'none';
+                            renderLibrary(libraryData);
+                        }, 500);
+                    }, 500);
+                }
+            }, 150);
 
         });
     </script>
