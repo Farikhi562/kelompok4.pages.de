@@ -15,538 +15,256 @@
            1. NEXA CORE VARIABLES & THEME ENGINE
            ========================================================== */
         :root {
-            --bg: #0f172a;
-            --bg2: rgba(15,23,42,0.92);
-            --bg3: #1e293b;
-            --tx: #f8fafc;
-            --tx2: #94a3b8;
-            --p3: #6ee7b7;
-            --p5: #10b981;
-            --p7: #047857;
-            --p9: #022c22;
-            --a5: #d97706;
-            --a7: #b45309;
-            
-            --bl: rgba(255,255,255,0.05); /* Border Light */
-            --bs: rgba(16,185,129,0.2);   /* Border Strong */
-            --sh: rgba(0,0,0,0.3);        /* Shadow */
-            --gw: rgba(16,185,129,0.15);  /* Glow */
-            
-            --fd: 'Playfair Display', serif;
-            --fb: 'DM Sans', sans-serif;
-            --fa: 'Amiri', serif;
-            --fc: 'Cinzel', serif;
-            --fm: 'Space Mono', monospace;
+            --bg: #0f172a; --bg2: rgba(15,23,42,0.92); --bg3: #1e293b;
+            --tx: #f8fafc; --tx2: #94a3b8;
+            --p3: #6ee7b7; --p5: #10b981; --p7: #047857; --p9: #022c22;
+            --a5: #d97706; --a7: #b45309;
+            --bl: rgba(255,255,255,0.05); --bs: rgba(16,185,129,0.2);
+            --sh: rgba(0,0,0,0.3); --gw: rgba(16,185,129,0.15);
+            --fd: 'Playfair Display', serif; --fb: 'DM Sans', sans-serif;
+            --fa: 'Amiri', serif; --fc: 'Cinzel', serif; --fm: 'Space Mono', monospace;
         }
         
         [data-theme="light"] {
-            --bg: #faf9f6;
-            --bg2: rgba(255,255,255,0.92);
-            --bg3: #ffffff;
-            --tx: #0f172a;
-            --tx2: #64748b;
-            --bl: rgba(0,0,0,0.06);
-            --bs: rgba(6,78,59,0.15);
-            --sh: rgba(0,0,0,0.08);
-            --gw: rgba(6,78,59,0.1);
+            --bg: #faf9f6; --bg2: rgba(255,255,255,0.92); --bg3: #ffffff;
+            --tx: #0f172a; --tx2: #64748b;
+            --bl: rgba(0,0,0,0.06); --bs: rgba(6,78,59,0.15);
+            --sh: rgba(0,0,0,0.08); --gw: rgba(6,78,59,0.1);
         }
 
         [data-theme="sepia"] {
-            --bg: #f5ebe0;
-            --bg2: rgba(245,235,224,0.92);
-            --bg3: #fdf6e3;
-            --tx: #3d2c1e;
-            --tx2: #8b7355;
-            --p5: #7c6c3c;
-            --p7: #5c4d2e;
-            --a5: #c2410c;
-            --bl: rgba(0,0,0,0.06);
-            --bs: rgba(124,108,60,0.2);
-            --sh: rgba(0,0,0,0.08);
-            --gw: rgba(124,108,60,0.1);
+            --bg: #f5ebe0; --bg2: rgba(245,235,224,0.92); --bg3: #fdf6e3;
+            --tx: #3d2c1e; --tx2: #8b7355;
+            --p5: #7c6c3c; --p7: #5c4d2e; --a5: #c2410c;
+            --bl: rgba(0,0,0,0.06); --bs: rgba(124,108,60,0.2);
+            --sh: rgba(0,0,0,0.08); --gw: rgba(124,108,60,0.1);
         }
 
         ::selection { background: var(--a5); color: #fff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-            font-family: var(--fb);
-            background: var(--bg);
-            color: var(--tx);
-            overflow-x: hidden;
-            transition: background 0.5s ease, color 0.5s ease;
-        }
-
-        a, button, input, select { cursor: none; }
+        body { font-family: var(--fb); background: var(--bg); color: var(--tx); overflow-x: hidden; transition: background 0.5s ease, color 0.5s ease; }
+        a, button, select { cursor: pointer; }
         
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--p5); border-radius: 6px; }
 
-        /* Disable custom cursor on mobile */
-        @media (hover: none) and (pointer: coarse) {
-            * { cursor: auto !important; }
-            .cur-dot, .cur-ring { display: none !important; }
-        }
-
-        /* ==========================================================
-           2. NEXA CUSTOM CURSOR ENGINE
-           ========================================================== */
-        .cur-dot {
-            position: fixed; width: 8px; height: 8px; background: var(--a5);
-            border-radius: 50%; pointer-events: none; z-index: 999998;
-            transform: translate(-50%, -50%); box-shadow: 0 0 14px rgba(217,119,6,0.7);
-            transition: width 0.2s, height 0.2s, background 0.2s;
-        }
-        .cur-dot.click { width: 14px; height: 14px; background: var(--p5); }
-        
-        .cur-ring {
-            position: fixed; width: 40px; height: 40px; border: 2px solid var(--p5);
-            border-radius: 50%; pointer-events: none; z-index: 999997;
-            transform: translate(-50%, -50%);
-            transition: width 0.25s, height 0.25s, border-color 0.25s, background 0.25s;
-        }
-        .cur-ring.hover {
-            width: 64px; height: 64px; border-color: var(--a5);
-            background: rgba(217,119,6,0.05); backdrop-filter: blur(2px);
-        }
-
-        /* ==========================================================
-           3. CINEMATIC PRELOADER
-           ========================================================== */
-        #preloader {
-            position: fixed; inset: 0; background: var(--bg); z-index: 999999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
+        /* 3. PRELOADER */
+        #preloader { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
         #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        
-        .pre-arabic {
-            font-family: var(--fa); font-size: clamp(2rem, 5vw, 3.5rem);
-            color: var(--p5); animation: pulseGlow 2s ease-in-out infinite; text-align: center;
-            text-shadow: 0 0 20px var(--gw);
-        }
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.05); }
-        }
-        
-        .pre-ornament {
-            width: 120px; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--a5), transparent);
-            margin: 20px auto;
-        }
-        
+        .pre-arabic { font-family: var(--fa); font-size: clamp(2rem, 5vw, 3.5rem); color: var(--p5); animation: pulseGlow 2s ease-in-out infinite; text-align: center; text-shadow: 0 0 20px var(--gw); }
+        @keyframes pulseGlow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
+        .pre-ornament { width: 120px; height: 2px; background: linear-gradient(90deg, transparent, var(--a5), transparent); margin: 20px auto; }
         .pre-text { color: var(--p5); font-size: 0.9rem; font-family: var(--fm); font-weight: 700; letter-spacing: 2px; }
-        
-        .pre-bar {
-            width: 250px; height: 4px; background: rgba(255,255,255,0.05);
-            border-radius: 4px; overflow: hidden; margin-top: 15px; position: relative;
-        }
-        .pre-fill {
-            height: 100%; width: 0%; background: linear-gradient(90deg, var(--p5), var(--a5));
-            border-radius: 4px; box-shadow: 0 0 15px var(--gw); transition: width 0.1s linear;
-        }
+        .pre-bar { width: 250px; height: 4px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; margin-top: 15px; position: relative; }
+        .pre-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--p5), var(--a5)); border-radius: 4px; box-shadow: 0 0 15px var(--gw); transition: width 0.1s linear; }
         .pre-percent { font-family: var(--fc); font-size: 2rem; font-weight: 900; color: var(--p5); margin-top: 10px; }
         .pre-status { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--a5); margin-top: 5px; font-weight: 800; }
 
-        /* ==========================================================
-           4. LAYERED BACKGROUND CANVAS ENGINE
-           ========================================================== */
+        /* 4. CANVAS & NAV */
         #geoCanvas { position: fixed; inset: 0; z-index: -1; opacity: 0.25; pointer-events: none; }
-        .noise-layer {
-            position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-        }
-
-        /* Top Progress Bar */
-        #scrollProg {
-            position: fixed; top: 0; left: 0; height: 3px; z-index: 999990;
-            background: linear-gradient(90deg, var(--p5), var(--a5), var(--p7));
-            width: 0%; box-shadow: 0 0 10px var(--gw);
-        }
-
-        /* ==========================================================
-           5. SMART NAVBAR
-           ========================================================== */
-        .k4-nav {
-            position: sticky; top: 0; z-index: 9999; background: var(--bg2);
-            backdrop-filter: blur(20px) saturate(1.5); border-bottom: 1px solid var(--bl);
-            padding: 0 5%; transition: box-shadow 0.3s;
-        }
+        .noise-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"); }
+        #scrollProg { position: fixed; top: 0; left: 0; height: 3px; z-index: 999990; background: linear-gradient(90deg, var(--p5), var(--a5), var(--p7)); width: 0%; box-shadow: 0 0 10px var(--gw); }
+        
+        .k4-nav { position: sticky; top: 0; z-index: 9999; background: var(--bg2); backdrop-filter: blur(20px) saturate(1.5); border-bottom: 1px solid var(--bl); padding: 0 5%; transition: box-shadow 0.3s; }
         .k4-nav.scrolled { box-shadow: 0 10px 30px var(--sh); }
-        .k4-nav-inner {
-            max-width: 1400px; margin: 0 auto; display: flex;
-            justify-content: space-between; align-items: center; height: 70px;
-        }
-        
-        .k4-brand {
-            display: flex; align-items: center; gap: 10px; text-decoration: none;
-            color: var(--p5); font-family: var(--fc); font-weight: 800; font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
+        .k4-nav-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        .k4-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--p5); font-family: var(--fc); font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; }
         .k4-brand i { font-size: 1.5rem; color: var(--a5); }
-        
         .nav-menu { display: flex; gap: 5px; align-items: center; }
-        .nav-link {
-            text-decoration: none; color: var(--tx2); font-size: 0.85rem; font-weight: 700;
-            padding: 8px 16px; border-radius: 10px; transition: all 0.3s;
-            text-transform: uppercase; letter-spacing: 1px; position: relative;
-        }
+        .nav-link { text-decoration: none; color: var(--tx2); font-size: 0.85rem; font-weight: 700; padding: 8px 16px; border-radius: 10px; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; position: relative; }
         .nav-link:hover, .nav-link.active { color: var(--p5); background: var(--gw); }
-        
         .nav-tools { display: flex; gap: 8px; align-items: center; }
-        .nav-btn {
-            width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--bs);
-            background: transparent; color: var(--tx2); display: flex; align-items: center;
-            justify-content: center; transition: all 0.3s; font-size: 1rem;
-        }
+        .nav-btn { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--bs); background: transparent; color: var(--tx2); display: flex; align-items: center; justify-content: center; transition: all 0.3s; font-size: 1rem; }
         .nav-btn:hover { background: var(--p5); color: white; border-color: var(--p5); transform: translateY(-2px); }
         .nav-btn.active-mode { background: var(--a5); color: white; border-color: var(--a5); }
-        
         .mobile-toggle { display: none; background: none; border: none; color: var(--tx); font-size: 1.5rem; }
-
+        
         @media (max-width: 900px) {
-            .nav-menu {
-                display: none; position: absolute; top: 70px; left: 0; right: 0;
-                background: var(--bg2); backdrop-filter: blur(20px); flex-direction: column;
-                padding: 20px; border-bottom: 1px solid var(--bl); box-shadow: 0 20px 40px var(--sh);
-            }
+            .nav-menu { display: none; position: absolute; top: 70px; left: 0; right: 0; background: var(--bg2); backdrop-filter: blur(20px); flex-direction: column; padding: 20px; border-bottom: 1px solid var(--bl); box-shadow: 0 20px 40px var(--sh); }
             .nav-menu.open { display: flex; }
             .mobile-toggle { display: block; }
         }
 
-        /* ==========================================================
-           6. COMPLETION DASHBOARD
-           ========================================================== */
-        .dash {
-            padding: 30px 5%; border-bottom: 1px solid var(--bl); background: rgba(0,0,0,0.02);
-            display: flex; align-items: center; justify-content: center; gap: clamp(20px, 5vw, 60px); flex-wrap: wrap;
-        }
+        /* 5. DASHBOARD & FAVS */
+        .dash { padding: 30px 5%; border-bottom: 1px solid var(--bl); background: rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: center; gap: clamp(20px, 5vw, 60px); flex-wrap: wrap; }
         .dash-ring { position: relative; width: 90px; height: 90px; }
         .dash-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
         .dash-ring circle { fill: none; stroke-width: 4; }
         .dash-ring .bg-ring { stroke: var(--bl); }
         .dash-ring .fg-ring { stroke: var(--p5); stroke-linecap: round; transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        .dash-percent {
-            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-            font-family: var(--fc); font-weight: 900; font-size: 1.2rem; color: var(--p5);
-        }
+        .dash-percent { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--fc); font-weight: 900; font-size: 1.2rem; color: var(--p5); }
         .dash-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--tx2); font-weight: 800; text-align: center; }
-        
         .dash-stat { text-align: center; padding: 0 20px; border-right: 1px solid var(--bl); }
         .dash-stat:last-child { border-right: none; }
         .dash-stat-num { font-family: var(--fd); font-size: 2.5rem; font-weight: 900; color: var(--p5); line-height: 1; }
         .dash-stat-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--tx2); font-weight: 700; margin-top: 5px; }
 
-        /* ==========================================================
-           7. FAVORITES SHELF
-           ========================================================== */
         .fav-shelf { padding: 40px 5%; border-bottom: 1px solid var(--bl); display: none; background: rgba(16,185,129,0.02); }
         .fav-shelf.has-favs { display: block; }
         .fav-shelf-title { font-family: var(--fc); font-size: 1.5rem; font-weight: 900; color: var(--a5); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        
         .fav-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
         .fav-scroll::-webkit-scrollbar { display: none; }
-        
-        .fav-mini {
-            min-width: 160px; height: 220px; border-radius: 12px; overflow: hidden; cursor: pointer;
-            position: relative; transition: transform 0.3s; flex-shrink: 0;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
-        }
+        .fav-mini { min-width: 160px; height: 220px; border-radius: 12px; overflow: hidden; position: relative; transition: transform 0.3s; flex-shrink: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
         .fav-mini:hover { transform: translateY(-8px) scale(1.02); }
-        .fav-mini-cover {
-            width: 100%; height: 100%; background: linear-gradient(135deg, var(--book-color-1), var(--book-color-2));
-            display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; text-align: center;
-        }
-        .fav-mini-title { font-family: var(--fa); font-size: 1rem; color: white; line-height: 1.3; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .fav-mini-author { font-size: 0.7rem; color: var(--p3); margin-top: 8px; font-weight: 700; text-transform: uppercase; }
-        .fav-mini-remove {
-            position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%;
-            background: rgba(0,0,0,0.6); color: white; border: none; font-size: 0.8rem;
-            display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s, background 0.2s;
-        }
+        .fav-mini-cover { width: 100%; height: 100%; background: linear-gradient(135deg, var(--book-color-1), var(--book-color-2)); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; text-align: center; }
+        .fav-mini-title { font-family: var(--fa); font-size: 1rem; color: white; line-height: 1.3; text-shadow: 0 2px 4px rgba(0,0,0,0.5); display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .fav-mini-author { font-size: 0.7rem; color: var(--p3); margin-top: 8px; font-weight: 700; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+        .fav-mini-remove { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; background: rgba(0,0,0,0.6); color: white; border: none; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s, background 0.2s; }
         .fav-mini:hover .fav-mini-remove { opacity: 1; }
         .fav-mini-remove:hover { background: #ef4444; }
 
-        /* ==========================================================
-           8. HERO SECTION
-           ========================================================== */
-        .explore-hero {
-            position: relative; padding: 120px 5% 90px; text-align: center;
-            background: radial-gradient(ellipse at 50% 120%, var(--p9), var(--bg));
-            overflow: hidden; border-bottom: 1px solid var(--bs);
-        }
+        /* 6. HERO & SEARCH */
+        .explore-hero { position: relative; padding: 120px 5% 90px; text-align: center; background: radial-gradient(ellipse at 50% 120%, var(--p9), var(--bg)); overflow: hidden; border-bottom: 1px solid var(--bs); }
         #heroCanvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
         .hero-content { position: relative; z-index: 2; }
-        
-        .explore-badge {
-            display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 30px;
-            background: rgba(217,119,6,0.1); border: 1px solid rgba(217,119,6,0.3);
-            color: var(--a5); font-weight: 800; font-size: 0.75rem; text-transform: uppercase;
-            letter-spacing: 0.2em; margin-bottom: 20px; font-family: var(--fm);
-        }
-        
-        .explore-title {
-            font-family: var(--fc); font-size: clamp(2.5rem, 6vw, 4.5rem);
-            color: var(--p3); margin-bottom: 15px; text-shadow: 0 0 30px rgba(16,185,129,0.4);
-            letter-spacing: 2px; font-weight: 900; line-height: 1.1;
-        }
-        
+        .explore-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 30px; background: rgba(217,119,6,0.1); border: 1px solid rgba(217,119,6,0.3); color: var(--a5); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 20px; font-family: var(--fm); }
+        .explore-title { font-family: var(--fc); font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--p3); margin-bottom: 15px; text-shadow: 0 0 30px rgba(16,185,129,0.4); letter-spacing: 2px; font-weight: 900; line-height: 1.1; }
         .explore-subtitle { color: var(--tx2); font-size: 1.1rem; max-width: 700px; margin: 0 auto 35px; line-height: 1.8; }
-        
         .hero-btns { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
-        
-        .btn-astrolabe {
-            background: linear-gradient(135deg, var(--a5), var(--a7)); color: white;
-            border: 2px solid rgba(255,255,255,0.15); padding: 14px 32px; border-radius: 50px;
-            font-size: 1rem; font-weight: 800; box-shadow: 0 10px 30px rgba(217,119,6,0.3);
-            display: inline-flex; align-items: center; gap: 12px; transition: all 0.4s;
-            position: relative; overflow: hidden;
-        }
+        .btn-astrolabe { background: linear-gradient(135deg, var(--a5), var(--a7)); color: white; border: 2px solid rgba(255,255,255,0.15); padding: 14px 32px; border-radius: 50px; font-size: 1rem; font-weight: 800; box-shadow: 0 10px 30px rgba(217,119,6,0.3); display: inline-flex; align-items: center; gap: 12px; transition: all 0.4s; position: relative; overflow: hidden; }
         .btn-astrolabe:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(217,119,6,0.5); }
-        .btn-astrolabe::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
-            transform: skewX(-20deg); transition: 0.6s;
-        }
+        .btn-astrolabe::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent); transform: skewX(-20deg); transition: 0.6s; }
         .btn-astrolabe:hover::before { left: 150%; }
         .astrolabe-icon { font-size: 1.3rem; transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1); }
         .btn-astrolabe.spinning .astrolabe-icon { transform: rotate(1080deg); }
-        
-        .btn-fav {
-            background: rgba(16,185,129,0.1); border: 1px solid var(--p5); color: var(--p5);
-            padding: 14px 32px; border-radius: 50px; font-size: 1rem; font-weight: 800;
-            transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;
-        }
+        .btn-fav { background: rgba(16,185,129,0.1); border: 1px solid var(--p5); color: var(--p5); padding: 14px 32px; border-radius: 50px; font-size: 1rem; font-weight: 800; transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px; }
         .btn-fav:hover { background: var(--p5); color: white; transform: translateY(-3px); }
 
-        .search-bar { max-width: 550px; margin: 0 auto; position: relative; }
-        .search-bar input {
-            width: 100%; padding: 16px 20px 16px 50px; border-radius: 20px;
-            border: 2px solid var(--bs); background: var(--bg2); color: var(--tx);
-            font-size: 1rem; font-family: var(--fb); outline: none; transition: all 0.3s;
-            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
+        .search-bar { max-width: 550px; margin: 0 auto; position: relative; display: flex; align-items: center; }
+        .search-bar input { width: 100%; padding: 16px 85px 16px 50px; border-radius: 20px; border: 2px solid var(--bs); background: var(--bg2); color: var(--tx); font-size: 1rem; font-family: var(--fb); outline: none; transition: all 0.3s; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .search-bar input:focus { border-color: var(--p5); box-shadow: 0 0 25px var(--gw); }
-        .search-bar input::placeholder { color: var(--tx2); }
-        .search-bar i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--p5); font-size: 1.1rem; }
-        .search-bar .search-count {
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            font-size: 0.75rem; color: var(--tx2); font-weight: 800; font-family: var(--fm);
-            background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 10px;
-        }
+        .search-bar .search-icon { position: absolute; left: 20px; color: var(--p5); font-size: 1.1rem; }
+        .search-bar .voice-btn { position: absolute; right: 15px; background: rgba(16,185,129,0.1); border: 1px solid var(--p5); color: var(--p5); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s; z-index: 10;}
+        .search-bar .voice-btn:hover { background: var(--p5); color: white; transform: scale(1.1); }
+        .search-bar .voice-btn.recording { animation: pulseRecord 1s infinite; background: #ef4444; border-color: #ef4444; color: white; }
+        @keyframes pulseRecord { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 
-        /* ==========================================================
-           9. FILTER & SORT CONTROLS
-           ========================================================== */
-        .control-panel {
-            background: var(--bg2); backdrop-filter: blur(20px); border-bottom: 1px solid var(--bl);
-            padding: 15px 5%; position: sticky; top: 70px; z-index: 90;
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
-        }
-        
+        /* 7. CONTROLS */
+        .control-panel { background: var(--bg2); backdrop-filter: blur(20px); border-bottom: 1px solid var(--bl); padding: 15px 5%; position: sticky; top: 70px; z-index: 90; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .filter-group { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
-        .filter-btn {
-            background: transparent; border: 1px solid var(--bs); color: var(--tx2);
-            padding: 8px 20px; border-radius: 30px; font-weight: 700; font-size: 0.85rem;
-            transition: all 0.3s; position: relative; overflow: hidden;
-        }
+        .filter-btn { background: transparent; border: 1px solid var(--bs); color: var(--tx2); padding: 8px 20px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; transition: all 0.3s; position: relative; overflow: hidden; }
         .filter-btn::before { content: ''; position: absolute; inset: 0; background: var(--p7); opacity: 0; transition: opacity 0.3s; }
         .filter-btn.active::before, .filter-btn:hover::before { opacity: 1; }
         .filter-btn.active, .filter-btn:hover { color: white; border-color: var(--p5); box-shadow: 0 0 15px var(--gw); transform: translateY(-2px); }
         .filter-btn span { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; }
         .filter-btn .f-count { font-size: 0.7rem; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 12px; font-family: var(--fm); }
-        
         .controls-right { display: flex; gap: 12px; align-items: center; }
-        .sort-group select {
-            background: var(--bg); color: var(--tx); border: 1px solid var(--bs);
-            padding: 10px 16px; border-radius: 12px; outline: none; font-family: var(--fb);
-            font-weight: 700; font-size: 0.85rem;
-        }
-        
+        .sort-group select { background: var(--bg); color: var(--tx); border: 1px solid var(--bs); padding: 10px 16px; border-radius: 12px; outline: none; font-family: var(--fb); font-weight: 700; font-size: 0.85rem; cursor: pointer; }
         .view-toggle { display: flex; gap: 5px; background: var(--bg); padding: 4px; border-radius: 12px; border: 1px solid var(--bs); }
-        .view-btn {
-            width: 36px; height: 36px; border-radius: 8px; border: none; background: transparent;
-            color: var(--tx2); display: flex; align-items: center; justify-content: center; transition: all 0.3s;
-        }
+        .view-btn { width: 36px; height: 36px; border-radius: 8px; border: none; background: transparent; color: var(--tx2); display: flex; align-items: center; justify-content: center; transition: all 0.3s; cursor: pointer; }
         .view-btn.active { background: var(--p5); color: white; box-shadow: 0 4px 10px var(--gw); }
 
-        /* ==========================================================
-           10. THE 3D LIBRARY GRID (CORE NEXA FEATURE)
-           ========================================================== */
-        .library-container {
-            max-width: 1400px; margin: 0 auto; padding: 50px 5% 80px;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 40px; perspective: 1500px; transition: all 0.4s;
-        }
+        /* 8. 3D LIBRARY & BUKU RAPI */
+        #libraryGridWrapper { perspective: 1500px; transform-style: preserve-3d; }
+        .library-container { max-width: 1400px; margin: 0 auto; padding: 50px 5% 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transform-style: preserve-3d; }
         
-        /* List View Modifier */
-        .library-container.list-view { grid-template-columns: 1fr; gap: 20px; max-width: 1000px; }
-        .library-container.list-view .book-wrapper { height: 140px; }
+        .library-container.list-view { grid-template-columns: 1fr; gap: 20px; max-width: 1000px; transform: none !important; }
+        .library-container.list-view .book-wrapper { height: 140px; cursor: pointer; }
         .library-container.list-view .book-3d { transform: none !important; }
         .library-container.list-view .book-wrapper:hover .book-3d { transform: translateY(-5px) !important; }
-        .library-container.list-view .book-cover { border-radius: 16px; flex-direction: row; padding: 20px 30px; gap: 25px; align-items: center; justify-content: space-between; }
+        .library-container.list-view .book-cover { border-radius: 16px; flex-direction: row; padding: 20px 30px; gap: 25px; align-items: center; justify-content: space-between; text-align: left; }
         .library-container.list-view .book-spine, .library-container.list-view .book-pages, .library-container.list-view .read-stamp { display: none; }
-        .library-container.list-view .book-title { font-size: 1.5rem; text-align: left; margin-bottom: 0; }
-        .library-container.list-view .book-author { text-align: left; margin-bottom: 0; font-size: 1rem; }
-        .library-container.list-view .book-era { margin-top: 0; font-size: 0.85rem; }
-        .library-container.list-view .book-category { border: none; padding: 0; margin: 0; background: rgba(0,0,0,0.3); padding: 5px 12px; border-radius: 20px; }
+        .library-container.list-view .book-title { font-size: clamp(1.1rem, 2vw, 1.4rem); text-align: left; margin-bottom: 0; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; width: 40%; }
+        .library-container.list-view .book-author { text-align: left; margin-bottom: 0; font-size: 0.9rem; width: 25%; }
+        .library-container.list-view .book-era { margin-top: 0; font-size: 0.85rem; width: 15%; text-align: right; }
+        .library-container.list-view .book-category { border: none; padding: 0; margin: 0; background: rgba(0,0,0,0.3); padding: 5px 12px; border-radius: 20px; width: auto; }
 
-        .book-wrapper { height: 440px; position: relative; transform-style: preserve-3d; transition: transform 0.5s, opacity 0.5s; }
+        .book-wrapper { height: 440px; position: relative; transform-style: preserve-3d; transition: transform 0.5s, opacity 0.5s; cursor: pointer; }
         .book-wrapper.hide-item { display: none; }
-        
-        .book-3d {
-            position: absolute; width: 100%; height: 100%; transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: rotateY(-18deg) rotateX(5deg);
-        }
+        .book-3d { position: absolute; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: rotateY(-18deg) rotateX(5deg); }
         .book-wrapper:hover .book-3d { transform: rotateY(0) rotateX(0) scale(1.05) translateY(-10px); }
         
-        .book-cover {
-            position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--book-color-1), var(--book-color-2));
-            border-radius: 2px 18px 18px 2px;
-            box-shadow: inset 4px 0 10px rgba(0,0,0,0.5), inset -1px 0 2px rgba(255,255,255,0.2), 8px 15px 30px rgba(0,0,0,0.4);
-            transform: translateZ(25px); padding: 30px 20px; display: flex; flex-direction: column;
-            border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
-        }
-        .book-cover::before {
-            content: ''; position: absolute; inset: 0;
-            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
-            opacity: 0.1; mix-blend-mode: overlay; pointer-events: none;
-        }
+        .book-cover { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, var(--book-color-1), var(--book-color-2)); border-radius: 2px 18px 18px 2px; box-shadow: inset 4px 0 10px rgba(0,0,0,0.5), inset -1px 0 2px rgba(255,255,255,0.2), 8px 15px 30px rgba(0,0,0,0.4); transform: translateZ(25px); padding: 30px 20px; display: flex; flex-direction: column; align-items: center; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
+        .book-cover::before { content: ''; position: absolute; inset: 0; background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png'); opacity: 0.1; mix-blend-mode: overlay; pointer-events: none; }
+        .book-spine { position: absolute; width: 40px; height: 100%; background: linear-gradient(to right, var(--book-color-2), var(--book-color-1)); transform: rotateY(-90deg) translateZ(25px); transform-origin: left; border-radius: 12px 0 0 12px; box-shadow: inset -2px 0 5px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+        .spine-text { color: rgba(255,255,255,0.4); writing-mode: vertical-rl; text-orientation: mixed; font-family: var(--fa); letter-spacing: 3px; font-size: 0.85rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+        .book-pages { position: absolute; width: calc(100% - 12px); height: 96%; top: 2%; left: 6px; background: #fdf6e3; transform: translateZ(-20px); border-radius: 0 12px 12px 0; box-shadow: inset -5px 0 15px rgba(0,0,0,0.15); background-image: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.04) 3px); }
         
-        .book-spine {
-            position: absolute; width: 40px; height: 100%;
-            background: linear-gradient(to right, var(--book-color-2), var(--book-color-1));
-            transform: rotateY(-90deg) translateZ(25px); transform-origin: left;
-            border-radius: 12px 0 0 12px; box-shadow: inset -2px 0 5px rgba(0,0,0,0.5);
-            display: flex; align-items: center; justify-content: center;
-        }
-        .spine-text {
-            color: rgba(255,255,255,0.4); writing-mode: vertical-rl; text-orientation: mixed;
-            font-family: var(--fa); letter-spacing: 3px; font-size: 0.85rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
+        .book-category { font-size: 0.65rem; color: var(--a5); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; font-family: var(--fm); width: 100%; }
         
-        .book-pages {
-            position: absolute; width: calc(100% - 12px); height: 96%; top: 2%; left: 6px;
-            background: #fdf6e3; transform: translateZ(-20px); border-radius: 0 12px 12px 0;
-            box-shadow: inset -5px 0 15px rgba(0,0,0,0.15);
-            background-image: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.04) 3px);
-        }
+        /* PEMBATASAN TEKS JUDUL & AUTHOR AGAR RAPI (ANTI OVERFLOW) */
+        .book-title { font-size: clamp(1.3rem, 4vw, 1.6rem); color: #fff; font-family: var(--fa); line-height: 1.3; text-align: center; margin-bottom: 10px; text-shadow: 1px 2px 5px rgba(0,0,0,0.6); display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+        .book-author { font-size: clamp(0.8rem, 2vw, 0.9rem); color: var(--p3); font-weight: 700; text-align: center; margin-bottom: auto; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
         
-        .book-category {
-            font-size: 0.65rem; color: var(--a5); font-weight: 800; text-transform: uppercase;
-            letter-spacing: 2px; margin-bottom: 15px; text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; font-family: var(--fm);
-        }
-        .book-title {
-            font-size: 1.6rem; color: #fff; font-family: var(--fa); line-height: 1.3;
-            text-align: center; margin-bottom: 10px; text-shadow: 1px 2px 5px rgba(0,0,0,0.6);
-        }
-        .book-author { font-size: 0.9rem; color: var(--p3); font-weight: 700; text-align: center; margin-bottom: auto; text-transform: uppercase; letter-spacing: 1px; }
-        .book-era { text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.6); background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 8px; font-family: var(--fm); }
-        
+        .book-era { text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.6); background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 8px; font-family: var(--fm); margin-top: 15px; width: 100%; }
         .book-read-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: rgba(0,0,0,0.3); z-index: 5; transform: translateZ(26px); border-radius: 0 0 18px 0; }
         .book-read-fill { height: 100%; background: var(--p5); border-radius: 0 0 18px 0; transition: width 0.5s; box-shadow: 0 0 10px var(--p5); }
-        
-        .read-stamp {
-            position: absolute; top: 12px; right: -25px; background: var(--p5); color: white;
-            font-size: 0.6rem; font-weight: 900; padding: 5px 35px; transform: rotate(45deg);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.4); display: none; z-index: 20; letter-spacing: 2px; font-family: var(--fm);
-        }
+        .read-stamp { position: absolute; top: 12px; right: -25px; background: var(--p5); color: white; font-size: 0.6rem; font-weight: 900; padding: 5px 35px; transform: rotate(45deg); box-shadow: 0 3px 10px rgba(0,0,0,0.4); display: none; z-index: 20; letter-spacing: 2px; font-family: var(--fm); }
         .book-wrapper.is-read .read-stamp { display: block; }
         .book-wrapper.is-read .book-cover { filter: grayscale(20%); }
-        
         .book-fav-star { position: absolute; top: 12px; left: 12px; z-index: 21; font-size: 1.2rem; color: rgba(255,255,255,0.2); transform: translateZ(26px); transition: all 0.3s; }
         .book-wrapper.is-fav .book-fav-star { color: var(--a5); text-shadow: 0 0 15px rgba(217,119,6,0.8); }
-        
         .no-results { text-align: center; padding: 80px 20px; color: var(--tx2); font-size: 1.2rem; grid-column: 1/-1; font-family: var(--fm); }
 
-        /* ==========================================================
-           11. ZEN READER & NEXA AI INSIGHT
-           ========================================================== */
-        .zen-modal {
-            position: fixed; inset: 0; background: rgba(2,6,23,0.95); backdrop-filter: blur(15px);
-            z-index: 100000; display: flex; justify-content: center; overflow-y: auto;
-            opacity: 0; visibility: hidden; transition: 0.5s; perspective: 1200px;
-        }
+        /* 9. ZEN READER & FITUR */
+        .zen-modal { position: fixed; inset: 0; background: rgba(2,6,23,0.95); backdrop-filter: blur(15px); z-index: 100000; display: flex; justify-content: center; overflow-y: auto; opacity: 0; visibility: hidden; transition: 0.5s; perspective: 1200px; }
         .zen-modal.active { opacity: 1; visibility: visible; }
-        
-        .zen-paper {
-            background: #fdf6e3; background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
-            width: 100%; max-width: 850px; min-height: 100vh; padding: 80px 8%; position: relative;
-            box-shadow: 0 0 80px rgba(0,0,0,0.6); color: #1e293b;
-            transform: rotateX(8deg) translateY(50px); transform-origin: top; transition: 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .zen-paper { background: #fdf6e3; background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); width: 100%; max-width: 850px; min-height: 100vh; padding: 80px 8%; position: relative; box-shadow: 0 0 80px rgba(0,0,0,0.6); color: #1e293b; transform: rotateX(8deg) translateY(50px); transform-origin: top; transition: 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .zen-modal.active .zen-paper { transform: rotateX(0) translateY(0); }
         
-        .zen-tools { position: fixed; top: 25px; right: 4%; display: flex; gap: 12px; z-index: 100001; }
-        .zen-btn {
-            width: 48px; height: 48px; border-radius: 50%; background: var(--bg2); border: 1px solid var(--bs);
-            color: var(--tx); font-size: 1.1rem; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: 0.3s;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .zen-tools { position: fixed; top: 25px; right: 4%; display: flex; gap: 10px; z-index: 100001; flex-wrap: wrap; max-width: 300px; justify-content: flex-end; }
+        .zen-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--bg2); border: 1px solid var(--bs); color: var(--tx); font-size: 1rem; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: 0.3s; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         .zen-btn:hover { background: var(--p5); color: white; transform: scale(1.15) rotate(5deg); }
         .zen-btn.close:hover { background: #ef4444; border-color: #ef4444; transform: scale(1.15) rotate(90deg); }
-        .zen-btn.tts-on { background: var(--p5) !important; color: white !important; animation: ttsGw 2s infinite; }
+        .zen-btn.active-state { background: var(--a5); border-color: var(--a5); color: white; animation: pulseState 2s infinite; }
         
-        .zen-header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #cbd5e1; padding-bottom: 25px; position: relative; }
+        @keyframes pulseState { 0% { box-shadow: 0 0 0 0 rgba(217,119,6,0.7); } 70% { box-shadow: 0 0 0 8px rgba(217,119,6,0); } 100% { box-shadow: 0 0 0 0 rgba(217,119,6,0); } }
+
+        /* Fitur 7: Pomodoro UI */
+        .pomodoro-display { position: absolute; bottom: -30px; font-family: var(--fm); font-size: 0.75rem; background: var(--bg2); color: var(--tx); padding: 4px 10px; border-radius: 10px; border: 1px solid var(--bs); opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+        .zen-btn.active-state .pomodoro-display { opacity: 1; }
+
+        /* Fitur 4: Radar Canvas */
+        .radar-container { float: right; width: 150px; height: 150px; margin: 0 0 20px 30px; background: rgba(0,0,0,0.03); border-radius: 50%; position: relative; border: 1px dashed rgba(0,0,0,0.1); }
+        #radarCanvas { width: 100%; height: 100%; position: relative; z-index: 2; }
+        .radar-label { font-size: 0.6rem; font-family: var(--fm); font-weight: 800; color: #64748b; text-align: center; margin-top: 5px; text-transform: uppercase; }
+
+        .zen-header { border-bottom: 2px solid #cbd5e1; padding-bottom: 25px; position: relative; margin-bottom: 30px; }
         .zen-header::after { content: '❁'; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); background: #fdf6e3; padding: 0 10px; color: #94a3b8; font-size: 1.5rem; }
-        .zen-title { font-family: var(--fa); font-size: clamp(2rem, 5vw, 3.5rem); color: #0f172a; margin-bottom: 10px; line-height: 1.2; text-shadow: 1px 1px 0px rgba(0,0,0,0.1); }
-        .zen-author { color: #b45309; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; font-family: var(--fb); }
-        
+        .zen-title { font-family: var(--fa); font-size: clamp(2rem, 5vw, 3.5rem); color: #0f172a; margin-bottom: 10px; line-height: 1.2; text-shadow: 1px 1px 0px rgba(0,0,0,0.1); text-align: center; }
+        .zen-author { color: #b45309; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; font-family: var(--fb); text-align: center; }
         .zen-meta { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
         .zen-meta-badge { font-size: 0.75rem; color: #475569; background: #f1f5f9; padding: 5px 15px; border-radius: 20px; font-family: var(--fm); font-weight: 700; border: 1px solid #cbd5e1; }
         
-        .zen-content { font-size: 1.1rem; line-height: 2.1; text-align: justify; color: #334155; }
+        .zen-content { font-size: 1.1rem; line-height: 2.1; text-align: justify; color: #334155; position: relative; }
         .zen-content p { margin-bottom: 22px; }
         .zen-content p:first-child::first-letter { font-size: 4rem; font-family: var(--fa); float: left; margin-right: 10px; line-height: 1; color: #047857; text-shadow: 2px 2px 0px rgba(4,120,87,0.2); }
-        
-        .zen-quote {
-            font-family: var(--fa); font-size: 1.5rem; color: #064e3b; text-align: center;
-            margin: 40px 0; position: relative; padding: 0 40px; line-height: 1.6;
-        }
+        .zen-quote { font-family: var(--fa); font-size: 1.5rem; color: #064e3b; text-align: center; margin: 40px 0; position: relative; padding: 0 40px; line-height: 1.6; }
         .zen-quote::before, .zen-quote::after { content: '"'; font-size: 4rem; position: absolute; color: rgba(6,78,59,0.15); top: -15px; }
         .zen-quote::before { left: 0; } .zen-quote::after { right: 0; }
         
+        /* Fitur 3: Glosarium Cerdas */
+        .glos-term { position: relative; border-bottom: 2px dotted var(--p5); color: #064e3b; font-weight: 700; transition: color 0.3s; cursor: help; }
+        .glos-term:hover { color: var(--a5); }
+        .glos-term::after { content: attr(data-tooltip); position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--bg2); color: white; padding: 10px 15px; border-radius: 12px; font-size: 0.85rem; font-family: var(--fb); font-weight: 500; width: 250px; text-align: center; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 20px rgba(0,0,0,0.3); z-index: 100; pointer-events: none; line-height: 1.5; border: 1px solid var(--p5); }
+        .glos-term:hover::after { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        
+        /* Fitur 5: Highlighter Persistent */
+        .hl-marker { background-color: rgba(16,185,129,0.3); border-radius: 3px; padding: 0 2px; cursor: pointer; transition: background 0.3s; border-bottom: 1px solid var(--p5); }
+        .hl-marker:hover { background-color: rgba(239, 68, 68, 0.3); border-bottom-color: #ef4444; }
+        #hlToolbar { position: fixed; background: var(--bg2); padding: 8px 12px; border-radius: 12px; border: 1px solid var(--p5); box-shadow: 0 10px 25px rgba(0,0,0,0.4); display: none; gap: 10px; z-index: 100005; transform: translate(-50%, -120%); }
+        #hlToolbar button { background: var(--p5); color: white; border: none; padding: 5px 12px; border-radius: 8px; font-family: var(--fb); font-weight: 700; font-size: 0.8rem; transition: 0.2s; cursor: pointer; }
+        #hlToolbar button:hover { transform: scale(1.05); background: var(--a5); }
+
         .zen-progress { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 850px; height: 5px; background: rgba(0,0,0,0.1); z-index: 100002; }
         .zen-progress-fill { height: 100%; background: linear-gradient(90deg, var(--p5), var(--a5)); width: 0%; transition: width 0.1s; }
 
-        /* NEXA AI INSIGHT BOX */
-        .ai-insight-box {
-            position: fixed; left: 4%; top: 25px; width: 350px; background: var(--bg2);
-            backdrop-filter: blur(20px); border: 1px solid var(--p5); border-radius: 20px;
-            padding: 25px; color: var(--tx); z-index: 100005; box-shadow: 0 15px 40px rgba(16,185,129,0.3);
-            opacity: 0; visibility: hidden; transform: translateX(-30px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        /* AI Insight Box */
+        .ai-insight-box { position: fixed; left: 4%; top: 25px; width: 350px; background: var(--bg2); backdrop-filter: blur(20px); border: 1px solid var(--p5); border-radius: 20px; padding: 25px; color: var(--tx); z-index: 100005; box-shadow: 0 15px 40px rgba(16,185,129,0.3); opacity: 0; visibility: hidden; transform: translateX(-30px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .ai-insight-box.active { opacity: 1; visibility: visible; transform: translateX(0); }
         .ai-header { color: var(--p5); font-weight: 900; margin-bottom: 15px; font-family: var(--fc); border-bottom: 1px solid var(--bs); padding-bottom: 10px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
         .ai-content { font-size: 0.9rem; line-height: 1.7; color: var(--tx2); font-family: var(--fb); min-height: 100px; }
         .typewriter-cursor { display: inline-block; width: 8px; height: 15px; background: var(--p5); animation: blink 1s step-end infinite; margin-left: 2px; vertical-align: middle; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* ==========================================================
-           12. UTILITIES: TOAST, SCROLL TO TOP, CELEBRATION
-           ========================================================== */
+        /* UTILITIES */
         #toast-box { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 100000; }
-        .toast {
-            background: linear-gradient(135deg, var(--p7), #065f46); color: white; padding: 14px 24px;
-            border-radius: 15px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 10px;
-            animation: tIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, tOut 0.4s 3s forwards;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-        }
+        .toast { background: linear-gradient(135deg, var(--p7), #065f46); color: white; padding: 14px 24px; border-radius: 15px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 10px; animation: tIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, tOut 0.4s 3s forwards; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); }
         @keyframes tIn { from { transform: translateX(120%) scale(0.9); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
         @keyframes tOut { to { transform: translateX(120%) scale(0.9); opacity: 0; } }
-
-        .scroll-top {
-            position: fixed; bottom: 30px; left: 30px; z-index: 999; width: 56px; height: 56px;
-            border-radius: 50%; background: var(--bg2); border: 2px solid var(--bs);
-            display: flex; align-items: center; justify-content: center; transition: all 0.4s;
-            opacity: 0; visibility: hidden; transform: translateY(20px); backdrop-filter: blur(10px);
-        }
+        .scroll-top { position: fixed; bottom: 30px; left: 30px; z-index: 999; width: 56px; height: 56px; border-radius: 50%; background: var(--bg2); border: 2px solid var(--bs); display: flex; align-items: center; justify-content: center; transition: all 0.4s; opacity: 0; visibility: hidden; transform: translateY(20px); backdrop-filter: blur(10px); cursor: pointer; }
         .scroll-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
         .scroll-top:hover { background: var(--p5); color: white; border-color: var(--p5); transform: translateY(-5px); box-shadow: 0 10px 25px var(--gw); }
         .scroll-top svg { width: 44px; height: 44px; transform: rotate(-90deg); position: absolute; }
@@ -563,35 +281,28 @@
         .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* ==========================================================
-           13. KEYBOARD SHORTCUTS MODAL
-           ========================================================== */
-        .kbd-modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-            z-index: 999999; display: flex; justify-content: center; align-items: center;
-            opacity: 0; visibility: hidden; transition: 0.4s;
-        }
+        /* KEYBOARD MODAL */
+        .kbd-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 999999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
         .kbd-modal.active { opacity: 1; visibility: visible; }
-        .kbd-box {
-            background: var(--bg3); border-radius: 24px; padding: 35px; max-width: 500px; width: 90%;
-            border: 1px solid var(--bl); transform: scale(0.9) translateY(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
+        .kbd-box { background: var(--bg3); border-radius: 24px; padding: 35px; max-width: 500px; width: 90%; border: 1px solid var(--bl); transform: scale(0.9) translateY(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .kbd-modal.active .kbd-box { transform: scale(1) translateY(0); }
         .kbd-box h3 { font-family: var(--fc); color: var(--p5); font-size: 1.6rem; margin-bottom: 25px; font-weight: 900; text-align: center; }
         .kbd-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--bl); }
         .kbd-row:last-child { border: none; }
-        .kbd-key {
-            background: var(--bg); border: 1px solid var(--bs); padding: 5px 12px; border-radius: 8px;
-            font-family: var(--fm); font-weight: 700; font-size: 0.9rem; color: var(--p5); box-shadow: 0 4px 0 var(--bg);
-        }
+        .kbd-key { background: var(--bg); border: 1px solid var(--bs); padding: 5px 12px; border-radius: 8px; font-family: var(--fm); font-weight: 700; font-size: 0.9rem; color: var(--p5); box-shadow: 0 4px 0 var(--bg); }
 
-        /* Branding Footer */
+        /* BRANDING SECTION - LOGO DIPERKECIL */
         .ug-branding { padding: 60px 5% 40px; text-align: center; border-top: 1px solid var(--bl); background: rgba(0,0,0,0.02); }
-        .ug-logo { width: 90px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); transition: 0.5s; margin-bottom: 15px; }
+        .ug-logo { width: 65px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); transition: 0.5s; margin-bottom: 15px; }
         .ug-logo:hover { transform: scale(1.1) rotate(5deg); }
         .k4-footer { text-align: center; padding: 25px 5%; border-top: 1px solid var(--bl); color: var(--tx2); font-size: 0.85rem; font-family: var(--fm); }
         .k4-footer a { color: var(--p5); text-decoration: none; font-weight: 700; }
+
+        @media (max-width: 488px) {
+            .zen-paper { padding: 20px 5%; }
+            .radar-container { float: none; margin: 0 auto 20px; }
+            .glos-term::after { width: calc(100vw - 40px); left: 20px; transform: translateX(0) translateY(10px); }
+        }
     </style>
 </head>
 <body>
@@ -605,8 +316,6 @@
     <div class="pre-status" id="preStatus">SINKRONISASI DATA HISTORIOGRAFI...</div>
 </div>
 
-<div class="cur-dot" id="curDot"></div>
-<div class="cur-ring" id="curRing"></div>
 <div id="scrollProg"></div>
 <canvas id="geoCanvas"></canvas>
 <div class="noise-layer"></div>
@@ -620,8 +329,6 @@
             <a href="tim.html" class="nav-link">Tim</a>
             <a href="timeline.html" class="nav-link">Garis Waktu</a>
             <a href="explore.html" class="nav-link active">Baitul Hikmah</a>
-            <a href="tokoh.html" class="nav-link">Peta Tokoh</a>
-            <a href="kuis.html" class="nav-link">Uji Pemahaman</a>
         </div>
         <div class="nav-tools">
             <button class="nav-btn" id="btnTheme" title="Tema: Terang/Gelap"><i class="fa-solid fa-moon"></i></button>
@@ -647,8 +354,7 @@
 
 <div class="fav-shelf" id="favShelf">
     <div class="fav-shelf-title"><i class="fa-solid fa-star" style="color:var(--a5)"></i> Koleksi Pribadi Anda</div>
-    <div class="fav-scroll" id="favScroll">
-        </div>
+    <div class="fav-scroll" id="favScroll"></div>
 </div>
 
 <section class="explore-hero">
@@ -656,24 +362,23 @@
     <div class="hero-content">
         <div class="explore-badge reveal"><i class="fa-solid fa-landmark-dome"></i> Mahakarya Peradaban Islam</div>
         <h1 class="explore-title reveal" style="transition-delay:0.1s">Perpustakaan Baitul Hikmah</h1>
-        <p class="explore-subtitle reveal" style="transition-delay:0.2s">Eksplorasi literatur <em>Without Any Gaps</em>. Dari rasionalitas Al-Kindi hingga Teosofi Transenden Mulla Sadra. Membedah diskursus filsafat, kedokteran, hingga sosiologi klasik.</p>
+        <p class="explore-subtitle reveal" style="transition-delay:0.2s">Eksplorasi literatur <em>Without Any Gaps</em>. Sensor gyroskopik dan AI Voice Command aktif.</p>
         
         <div class="hero-btns reveal" style="transition-delay:0.3s">
-            <button class="btn-astrolabe" id="btnAstrolabe"><i class="fa-solid fa-compass astrolabe-icon"></i> Putar Astrolabe (Acak)</button>
+            <button class="btn-astrolabe" id="btnAstrolabe"><i class="fa-solid fa-compass astrolabe-icon"></i> Putar Astrolabe</button>
             <button class="btn-fav" onclick="scrollToFavs()"><i class="fa-solid fa-bookmark"></i> Lihat Rak Favorit</button>
         </div>
         
         <div class="search-bar reveal" style="transition-delay:0.4s">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Cari kitab, nama tokoh, atau ketik 'Abad 11'...">
-            <span class="search-count" id="searchCount">12 Hasil</span>
+            <i class="fa-solid fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Cari kitab, tokoh, atau sebutkan nama...">
+            <button class="voice-btn" id="btnVoice" title="Pencarian Suara AI"><i class="fa-solid fa-microphone"></i></button>
         </div>
     </div>
 </section>
 
 <div class="control-panel" id="ctrlPanel">
-    <div class="filter-group" id="filterGroup">
-        </div>
+    <div class="filter-group" id="filterGroup"></div>
     <div class="controls-right">
         <div class="view-toggle">
             <button class="view-btn active" data-view="grid" title="Tampilan Grid"><i class="fa-solid fa-border-all"></i></button>
@@ -688,21 +393,30 @@
     </div>
 </div>
 
-<main class="library-container" id="libraryGrid">
-    </main>
+<div id="libraryGridWrapper">
+    <main class="library-container" id="libraryGrid"></main>
+</div>
 
 <div class="zen-modal" id="zenModal">
     
     <div class="ai-insight-box" id="aiInsightBox">
         <div class="ai-header"><i class="fa-solid fa-brain"></i> NEXA AI - Bedah Kitab</div>
-        <div class="ai-content">
-            <span id="aiInsightContent"></span><span class="typewriter-cursor" id="aiCursor"></span>
-        </div>
+        <div class="ai-content"><span id="aiInsightContent"></span><span class="typewriter-cursor" id="aiCursor"></span></div>
         <button class="nav-btn" onclick="document.getElementById('aiInsightBox').classList.remove('active')" style="margin-top:20px; width:100%; border-radius:10px; background:rgba(0,0,0,0.2);">Tutup Panel Analisis</button>
+    </div>
+
+    <div id="hlToolbar">
+        <button onclick="applyHighlight()"><i class="fa-solid fa-highlighter"></i> Stabilo</button>
+        <button onclick="clearSelection()" style="background:#475569;"><i class="fa-solid fa-xmark"></i> Batal</button>
     </div>
 
     <div class="zen-tools" id="zenTools">
         <button class="zen-btn" title="NEXA AI Insight" onclick="triggerAIInsight()" style="background:var(--p7); color:white; border-color:var(--p5);"><i class="fa-solid fa-robot"></i></button>
+        <button class="zen-btn" id="btnFocusAudio" title="Audio Fokus (Brown Noise)" onclick="toggleAmbientAudio()"><i class="fa-solid fa-headphones"></i></button>
+        <button class="zen-btn" id="btnPomodoro" title="Mulai Pomodoro (25 Min)" onclick="togglePomodoro()">
+            <i class="fa-solid fa-stopwatch"></i>
+            <div class="pomodoro-display" id="pomoTime">25:00</div>
+        </button>
         <div style="width: 2px; height: 30px; background: var(--bs); margin: auto 5px;"></div>
         <button class="zen-btn" title="Perkecil Teks" onclick="changeFontSize(-1)"><i class="fa-solid fa-font"></i><i class="fa-solid fa-minus" style="font-size:0.6rem; margin-left:2px;"></i></button>
         <button class="zen-btn" title="Perbesar Teks" onclick="changeFontSize(1)"><i class="fa-solid fa-font"></i><i class="fa-solid fa-plus" style="font-size:0.6rem; margin-left:2px;"></i></button>
@@ -712,30 +426,33 @@
     </div>
     
     <div class="zen-paper" id="zenPaper">
+        <div class="radar-container">
+            <canvas id="radarCanvas"></canvas>
+            <div class="radar-label">Dimensi Kitab</div>
+        </div>
         <div class="zen-header">
             <div id="zenCat" style="font-size:0.8rem; color:#64748b; font-weight:800; letter-spacing:3px; text-transform:uppercase; margin-bottom:15px; font-family:var(--fm);">KATEGORI</div>
             <h1 class="zen-title" id="zenTitle">Judul Kitab</h1>
             <div class="zen-author" id="zenAuthor">Nama Penulis</div>
             <div class="zen-meta">
-                <span class="zen-meta-badge" id="zenEra"><i class="fa-solid fa-hourglass-half"></i> Era Historis</span>
+                <span class="zen-meta-badge" id="zenEra"><i class="fa-solid fa-hourglass-half"></i> Era</span>
                 <span class="zen-meta-badge" id="zenTime"><i class="fa-regular fa-clock"></i> Waktu Baca</span>
+                <button class="zen-meta-badge" onclick="clearHighlights()" style="cursor:pointer; background:#fee2e2; color:#b91c1c; border-color:#fca5a5;"><i class="fa-solid fa-eraser"></i> Hapus Stabilo</button>
             </div>
         </div>
-        <div class="zen-content" id="zenContent">
-            </div>
+        <div class="zen-content" id="zenContent"></div>
     </div>
     <div class="zen-progress"><div class="zen-progress-fill" id="zenProgFill"></div></div>
 </div>
 
 <div class="kbd-modal" id="kbdModal">
     <div class="kbd-box">
-        <h3><i class="fa-solid fa-keyboard"></i> Pintasan Keyboard (Kelompok IV)</h3>
+        <h3><i class="fa-solid fa-keyboard"></i> Pintasan Keyboard</h3>
         <div class="kbd-row"><span class="kbd-key">/</span><span style="color:var(--tx2);font-size:0.9rem">Fokus kotak pencarian</span></div>
+        <div class="kbd-row"><span class="kbd-key">V</span><span style="color:var(--tx2);font-size:0.9rem">Mulai Voice Command</span></div>
         <div class="kbd-row"><span class="kbd-key">D</span><span style="color:var(--tx2);font-size:0.9rem">Toggle Mode Gelap/Terang</span></div>
         <div class="kbd-row"><span class="kbd-key">S</span><span style="color:var(--tx2);font-size:0.9rem">Toggle Mode Sepia (Klasik)</span></div>
-        <div class="kbd-row"><span class="kbd-key">G</span><span style="color:var(--tx2);font-size:0.9rem">Ganti Tampilan Grid/List</span></div>
-        <div class="kbd-row"><span class="kbd-key">R</span><span style="color:var(--tx2);font-size:0.9rem">Putar Astrolabe (Acak Buku)</span></div>
-        <div class="kbd-row"><span class="kbd-key">Esc</span><span style="color:var(--tx2);font-size:0.9rem">Tutup Buku / Panel ini</span></div>
+        <div class="kbd-row"><span class="kbd-key">Esc</span><span style="color:var(--tx2);font-size:0.9rem">Tutup Menu / Buku</span></div>
         <div style="text-align:center; margin-top:25px;">
             <button class="nav-btn" onclick="document.getElementById('kbdModal').classList.remove('active')" style="width:auto; padding:8px 25px; border-radius:12px;"><i class="fa-solid fa-check"></i> Mengerti</button>
         </div>
@@ -756,196 +473,77 @@
     <div style="color:var(--tx2); font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:0.85rem; margin-top:5px;">Fakultas Teknologi Industri • Teknik Informatika</div>
 </section>
 <footer class="k4-footer">
-    <p>© 2026 Nexa Tech Labs| <a href="index.html">Beranda</a> · <a href="timeline.html">Timeline</a> · <a href="tim.html">Tim</a> · <a href="tokoh.html">Tokoh</a> · <a href="kuis.html">Kuis</a></p>
+    <p>© 2026 Nexa Tech Labs | Kelompok IV</p>
 </footer>
 
 <script>
-/* 1. FULL DATABASE (12 KITAB LENGKAP) */
+/* ==========================================================
+   1. DATABASE DENGAN RADAR METRICS & GLOSARIUM CERDAS
+   ========================================================== */
+const GLOSSARY = {
+    'qadim': 'Sesuatu yang tidak memiliki permulaan; ada sejak keabadian.',
+    'creatio ex nihilo': 'Doktrin bahwa materi tidak kekal dan alam semesta diciptakan dari kehampaan mutlak oleh Tuhan.',
+    'akal mustafad': 'Tingkat kesadaran tertinggi di mana rasio manusia menerima pancaran langsung pengetahuan dari malaikat (Akal Aktif).',
+    'wajib al-wujud': 'Wujud yang niscaya ada dengan sendirinya (Tuhan), di mana esensi dan eksistensinya adalah satu kesatuan.',
+    'silogisme': 'Penarikan kesimpulan secara deduktif dari dua premis mayor dan minor.',
+    'dzawq': 'Pencicipan spiritual; pengetahuan yang didapat melalui intuisi dan pengalaman mistik langsung, bukan dari rasio.',
+    'burhani': 'Metode demonstratif yang menggunakan premis logis yang pasti dan terbukti kebenarannya.',
+    'nur al-anwar': 'Cahaya dari Segala Cahaya; entitas tertinggi dan sumber segala emanasi wujud dalam filsafat Iluminasi.',
+    'asalat al-wujud': 'Prinsip mendasar Mulla Sadra bahwa eksistensi (keberadaan) lebih hakiki dan mendahului esensi (apa itu sesuatu).'
+};
+
+// Radar Stats: [Rasional, Spiritual, Empiris, Historis, Estetika]
 const DB = [
-    {id:"k-01", cat:"filsafat", catL:"Filsafat Peripatetik", title:"Al-Falsafah al-Ula", author:"Al-Kindi", era:850, eraL:"Abad 9 M", colors:["#1e3a8a","#172554"],
-     content:`<p>Karya monumental yang dikenal sebagai "Filsafat Pertama". Ini adalah batu loncatan di mana Al-Kindi berusaha keras untuk membuktikan bahwa tidak ada pertentangan antara pencarian rasional kebenaran (filsafat Yunani) dan wahyu ilahi (Islam).</p><p>Al-Kindi menggunakan kerangka Aristoteles mengenai sebab-akibat untuk membuktikan keberadaan Tuhan (Sebab Pertama). Namun, ia secara tegas menolak gagasan Aristoteles bahwa alam semesta itu kekal (qadim). Baginya, alam semesta diciptakan dari ketiadaan (creatio ex nihilo) semata-mata oleh Kehendak Tuhan yang mutlak.</p><div class="zen-quote">Kita tidak boleh merasa malu untuk mengakui kebenaran dari mana pun asalnya, sekalipun itu datang dari bangsa-bangsa yang jauh.</div><p>Melalui buku ini, Al-Kindi meletakkan fondasi teologis yang sangat aman bagi perkembangan sains dan rasionalitas di dunia Islam, menjadi jembatan intelektual pertama antara Athena dan Baghdad.</p>`,
-     ai:"Kitab ini mendobrak sentimen anti-filsafat pada abad ke-9. Al-Kindi merumuskan argumen kosmologis yang valid secara logika namun tetap mempertahankan doktrin penciptaan Islam. Pilar pertama dari historiografi 'Without Any Gaps'."},
-    
-    {id:"k-02", cat:"politik", catL:"Filsafat Politik", title:"Ara' Ahl al-Madinah al-Fadhilah", author:"Al-Farabi", era:950, eraL:"Abad 10 M", colors:["#5b21b6","#4c1d95"],
-     content:`<p>Al-Farabi merumuskan konsep utopia Islam yang secara tidak langsung terinspirasi dari "The Republic" karya Plato, namun ia memberikan nyawa tauhid dan kenabian ke dalam sistem politiknya.</p><p>Menurutnya, negara (Madinah) adalah sebuah entitas organik, mirip dengan anatomi tubuh manusia. Di mana jantung (sebagai pemimpin) mengatur, menyuplai, dan menyeimbangkan organ-organ lainnya agar tubuh berfungsi secara harmonis.</p><div class="zen-quote">Masyarakat yang utama (Al-Madinah Al-Fadhilah) adalah mereka yang warga negaranya bekerja sama untuk mencapai kebahagiaan sejati, bukan sekadar bertahan hidup atau mengejar materi.</div><p>Syarat mutlak dalam sistem Al-Farabi: Pemimpin tertinggi haruslah seorang Nabi atau seorang Filsuf Paripurna yang akalnya sudah mencapai tahap Akal Mustafad (menerima pancaran langsung dari Akal Aktif/Malaikat Jibril).</p>`,
-     ai:"Al-Farabi adalah yang pertama mengkategorikan ilmu politik dalam epistemologi Islam. Ia tidak memisahkan antara etika, spiritualitas, dan pemerintahan. Negara baginya adalah kendaraan menuju kebahagiaan akhirat."},
-
-    {id:"k-03", cat:"medis", catL:"Sains & Kedokteran", title:"Al-Qanun fi al-Tibb", author:"Ibnu Sina", era:1025, eraL:"Abad 11 M", colors:["#064e3b","#022c22"],
-     content:`<p>Sebuah mahakarya ensiklopedis yang menjadi "Kitab Suci" kedokteran di Eropa dan Timur Tengah selama lebih dari enam abad. Ibnu Sina merinci 760 jenis obat-obatan, anatomi mata yang kompleks, sifat menular dari tuberkulosis, hingga penggunaan anestesi pra-operasi.</p><div class="zen-quote">Kedokteran adalah ilmu tentang keadaan tubuh manusia, baik dalam kondisi sehat maupun sakit, yang bertujuan untuk menjaga kesehatan dan memulihkannya ketika ia hilang.</div><p>Salah satu kontribusi terbesarnya adalah pendekatan holistik. Ibnu Sina merumuskan konsep psikosomatis, yang menjelaskan bagaimana emosi yang ekstrem, stres, dan kondisi psikologis dapat secara langsung menyebabkan kerusakan/penyakit fisik pada organ tubuh.</p>`,
-     ai:"Al-Qanun bukan sekadar buku resep obat, melainkan sintesis metodologi empiris (eksperimen klinis) dengan kerangka teori logika rasional. Membuktikan bahwa pemikir Islam memimpin sains dunia pada abad pertengahan."},
-
-    {id:"k-04", cat:"filsafat", catL:"Filsafat Epistemologi", title:"Al-Shifa (The Book of Healing)", author:"Ibnu Sina", era:1027, eraL:"Abad 11 M", colors:["#b45309","#78350f"],
-     content:`<p>Ini adalah ensiklopedia filsafat terbesar yang pernah ditulis oleh satu orang. Di dalam kitab inilah Ibnu Sina mematangkan argumen kosmologisnya tentang <em>Wajib al-Wujud</em> (Wujud yang Niscaya), memisahkan antara esensi (apa itu sesuatu) dan eksistensi (bahwa sesuatu itu ada).</p><p>Ia juga memperkenalkan eksperimen pemikiran <em>"Flying Man"</em> (Manusia Terbang) untuk membuktikan bahwa jiwa manusia itu nyata, independen, dan berbeda dari tubuh fisik.</p><div class="zen-quote">Waktu bukanlah realitas mandiri yang berdiri sendiri, melainkan ia adalah alat ukur dari pergerakan yang tak kasat mata yang senantiasa terikat pada materi.</div><p>Sistem ontologis yang dibangun dalam Al-Shifa begitu kuat hingga diadopsi (dan diadaptasi) oleh tokoh-tokoh besar Kristen di Barat seperti Thomas Aquinas. Ironisnya, buku ini dinamakan "Penyembuhan" karena tujuannya adalah untuk menyembuhkan jiwa dari penyakit kebodohan.</p>`,
-     ai:"Puncak tertinggi filsafat Peripatetik. Argumen 'Wajib al-Wujud' Ibnu Sina adalah inovasi terbesar dalam sejarah pembuktian rasional eksistensi Tuhan, yang tidak pernah dipikirkan oleh Aristoteles sebelumnya."},
-
-    {id:"k-05", cat:"tasawuf", catL:"Teologi & Kritik", title:"Tahafut al-Falasifah", author:"Al-Ghazali", era:1095, eraL:"Abad 11 M", colors:["#991b1b","#7f1d1d"],
-     content:`<p>Sebuah pukulan telak bagi hegemoni rasionalisme kaku. Dalam kitab ini, Al-Ghazali mengidentifikasi 20 masalah filosofis para filsuf Neoplatonik (khususnya Ibnu Sina dan Al-Farabi).</p><p>Ia mengkritik tajam dan bahkan menyatakan mereka kafir pada 3 poin utama: meyakini bahwa alam semesta ini qadim (tidak berawal), menyatakan bahwa Tuhan hanya mengetahui hal-hal universal dan bukan rincian partikular, serta mengingkari kebangkitan fisik/jasmani di hari kiamat.</p><div class="zen-quote">Barangsiapa mempelajari matematika dan terpesona oleh ketepatan buktinya, jangan sampai ia secara keliru berpikir bahwa semua ilmu (termasuk metafisika) bisa sama pastinya dengan matematika.</div><p>Karya ini sering disalahpahami oleh orientalis Barat sebagai "kematian filsafat Islam". Padahal, metode keraguan dan dekonstruksi yang dipakai Al-Ghazali di sini justru merupakan puncak dari tradisi kritik filosofis itu sendiri.</p>`,
-     ai:"Buku ini bukan anti-akal. Al-Ghazali menggunakan logika tingkat tinggi (silogisme) untuk menghancurkan kesombongan logika itu sendiri ketika mencoba merambah ranah metafisika ilahi yang di luar batas kapasitas rasio manusia."},
-
-    {id:"k-06", cat:"tasawuf", catL:"Tasawuf & Akhlak", title:"Ihya Ulumuddin", author:"Al-Ghazali", era:1105, eraL:"Abad 12 M", colors:["#047857","#064e3b"],
-     content:`<p>Magnum opus yang lahir dari rahim krisis spiritual Al-Ghazali. Kitab ini berhasil menjembatani dan menyatukan Fikih (hukum lahiriah yang cenderung kaku) dengan Tasawuf (pengalaman batiniah/spiritual).</p><p>Ia mengobati "penyakit" keilmuan pada masanya di mana para ulama hanya mengejar debat hukum demi jabatan, melupakan esensi keikhlasan dan pembersihan hati (Tazkiyatun Nafs).</p><div class="zen-quote">Mengetahui definisi cinta secara rasional dan menghafal dalil-dalilnya tidak akan pernah sama rasanya dengan menjadi seorang pecinta sejati yang dimabuk rindu kepada Tuhannya.</div><p>Keberhasilan buku ini mengamankan posisi tasawuf yang moderat ke dalam tradisi intelektual Sunni ortodoks, menjadikannya kurikulum wajib di madrasah dan pesantren hingga saat ini.</p>`,
-     ai:"Al-Ghazali menggeser paradigma umat Islam dari pemahaman beragama yang murni kognitif-legalistik, menuju pemahaman beragama yang berpusat pada 'rasa' (dzawq) dan pemurnian kalbu."},
-
-    {id:"k-07", cat:"filsafat", catL:"Hukum & Filsafat", title:"Fasl al-Maqal", author:"Ibnu Rusyd", era:1179, eraL:"Abad 12 M", colors:["#c2410c","#9a3412"],
-     content:`<p>Ditulis di Kordoba, Andalusia, karya ini adalah risalah hukum (fatwa) yang brilian. Ibnu Rusyd (Averroes) berusaha membela filsafat dari serang Al-Ghazali. Kesimpulan utamanya: belajar filsafat bukan sekadar mubah (boleh), melainkan wajib syar'i bagi mereka yang memiliki kapasitas intelektual.</p><div class="zen-quote">Kebenaran rasional tidak mungkin bertentangan dengan kebenaran wahyu; keduanya bagaikan saudara sepersusuan yang harus selaras dan saling bersaksi satu sama lain.</div><p>Ibnu Rusyd menegaskan bahwa jika terjadi pertentangan kasat mata antara kesimpulan akal demonstratif (burhani) dengan teks wahyu, maka teks wahyu tersebut harus ditakwilkan (ditafsirkan makna batin/metaforisnya), karena Tuhan tidak mungkin mengajarkan kemustahilan logis.</p>`,
-     ai:"Ibnu Rusyd merumuskan kerangka epistemologi ganda yang harmonis. Pengaruhnya menjalar ke Eropa, memicu gerakan Averroisme Latin yang pada akhirnya meletakkan dasar bagi era Renaissance di Barat."},
-
-    {id:"k-08", cat:"filsafat", catL:"Sastra Filosofis", title:"Hayy bin Yaqdhan", author:"Ibnu Tufail", era:1180, eraL:"Abad 12 M", colors:["#0f766e","#115e59"],
-     content:`<p>Sebuah novel filosofis pionir yang menceritakan tentang bayi bernama Hayy yang tumbuh sendirian di pulau tak berpenghuni, diasuh oleh seekor rusa betina. Melalui observasi alam (empirisme) dan kontemplasi rasional, Hayy menemukan keberadaan Tuhan tanpa pernah melihat manusia lain, tanpa bahasa manusia, atau agama formal.</p><div class="zen-quote">Ketika ia menatap keteraturan pergerakan benda-benda langit, rasio murninya menyadari bahwa keteraturan sempurna ini tidak mungkin ada tanpa Penggerak Utama yang tidak bergerak (Prime Mover).</div><p>Kisah ini mendahului konsep "Tabula Rasa" John Locke dan kisah Robinson Crusoe berabad-abad lamanya. Ibnu Tufail ingin membuktikan bahwa akal murni yang sehat, pada puncaknya, akan sampai pada kesimpulan kebenaran yang persis sama dengan wahyu para Nabi.</p>`,
-     ai:"Novel ini adalah eksperimen pemikiran (thought experiment) terhebat di abad ke-12. Menggabungkan teori evolusi sosiologis, anatomi komparatif, dan pencarian teologis dalam satu narasi fiksi yang memukau."},
-
-    {id:"k-09", cat:"tasawuf", catL:"Filsafat Iluminasi", title:"Hikmat al-Ishraq", author:"Suhrawardi", era:1186, eraL:"Abad 12 M", colors:["#451a03","#78350f"],
-     content:`<p>Kitab ini mendirikan Mazhab Isyraq (Iluminasi). Suhrawardi mendobrak batas rasionalisme Ibnu Sina yang dianggap kaku, dengan menggabungkan kekuatan logika diskursif dan pencerahan spiritual intuitif (dzawq).</p><p>Ontologinya murni berpusat pada "Cahaya". Baginya, Tuhan adalah Cahaya dari Segala Cahaya (Nur al-Anwar), dan seluruh entitas di alam semesta ini eksis berdasarkan gradasi atau tingkat intensitas cahaya yang mereka terima dari-Nya.</p><div class="zen-quote">Kegelapan pada hakikatnya tidak memiliki wujud positif; ia hanyalah ketiadaan cahaya. Begitu pula dengan keburukan, ia hanyalah absennya kebaikan.</div><p>Kemunculan mazhab ini membantah keras narasi orientalis bahwa filsafat Islam mati setelah Al-Ghazali. Di wilayah Persia, filsafat justru berevolusi menjadi sesuatu yang lebih kaya dan mistik.</p>`,
-     ai:"Suhrawardi menggantikan konsep 'wujud' (existence) Aristotelian dengan konsep 'cahaya' (light). Sebuah revolusi metafisika yang menuntut filsuf untuk tidak hanya berpikir di balik meja, tapi juga menyucikan jiwa."},
-
-    {id:"k-10", cat:"sejarah", catL:"Sosiologi & Sejarah", title:"Al-Muqaddimah", author:"Ibnu Khaldun", era:1377, eraL:"Abad 14 M", colors:["#292524","#1c1917"],
-     content:`<p>Karya monumental dari ilmuwan Afrika Utara yang menjadikan Sejarah tidak lagi sekadar dongeng masa lalu, melainkan sebuah sains empiris yang sistematis. Ibnu Khaldun merumuskan konsep <em>'Asabiyyah</em> (solidaritas sosial atau kohesi kelompok) sebagai mesin penggerak kebangkitan dan keruntuhan peradaban.</p><div class="zen-quote">Kekaisaran dan dinasti memiliki umur alami sama seperti manusia. Mereka lahir, tumbuh menjadi kuat, mencapai puncak kejayaan, lalu perlahan menua karena kemewahan, dan akhirnya mati digantikan oleh yang lebih kuat.</div><p>Muqaddimah diakui secara universal sebagai pondasi bagi ilmu sosiologi, demografi, ekonomi, dan filsafat sejarah. Pemikirannya mendahului teori nilai tenaga kerja Karl Marx dan Adam Smith berabad-abad lamanya.</p>`,
-     ai:"Ibnu Khaldun menemukan hukum kausalitas dalam sejarah manusia. Ia mengajarkan bahwa untuk memahami 'apa' yang terjadi di masa lalu, kita harus meneliti 'bagaimana' sosiologi dan ekonomi masyarakatnya bekerja."},
-
-    {id:"k-11", cat:"filsafat", catL:"Teosofi Transenden", title:"Al-Hikmah al-Muta'aliyah", author:"Mulla Sadra", era:1628, eraL:"Abad 17 M", colors:["#1e1b4b","#312e81"],
-     content:`<p>Puncak tertinggi dari sejarah pemikiran Islam Timur. Mulla Sadra berhasil mensintesiskan filsafat rasional (Peripatetik), teologi Kalam, intuisi Tasawuf (Ibn Arabi), dan wahyu Al-Quran ke dalam satu sistem raksasa yang disebut Teosofi Transenden.</p><p>Dua konsep revolusionernya adalah <em>Asalat al-Wujud</em> (Primasinya Wujud, bahwa eksistensi mendahului esensi) dan <em>Harakah Jauhariyah</em> (Gerak Substantif).</p><div class="zen-quote">Alam semesta ini tidaklah statis. Substansi dari segala materi senantiasa berada dalam proses gerak evolusioner yang dinamis, terus merindu dan bergerak menanjak kembali kepada Kesempurnaan Ilahi.</div><p>Karya ini membuktikan kontinuitas tanpa celah dari intelektualisme Islam. Ini masih menjadi kurikulum filsafat strata tertinggi di universitas-universitas Iran hingga hari ini.</p>`,
-     ai:"Mulla Sadra menyelesaikan perdebatan ratusan tahun antara Filsuf dan Sufi. Ia membuktikan secara matematis dan filosofis apa yang dialami oleh para Sufi dalam ekstase spiritual mereka."},
-
-    {id:"k-12", cat:"tasawuf", catL:"Referensi Modern", title:"Islam Risalah Cinta & Kebahagiaan", author:"Haidar Bagir", era:2012, eraL:"Kontemporer", colors:["#4c0519","#831843"],
-     content:`<p>Kitab referensi utama Kelompok IV. Karya ini berfungsi sebagai jembatan yang menyaring intisari tasawuf dan filsafat Islam klasik, menyajikannya dengan bahasa dan relevansi untuk mengatasi krisis eksistensial manusia modern.</p><p>Poros utamanya adalah <em>Mahabbah</em> (Cinta). Penulis menepis pandangan keagamaan yang dipenuhi ancaman dan ketakutan, mengembalikannya pada esensi Islam sebagai rahmat bagi semesta.</p><div class="zen-quote">Tuhan pada hakikatnya adalah Maha Cinta. Segala bentuk penderitaan dan kepedihan di dunia ini hanyalah riak-riak kecil yang bersifat sementara di dalam samudra rahmat-Nya yang tak bertepi.</div><p>Melalui buku ini, pemikiran Al-Ghazali, Ibn Arabi, dan Mulla Sadra diracik menjadi resep kebahagiaan praktis (Positive Psychology) untuk kehidupan di abad ke-21 yang serba materialistis.</p>`,
-     ai:"Buku ini menegaskan kesimpulan dari Kelompok IV: Bahwa tradisi intelektual Islam tidak berhenti di masa lalu. Filsafat dan tasawuf tetap menjadi jawaban paling rasional untuk dahaga spiritual manusia hari ini."}
+    {id:"k-01", cat:"filsafat", catL:"Filsafat Peripatetik", title:"Al-Falsafah al-Ula", author:"Al-Kindi", era:850, eraL:"Abad 9 M", colors:["#1e3a8a","#172554"], stats:[9,6,4,8,5],
+     content:`<p>Karya monumental yang dikenal sebagai "Filsafat Pertama". Ini adalah batu loncatan di mana Al-Kindi berusaha keras untuk membuktikan bahwa tidak ada pertentangan antara pencarian rasional kebenaran (filsafat Yunani) dan wahyu ilahi (Islam).</p><p>Al-Kindi menggunakan kerangka Aristoteles mengenai sebab-akibat untuk membuktikan keberadaan Tuhan (Sebab Pertama). Namun, ia secara tegas menolak gagasan Aristoteles bahwa alam semesta itu qadim. Baginya, alam semesta diciptakan melalui creatio ex nihilo semata-mata oleh Kehendak Tuhan yang mutlak.</p><div class="zen-quote">Kita tidak boleh merasa malu untuk mengakui kebenaran dari mana pun asalnya, sekalipun itu datang dari bangsa-bangsa yang jauh.</div>`,
+     ai:"Al-Kindi merumuskan argumen kosmologis yang valid secara logika namun tetap mempertahankan doktrin penciptaan Islam."},
+    {id:"k-02", cat:"politik", catL:"Filsafat Politik", title:"Ara' Ahl al-Madinah", author:"Al-Farabi", era:950, eraL:"Abad 10 M", colors:["#5b21b6","#4c1d95"], stats:[9,7,3,7,6],
+     content:`<p>Al-Farabi merumuskan konsep utopia Islam yang terinspirasi dari Plato, memberikan nyawa tauhid ke sistem politiknya.</p><p>Pemimpin tertinggi haruslah seorang Nabi atau Filsuf Paripurna yang akalnya mencapai akal mustafad.</p><div class="zen-quote">Masyarakat utama adalah mereka yang bekerja sama untuk mencapai kebahagiaan sejati.</div>`,
+     ai:"Al-Farabi adalah yang pertama mengkategorikan ilmu politik dalam epistemologi Islam."},
+    {id:"k-03", cat:"medis", catL:"Sains & Kedokteran", title:"Al-Qanun fi al-Tibb", author:"Ibnu Sina", era:1025, eraL:"Abad 11 M", colors:["#064e3b","#022c22"], stats:[8,3,10,9,4],
+     content:`<p>Sebuah mahakarya ensiklopedis yang menjadi "Kitab Suci" kedokteran Eropa. Merinci 760 jenis obat dan anatomi mata yang kompleks.</p><div class="zen-quote">Kedokteran adalah ilmu tentang keadaan tubuh manusia, untuk menjaga dan memulihkan kesehatan.</div>`,
+     ai:"Sintesis metodologi empiris dengan kerangka teori logika rasional."},
+    {id:"k-04", cat:"filsafat", catL:"Filsafat Epistemologi", title:"Al-Shifa", author:"Ibnu Sina", era:1027, eraL:"Abad 11 M", colors:["#b45309","#78350f"], stats:[10,5,6,8,5],
+     content:`<p>Ensiklopedia filsafat terbesar. Ibnu Sina mematangkan argumen kosmologisnya tentang wajib al-wujud.</p><div class="zen-quote">Waktu bukanlah realitas mandiri, melainkan alat ukur dari pergerakan.</div>`,
+     ai:"Puncak tertinggi filsafat Peripatetik. Inovasi terbesar pembuktian eksistensi Tuhan."},
+    {id:"k-05", cat:"tasawuf", catL:"Teologi & Kritik", title:"Tahafut al-Falasifah", author:"Al-Ghazali", era:1095, eraL:"Abad 11 M", colors:["#991b1b","#7f1d1d"], stats:[10,8,2,7,6],
+     content:`<p>Al-Ghazali mengkritik tajam para filsuf. Ia menggunakan silogisme tingkat tinggi untuk menghancurkan kesombongan rasio di ranah metafisika.</p><div class="zen-quote">Barangsiapa mempelajari matematika, jangan salah pikir semua ilmu bisa sama pastinya.</div>`,
+     ai:"Metode keraguan dan dekonstruksi ini adalah puncak tradisi kritik filosofis."},
+    {id:"k-06", cat:"tasawuf", catL:"Tasawuf & Akhlak", title:"Ihya Ulumuddin", author:"Al-Ghazali", era:1105, eraL:"Abad 12 M", colors:["#047857","#064e3b"], stats:[6,10,4,8,8],
+     content:`<p>Menyatukan hukum lahiriah dan pengalaman spiritual. Ia mengobati penyakit hati (Tazkiyatun Nafs) dengan mengedepankan dzawq.</p><div class="zen-quote">Menghafal definisi cinta tak akan sama dengan menjadi seorang pecinta sejati.</div>`,
+     ai:"Menggeser paradigma beragama menuju pemahaman yang berpusat pada kalbu."},
+    {id:"k-07", cat:"filsafat", catL:"Hukum & Filsafat", title:"Fasl al-Maqal", author:"Ibnu Rusyd", era:1179, eraL:"Abad 12 M", colors:["#c2410c","#9a3412"], stats:[10,4,5,7,5],
+     content:`<p>Ibnu Rusyd membela filsafat dengan metode burhani. Kebenaran akal tak mungkin bertentangan dengan wahyu.</p><div class="zen-quote">Kebenaran rasional dan wahyu bagaikan saudara sepersusuan.</div>`,
+     ai:"Memicu Averroisme Latin yang meletakkan dasar Renaissance di Barat."},
+    {id:"k-08", cat:"filsafat", catL:"Sastra Filosofis", title:"Hayy bin Yaqdhan", author:"Ibnu Tufail", era:1180, eraL:"Abad 12 M", colors:["#0f766e","#115e59"], stats:[8,8,7,6,10],
+     content:`<p>Novel perintis tentang Hayy yang tumbuh di pulau. Menggunakan observasi alam untuk mencapai makrifat.</p><div class="zen-quote">Keteraturan alam ini tak mungkin ada tanpa Penggerak Utama.</div>`,
+     ai:"Eksperimen pemikiran terhebat di abad ke-12 yang menggabungkan evolusi sosiologis dan teologi."},
+    {id:"k-09", cat:"tasawuf", catL:"Filsafat Iluminasi", title:"Hikmat al-Ishraq", author:"Suhrawardi", era:1186, eraL:"Abad 12 M", colors:["#451a03","#78350f"], stats:[7,10,3,6,9],
+     content:`<p>Mendirikan Mazhab Iluminasi. Ontologinya berpusat pada nur al-anwar. Kegelapan hanyalah ketiadaan cahaya.</p><div class="zen-quote">Keburukan pada hakikatnya hanyalah absennya kebaikan.</div>`,
+     ai:"Revolusi metafisika yang menuntut filsuf untuk menyucikan jiwa."},
+    {id:"k-10", cat:"sejarah", catL:"Sosiologi & Sejarah", title:"Al-Muqaddimah", author:"Ibnu Khaldun", era:1377, eraL:"Abad 14 M", colors:["#292524","#1c1917"], stats:[9,3,9,10,5],
+     content:`<p>Menjadikan sejarah sains empiris. Merumuskan konsep 'Asabiyyah sebagai penggerak peradaban.</p><div class="zen-quote">Kekaisaran memiliki umur alami; lahir, tumbuh kuat, menua karena kemewahan, lalu mati.</div>`,
+     ai:"Pondasi bagi sosiologi dan ekonomi dunia modern."},
+    {id:"k-11", cat:"filsafat", catL:"Teosofi Transenden", title:"Al-Hikmah Muta'aliyah", author:"Mulla Sadra", era:1628, eraL:"Abad 17 M", colors:["#1e1b4b","#312e81"], stats:[9,10,4,7,7],
+     content:`<p>Puncak intelektualisme. Mensintesiskan filsafat, teologi, dan wahyu. Menelurkan konsep asalat al-wujud.</p><div class="zen-quote">Alam ini tak statis; materi senantiasa berada dalam proses gerak menuju Kesempurnaan Ilahi.</div>`,
+     ai:"Menyelesaikan perdebatan panjang antara filsuf dan sufi."},
+    {id:"k-12", cat:"tasawuf", catL:"Referensi Modern", title:"Islam Risalah Cinta", author:"Haidar Bagir", era:2012, eraL:"Kontemporer", colors:["#4c0519","#831843"], stats:[6,9,5,8,8],
+     content:`<p>Menyaring tasawuf klasik untuk manusia modern. Poros utamanya adalah Mahabbah. Tuhan pada hakikatnya adalah Maha Cinta.</p><div class="zen-quote">Segala penderitaan dunia hanyalah riak kecil di samudra rahmat-Nya.</div>`,
+     ai:"Membuktikan tradisi filsafat Islam tetap menjadi jawaban relevan untuk manusia hari ini."}
 ];
 
-const cats = [
-    {f:'all', l:'Semua Koleksi'}, {f:'filsafat', l:'Filsafat Murni'},
-    {f:'tasawuf', l:'Tasawuf & Teologi'}, {f:'medis', l:'Sains & Medis'},
-    {f:'politik', l:'Politik & Sosiologi'}, {f:'sejarah', l:'Sejarah'}
-];
-
+const cats = [{f:'all', l:'Semua'}, {f:'filsafat', l:'Filsafat'}, {f:'tasawuf', l:'Tasawuf'}, {f:'medis', l:'Sains'}, {f:'politik', l:'Politik'}, {f:'sejarah', l:'Sejarah'}];
 let curData = [...DB], ttsOn = false, curUtt = null, curBookId = null, zenFontSize = 1.1;
 
-/* 2. TOAST NOTIFICATION */
+/* ==========================================================
+   2. FUNGSI INTI (DASHBOARD, RAK, FILTER, SORTING)
+   ========================================================== */
 function toast(m) {
     const b = document.getElementById('toast-box'), t = document.createElement('div');
     t.className = 'toast'; t.innerHTML = `<i class="fa-solid fa-bolt"></i> ${m}`;
     b.appendChild(t); setTimeout(() => t.remove(), 3400);
 }
-window.appToast = toast;
 
-/* 3. INITIALIZE PRELOADER (ANTI-STUCK IMMEDIATE EXECUTION) */
-function startPreloader() {
-    const preloader = document.getElementById('preloader');
-    const fillBar = document.getElementById('preFill');
-    const percentEl = document.getElementById('prePercent');
-    const statusEl = document.getElementById('preStatus');
-    let progress = 0;
-    
-    // Smooth fast loading logic
-    let interval = setInterval(() => {
-        progress += Math.floor(Math.random() * 15) + 5;
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(interval);
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                setTimeout(() => preloader.style.display = 'none', 800);
-            }, 600);
-        }
-        fillBar.style.width = progress + '%';
-        percentEl.textContent = progress + '%';
-        
-        if(progress > 40) statusEl.textContent = 'MENGANALISIS MANUSKRIP KLASIK...';
-        if(progress > 75) statusEl.textContent = 'MENDEKODE ARSITEKTUR 3D...';
-        if(progress === 100) statusEl.textContent = 'BISMILLAH, BAITUL HIKMAH TERBUKA!';
-    }, 120);
-}
-startPreloader();
-
-/* 4. BUILD FILTERS & RENDER LIBRARY */
-function buildFilters() {
-    const g = document.getElementById('filterGroup'); g.innerHTML = '';
-    cats.forEach(c => {
-        const cnt = c.f === 'all' ? DB.length : DB.filter(b => b.cat === c.f).length;
-        const btn = document.createElement('button');
-        btn.className = `filter-btn${c.f === 'all' ? ' active' : ''}`;
-        btn.dataset.filter = c.f;
-        btn.innerHTML = `<span>${c.l} <span class="f-count">${cnt}</span></span>`;
-        btn.onclick = () => {
-            document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
-            btn.classList.add('active'); applyFilter();
-        };
-        g.appendChild(btn);
-    });
-}
-
-function renderLib(data) {
-    const g = document.getElementById('libraryGrid'); g.innerHTML = '';
-    document.getElementById('searchCount').textContent = data.length + ' Hasil';
-    
-    if(!data.length) {
-        g.innerHTML = '<div class="no-results"><i class="fa-solid fa-book-skull" style="font-size:3rem; display:block; margin-bottom:15px; opacity:0.3;"></i>Tidak ditemukan manuskrip yang cocok dengan pencarian Anda.</div>';
-        return;
-    }
-    
-    data.forEach((b, i) => {
-        const isRead = localStorage.getItem(`read_${b.id}`) === 'true';
-        const isFav = localStorage.getItem(`fav_${b.id}`) === 'true';
-        const c = document.createElement('div');
-        c.className = `book-wrapper reveal${isRead ? ' is-read' : ''}${isFav ? ' is-fav' : ''}`;
-        c.style.transitionDelay = `${(i % 8) * 0.08}s`;
-        c.style.setProperty('--book-color-1', b.colors[0]); c.style.setProperty('--book-color-2', b.colors[1]);
-        
-        const readTime = Math.ceil((b.content.length / 5) / 200); // Rough WPM calculation
-        
-        c.innerHTML = `
-            <div class="read-stamp">Telah Dibaca</div>
-            <div class="book-fav-star"><i class="fa-solid fa-star"></i></div>
-            <div class="book-3d">
-                <div class="book-pages"></div>
-                <div class="book-spine"><div class="spine-text">${b.title}</div></div>
-                <div class="book-cover">
-                    <div class="book-category">${b.catL}</div>
-                    <h2 class="book-title">${b.title}</h2>
-                    <div class="book-author">${b.author}</div>
-                    <div class="book-era">${b.eraL} · ±${readTime} mnt</div>
-                    <div class="book-read-bar"><div class="book-read-fill" style="width:${isRead ? '100' : '0'}%"></div></div>
-                </div>
-            </div>`;
-        c.onclick = () => openZen(b.id);
-        g.appendChild(c);
-    });
-    
-    // Re-observe new elements for reveal animation
-    setTimeout(() => { document.querySelectorAll('.book-wrapper.reveal').forEach(el => revObs.observe(el)); }, 50);
-    updateDash(); renderFavShelf();
-}
-
-function sortLib() {
-    const v = document.getElementById('sortSelect').value;
-    if(v === 'eraAsc') curData.sort((a,b) => a.era - b.era);
-    else if(v === 'eraDesc') curData.sort((a,b) => b.era - a.era);
-    else if(v === 'titleAsc') curData.sort((a,b) => a.title.localeCompare(b.title));
-    else curData = [...DB]; // Default
-    applyFilter();
-}
-
-function applyFilter() {
-    const f = document.querySelector('.filter-btn.active').dataset.filter;
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    let d = f === 'all' ? [...curData] : curData.filter(b => b.cat === f);
-    if(q) {
-        d = d.filter(b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q) || b.catL.toLowerCase().includes(q) || b.eraL.toLowerCase().includes(q));
-    }
-    renderLib(d);
-}
-
-document.getElementById('searchInput').addEventListener('input', applyFilter);
-
-/* View Toggle (Grid/List) */
-document.querySelectorAll('.view-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('libraryGrid').classList.toggle('list-view', btn.dataset.view === 'list');
-    });
-});
-
-/* 5. DASHBOARD & FAVORITES LOGIC */
 function updateDash() {
     const readCount = DB.filter(b => localStorage.getItem(`read_${b.id}`) === 'true').length;
     const favCount = DB.filter(b => localStorage.getItem(`fav_${b.id}`) === 'true').length;
@@ -955,10 +553,9 @@ function updateDash() {
     document.getElementById('dashFav').textContent = favCount;
     document.getElementById('dashPct').textContent = pct + '%';
     
-    const circ = 97.4; // SVG Circle circumference
+    const circ = 97.4; 
     document.getElementById('dashRing').style.strokeDashoffset = circ - (circ * pct / 100);
     
-    // Celebration trigger
     if(readCount === DB.length && !sessionStorage.getItem('k4celebrated')) {
         celebrate(); sessionStorage.setItem('k4celebrated', '1');
     }
@@ -1002,73 +599,297 @@ function scrollToFavs() {
     } else { toast('Rak Favorit Anda masih kosong.'); }
 }
 
-/* 6. ZEN READER & NEXA AI ENGINE */
-let aiTypingInterval = null;
-
-function openZen(id) {
-    const b = DB.find(x => x.id === id); if(!b) return;
-    curBookId = id;
-    
-    document.getElementById('zenCat').textContent = b.catL;
-    document.getElementById('zenTitle').textContent = b.title;
-    document.getElementById('zenAuthor').textContent = b.author;
-    document.getElementById('zenEra').innerHTML = `<i class="fa-solid fa-hourglass-half"></i> ${b.eraL}`;
-    document.getElementById('zenTime').innerHTML = `<i class="fa-regular fa-clock"></i> ±${Math.ceil((b.content.length/5)/200)} mnt baca`;
-    
-    document.getElementById('zenContent').innerHTML = b.content;
-    document.getElementById('zenPaper').style.fontSize = zenFontSize + 'rem';
-    
-    const isFav = localStorage.getItem(`fav_${id}`) === 'true';
-    document.getElementById('btnFavZen').innerHTML = isFav ? '<i class="fa-solid fa-bookmark" style="color:var(--a5)"></i>' : '<i class="fa-regular fa-bookmark"></i>';
-    
-    document.getElementById('aiInsightBox').classList.remove('active');
-    clearInterval(aiTypingInterval);
-    
-    document.getElementById('zenModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-    
-    if(localStorage.getItem(`read_${id}`) !== 'true') {
-        localStorage.setItem(`read_${id}`, 'true');
-        setTimeout(applyFilter, 500); // Refresh grid UI subtly
-    }
-    
-    // Scroll progress listener inside Zen Reader
-    const modal = document.getElementById('zenModal');
-    modal.onscroll = () => {
-        const p = modal.scrollTop / (modal.scrollHeight - modal.clientHeight) * 100;
-        document.getElementById('zenProgFill').style.width = Math.min(100, p) + '%';
-    };
-}
-
-function closeZen() {
-    document.getElementById('zenModal').classList.remove('active');
-    document.body.style.overflow = 'auto';
-    stopTTS(); clearInterval(aiTypingInterval);
-    document.getElementById('zenProgFill').style.width = '0%';
-}
-
-function changeFontSize(d) {
-    zenFontSize = Math.max(0.8, Math.min(1.6, zenFontSize + (d * 0.1)));
-    document.getElementById('zenPaper').style.fontSize = zenFontSize.toFixed(1) + 'rem';
-    toast(`Ukuran Teks Reader: ${Math.round(zenFontSize * 100)}%`);
-}
-
-function toggleFavFromZen() {
-    if(!curBookId) return;
-    const is = localStorage.getItem(`fav_${curBookId}`) === 'true';
-    if(is) {
-        localStorage.removeItem(`fav_${curBookId}`);
-        document.getElementById('btnFavZen').innerHTML = '<i class="fa-regular fa-bookmark"></i>';
-        toast('Dihapus dari Favorit');
-    } else {
-        localStorage.setItem(`fav_${curBookId}`, 'true');
-        document.getElementById('btnFavZen').innerHTML = '<i class="fa-solid fa-bookmark" style="color:var(--a5)"></i>';
-        toast('Kitab disimpan ke Favorit!');
-    }
+function sortLib() {
+    const v = document.getElementById('sortSelect').value;
+    if(v === 'eraAsc') curData.sort((a,b) => a.era - b.era);
+    else if(v === 'eraDesc') curData.sort((a,b) => b.era - a.era);
+    else if(v === 'titleAsc') curData.sort((a,b) => a.title.localeCompare(b.title));
+    else curData = [...DB]; 
     applyFilter();
 }
 
-/* NEXA AI Typewriter Logic */
+function buildFilters() {
+    const g = document.getElementById('filterGroup'); g.innerHTML = '';
+    cats.forEach(c => {
+        const cnt = c.f === 'all' ? DB.length : DB.filter(b => b.cat === c.f).length;
+        const btn = document.createElement('button');
+        btn.className = `filter-btn${c.f === 'all' ? ' active' : ''}`;
+        btn.dataset.filter = c.f;
+        btn.innerHTML = `<span>${c.l} <span class="f-count">${cnt}</span></span>`;
+        btn.onclick = () => { document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active')); btn.classList.add('active'); applyFilter(); };
+        g.appendChild(btn);
+    });
+}
+
+function applyFilter() {
+    const f = document.querySelector('.filter-btn.active').dataset.filter;
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    let d = f === 'all' ? [...curData] : curData.filter(b => b.cat === f);
+    if(q) d = d.filter(b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q) || b.catL.toLowerCase().includes(q));
+    renderLib(d);
+}
+
+function renderLib(data) {
+    const g = document.getElementById('libraryGrid'); g.innerHTML = '';
+    if(!data.length) { g.innerHTML = '<div class="no-results">Tidak ada manuskrip ditemukan.</div>'; return; }
+    data.forEach((b, i) => {
+        const isRead = localStorage.getItem(`read_${b.id}`) === 'true', isFav = localStorage.getItem(`fav_${b.id}`) === 'true';
+        const c = document.createElement('div');
+        c.className = `book-wrapper reveal${isRead ? ' is-read' : ''}${isFav ? ' is-fav' : ''}`;
+        c.style.transitionDelay = `${(i % 8) * 0.08}s`; c.style.setProperty('--book-color-1', b.colors[0]); c.style.setProperty('--book-color-2', b.colors[1]);
+        c.innerHTML = `<div class="read-stamp">Telah Dibaca</div><div class="book-fav-star"><i class="fa-solid fa-star"></i></div>
+            <div class="book-3d"><div class="book-pages"></div><div class="book-spine"><div class="spine-text">${b.title}</div></div>
+                <div class="book-cover"><div class="book-category">${b.catL}</div><h2 class="book-title" title="${b.title}">${b.title}</h2><div class="book-author" title="${b.author}">${b.author}</div>
+                <div class="book-era">${b.eraL}</div><div class="book-read-bar"><div class="book-read-fill" style="width:${isRead ? '100' : '0'}%"></div></div></div></div>`;
+        c.onclick = () => openZen(b.id);
+        g.appendChild(c);
+    });
+    setTimeout(() => { document.querySelectorAll('.book-wrapper.reveal').forEach(el => revObs.observe(el)); }, 50);
+    updateDash(); renderFavShelf();
+}
+
+/* ==========================================================
+   3. FITUR CANGGIH 1: VOICE COMMAND AI
+   ========================================================== */
+const btnVoice = document.getElementById('btnVoice');
+const searchInput = document.getElementById('searchInput');
+if ('webkitSpeechRecognition' in window) {
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'id-ID';
+    recognition.continuous = false;
+    
+    recognition.onstart = () => { btnVoice.classList.add('recording'); toast('Mendengarkan perintah suara...'); };
+    recognition.onresult = (e) => {
+        const transcript = e.results[0][0].transcript;
+        searchInput.value = transcript;
+        toast(`Suara terdeteksi: "${transcript}"`);
+        applyFilter();
+    };
+    recognition.onerror = () => { toast('Voice recognition gagal atau ditolak.'); btnVoice.classList.remove('recording'); };
+    recognition.onend = () => { btnVoice.classList.remove('recording'); };
+    
+    btnVoice.addEventListener('click', () => {
+        if(btnVoice.classList.contains('recording')) recognition.stop();
+        else recognition.start();
+    });
+} else { btnVoice.style.display = 'none'; }
+
+/* ==========================================================
+   4. FITUR CANGGIH 2: SENSORIK PARALLAX 3D (GYRO & MOUSE)
+   ========================================================== */
+const libWrap = document.getElementById('libraryGridWrapper');
+window.addEventListener('mousemove', (e) => {
+    if(window.innerWidth < 900) return; 
+    const x = (window.innerWidth / 2 - e.pageX) / 40;
+    const y = (window.innerHeight / 2 - e.pageY) / 40;
+    document.documentElement.style.setProperty('--ry', `${x}deg`);
+    document.documentElement.style.setProperty('--rx', `${-y}deg`);
+});
+
+window.addEventListener('deviceorientation', (e) => {
+    if(!e.gamma || !e.beta) return;
+    let x = e.gamma / 2; 
+    let y = (e.beta - 45) / 2; 
+    x = Math.max(-15, Math.min(15, x));
+    y = Math.max(-15, Math.min(15, y));
+    document.documentElement.style.setProperty('--ry', `${x}deg`);
+    document.documentElement.style.setProperty('--rx', `${-y}deg`);
+});
+
+/* ==========================================================
+   5. FITUR CANGGIH 3: KAMUS GLOSARIUM CERDAS
+   ========================================================== */
+function applySmartGlossary(rawHTML) {
+    let html = rawHTML;
+    for (const [term, def] of Object.entries(GLOSSARY)) {
+        const regex = new RegExp(`\\b(${term})\\b`, 'gi');
+        html = html.replace(regex, `<span class="glos-term" data-tooltip="${def}">$1</span>`);
+    }
+    return html;
+}
+
+/* ==========================================================
+   6. FITUR CANGGIH 4: VISUALISASI RADAR ANALITIK (CANVAS)
+   ========================================================== */
+function drawRadarChart(stats) {
+    const cvs = document.getElementById('radarCanvas');
+    const ctx = cvs.getContext('2d');
+    cvs.width = 150; cvs.height = 150;
+    const cx = 75, cy = 75, r = 50, sides = 5;
+    const labels = ['Rasional', 'Spiritual', 'Empiris', 'Historis', 'Estetika'];
+    
+    ctx.clearRect(0,0,150,150);
+    const dk = document.documentElement.dataset.theme !== 'light';
+    const gridColor = dk ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+    const textColor = dk ? '#94a3b8' : '#64748b';
+    
+    for(let level=1; level<=3; level++) {
+        ctx.beginPath();
+        for(let i=0; i<sides; i++) {
+            const ang = (Math.PI*2 * i)/sides - Math.PI/2;
+            const px = cx + (r * level/3) * Math.cos(ang);
+            const py = cy + (r * level/3) * Math.sin(ang);
+            if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+        }
+        ctx.closePath(); ctx.strokeStyle = gridColor; ctx.stroke();
+    }
+    
+    ctx.beginPath();
+    for(let i=0; i<sides; i++) {
+        const ang = (Math.PI*2 * i)/sides - Math.PI/2;
+        const val = Math.max(1, stats[i]) / 10;
+        const px = cx + (r * val) * Math.cos(ang);
+        const py = cy + (r * val) * Math.sin(ang);
+        if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+        
+        ctx.fillStyle = textColor; ctx.font = "8px 'Space Mono'"; ctx.textAlign = "center";
+        ctx.fillText(labels[i], cx + (r+15) * Math.cos(ang), cy + (r+12) * Math.sin(ang) + 3);
+    }
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(16,185,129,0.4)'; ctx.fill();
+    ctx.strokeStyle = '#10b981'; ctx.lineWidth = 1.5; ctx.stroke();
+}
+
+/* ==========================================================
+   7. FITUR CANGGIH 5: HIGHLIGHTER / ANOTASI PERSISTENT
+   ========================================================== */
+const hlTool = document.getElementById('hlToolbar');
+const zenContent = document.getElementById('zenContent');
+
+zenContent.addEventListener('mouseup', () => {
+    const sel = window.getSelection();
+    if(sel.toString().trim().length > 0) {
+        const rect = sel.getRangeAt(0).getBoundingClientRect();
+        hlTool.style.display = 'flex';
+        hlTool.style.left = `${rect.left + rect.width/2}px`;
+        hlTool.style.top = `${rect.top - 10}px`;
+    } else { hlTool.style.display = 'none'; }
+});
+
+function applyHighlight() {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    const range = sel.getRangeAt(0);
+    const span = document.createElement('span');
+    span.className = 'hl-marker';
+    span.onclick = function() { if(confirm('Hapus anotasi stabilo ini?')) { const p=this.parentNode; while(this.firstChild) p.insertBefore(this.firstChild, this); p.removeChild(this); saveHighlights(); } };
+    try {
+        range.surroundContents(span);
+        hlTool.style.display = 'none';
+        sel.removeAllRanges();
+        saveHighlights();
+        toast('Anotasi tersimpan secara presisten.');
+    } catch(e) { toast('Anotasi lintas-paragraf belum didukung.'); hlTool.style.display = 'none'; }
+}
+
+function clearSelection() { window.getSelection().removeAllRanges(); hlTool.style.display = 'none'; }
+
+function saveHighlights() {
+    if(curBookId) localStorage.setItem(`k4_hl_${curBookId}`, zenContent.innerHTML);
+}
+
+function clearHighlights() {
+    if(confirm('Hapus seluruh stabilo pada kitab ini?')) {
+        localStorage.removeItem(`k4_hl_${curBookId}`);
+        const b = DB.find(x => x.id === curBookId);
+        zenContent.innerHTML = applySmartGlossary(b.content);
+        toast('Semua anotasi dibersihkan.');
+    }
+}
+
+/* ==========================================================
+   8. FITUR CANGGIH 6: SINTESIS AUDIO FOKUS (BINAURAL/AMBIENT)
+   ========================================================== */
+let audioCtx = null;
+let noiseNode = null;
+let gainNode = null;
+
+function createBrownNoise(context) {
+    const bufferSize = 2 * context.sampleRate;
+    const noiseBuffer = context.createBuffer(1, bufferSize, context.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    let lastOut = 0;
+    for (let i = 0; i < bufferSize; i++) {
+        let white = Math.random() * 2 - 1;
+        output[i] = (lastOut + (0.02 * white)) / 1.02;
+        lastOut = output[i];
+        output[i] *= 3.5; 
+    }
+    const node = context.createBufferSource();
+    node.buffer = noiseBuffer;
+    node.loop = true;
+    return node;
+}
+
+function toggleAmbientAudio() {
+    const btn = document.getElementById('btnFocusAudio');
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        noiseNode = createBrownNoise(audioCtx);
+        
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass'; filter.frequency.value = 400;
+        
+        gainNode = audioCtx.createGain();
+        gainNode.gain.value = 0;
+        
+        noiseNode.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        noiseNode.start();
+    }
+
+    if (btn.classList.contains('active-state')) {
+        gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.5);
+        btn.classList.remove('active-state');
+        toast('Ambient Focus dinonaktifkan.');
+    } else {
+        if(audioCtx.state === 'suspended') audioCtx.resume();
+        gainNode.gain.setTargetAtTime(0.2, audioCtx.currentTime, 1);
+        btn.classList.add('active-state');
+        toast('Binaural Ambient Focus diaktifkan.');
+    }
+}
+
+/* ==========================================================
+   9. FITUR CANGGIH 7: POMODORO TIMER TERINTEGRASI
+   ========================================================== */
+let pomoInterval = null;
+let pomoSeconds = 1500; // 25 mins
+
+function togglePomodoro() {
+    const btn = document.getElementById('btnPomodoro');
+    const display = document.getElementById('pomoTime');
+    
+    if (btn.classList.contains('active-state')) {
+        clearInterval(pomoInterval);
+        btn.classList.remove('active-state');
+        pomoSeconds = 1500; display.textContent = "25:00";
+        toast('Sesi Pomodoro dihentikan.');
+    } else {
+        btn.classList.add('active-state');
+        toast('Sesi baca 25 Menit dimulai. Fokus!');
+        pomoInterval = setInterval(() => {
+            pomoSeconds--;
+            let m = Math.floor(pomoSeconds / 60);
+            let s = pomoSeconds % 60;
+            display.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+            
+            if (pomoSeconds <= 0) {
+                clearInterval(pomoInterval);
+                btn.classList.remove('active-state');
+                toast('Sesi Pomodoro Selesai! Waktunya istirahat.');
+                pomoSeconds = 1500; display.textContent = "25:00";
+            }
+        }, 1000);
+    }
+}
+
+/* ==========================================================
+   10. ZEN READER CORE BINDINGS & AI INSIGHT
+   ========================================================== */
+let aiTypingInterval = null;
+
 function triggerAIInsight() {
     const box = document.getElementById('aiInsightBox');
     const contentBox = document.getElementById('aiInsightContent');
@@ -1080,143 +901,96 @@ function triggerAIInsight() {
     contentBox.innerHTML = '';
     clearInterval(aiTypingInterval);
     
-    const rawText = b.ai || "Sistem NEXA AI sedang menyusun analisis struktural mengenai manuskrip ini...";
+    const rawText = b.ai || "Sistem NEXA AI sedang menyusun analisis...";
     let i = 0;
     
-    // Typewriter effect
     aiTypingInterval = setInterval(() => {
         contentBox.innerHTML += rawText.charAt(i);
         i++;
         if (i >= rawText.length) { clearInterval(aiTypingInterval); }
-    }, 30); // Speed of typing
+    }, 30); 
 }
 
-/* TEXT TO SPEECH */
-function toggleTTS() {
-    if(!('speechSynthesis' in window)) { toast('Browser Anda tidak mendukung Web Audio API.'); return; }
-    const btn = document.getElementById('btnTTS');
-    const b = DB.find(x => x.id === curBookId);
+function openZen(id) {
+    const b = DB.find(x => x.id === id); if(!b) return;
+    curBookId = id;
     
-    if(ttsOn) { stopTTS(); } else {
+    document.getElementById('zenCat').textContent = b.catL;
+    document.getElementById('zenTitle').textContent = b.title;
+    document.getElementById('zenAuthor').textContent = b.author;
+    document.getElementById('zenEra').innerHTML = `<i class="fa-solid fa-hourglass-half"></i> ${b.eraL}`;
+    document.getElementById('zenTime').innerHTML = `<i class="fa-regular fa-clock"></i> ±${Math.ceil((b.content.length/5)/200)} mnt`;
+    
+    const savedHl = localStorage.getItem(`k4_hl_${id}`);
+    zenContent.innerHTML = savedHl ? savedHl : applySmartGlossary(b.content);
+    
+    zenContent.querySelectorAll('.hl-marker').forEach(span => {
+        span.onclick = function() { if(confirm('Hapus anotasi stabilo ini?')) { const p=this.parentNode; while(this.firstChild) p.insertBefore(this.firstChild, this); p.removeChild(this); saveHighlights(); } };
+    });
+
+    drawRadarChart(b.stats);
+    document.getElementById('zenPaper').style.fontSize = zenFontSize + 'rem';
+    
+    document.getElementById('btnFavZen').innerHTML = (localStorage.getItem(`fav_${id}`) === 'true') ? '<i class="fa-solid fa-bookmark" style="color:var(--a5)"></i>' : '<i class="fa-regular fa-bookmark"></i>';
+    document.getElementById('aiInsightBox').classList.remove('active');
+    
+    document.getElementById('zenModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    if(localStorage.getItem(`read_${id}`) !== 'true') {
+        localStorage.setItem(`read_${id}`, 'true');
+        setTimeout(applyFilter, 500); 
+    }
+    
+    document.getElementById('zenModal').onscroll = () => {
+        const m = document.getElementById('zenModal');
+        document.getElementById('zenProgFill').style.width = Math.min(100, (m.scrollTop / (m.scrollHeight - m.clientHeight) * 100)) + '%';
+        hlTool.style.display = 'none'; 
+    };
+}
+
+function closeZen() {
+    document.getElementById('zenModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+    stopTTS(); document.getElementById('zenProgFill').style.width = '0%';
+    clearInterval(aiTypingInterval);
+}
+
+function toggleFavFromZen() {
+    if(!curBookId) return;
+    const is = localStorage.getItem(`fav_${curBookId}`) === 'true';
+    if(is) { localStorage.removeItem(`fav_${curBookId}`); document.getElementById('btnFavZen').innerHTML = '<i class="fa-regular fa-bookmark"></i>'; toast('Dihapus dari Favorit'); }
+    else { localStorage.setItem(`fav_${curBookId}`, 'true'); document.getElementById('btnFavZen').innerHTML = '<i class="fa-solid fa-bookmark" style="color:var(--a5)"></i>'; toast('Kitab disimpan ke Favorit!'); }
+    applyFilter();
+}
+
+function changeFontSize(d) {
+    zenFontSize = Math.max(0.8, Math.min(1.6, zenFontSize + (d * 0.1)));
+    document.getElementById('zenPaper').style.fontSize = zenFontSize.toFixed(1) + 'rem';
+}
+
+function toggleTTS() {
+    if(!('speechSynthesis' in window)) { toast('Browser tidak mendukung Text-to-Speech.'); return; }
+    const btn = document.getElementById('btnTTS');
+    if(ttsOn) stopTTS();
+    else {
         speechSynthesis.cancel();
-        // Clean HTML tags from content for reading
+        const b = DB.find(x => x.id === curBookId);
         const tmp = document.createElement('div'); tmp.innerHTML = b.content;
-        const textToRead = `Memuat arsip audio untuk kitab ${b.title}, karya agung ${b.author}. ${tmp.innerText}`;
-        
-        curUtt = new SpeechSynthesisUtterance(textToRead);
+        curUtt = new SpeechSynthesisUtterance(`Memuat audio. ${tmp.innerText}`);
         curUtt.lang = 'id-ID'; curUtt.rate = 0.95;
         curUtt.onend = () => stopTTS();
         speechSynthesis.speak(curUtt);
-        ttsOn = true; btn.classList.add('tts-on');
-        toast('Audio Synthesis Kelompok IV Aktif. Mulai membaca...');
+        ttsOn = true; btn.classList.add('active-state'); toast('Audio Synthesizer Aktif.');
     }
 }
-function stopTTS() {
-    speechSynthesis.cancel(); ttsOn = false;
-    document.getElementById('btnTTS').classList.remove('tts-on');
-}
+function stopTTS() { speechSynthesis.cancel(); ttsOn = false; document.getElementById('btnTTS').classList.remove('active-state'); }
 
-/* ASTROLABE (RANDOM BOOK) */
-document.getElementById('btnAstrolabe').addEventListener('click', () => {
-    const btn = document.getElementById('btnAstrolabe');
-    if(btn.classList.contains('spinning')) return;
-    btn.classList.add('spinning'); toast('Mengkalkulasi rasi bintang Astrolabe...');
-    
-    setTimeout(() => {
-        btn.classList.remove('spinning');
-        const b = DB[Math.floor(Math.random() * DB.length)];
-        openZen(b.id);
-        toast(`Astrolabe menemukan: ${b.title}`);
-    }, 2000);
-});
-
-/* 7. THEME MANAGER & KEYBOARD SHORTCUTS */
-function setTheme(t) {
-    document.documentElement.dataset.theme = t;
-    document.getElementById('btnTheme').innerHTML = t === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-    document.getElementById('btnSepia').classList.toggle('active-mode', t === 'sepia');
-    localStorage.setItem('k4theme', t);
-    toast(t === 'dark' ? 'Mode Gelap Aktif' : t === 'sepia' ? 'Mode Klasik (Sepia) Aktif' : 'Mode Terang Aktif');
-}
-
-document.getElementById('btnTheme').addEventListener('click', () => {
-    const c = document.documentElement.dataset.theme; setTheme(c === 'dark' ? 'light' : 'dark');
-});
-document.getElementById('btnSepia').addEventListener('click', () => {
-    const c = document.documentElement.dataset.theme; setTheme(c === 'sepia' ? 'dark' : 'sepia');
-});
-
-// Init Theme on Load
-if(localStorage.getItem('k4theme')) setTheme(localStorage.getItem('k4theme'));
-
-document.addEventListener('keydown', e => {
-    // Ignore if typing in search
-    if(e.target.closest('input')) {
-        if(e.key === 'Escape') e.target.blur(); return;
-    }
-    
-    if(e.key === '/') { e.preventDefault(); document.getElementById('searchInput').focus(); }
-    if(e.key === 'd' || e.key === 'D') document.getElementById('btnTheme').click();
-    if(e.key === 's' || e.key === 'S') document.getElementById('btnSepia').click();
-    if(e.key === 'r' || e.key === 'R') document.getElementById('btnAstrolabe').click();
-    if(e.key === 'g' || e.key === 'G') {
-        const gridBtn = document.querySelector('.view-btn[data-view="grid"]');
-        const listBtn = document.querySelector('.view-btn[data-view="list"]');
-        if(gridBtn.classList.contains('active')) listBtn.click(); else gridBtn.click();
-    }
-    if(e.key === 'Escape') {
-        document.getElementById('kbdModal').classList.remove('active');
-        if(document.getElementById('zenModal').classList.contains('active')) closeZen();
-    }
-});
-document.getElementById('btnKbd').addEventListener('click', () => document.getElementById('kbdModal').classList.add('active'));
-document.getElementById('mobTog').addEventListener('click', () => document.getElementById('navMenu').classList.toggle('open'));
-
-/* 8. VISUAL EFFECTS: SCROLL, CELEBRATION, REVEAL OBSERVER */
-window.addEventListener('scroll', () => {
-    const s = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight, p = s/h;
-    document.getElementById('scrollProg').style.width = (p * 100) + '%';
-    document.getElementById('mainNav').classList.toggle('scrolled', s > 20);
-    
-    const st = document.getElementById('scrollTop');
-    st.classList.toggle('visible', s > 500);
-    document.getElementById('scrollRing').style.strokeDashoffset = 97.4 - (97.4 * p);
-});
-
-const revObs = new IntersectionObserver(e => {
-    e.forEach(x => { if(x.isIntersecting) { x.target.classList.add('active'); revObs.unobserve(x.target); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
-
-// Number Counter Animation
-const cObs = new IntersectionObserver(e => {
-    e.forEach(x => {
-        if(x.isIntersecting) {
-            const c = x.target, t = +c.dataset.target; let v = 0; const s = t/30;
-            (function u() { v += s; if(v < t) { c.innerText = Math.ceil(v); requestAnimationFrame(u); } else c.innerText = t; })();
-            cObs.unobserve(c);
-        }
-    });
-}, { threshold: 0.5 });
-document.querySelectorAll('.counter').forEach(c => cObs.observe(c));
-
-function celebrate() {
-    const c = document.getElementById('celebration'); c.classList.add('active');
-    const colors = ['#10b981', '#d97706', '#ef4444', '#3b82f6', '#f8fafc', '#f59e0b'];
-    for(let i=0; i<120; i++) {
-        const p = document.createElement('div'); p.className = 'confetti';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.background = colors[Math.floor(Math.random() * colors.length)];
-        p.style.animationDelay = Math.random() * 2 + 's';
-        p.style.animationDuration = (3 + Math.random() * 3) + 's';
-        c.appendChild(p);
-    }
-    toast('🎉 PENCAPAIAN DIBUKA: Scholar of Baitul Hikmah! Semua manuskrip telah dibaca.');
-    setTimeout(() => { c.classList.remove('active'); c.innerHTML = ''; }, 6000);
-}
-
-/* 9. 3-LAYER CANVAS ENGINE (HERO & GEOMETRIC) */
-const hcv = document.getElementById('heroCanvas'), hcx = hcv.getContext('2d');
+/* ==========================================================
+   11. BACKGROUND CANVAS ANIMATION
+   ========================================================== */
+const hcv = document.getElementById('heroCanvas');
+const hcx = hcv.getContext('2d');
 let hpts = [];
 function initHC() {
     hcv.width = hcv.parentElement.offsetWidth; hcv.height = hcv.parentElement.offsetHeight;
@@ -1247,7 +1021,8 @@ function drawHC() {
     requestAnimationFrame(drawHC);
 }
 
-const gcv = document.getElementById('geoCanvas'), gcx = gcv.getContext('2d');
+const gcv = document.getElementById('geoCanvas');
+const gcx = gcv.getContext('2d');
 function initGC() { gcv.width = window.innerWidth; gcv.height = window.innerHeight; }
 let gAngle = 0;
 function drawGC() {
@@ -1255,7 +1030,6 @@ function drawGC() {
     const dk = document.documentElement.dataset.theme !== 'light';
     gcx.strokeStyle = dk ? 'rgba(16,185,129,0.06)' : 'rgba(6,78,59,0.04)'; gcx.lineWidth = 1;
     
-    // Draw rotating mandala/geometric circles
     for(let i=0; i<8; i++) {
         const cx = gcv.width/2, cy = gcv.height/2, r = 200 + i*90;
         gcx.beginPath();
@@ -1271,12 +1045,47 @@ function drawGC() {
 
 window.addEventListener('resize', () => { initHC(); initGC(); });
 
-/* INIT ON LOAD */
+/* ==========================================================
+   12. INITIALIZATION ON LOAD (FIXED PRELOADER)
+   ========================================================== */
 window.addEventListener('load', () => {
-    buildFilters();
+    buildFilters(); 
     initHC(); drawHC();
     initGC(); drawGC();
     renderLib(curData);
+    
+    // Quick Preloader Logic
+    let prg = 0;
+    const pi = setInterval(() => {
+        prg += 20; 
+        document.getElementById('preFill').style.width = prg + '%'; 
+        document.getElementById('prePercent').textContent = prg + '%';
+        if(prg >= 100) { 
+            clearInterval(pi); 
+            document.getElementById('preloader').style.opacity = '0'; 
+            setTimeout(() => { document.getElementById('preloader').style.display = 'none'; }, 500); 
+        }
+    }, 120);
+});
+
+/* Animations & Listeners */
+const revObs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) { x.target.classList.add('active'); revObs.unobserve(x.target); } }), { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+document.getElementById('searchInput').addEventListener('input', applyFilter);
+document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click', () => { document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active')); btn.classList.add('active'); document.getElementById('libraryGrid').classList.toggle('list-view', btn.dataset.view === 'list'); }));
+document.getElementById('btnTheme').addEventListener('click', () => { const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = t; });
+document.addEventListener('keydown', e => { if(e.target.tagName === 'INPUT') return; if(e.key === 'v' || e.key === 'V') document.getElementById('btnVoice').click(); if(e.key === 'Escape') closeZen(); });
+document.getElementById('btnAstrolabe').addEventListener('click', () => {
+    const btn = document.getElementById('btnAstrolabe');
+    if(btn.classList.contains('spinning')) return;
+    btn.classList.add('spinning'); toast('Mengkalkulasi rasi bintang Astrolabe...');
+    setTimeout(() => {
+        btn.classList.remove('spinning');
+        const b = DB[Math.floor(Math.random() * DB.length)];
+        openZen(b.id);
+        toast(`Astrolabe menemukan: ${b.title}`);
+    }, 2000);
 });
 </script>
 </body>

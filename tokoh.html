@@ -2,834 +2,824 @@
 <html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historiografi | Kelompok IV</title>
-    <meta name="description" content="Dashboard interaktif tokoh-tokoh filsuf Islam — Kelompok IV. Powered by NEXA Architecture.">
-    <meta name="theme-color" content="#064e3b">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Omni-Dashboard Tokoh | Kelompok IV NEXA V8</title>
+    <meta name="description" content="Dashboard interaktif tokoh filsuf Islam dengan arsitektur Omni-Mode.">
+    <meta name="theme-color" content="#020617">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;800&family=Space+Mono:wght@400;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Space+Mono:wght@400;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ==========================================================================
-           1. NEXA CORE DESIGN SYSTEM & CSS VARIABLES
-           ========================================================================== */
+        /* ========================================== */
+        /* 1. OMNI-THEME ENGINE & VARIABLES           */
+        /* ========================================== */
         :root {
-            --bg-base: #f8fafc;
-            --bg-base-rgb: 248,250,252;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --card-glass: rgba(255, 255, 255, 0.85);
+            --bg-base: #f8fafc; --bg-base-rgb: 248,250,252;
+            --text-main: #0f172a; --text-muted: #64748b;
+            --card-glass: rgba(255, 255, 255, 0.75);
             --border-glass: rgba(255, 255, 255, 0.6);
-            --dyn-color-1: #064e3b;
-            --dyn-color-2: #047857;
-            --accent: #d97706;
-            --shadow-card: 0 15px 35px -5px rgba(0,0,0,0.08);
-            --shadow-glow: 0 0 25px rgba(6, 78, 59, 0.2);
-            --transition-theme: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            --radius-xl: 24px;
-            --radius-lg: 16px;
-            
-            /* Font Stacks */
-            --font-serif: 'Cinzel', serif;
-            --font-sans: 'Poppins', sans-serif;
-            --font-mono: 'Space Mono', monospace;
-            --font-arab: 'Amiri', serif;
+            --dyn-color-1: #064e3b; --dyn-color-2: #047857;
+            --accent: #d97706; --shadow-card: 0 25px 50px -12px rgba(0,0,0,0.1);
+            --transition-bounce: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --transition-smooth: 0.5s ease;
         }
 
         [data-theme="dark"] {
-            --bg-base: #020617;
-            --bg-base-rgb: 2,6,23;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --card-glass: rgba(15, 23, 42, 0.85);
+            --bg-base: #020617; --bg-base-rgb: 2,6,23;
+            --text-main: #f8fafc; --text-muted: #94a3b8;
+            --card-glass: rgba(15, 23, 42, 0.75);
             --border-glass: rgba(255, 255, 255, 0.1);
-            --shadow-card: 0 15px 35px -5px rgba(0,0,0,0.5);
-            --shadow-glow: 0 0 35px rgba(6, 78, 59, 0.4);
+            --shadow-card: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
 
-        /* ==========================================================================
-           2. RESET & GLOBAL TYPOGRAPHY (RESPONSIVE CLAMPING)
-           ========================================================================== */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--bg-base);
-            color: var(--text-main);
-            overflow-x: hidden;
-            transition: background var(--transition-theme), color var(--transition-theme);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Custom Scrollbar for robust UI */
-        ::-webkit-scrollbar { width: 6px; }
+        /* Base Resets */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-base); color: var(--text-main); overflow-x: hidden; transition: background var(--transition-smooth), color var(--transition-smooth); }
+        a, button, input, textarea { cursor: none; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 10px; opacity: 0.5; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--dyn-color-1); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--dyn-color-1), var(--dyn-color-2)); border-radius: 10px; }
 
-        /* ==========================================================================
-           3. BACKGROUND PHYSICS LAYER
-           ========================================================================== */
-        .bg-morph {
-            position: fixed; inset: 0; z-index: -2;
-            background: radial-gradient(circle at var(--mx, 20%) var(--my, 20%), var(--dyn-color-1) 0%, transparent 50%),
-                        radial-gradient(circle at calc(100% - var(--mx, 80%)) calc(100% - var(--my, 80%)), var(--dyn-color-2) 0%, transparent 50%);
-            opacity: 0.12; transition: opacity 1s ease; will-change: background;
-        }
+        @media(hover:none) and (pointer:coarse) { * { cursor: auto !important; } .cursor-dot, .cursor-outline { display: none !important; } }
+        @media print { body { background: white !important; color: black !important; } .no-print { display: none !important; } .print-only { display: block !important; } .glass-box { box-shadow: none !important; border: 1px solid #000 !important; } }
+
+        /* ========================================== */
+        /* 2. LOADING & BACKGROUND PARTICLES          */
+        /* ========================================== */
+        .loader-screen { position: fixed; inset: 0; z-index: 10000; background: #020617; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        .loader-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-ring { width: 80px; height: 80px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.08); border-top-color: var(--dyn-color-1); border-right-color: var(--dyn-color-2); animation: loaderSpin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; }
+        .loader-text { margin-top: 28px; font-family: 'Cinzel', serif; font-size: 1rem; color: rgba(255,255,255,0.5); letter-spacing: 6px; text-transform: uppercase; animation: loaderPulse 2s ease-in-out infinite; }
+        @keyframes loaderSpin { to { transform: rotate(360deg); } }
+        @keyframes loaderPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        .bg-morph { position: fixed; inset: 0; z-index: -2; background: radial-gradient(ellipse at 20% 0%, var(--dyn-color-1) 0%, transparent 55%), radial-gradient(ellipse at 90% 90%, var(--dyn-color-2) 0%, transparent 55%); opacity: 0.12; transition: all 1.5s ease; }
         [data-theme="dark"] .bg-morph { opacity: 0.2; }
         #particle-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
 
-        /* ==========================================================================
-           4. SYSTEM CONTROLS (FLOATING)
-           ========================================================================== */
-        .system-controls { position: fixed; top: 20px; right: 20px; z-index: 9000; display: flex; gap: 10px; }
-        .btn-float {
-            width: 42px; height: 42px; border-radius: 50%;
-            background: var(--card-glass); border: 1px solid var(--border-glass);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1rem; color: var(--text-main);
-            box-shadow: var(--shadow-card); transition: all 0.3s ease;
-        }
-        .btn-float:hover { color: var(--dyn-color-1); border-color: var(--dyn-color-1); box-shadow: var(--shadow-glow); }
+        /* ========================================== */
+        /* 3. TOOLBAR & FLOATING BUTTONS              */
+        /* ========================================== */
+        .system-tools { position: fixed; top: 20px; right: 20px; z-index: 9000; display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+        .tool-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--card-glass); border: 1px solid var(--border-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--text-main); box-shadow: var(--shadow-card); transition: all 0.3s ease; }
+        .tool-btn:hover { transform: translateY(-4px) scale(1.05); background: var(--dyn-color-1); color: white; border-color: var(--dyn-color-1); }
+        .tool-btn.active { background: var(--dyn-color-1); color: white; animation: pulseGlow 2s infinite; }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(var(--dyn-color-1), 0.4); } 70% { box-shadow: 0 0 0 10px rgba(var(--dyn-color-1), 0); } }
 
-        .toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 100px);
-            background: var(--text-main); color: var(--bg-base); padding: 12px 24px; border-radius: 30px;
-            font-size: 0.85rem; font-weight: 600; z-index: 10001; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 10px; pointer-events: none;
-        }
-        .toast.show { opacity: 1; transform: translate(-50%, 0); }
-        .toast i { color: var(--dyn-color-1); }
+        .progress-bar-global { position: fixed; top: 0; left: 0; height: 4px; background: linear-gradient(90deg, var(--dyn-color-1), var(--accent)); z-index: 10001; width: 0%; transition: width 0.4s ease; }
 
-        /* ==========================================================================
-           5. MAIN DASHBOARD LAYOUT
-           ========================================================================== */
-        .dashboard-container { 
-            display: flex; min-height: 100vh; padding: 40px 20px; 
-            max-width: 1500px; margin: 0 auto; gap: 30px;
-        }
-        @media (max-width: 1024px) { 
-            .dashboard-container { flex-direction: column; padding-top: 80px; } 
-        }
+        /* ========================================== */
+        /* 4. DASHBOARD GRID & CAROUSEL               */
+        /* ========================================== */
+        .dashboard-container { display: flex; min-height: 100vh; padding-top: 80px; transition: var(--transition-smooth); }
+        body.zen-mode .carousel-panel { width: 0; opacity: 0; padding: 0; overflow: hidden; pointer-events: none; flex: 0; }
+        body.zen-mode .data-panel { max-width: 1100px; margin: 0 auto; }
+        @media (max-width: 1100px) { .dashboard-container { flex-direction: column; } }
 
-        /* ==========================================================================
-           6. LEFT PANEL: 3D CAROUSEL
-           ========================================================================== */
-        .carousel-panel {
-            flex: 0 0 400px; /* Fixed width for stability */
-            position: sticky; top: 40px; height: calc(100vh - 80px);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            perspective: 1500px;
-        }
-        @media (max-width: 1024px) { 
-            .carousel-panel { flex: none; position: relative; top: 0; height: 500px; width: 100%; } 
-        }
+        .carousel-panel { flex: 1; position: sticky; top: 80px; height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: center; align-items: center; perspective: 1200px; padding: 20px; overflow: hidden; user-select: none; transition: var(--transition-smooth); }
+        @media (max-width: 1100px) { .carousel-panel { position: relative; top: 0; height: auto; min-height: 600px; } }
+
+        .carousel-track { position: relative; width: 320px; height: 480px; transform-style: preserve-3d; }
+        .tokoh-card { position: absolute; width: 100%; height: 100%; background: var(--card-glass); border: 2px solid var(--border-glass); border-radius: 30px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; flex-direction: column; align-items: center; padding: 40px 30px; box-shadow: var(--shadow-card); transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease, border-color 0.6s ease; cursor: pointer; text-align: center; will-change: transform, opacity; }
+        .tokoh-card.active { box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3); }
+        .tokoh-card img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 5px solid var(--bg-base); box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 25px; transition: transform 0.5s ease; }
+        .tokoh-card.active img { transform: scale(1.05); }
+        .tokoh-card h2 { font-family: 'Cinzel', serif; font-size: 1.8rem; margin-bottom: 5px; line-height: 1.2; }
         
-        .carousel-track { position: relative; width: 280px; height: 400px; transform-style: preserve-3d; }
+        .era-badge { background: var(--dyn-color-1); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 20px; transition: background 1s ease; }
+        .carousel-controls { margin-top: 40px; display: flex; gap: 20px; align-items: center; }
+        .btn-nav { width: 56px; height: 56px; border-radius: 50%; background: var(--card-glass); border: 1px solid var(--border-glass); color: var(--text-main); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: var(--transition-bounce); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .btn-nav:hover { background: var(--dyn-color-1); color: #fff; transform: scale(1.15); }
         
-        .tokoh-card {
-            position: absolute; width: 100%; height: 100%;
-            background: var(--card-glass); border: 1px solid var(--border-glass);
-            border-radius: var(--radius-xl); backdrop-filter: blur(20px);
-            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 20px;
-            box-shadow: var(--shadow-card); cursor: pointer; text-align: center;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, border-color 0.5s ease;
-            transform-origin: center center;
-        }
-        .tokoh-card:not(.active) { opacity: 0.4; }
-        .tokoh-card.active { border-color: var(--dyn-color-1); border-width: 2px; }
-        
-        .tokoh-card img {
-            width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
-            border: 4px solid var(--bg-base); box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            margin-bottom: 20px; background: var(--text-muted);
-        }
-        
-        /* Clamp implementation for robust card text */
-        .tokoh-card h2 { font-family: var(--font-serif); font-size: clamp(1.4rem, 2vw, 1.8rem); margin-bottom: 5px; line-height: 1.1; font-weight: 800; }
-        .tokoh-card p { font-family: var(--font-sans); font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .timeline-minimap { width: 100%; max-width: 360px; margin-top: 30px; position: relative; height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
+        .timeline-line { position: absolute; top: 50%; left: 20px; right: 20px; height: 2px; background: rgba(100,116,139,0.2); transform: translateY(-50%); }
+        .timeline-progress { position: absolute; top: 50%; left: 20px; height: 3px; background: var(--dyn-color-1); transform: translateY(-50%); border-radius: 3px; transition: width 0.8s ease, background 1s; }
+        .timeline-dot { position: relative; z-index: 2; width: 14px; height: 14px; border-radius: 50%; background: var(--bg-base); border: 2px solid var(--text-muted); transition: all 0.4s ease; }
+        .timeline-dot.active { background: var(--dyn-color-1); border-color: var(--dyn-color-1); transform: scale(1.5); box-shadow: 0 0 12px var(--dyn-color-1); }
 
-        .era-badge {
-            background: linear-gradient(135deg, var(--dyn-color-1), var(--dyn-color-2)); color: white;
-            padding: 4px 12px; border-radius: 12px; font-size: 0.65rem; font-weight: 700;
-            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px;
-        }
+        /* ========================================== */
+        /* 5. DATA VISUALIZATION PANEL                */
+        /* ========================================== */
+        .data-panel { flex: 1.4; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-content: start; transition: var(--transition-smooth); }
+        @media (max-width: 768px) { .data-panel { grid-template-columns: 1fr; padding: 20px; } }
 
-        .carousel-controls { margin-top: 30px; display: flex; gap: 15px; z-index: 10; }
-        .btn-nav {
-            width: 45px; height: 45px; border-radius: 50%; background: var(--card-glass);
-            border: 1px solid var(--border-glass); backdrop-filter: blur(15px);
-            color: var(--text-main); font-size: 1rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s ease;
-        }
-        .btn-nav:hover { background: var(--dyn-color-1); color: #fff; border-color: transparent; }
-        
-        .timeline-minimap {
-            width: 100%; max-width: 300px; margin-top: 30px; position: relative; height: 40px;
-            display: flex; align-items: center; justify-content: space-between; padding: 0 10px;
-        }
-        .timeline-line { position: absolute; top: 50%; left: 10px; right: 10px; height: 2px; background: rgba(100,116,139,0.3); transform: translateY(-50%); }
-        .timeline-progress {
-            position: absolute; top: 50%; left: 10px; height: 4px;
-            background: linear-gradient(90deg, var(--dyn-color-1), var(--dyn-color-2));
-            transform: translateY(-50%); border-radius: 2px; transition: width 0.4s ease;
-        }
-        .timeline-dot {
-            position: relative; z-index: 2; width: 12px; height: 12px; border-radius: 50%;
-            background: var(--bg-base); border: 2px solid var(--text-muted); cursor: pointer; transition: all 0.3s;
-        }
-        .timeline-dot.active { background: var(--dyn-color-1); border-color: var(--dyn-color-1); transform: scale(1.2); box-shadow: 0 0 8px var(--dyn-color-1); }
-
-        /* ==========================================================================
-           7. RIGHT PANEL: GRID DATA SYSTEM
-           ========================================================================== */
-        .data-panel { 
-            flex: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 25px; align-content: start; 
-        }
-
-        /* Fixed Animation Logic: Ensure smooth render cycle */
-        .reveal-box { opacity: 0; transform: translateY(15px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+        .reveal-box { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
         .reveal-box.visible { opacity: 1; transform: translateY(0); }
 
-        /* General Box Styling */
-        .box-component {
-            background: var(--card-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-lg); padding: 25px; border: 1px solid var(--border-glass);
-            box-shadow: var(--shadow-card); display: flex; flex-direction: column;
-        }
-
-        /* -- INFO BOX (Span full width) -- */
-        .info-box { grid-column: 1 / -1; position: relative; overflow: hidden; }
-        .info-box::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--dyn-color-1), var(--dyn-color-2)); }
-
-        .bio-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;}
+        .glass-box { background: var(--card-glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 30px; padding: 35px; border: 1px solid var(--border-glass); box-shadow: var(--shadow-card); transition: box-shadow 0.5s ease, transform 0.1s; transform-style: preserve-3d; }
+        .info-box { grid-column: 1 / -1; }
         
-        /* Clamp implementation for Bio Header */
-        .bio-title h1 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem); color: var(--dyn-color-1); line-height: 1.1; margin-bottom: 4px; transition: color 0.5s; }
-        .bio-laqab { font-family: var(--font-arab); font-size: clamp(1rem, 2vw, 1.2rem); color: var(--accent); }
+        .bio-title h1 { font-family: 'Cinzel', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--dyn-color-1); line-height: 1.1; transition: color 1s; -webkit-background-clip: text; background-clip: text;}
+        .bio-laqab { font-family: 'Amiri', serif; font-size: 1.4rem; color: var(--accent); margin-bottom: 20px; }
+        .bio-text { font-size: 1.05rem; line-height: 1.9; color: var(--text-main); text-align: justify; transition: color var(--transition-smooth); }
         
-        /* Internal Scrolling to prevent overflow */
-        .bio-content-wrapper {
-            max-height: 220px; /* Force constraint */
-            overflow-y: auto; 
-            padding-right: 15px;
-            margin-bottom: 20px;
-        }
-
-        .bio-quote {
-            font-style: italic; font-size: clamp(0.9rem, 1.5vw, 1rem); border-left: 2px solid var(--accent); padding-left: 12px;
-            margin-bottom: 15px; color: var(--text-muted); font-family: var(--font-serif);
-        }
-
-        .bio-text { font-size: clamp(0.85rem, 1.2vw, 0.95rem); line-height: 1.6; color: var(--text-main); text-align: justify; font-weight: 400; }
-
-        .bio-actions { display: flex; gap: 10px; }
-        .btn-action {
-            display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px;
-            background: var(--bg-base); border: 1px solid var(--border-glass); color: var(--text-main);
-            font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .btn-action:hover { background: var(--dyn-color-1); color: #fff; border-color: var(--dyn-color-1); }
-        .btn-action.playing { background: var(--dyn-color-2); color: #fff; border-color: transparent;}
-
-        .data-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; padding-top: 15px; border-top: 1px dashed var(--border-glass); }
-        .data-badge {
-            display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px;
-            font-size: 0.7rem; font-weight: 700; background: rgba(100,116,139,0.1); color: var(--text-muted); 
-            border: 1px solid transparent; text-transform: uppercase;
-        }
-        .data-badge.book { color: var(--accent); border-color: rgba(217,119,6,0.2); }
-
-        /* -- STATS & RADAR BOXES -- */
-        .box-header { 
-            font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; 
-            color: var(--text-muted); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; 
-        }
-        .box-header i { color: var(--dyn-color-1); font-size: 1rem; }
-
-        .stat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .stat-label { width: 85px; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-align: right; white-space: nowrap;}
-        .stat-track { flex: 1; height: 8px; background: rgba(100,116,139,0.2); border-radius: 4px; overflow: hidden; }
-        .stat-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--dyn-color-1), var(--dyn-color-2)); transition: width 0.8s ease-out;}
-        .stat-value { width: 35px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800; color: var(--dyn-color-1); text-align: left;}
-
-        .canvas-container { width: 100%; aspect-ratio: 1; display: flex; justify-content: center; align-items: center;}
-
-        /* -- AI INTERVIEW BOX -- */
-        .interview-box { grid-column: 1 / -1; } /* Span full width at bottom */
-        .chat-display { 
-            height: 220px; background: rgba(var(--bg-base-rgb), 0.5); 
-            border-radius: 12px; padding: 15px; overflow-y: auto; display: flex; 
-            flex-direction: column; gap: 12px; margin-bottom: 15px; border: 1px solid var(--border-glass); 
-        }
-        .bubble { 
-            max-width: 80%; padding: 10px 15px; border-radius: 12px; font-size: 0.8rem; line-height: 1.5; 
-            animation: fadeIn 0.3s ease; 
-        }
-        .bubble.ai { background: var(--card-glass); color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid var(--border-glass); }
-        .bubble.user { background: var(--dyn-color-1); color: white; align-self: flex-end; border-bottom-right-radius: 2px;}
+        /* Auto-Glossary Highlight */
+        .glossary-term { border-bottom: 2px dashed var(--dyn-color-1); color: var(--dyn-color-1); font-weight: 600; cursor: help; position: relative; transition: 0.3s; }
+        .glossary-term:hover { background: rgba(var(--dyn-color-1), 0.1); }
+        .glossary-tooltip { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--bg-base); border: 1px solid var(--dyn-color-1); padding: 15px; border-radius: 12px; width: 250px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-size: 0.85rem; font-weight: 400; color: var(--text-main); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 100; text-align: left; }
+        .glossary-term:hover .glossary-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
         
-        .chat-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; }
-        .btn-query { 
-            background: var(--bg-base); border: 1px solid var(--border-glass); padding: 10px 15px; 
-            border-radius: 8px; text-align: left; font-size: 0.75rem; font-weight: 600; cursor: pointer; 
-            transition: border-color 0.2s; color: var(--text-main); font-family: var(--font-sans);
-        }
-        .btn-query:hover { border-color: var(--dyn-color-1); }
+        .btn-action { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 14px; background: var(--bg-base); border: 1px solid var(--border-glass); color: var(--text-main); font-size: 0.85rem; font-weight: 600; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; }
+        .btn-action:hover { background: var(--dyn-color-1); color: #fff; transform: translateY(-2px); border-color: var(--dyn-color-1); }
+        .data-badges { margin-top: 25px; display: flex; gap: 12px; flex-wrap: wrap; }
+        .data-badge { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; background: rgba(100,116,139,0.08); color: var(--text-muted); }
+        
+        .section-header { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .section-header i { font-size: 1rem; color: var(--dyn-color-1); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        /* Canvas Containers */
+        .canvas-container { width: 100%; aspect-ratio: 1; position: relative; }
+        #radarCanvas, #geoCanvas { width: 100%; height: 100%; }
 
-        /* ==========================================================================
-           8. LOADER & TERMINAL (Utility Overlays)
-           ========================================================================== */
-        .loader-screen {
-            position: fixed; inset: 0; z-index: 10000; background: #020617;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-        .loader-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .loader-text { margin-top: 20px; font-family: var(--font-mono); font-size: 0.9rem; color: #10b981; letter-spacing: 4px; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        /* Virtual Interview */
+        .chat-display { flex: 1; min-height: 260px; background: rgba(var(--bg-base-rgb), 0.5); border-radius: 20px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; scroll-behavior: smooth; }
+        .bubble { max-width: 85%; padding: 14px 20px; border-radius: 20px; font-size: 0.92rem; line-height: 1.7; animation: bubbleIn 0.4s ease; }
+        .bubble.ai { background: var(--bg-base); border: 1px solid var(--border-glass); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .bubble.user { background: var(--dyn-color-1); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        @keyframes bubbleIn { from { opacity: 0; transform: translateY(12px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .btn-query { flex: 1; background: var(--bg-base); border: 1px solid var(--border-glass); padding: 12px 18px; border-radius: 14px; text-align: left; font-size: 0.85rem; font-weight: 600; transition: all 0.3s; color: var(--text-main); }
+        .btn-query:hover { background: var(--dyn-color-1); color: white; border-color: var(--dyn-color-1); }
 
-        .nexa-terminal {
-            position: fixed; bottom: 20px; left: 20px; z-index: 9999;
-            width: 300px; max-height: 200px; background: rgba(2, 6, 23, 0.9);
-            border: 1px solid var(--dyn-color-2); border-radius: 8px; padding: 10px;
-            font-family: var(--font-mono); font-size: 0.65rem; color: #10b981;
-            overflow: hidden; backdrop-filter: blur(10px);
-            opacity: 0; transition: opacity 0.4s; pointer-events: none;
-        }
-        .nexa-terminal.active { opacity: 1; }
-        .nexa-terminal-log { display: flex; flex-direction: column; gap: 3px; margin-top: 5px; }
-        .log-error { color: #ef4444; } .log-success { color: #3b82f6; }
+        /* ========================================== */
+        /* 6. ADVANCED TOOLS UI                       */
+        /* ========================================== */
+        /* Floating Note Taker */
+        .smart-notes-panel { position: fixed; bottom: 30px; left: 30px; width: 350px; background: var(--card-glass); backdrop-filter: blur(25px); border: 1px solid var(--border-glass); border-radius: 20px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); z-index: 9500; transform: translateY(150%); transition: var(--transition-bounce); display: flex; flex-direction: column; gap: 15px; }
+        .smart-notes-panel.active { transform: translateY(0); }
+        .smart-notes-panel textarea { width: 100%; height: 150px; background: var(--bg-base); border: 1px solid var(--border-glass); border-radius: 12px; padding: 15px; font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: var(--text-main); resize: none; outline: none; }
+        
+        /* Command Palette */
+        .cmd-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 100000; display: flex; justify-content: center; padding-top: 10vh; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .cmd-overlay.active { opacity: 1; visibility: visible; }
+        .cmd-palette { width: 90%; max-width: 600px; background: var(--card-glass); backdrop-filter: blur(20px); border: 1px solid var(--border-glass); border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.3); transform: scale(0.95); transition: 0.3s; display: flex; flex-direction: column; }
+        .cmd-overlay.active .cmd-palette { transform: scale(1); }
+        .cmd-input { width: 100%; padding: 20px 25px; border: none; background: transparent; font-size: 1.2rem; color: var(--text-main); outline: none; border-bottom: 1px solid var(--border-glass); font-family: 'Poppins', sans-serif; }
+        .cmd-results { max-height: 300px; overflow-y: auto; padding: 10px; }
+        .cmd-item { padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; color: var(--text-main); font-weight: 600; }
+        .cmd-item:hover { background: var(--dyn-color-1); color: white; }
+
+        /* Quote Generator Modal */
+        .quote-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .quote-modal.active { opacity: 1; visibility: visible; }
+        .quote-content { background: var(--bg-base); padding: 30px; border-radius: 20px; text-align: center; max-width: 500px; width: 90%; border: 1px solid var(--border-glass); }
+        #quoteCanvas { max-width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; }
+
+        /* Pomodoro / Focus Timer */
+        .focus-timer { position: fixed; bottom: 30px; right: 90px; background: var(--card-glass); backdrop-filter: blur(15px); border: 1px solid var(--border-glass); padding: 10px 20px; border-radius: 30px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow-card); z-index: 9000; font-family: 'Space Mono', monospace; font-weight: 700; transform: translateY(150%); transition: var(--transition-bounce); }
+        .focus-timer.active { transform: translateY(0); }
+
+        /* Debug Logger */
+        .sys-logger { position: fixed; top: 80px; left: 20px; width: 300px; height: 200px; background: rgba(0,0,0,0.8); color: #10b981; font-family: 'Space Mono', monospace; font-size: 0.7rem; padding: 15px; border-radius: 12px; border: 1px solid #333; overflow-y: auto; z-index: 9999; display: none; }
+        .sys-logger.active { display: block; }
+
+        /* UI Helpers */
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--card-glass); backdrop-filter: blur(20px); border: 1px solid var(--border-glass); border-radius: 16px; padding: 14px 28px; font-size: 0.85rem; font-weight: 600; color: var(--text-main); z-index: 9999; box-shadow: 0 15px 40px rgba(0,0,0,0.2); opacity: 0; transition: all 0.5s; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .cursor-dot { width: 8px; height: 8px; background: var(--accent); position: fixed; border-radius: 50%; pointer-events: none; z-index: 999998; transform: translate(-50%,-50%); box-shadow: 0 0 12px var(--accent); }
+        .cursor-outline { width: 40px; height: 40px; border: 2px solid var(--dyn-color-1); position: fixed; border-radius: 50%; pointer-events: none; z-index: 999997; transform: translate(-50%,-50%); transition: width .2s, height .2s, border-color .2s; }
     </style>
 </head>
 <body>
 
-    <div class="loader-screen" id="loaderScreen">
-        <div class="loader-text">NEXA.SYS_BOOTING...</div>
-    </div>
+    <div class="progress-bar-global" id="masterProgress"></div>
+    <div id="reading-progress"></div>
+    <div class="cursor-dot" id="curDot" class="no-print"></div>
+    <div class="cursor-outline" id="curRing" class="no-print"></div>
+    <div class="sys-logger no-print" id="sysLogger"></div>
 
-    <div class="nexa-terminal" id="nexaTerminal">
-        <div style="border-bottom: 1px dashed #10b981; padding-bottom: 4px;"><strong>DIAGNOSTIK</strong></div>
-        <div class="nexa-terminal-log" id="nexaLogBox"></div>
+    <div class="loader-screen" id="loaderScreen">
+        <div class="loader-ring"></div>
+        <div class="loader-text">OMNI ENGINE BOOT...</div>
     </div>
 
     <div class="bg-morph" id="bg-morph"></div>
-    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <canvas id="particle-canvas" class="no-print"></canvas>
 
-    <div class="system-controls">
-        <button class="btn-float" id="themeToggle" title="Mode Layar"><i class="fa-solid fa-moon"></i></button>
+    <div class="system-tools no-print">
+        <button class="tool-btn" id="btnNotes" title="Smart Notes"><i class="fa-solid fa-pen-nib"></i></button>
+        <button class="tool-btn" id="btnTimer" title="Focus Timer"><i class="fa-solid fa-stopwatch"></i></button>
+        <button class="tool-btn" id="btnQuote" title="Quote Generator"><i class="fa-solid fa-image"></i></button>
+        <button class="tool-btn" id="btnAmbient" title="Ambient Focus Audio"><i class="fa-solid fa-headphones-simple"></i></button>
+        <button class="tool-btn" id="btnSearch" title="Command Palette (Ctrl+K)"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="tool-btn" id="btnLang" title="Bilingual Toggle">ID</button>
+        <button class="tool-btn" id="btnZen" title="Zen Mode"><i class="fa-solid fa-expand"></i></button>
+        <button class="tool-btn" id="btnPrint" title="Print/Export"><i class="fa-solid fa-print"></i></button>
+        <button class="tool-btn" id="themeToggle" title="Dark/Light Mode"><i class="fa-solid fa-sun"></i></button>
     </div>
 
-    <div class="dashboard-container">
+    <div class="smart-notes-panel no-print" id="notesPanel">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--dyn-color-1);"><i class="fa-solid fa-book-journal-whills"></i> Catatan Omni</h3>
+            <button class="btn-action" id="btnDownloadNotes" style="padding:5px 10px; font-size:0.7rem;"><i class="fa-solid fa-download"></i> Save</button>
+        </div>
+        <textarea id="notesArea" placeholder="Ketik ringkasan atau ide Anda di sini... (Otomatis tersimpan)"></textarea>
+    </div>
+
+    <div class="focus-timer no-print" id="focusTimer">
+        <i class="fa-solid fa-brain" style="color:var(--dyn-color-1);"></i>
+        <span id="timerDisplay">25:00</span>
+        <button id="btnTimerToggle" style="background:none; border:none; color:var(--text-main); font-size:1.2rem;"><i class="fa-solid fa-play"></i></button>
+    </div>
+
+    <div class="cmd-overlay no-print" id="cmdOverlay">
+        <div class="cmd-palette">
+            <input type="text" class="cmd-input" id="cmdInput" placeholder="Cari nama, laqab, atau karya (Ctrl+K)..." autocomplete="off">
+            <div class="cmd-results" id="cmdResults"></div>
+        </div>
+    </div>
+
+    <div class="quote-modal no-print" id="quoteModal">
+        <div class="quote-content">
+            <h2 style="font-family:'Cinzel',serif; margin-bottom:15px; color:var(--dyn-color-1);">Quote Generator</h2>
+            <canvas id="quoteCanvas" width="800" height="800"></canvas>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button class="btn-action" id="btnChangeQuoteColor"><i class="fa-solid fa-palette"></i> Ubah Warna</button>
+                <button class="btn-action" id="btnDownloadQuote"><i class="fa-solid fa-download"></i> Download PNG</button>
+                <button class="btn-action" id="btnCloseQuote"><i class="fa-solid fa-xmark"></i> Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-container page-enter">
         
-        <section class="carousel-panel" id="carouselPanel">
+        <section class="carousel-panel no-print">
             <div class="carousel-track" id="carouselTrack"></div>
             <div class="carousel-controls">
-                <button class="btn-nav" id="prevTokoh"><i class="fa-solid fa-arrow-left"></i></button>
-                <button class="btn-nav" id="nextTokoh"><i class="fa-solid fa-arrow-right"></i></button>
+                <button class="btn-nav" id="prevTokoh"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="btn-nav" id="btnAutoPlay" title="Auto Play"><i class="fa-solid fa-play"></i></button>
+                <button class="btn-nav" id="nextTokoh"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
             <div class="timeline-minimap" id="timelineMinimap">
                 <div class="timeline-line"></div>
                 <div class="timeline-progress" id="timelineProgress"></div>
             </div>
+            <div style="margin-top:15px; font-size:0.7rem; color:var(--text-muted); font-weight:700; letter-spacing:1px; text-transform:uppercase;"><i class="fa-solid fa-mobile-screen"></i> Gyro 3D Active (Mobile)</div>
         </section>
 
-        <section class="data-panel">
-            
-            <div class="box-component info-box reveal-box">
+        <section class="data-panel" id="dataPanel">
+
+            <div class="glass-box info-box reveal-box" id="infoBox">
                 <div class="bio-header">
-                    <div>
+                    <div class="bio-title">
                         <h1 id="nodeName">--</h1>
                         <div class="bio-laqab" id="nodeLaqab">--</div>
                     </div>
-                    <div class="bio-actions">
-                        <button class="btn-action" id="readBio"><i class="fa-solid fa-play"></i> <span>Audio</span></button>
-                        <button class="btn-action" id="shareTokoh"><i class="fa-solid fa-copy"></i> <span>Salin</span></button>
+                    <div class="bio-actions no-print">
+                        <button class="btn-action" id="readBio" title="Narasi Audio AI"><i class="fa-solid fa-volume-high"></i> <span>Dengarkan</span></button>
                     </div>
                 </div>
-                
-                <div class="bio-content-wrapper">
-                    <div class="bio-quote" id="nodeQuote">"Memuat arsip..."</div>
-                    <p class="bio-text" id="nodeText">Memuat data historiografi...</p>
-                </div>
+                <p class="bio-text" id="nodeText">Memuat arsip historiografi...</p>
                 
                 <div class="data-badges">
                     <span class="data-badge book" id="nodeBook"><i class="fa-solid fa-book"></i> --</span>
-                    <span class="data-badge" id="nodeOrigin"><i class="fa-solid fa-location-dot"></i> --</span>
-                    <span class="data-badge" id="nodeEra"><i class="fa-solid fa-clock"></i> --</span>
+                    <span class="data-badge" id="nodeOrigin"><i class="fa-solid fa-map-location-dot"></i> --</span>
+                    <span class="data-badge" id="nodeEra"><i class="fa-solid fa-clock-rotate-left"></i> --</span>
                 </div>
             </div>
 
-            <div class="box-component reveal-box">
-                <div class="box-header"><i class="fa-solid fa-chart-bar"></i> Matriks Atribut</div>
-                <div id="statBarsContainer"></div>
+            <div class="glass-box chart-box reveal-box">
+                <div class="section-header"><i class="fa-solid fa-globe"></i> Peta Asal Geografis</div>
+                <div class="canvas-container">
+                    <canvas id="geoCanvas"></canvas>
+                </div>
             </div>
 
-            <div class="box-component reveal-box">
-                <div class="box-header"><i class="fa-solid fa-bullseye"></i> Spektrum Intelektual</div>
-                <div class="canvas-container"><canvas id="radarCanvas"></canvas></div>
+            <div class="glass-box chart-box reveal-box">
+                <div class="section-header"><i class="fa-solid fa-chart-radar"></i> Radar Kompetensi</div>
+                <div class="canvas-container">
+                    <canvas id="radarCanvas"></canvas>
+                </div>
             </div>
 
-            <div class="box-component interview-box reveal-box">
-                <div class="box-header"><i class="fa-solid fa-robot"></i> Simulasi Interaktif</div>
+            <div class="glass-box info-box reveal-box no-print">
+                <div class="section-header"><i class="fa-solid fa-robot"></i> Simulasi AI Interview (Voice Enabled)</div>
                 <div class="chat-display" id="chatDisplay"></div>
-                <div class="chat-options" id="chatOptions"></div>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-query" id="btnQuickAsk">Pilih pertanyaan template...</button>
+                    <button class="btn-action" id="btnMic" style="background:#ef4444; color:white; border:none; width:45px; justify-content:center;"><i class="fa-solid fa-microphone"></i></button>
+                </div>
+                <div id="chatOptions" style="display:none; flex-direction:column; gap:10px; margin-top:10px;"></div>
             </div>
-            
+
         </section>
     </div>
 
-    <div id="toast" class="toast"></div>
+    <div class="toast" id="toast"></div>
 
     <script>
-    /**
-     * ==============================================================================
-     * NEXA HISTORIOGRAPHY ENGINE v4.2 (STABLE ARCHITECTURE)
-     * Architect: Muhamad Fauzan Al Farikhi (NEXA Tech Labs)
-     * Focus: Zero Overflow, Race-Condition Prevention, Fluid Responsiveness.
-     * ==============================================================================
-     */
-
-    // Minimalist System Logger
-    const Logger = {
-        box: document.getElementById('nexaLogBox'),
-        terminal: document.getElementById('nexaTerminal'),
-        log(msg, type = 'info') {
-            this.terminal.classList.add('active');
-            const line = document.createElement('div');
-            line.className = type === 'error' ? 'log-error' : type === 'success' ? 'log-success' : '';
-            line.innerText = `> ${msg}`;
-            this.box.appendChild(line);
-            if(this.box.children.length > 5) this.box.removeChild(this.box.firstChild);
-            clearTimeout(this.hideTimer);
-            this.hideTimer = setTimeout(() => this.terminal.classList.remove('active'), 3000);
-        }
-    };
-
     document.addEventListener('DOMContentLoaded', () => {
-        Logger.log("Core initialized.", "success");
 
-        const fallbackImg = "https://images.unsplash.com/photo-1584285406059-86ab8e604f14?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
+        // ==========================================
+        // SYSTEM LOGGER
+        // ==========================================
+        const sysLog = document.getElementById('sysLogger');
+        function logAction(msg) {
+            const time = new Date().toLocaleTimeString();
+            const p = document.createElement('div');
+            p.innerText = `[${time}] SYS: ${msg}`;
+            sysLog.appendChild(p);
+            if(sysLog.children.length > 20) sysLog.removeChild(sysLog.firstChild);
+            sysLog.scrollTop = sysLog.scrollHeight;
+        }
+        // Easter Egg: Type "nexa" to open logger
+        let keys = ''; window.addEventListener('keydown', e => { keys += e.key.toLowerCase(); if(keys.length > 4) keys = keys.slice(1); if(keys === 'nexa') sysLog.classList.toggle('active'); });
 
-        // Full Database (Preserved)
-        const Database = [
+        // ==========================================
+        // DATABASE & DICTIONARIES
+        // ==========================================
+        const glossaryDict = {
+            "Aristotelian": "Sistem pemikiran filosofis berdasarkan ajaran Aristoteles, menekankan logika, observasi empiris, dan kausalitas.",
+            "tauhid": "Konsep monoteisme dalam Islam yang meyakini keesaan Tuhan secara mutlak.",
+            "Emanasi": "Teori penciptaan Neoplatonik di mana alam semesta memancar (meluap) dari Tuhan secara hierarkis (Akal Pertama, Kedua, dst).",
+            "Akal Aktif": "Dalam filsafat Islam, ini adalah Akal ke-10 yang bertugas memberikan bentuk pada dunia materi dan memancarkan wahyu ke Nabi (identik dengan Jibril).",
+            "Wajib al-Wujud": "Wujud Niscaya (Tuhan). Sesuatu yang keberadaannya bersumber dari diri-Nya sendiri, bukan dari sebab lain.",
+            "Neoplatonik": "Sistem filsafat yang memadukan ajaran Plato dengan unsur mistisisme, sangat berpengaruh pada filsuf Islam awal.",
+            "Tasawuf": "Jalan spiritual (mistisisme) dalam Islam yang bertujuan mencapai kedekatan langsung dengan Tuhan melalui pembersihan hati.",
+            "burhani": "Metode penalaran demonstratif atau logis yang menghasilkan pengetahuan pasti (apodikti) dalam filsafat Islam.",
+            "Wahdatul Wujud": "Konsep Kesatuan Wujud. Alam semesta pada hakikatnya adalah manifestasi dari satu Wujud tunggal (Tuhan)."
+        };
+
+        const database = [
             {
-                id: "alkindi", name: "Al-Kindi", laqab: "Bapak Filsafat Arab",
-                era: "Abad 9 M", eraShort: "801–873 M", origin: "Kufah, Irak", book: "Fi al-Falsafah al-Ula",
-                colors: ["#0ea5e9", "#0369a1"], img: `assets/images/tokoh/alkindi.jpg`,
-                quote: "Kita tidak boleh malu mencari kebenaran dari manapun ia datang.",
-                bio: "Abu Yusuf Ya'qub ibn Ishaq as-Sabbah al-Kindi adalah ilmuwan polimatik dan pionir kriptografi. Ia adalah jembatan pertama yang menghubungkan pemikiran Yunani (Aristotelian) dengan dunia Islam. Al-Kindi menegaskan bahwa kebenaran filosofis tidak akan pernah mengkhianati wahyu ilahi, melainkan mengkonfirmasinya melalui jalur akal logis.",
-                stats: { Rasional: 88, Metafisika: 85, Sains: 95, Tasawuf: 40, Logika: 90 },
+                id: "alkindi", name: "Al-Kindi", laqab: "Al-Faylasuf al-Arab", era: "Abad 9 M", eraShort: "801–873 M", origin: "Irak", originCoords: {x: 0.6, y: 0.45}, book: "Fi al-Falsafah al-Ula",
+                colors: ["#0ea5e9", "#0284c7"], img: "assets/images/tokoh/alkindi.jpg",
+                bio: "Perintis filsafat Arab pertama. Ia menyelaraskan pemikiran Aristotelian dengan tauhid Islam, membuktikan bahwa filsafat dan wahyu adalah dua jalan menuju Kebenaran Tunggal.",
+                en_bio: "The first Arab philosopher. He harmonized Aristotelian thought with Islamic monotheism, proving that philosophy and revelation are two paths to a Single Truth.",
+                stats: { Rasional: 90, Metafisika: 85, Sains: 95, Tasawuf: 30, Logika: 85 },
                 qna: [
-                    { q: "Mengapa filsafat Yunani penting dipelajari?", a: "Kebenaran tidak pernah merendahkan pencarinya. Kita wajib menerimanya dari manapun ia datang." },
-                    { q: "Apa definisi Tuhan menurut rasio?", a: "Tuhan adalah 'Yang Esa yang Benar' (Al-Wahid Al-Haqq)." },
-                    { q: "Bagaimana hubungan filsafat dan agama?", a: "Tujuan keduanya sama: mengetahui realitas sebenarnya sejauh batas kemampuan manusia." }
-                ]
+                    { q: "Mengapa mempelajari filsafat Yunani?", a: "Kita tidak boleh malu mengakui kebenaran dari manapun asalnya, sekalipun dari bangsa yang jauh." },
+                    { q: "Apa tujuan akhir filsafat?", a: "Mencapai realitas segala sesuatu sejauh kemampuan manusia untuk mengenal Tuhan." }
+                ],
+                quote: "Kita tidak boleh malu mengakui kebenaran dari manapun asalnya."
             },
             {
-                id: "alfarabi", name: "Al-Farabi", laqab: "Al-Mu'allim Ats-Tsani",
-                era: "Abad 10 M", eraShort: "872–950 M", origin: "Farab, Kazakhstan", book: "Al-Madinah Al-Fadhilah",
-                colors: ["#8b5cf6", "#5b21b6"], img: `assets/images/tokoh/alfarabi.jpg`,
-                quote: "Negara yang ideal dipimpin oleh mereka yang akalnya telah mencapai Akal Aktif.",
-                bio: "Dikenal sebagai 'Guru Kedua' setelah Aristoteles. Al-Farabi merancang arsitektur sosiologi dan filsafat politik Islam. Ia meyakini bahwa negara yang ideal (Madinah Fadhilah) harus dipimpin oleh seorang Nabi-Filsuf yang akalnya telah terkoneksi langsung dengan Akal Aktif kosmik.",
-                stats: { Rasional: 95, Metafisika: 90, Politik: 95, Tasawuf: 55, Logika: 100 },
+                id: "alfarabi", name: "Al-Farabi", laqab: "Al-Mu'allim Ats-Tsani", era: "Abad 10 M", eraShort: "872–950 M", origin: "Kazakhstan", originCoords: {x: 0.7, y: 0.3}, book: "Madinah al-Fadhilah",
+                colors: ["#8b5cf6", "#6d28d9"], img: "assets/images/tokoh/alfarabi.jpg",
+                bio: "Dikenal sebagai 'Guru Kedua'. Ia merumuskan konsep Negara Utama melalui proses Emanasi, di mana pemimpin haruslah seorang Nabi-Filsuf yang memiliki kesempurnaan intelek dan bersatu dengan Akal Aktif.",
+                en_bio: "Known as the 'Second Teacher'. He formulated the Virtuous City concept via Emanation, where the leader must be a Prophet-Philosopher united with the Active Intellect.",
+                stats: { Rasional: 95, Metafisika: 90, Sains: 80, Tasawuf: 50, Logika: 100 },
                 qna: [
-                    { q: "Apa syarat utama pemimpin ideal?", a: "Pemimpin sejati harus memadukan kesempurnaan intelektual dan moral." },
-                    { q: "Apa itu teori Emanasi?", a: "Proses melimpahnya wujud alam semesta dari Tuhan, bagaikan cahaya dari matahari." },
-                    { q: "Apa tujuan manusia bernegara?", a: "Untuk saling membantu mencapai kebahagiaan hakiki." }
-                ]
+                    { q: "Siapa pemimpin ideal itu?", a: "Seorang yang akalnya telah bersatu dengan Akal Aktif (Jibril)." },
+                    { q: "Apa itu kebahagiaan sejati?", a: "Ketika jiwa manusia mencapai tingkat intelek yang tidak lagi membutuhkan materi." }
+                ],
+                quote: "Masyarakat yang baik bekerjasama mencapai kebahagiaan sejati."
             },
             {
-                id: "ibnusina", name: "Ibnu Sina", laqab: "Syaikh al-Ra'is",
-                era: "Abad 11 M", eraShort: "980–1037 M", origin: "Bukhara, Uzbekistan", book: "Al-Qanun fi al-Tibb",
-                colors: ["#10b981", "#047857"], img: `assets/images/tokoh/ibnusina.jpg`,
-                quote: "Tubuh hanyalah kendaraan bagi jiwa yang abadi.",
-                bio: "Raksasa intelektual yang karya medisnya menjadi referensi utama di Eropa selama 500 tahun. Dalam filsafat, ia merumuskan argumen ontologis tentang 'Wajib al-Wujud' (Keniscayaan Wujud) yang menjadi kerangka rasional tak terbantahkan untuk membuktikan eksistensi Tuhan.",
-                stats: { Rasional: 100, Metafisika: 98, Kedokteran: 100, Tasawuf: 65, Logika: 95 },
+                id: "ibnusina", name: "Ibnu Sina", laqab: "Al-Syaikh al-Ra'is", era: "Abad 11 M", eraShort: "980–1037 M", origin: "Uzbekistan", originCoords: {x: 0.65, y: 0.35}, book: "Al-Syifa & Al-Qanun",
+                colors: ["#10b981", "#047857"], img: "assets/images/tokoh/ibnusina.jpg",
+                bio: "Raksasa intelektual yang mendominasi dunia medis dan metafisika. Argumen Wajib al-Wujud miliknya menjadi standar pembuktian eksistensi Tuhan bagi para teolog berabad-abad.",
+                en_bio: "An intellectual giant dominating medicine and metaphysics. His 'Necessary Being' argument became the standard proof of God's existence for centuries.",
+                stats: { Rasional: 100, Metafisika: 100, Sains: 100, Tasawuf: 60, Logika: 95 },
                 qna: [
-                    { q: "Bagaimana nalar membuktikan Tuhan?", a: "Rantai penyebab di alam semesta harus berujung pada Wujud yang Niscaya (Wajib al-Wujud)." },
-                    { q: "Apakah jiwa hancur saat tubuh mati?", a: "Tidak. Tubuh hanyalah alat bagi jiwa. Jiwa tetap hidup abadi." },
-                    { q: "Apa sumber penyakit utama manusia?", a: "Sebagian besar penyakit fisik bersumber dari kegelisahan jiwa." }
-                ]
+                    { q: "Bagaimana Anda membuktikan adanya Tuhan?", a: "Melalui konsep Wajib al-Wujud. Sesuatu yang 'mungkin' harus bersandar pada Sesuatu yang 'Niscaya'." },
+                    { q: "Apakah jiwa itu kekal?", a: "Jiwa adalah substansi immaterial yang tidak hancur bersama jasad." }
+                ],
+                quote: "Waktu adalah alat ukur pergerakan yang tak kasat mata."
             },
             {
-                id: "alghazali", name: "Al-Ghazali", laqab: "Hujjatul Islam",
-                era: "Abad 12 M", eraShort: "1058–1111 M", origin: "Tus, Persia", book: "Tahafut al-Falasifah",
-                colors: ["#06b6d4", "#0e7490"], img: `assets/images/tokoh/alghazali.jpg`,
-                quote: "Cahaya kepastian diturunkan ke dalam hati, bukan sekadar dari untaian kata logis.",
-                bio: "Sang penyelamat ortodoksi. Al-Ghazali melakukan dekonstruksi besar-besaran terhadap klaim-klaim metafisik para filsuf sebelumnya. Ia berhasil mengintegrasikan pengalaman spiritual intuitif (Tasawuf) ke dalam kerangka rasional syariat Islam.",
-                stats: { Rasional: 75, Metafisika: 85, Sains: 45, Tasawuf: 100, Logika: 90 },
+                id: "alghazali", name: "Al-Ghazali", laqab: "Hujjat al-Islam", era: "Abad 12 M", eraShort: "1058–1111 M", origin: "Persia", originCoords: {x: 0.62, y: 0.4}, book: "Ihya Ulumuddin",
+                colors: ["#f59e0b", "#b45309"], img: "assets/images/tokoh/alghazali.jpg",
+                bio: "Pembela Islam yang mengintegrasikan Tasawuf ke dalam syariat. Kritiknya terhadap filsuf Neoplatonik melalui kitab Tahafut al-Falasifah mengubah arah sejarah pemikiran Islam.",
+                en_bio: "Defender of Islam who integrated Sufism into Sharia. His critique of Neoplatonic philosophers changed the course of Islamic thought.",
+                stats: { Rasional: 75, Metafisika: 85, Sains: 40, Tasawuf: 100, Logika: 95 },
                 qna: [
-                    { q: "Mengapa ajaran filsuf bermasalah?", a: "Karena terlalu mendewakan rasio untuk hal ghaib di luar kapasitas nalar." },
-                    { q: "Bagaimana mencapai kebenaran mutlak?", a: "Lewat 'Kasyf' (penyingkapan batin) setelah membersihkan hati dari nafsu." },
-                    { q: "Apa itu teori Kausalitas menurut Anda?", a: "Allah-lah yang menciptakan sifat 'terbakar' saat api menyentuh kapas (Sunnatullah)." }
-                ]
+                    { q: "Mengapa mengkritik para filsuf?", a: "Akal punya batas, cahaya iman tidak. Mereka terjebak spekulasi yang tidak menjangkau hakikat ghaib." },
+                    { q: "Apa itu ma'rifat?", a: "Cahaya yang dipancarkan Allah ke dalam hati hamba-Nya setelah membersihkan cermin jiwanya." }
+                ],
+                quote: "Pengetahuan tanpa amal gila, amal tanpa pengetahuan sia-sia."
             },
             {
-                id: "ibnurusyd", name: "Ibnu Rusyd", laqab: "Averroes",
-                era: "Abad 12 M", eraShort: "1126–1198 M", origin: "Cordoba, Andalusia", book: "Fashl al-Maqal",
-                colors: ["#f43f5e", "#be123c"], img: `assets/images/tokoh/ibnurusyd.jpg`,
-                quote: "Kebenaran akal dan wahyu bagaikan saudara susuan yang tak mungkin bertentangan.",
-                bio: "Hakim Agung Andalusia yang bangkit membela nalar rasional dari serangan Al-Ghazali. Melalui metode demonstratif (Burhani), Ibnu Rusyd menegaskan harmoni absolut antara filsafat dan agama; menempatkan rasio di posisi tertinggi tanpa mengorbankan syariat.",
-                stats: { Rasional: 100, Metafisika: 90, Sains: 95, Tasawuf: 20, Logika: 100 },
+                id: "ibnurusyd", name: "Ibnu Rusyd", laqab: "The Commentator", era: "Abad 12 M", eraShort: "1126–1198 M", origin: "Andalusia", originCoords: {x: 0.2, y: 0.3}, book: "Tahafut al-Tahafut",
+                colors: ["#f43f5e", "#be123c"], img: "assets/images/tokoh/ibnurusyd.jpg",
+                bio: "Sang pembela nalar dari Andalusia. Ia membuktikan bahwa kebenaran hasil penalaran demonstratif atau burhani tidak mungkin bertentangan dengan kebenaran wahyu.",
+                en_bio: "The defender of reason from Andalusia. He proved that the truth of demonstrative reasoning cannot contradict the truth of revelation.",
+                stats: { Rasional: 100, Metafisika: 90, Sains: 90, Tasawuf: 20, Logika: 100 },
                 qna: [
-                    { q: "Apakah belajar filsafat dilarang?", a: "Sebaliknya, ia wajib! Filsafat adalah instrumen akal terbaik merenungkan ciptaan-Nya." },
-                    { q: "Jika sains bertentangan dengan Al-Quran?", a: "Kebenaran tidak melawan Kebenaran. Teks tersebut harus ditakwilkan." },
-                    { q: "Apa syarat utama seorang filsuf?", a: "Kejujuran intelektual untuk menerima argumen yang lebih kuat." }
-                ]
-            },
-            {
-                id: "ibnukhaldun", name: "Ibnu Khaldun", laqab: "Bapak Sosiologi Modern",
-                era: "Abad 14 M", eraShort: "1332–1406 M", origin: "Tunis, Tunisia", book: "Al-Muqaddimah",
-                colors: ["#f59e0b", "#b45309"], img: `assets/images/tokoh/ibnukhaldun.jpg`,
-                quote: "Kekuatan sebuah peradaban bertumpu pada Ashabiyyah, solidaritas kolektif warganya.",
-                bio: "Inovator luar biasa yang mendirikan ilmu historiografi murni, sosiologi, dan ekonomi jauh mendahului pemikir Barat. Ia merumuskan konsep 'Ashabiyyah' sebagai mesin penggerak utama dalam siklus kebangkitan dan keruntuhan suatu peradaban.",
-                stats: { Rasional: 95, Sosiologi: 100, Ekonomi: 95, Tasawuf: 40, Logika: 90 },
-                qna: [
-                    { q: "Apa rahasia jatuhnya peradaban?", a: "Saat kemewahan memuncak, solidaritas (Ashabiyyah) pudar diganti korupsi." },
-                    { q: "Fungsi pajak dalam ekonomi negara?", a: "Pajak rendah menstimulasi rakyat bekerja giat. Pajak tinggi membunuh motivasi." },
-                    { q: "Bagaimana karakter manusia terbentuk?", a: "Manusia adalah anak dari kebiasaan dan lingkungannya." }
-                ]
+                    { q: "Apakah filsafat itu sesat?", a: "Tidak. Agama memerintahkan merenungkan ciptaan agar mengenal Penciptanya." },
+                    { q: "Bagaimana menyikapi pertentangan ayat dan akal?", a: "Teks agama harus dipahami secara metaforis (takwil) jika tampak bertentangan dengan nalar pasti." }
+                ],
+                quote: "Kebenaran tidak mungkin bertentangan dengan kebenaran."
             }
         ];
 
-        class CoreController {
-            constructor(db) {
-                this.db = db;
-                this.currentIdx = 0;
-                this.statsAnimId = null;
-                this.animatedStats = {};
-                this.isSpeaking = false;
-                
-                this.initDOM();
-                this.bindEvents();
-                this.renderCarousel();
-                this.updateView();
-            }
-
-            initDOM() {
-                this.track = document.getElementById('carouselTrack');
-                this.timeline = document.getElementById('timelineMinimap'); 
-                this.progress = document.getElementById('timelineProgress');
-                this.radarCtx = document.getElementById('radarCanvas').getContext('2d');
-            }
-
-            bindEvents() {
-                document.getElementById('prevTokoh').onclick = () => this.navigate(-1);
-                document.getElementById('nextTokoh').onclick = () => this.navigate(1);
-                
-                document.addEventListener('keydown', (e) => {
-                    if(e.key === 'ArrowLeft') this.navigate(-1);
-                    if(e.key === 'ArrowRight') this.navigate(1);
-                });
-
-                document.getElementById('readBio').onclick = () => this.toggleAudio();
-                document.getElementById('shareTokoh').onclick = () => this.shareData();
-            }
-
-            navigate(dir) {
-                if(this.isSpeaking) window.speechSynthesis.cancel();
-                this.currentIdx = (this.currentIdx + dir + this.db.length) % this.db.length;
-                this.updateView();
-            }
-
-            renderCarousel() {
-                this.track.innerHTML = '';
-                this.db.forEach((item, i) => {
-                    const card = document.createElement('div');
-                    card.className = 'tokoh-card';
-                    card.innerHTML = `
-                        <img src="${item.img}" alt="${item.name}" onerror="this.onerror=null; this.src='${fallbackImg}';">
-                        <div class="era-badge" style="background: linear-gradient(135deg, ${item.colors[0]}, ${item.colors[1]})">${item.era}</div>
-                        <h2>${item.name}</h2><p>${item.laqab}</p>
-                    `;
-                    card.onclick = () => { if(this.currentIdx !== i) { this.currentIdx = i; this.updateView(); }};
-                    this.track.appendChild(card);
-
-                    const dot = document.createElement('div');
-                    dot.className = 'timeline-dot';
-                    dot.onclick = () => { this.currentIdx = i; this.updateView(); };
-                    this.timeline.appendChild(dot);
-                });
-            }
-
-            updateView() {
-                const data = this.db[this.currentIdx];
-                const cards = this.track.children;
-                const dots = this.timeline.querySelectorAll('.timeline-dot');
-
-                // Reduced scale to prevent overflow, adjusted Z translation
-                for(let i=0; i<cards.length; i++) {
-                    const offset = i - this.currentIdx;
-                    const abs = Math.abs(offset);
-                    const tx = offset * 120;
-                    const tz = abs * -150;
-                    const scale = 1 - abs * 0.08; 
-                    
-                    cards[i].style.transform = `translateX(${tx}px) translateZ(${tz}px) scale(${scale})`;
-                    cards[i].style.zIndex = 10 - abs;
-                    cards[i].classList.toggle('active', offset === 0);
-                    if(offset === 0) cards[i].style.borderColor = data.colors[0];
-                }
-
-                document.documentElement.style.setProperty('--dyn-color-1', data.colors[0]);
-                document.documentElement.style.setProperty('--dyn-color-2', data.colors[1]);
-
-                dots.forEach((d, i) => d.classList.toggle('active', i === this.currentIdx));
-                this.progress.style.width = `${(this.currentIdx / (this.db.length - 1)) * 100}%`;
-
-                // Update DOM text content
-                document.getElementById('nodeName').innerText = data.name;
-                document.getElementById('nodeLaqab').innerText = data.laqab;
-                document.getElementById('nodeQuote').innerText = `"${data.quote}"`;
-                document.getElementById('nodeText').innerText = data.bio;
-                document.getElementById('nodeBook').innerHTML = `<i class="fa-solid fa-book"></i> ${data.book}`;
-                document.getElementById('nodeOrigin').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.origin}`;
-                document.getElementById('nodeEra').innerHTML = `<i class="fa-solid fa-clock"></i> ${data.eraShort}`;
-
-                // Reset wrapper scroll position
-                document.querySelector('.bio-content-wrapper').scrollTop = 0;
-
-                this.renderStats(data.stats);
-                this.animateRadar(data.stats, data.colors);
-                this.buildChat(data);
-                this.executeSafeReveal(); // Fixed transition
-            }
-
-            renderStats(stats) {
-                const container = document.getElementById('statBarsContainer');
-                container.innerHTML = '';
-                Object.entries(stats).forEach(([key, val]) => {
-                    container.innerHTML += `
-                        <div class="stat-row">
-                            <span class="stat-label">${key}</span>
-                            <div class="stat-track"><div class="stat-fill" style="width:0%"></div></div>
-                            <span class="stat-value">${val}</span>
-                        </div>
-                    `;
-                });
-                
-                // Slight delay ensures DOM is painted before applying width
-                setTimeout(() => {
-                    const fills = container.querySelectorAll('.stat-fill');
-                    Object.values(stats).forEach((v, i) => fills[i].style.width = `${v}%`);
-                }, 50);
-            }
-
-            animateRadar(targetStats, colors) {
-                if(this.statsAnimId) cancelAnimationFrame(this.statsAnimId);
-                const labels = Object.keys(targetStats);
-                const targets = Object.values(targetStats);
-                const current = labels.map(l => this.animatedStats[l] || 0);
-                const start = performance.now();
-
-                const step = (now) => {
-                    const progress = Math.min((now - start) / 500, 1);
-                    const ease = 1 - Math.pow(1 - progress, 3);
-                    const vals = targets.map((tgt, i) => current[i] + (tgt - current[i]) * ease);
-                    labels.forEach((l, i) => this.animatedStats[l] = vals[i]);
-                    
-                    this.drawRadar(labels, vals, colors);
-                    
-                    if(progress < 1) this.statsAnimId = requestAnimationFrame(step);
-                };
-                requestAnimationFrame(step);
-            }
-
-            drawRadar(labels, values, colors) {
-                const cvs = this.radarCtx.canvas;
-                const size = cvs.parentElement.clientWidth;
-                const dpr = window.devicePixelRatio || 1;
-                cvs.width = size * dpr; cvs.height = size * dpr;
-                cvs.style.width = size + 'px'; cvs.style.height = size + 'px';
-                
-                const ctx = this.radarCtx;
-                ctx.scale(dpr, dpr);
-                const cx = size/2, cy = size/2, radius = size * 0.35;
-                ctx.clearRect(0,0,size,size);
-
-                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                
-                // Guidelines
-                ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'; 
-                ctx.lineWidth = 1;
-                [0.5, 1].forEach(fac => {
-                    ctx.beginPath();
-                    labels.forEach((_, i) => {
-                        const angle = (Math.PI*2/labels.length)*i - Math.PI/2;
-                        ctx[i===0?'moveTo':'lineTo'](cx + Math.cos(angle)*radius*fac, cy + Math.sin(angle)*radius*fac);
-                    });
-                    ctx.closePath(); ctx.stroke();
-                });
-
-                // Spoke lines
-                labels.forEach((_, i) => {
-                    const angle = (Math.PI*2/labels.length)*i - Math.PI/2;
-                    ctx.beginPath(); ctx.moveTo(cx, cy);
-                    ctx.lineTo(cx + Math.cos(angle)*radius, cy + Math.sin(angle)*radius); ctx.stroke();
-                });
-
-                // Data shape
-                ctx.beginPath();
-                values.forEach((v, i) => {
-                    const angle = (Math.PI*2/labels.length)*i - Math.PI/2;
-                    const r = (v/100) * radius;
-                    ctx[i===0?'moveTo':'lineTo'](cx + Math.cos(angle)*r, cy + Math.sin(angle)*r);
-                });
-                ctx.closePath();
-                
-                const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-                grad.addColorStop(0, colors[0] + '80'); 
-                grad.addColorStop(1, colors[1] + '20');
-                ctx.fillStyle = grad; ctx.fill();
-                ctx.strokeStyle = colors[0]; ctx.lineWidth = 2; ctx.stroke();
-
-                // Labels
-                ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
-                ctx.font = `bold ${size*0.04}px 'Space Mono', monospace`;
-                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                labels.forEach((lbl, i) => {
-                    const angle = (Math.PI*2/labels.length)*i - Math.PI/2;
-                    ctx.fillText(lbl, cx + Math.cos(angle)*(radius + 20), cy + Math.sin(angle)*(radius + 20));
-                });
-            }
-
-            buildChat(data) {
-                const display = document.getElementById('chatDisplay');
-                const options = document.getElementById('chatOptions');
-                
-                display.innerHTML = `<div class="bubble ai">Salam, saya <strong>${data.name}</strong>. Ada yang ingin didiskusikan?</div>`;
-                options.innerHTML = '';
-
-                data.qna.forEach(qna => {
-                    const btn = document.createElement('button');
-                    btn.className = 'btn-query'; 
-                    btn.textContent = qna.q;
-                    btn.onclick = () => {
-                        display.innerHTML += `<div class="bubble user">${qna.q}</div>`;
-                        const tid = 'typing-' + Date.now();
-                        display.innerHTML += `<div class="bubble ai" id="${tid}">...</div>`;
-                        display.scrollTop = display.scrollHeight;
-                        
-                        setTimeout(() => {
-                            document.getElementById(tid).innerHTML = `<em>${data.name}:</em> "${qna.a}"`;
-                            display.scrollTop = display.scrollHeight;
-                        }, 400);
-                    };
-                    options.appendChild(btn);
-                });
-            }
-
-            // Fix for the White Screen/Glitch Issue
-            executeSafeReveal() {
-                const boxes = document.querySelectorAll('.reveal-box');
-                // Remove class synchronously
-                boxes.forEach(el => el.classList.remove('visible'));
-                
-                // Allow browser to calculate layout without the class, then add it back asynchronously
-                setTimeout(() => {
-                    boxes.forEach(el => el.classList.add('visible'));
-                }, 50);
-            }
-
-            toggleAudio() {
-                const btn = document.getElementById('readBio');
-                if(!window.speechSynthesis) return Toast.show("Audio tidak didukung.");
-                
-                if(this.isSpeaking) {
-                    window.speechSynthesis.cancel();
-                    this.isSpeaking = false;
-                    btn.classList.remove('playing'); btn.querySelector('span').textContent = 'Audio';
-                } else {
-                    const d = this.db[this.currentIdx];
-                    const msg = new SpeechSynthesisUtterance(`${d.name}. ${d.laqab}. ${d.bio}`);
-                    msg.lang = 'id-ID'; msg.rate = 1;
-                    
-                    msg.onend = msg.onerror = () => { 
-                        this.isSpeaking = false; 
-                        btn.classList.remove('playing'); 
-                        btn.querySelector('span').textContent = 'Audio'; 
-                    };
-                    
-                    window.speechSynthesis.speak(msg);
-                    this.isSpeaking = true;
-                    btn.classList.add('playing'); btn.querySelector('span').textContent = 'Stop';
-                }
-            }
-
-            shareData() {
-                const txt = `Cek data historis ${this.db[this.currentIdx].name} via NEXA Engine.`;
-                navigator.clipboard.writeText(txt);
-                Toast.show("<i class='fa-solid fa-check'></i> Disalin ke clipboard.");
-            }
-        }
-
-        // Lightweight Physics Background 
-        class CanvasBG {
+        // ==========================================
+        // STATE MANAGEMENT
+        // ==========================================
+        class AppState {
             constructor() {
-                this.c = document.getElementById('particle-canvas');
-                this.ctx = this.c.getContext('2d', { alpha: false });
-                this.pts = [];
-                window.addEventListener('resize', () => this.res());
-                this.res(); this.pop(); this.draw();
+                this.idx = 0; this.isEn = false; this.isZen = false; this.isAutoPlay = false; this.progressTracker = new Set();
             }
-            res() { this.c.width = window.innerWidth; this.c.height = window.innerHeight; }
-            pop() {
-                this.pts = [];
-                const max = Math.min(Math.floor((this.c.width * this.c.height) / 20000), 80);
-                for(let i=0; i<max; i++) {
-                    this.pts.push({ x: Math.random()*this.c.width, y: Math.random()*this.c.height, vx: (Math.random()-0.5)*0.8, vy: (Math.random()-0.5)*0.8 });
+            getData() { return database[this.idx]; }
+            markRead() { this.progressTracker.add(this.idx); this.updateMasterProgress(); }
+            updateMasterProgress() { document.getElementById('masterProgress').style.width = `${(this.progressTracker.size / database.length) * 100}%`; }
+        }
+        const state = new AppState();
+
+        // ==========================================
+        // CLASS: AUDIO ENGINE (Binaural & Synth)
+        // ==========================================
+        class AudioEngine {
+            constructor() {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioContext();
+                this.droneOsc = null; this.droneGain = null; this.isAmbientOn = false;
+            }
+            playBeep(freq = 440, type = 'sine', duration = 0.1) {
+                if(this.ctx.state === 'suspended') this.ctx.resume();
+                const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+                osc.type = type; osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.05, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + duration);
+            }
+            toggleAmbient() {
+                if(this.ctx.state === 'suspended') this.ctx.resume();
+                if(this.isAmbientOn) {
+                    this.droneGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1);
+                    setTimeout(() => { this.droneOsc.stop(); this.droneOsc.disconnect(); this.isAmbientOn = false; }, 1000);
+                    showToast('<i class="fa-solid fa-headphones"></i> Ambient Drone Nonaktif');
+                } else {
+                    this.droneOsc = this.ctx.createOscillator(); this.droneGain = this.ctx.createGain();
+                    const filter = this.ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 150;
+                    this.droneOsc.type = 'sawtooth'; this.droneOsc.frequency.value = 55; // Low A
+                    this.droneGain.gain.setValueAtTime(0.001, this.ctx.currentTime); this.droneGain.gain.linearRampToValueAtTime(0.03, this.ctx.currentTime + 2);
+                    this.droneOsc.connect(filter); filter.connect(this.droneGain); this.droneGain.connect(this.ctx.destination);
+                    this.droneOsc.start(); this.isAmbientOn = true;
+                    showToast('<i class="fa-solid fa-headphones"></i> Ambient Focus Drone Aktif');
                 }
+                logAction(`Ambient Audio: ${this.isAmbientOn}`);
             }
-            draw() {
-                const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-                this.ctx.fillStyle = dark ? '#020617' : '#f8fafc';
-                this.ctx.fillRect(0,0,this.c.width,this.c.height);
-                this.ctx.fillStyle = dark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)';
-                
-                this.pts.forEach(p => {
-                    p.x += p.vx; p.y += p.vy;
-                    if(p.x < 0 || p.x > this.c.width) p.vx *= -1;
-                    if(p.y < 0 || p.y > this.c.height) p.vy *= -1;
-                    this.ctx.beginPath(); this.ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); this.ctx.fill();
-                });
-                requestAnimationFrame(() => this.draw());
+        }
+        const audio = new AudioEngine();
+
+        // ==========================================
+        // CLASS: SMART GLOSSARY
+        // ==========================================
+        class GlossarySystem {
+            static parseText(text) {
+                let parsed = text;
+                for(let [term, def] of Object.entries(glossaryDict)) {
+                    const regex = new RegExp(`\\b(${term})\\b`, 'gi');
+                    parsed = parsed.replace(regex, `<span class="glossary-term">$1<span class="glossary-tooltip">${def}</span></span>`);
+                }
+                return parsed;
             }
         }
 
-        const Toast = {
-            el: document.getElementById('toast'), t: null,
-            show(msg) {
-                if(!this.el) return;
-                this.el.innerHTML = msg; this.el.classList.add('show');
-                clearTimeout(this.t); this.t = setTimeout(() => this.el.classList.remove('show'), 2500);
+        // ==========================================
+        // CLASS: GYRO PARALLAX
+        // ==========================================
+        class GyroParallax {
+            static init() {
+                if (window.DeviceOrientationEvent && typeof window.DeviceOrientationEvent.requestPermission === 'function') {
+                    // Requires user interaction on iOS 13+
+                    document.body.addEventListener('click', () => { window.DeviceOrientationEvent.requestPermission().catch(console.error); }, {once:true});
+                }
+                window.addEventListener('deviceorientation', (e) => {
+                    if(state.isZen) return;
+                    const cards = document.querySelectorAll('.tokoh-card.active');
+                    if(!cards.length) return;
+                    const tiltX = Math.max(-30, Math.min(30, e.gamma || 0)); // left-right
+                    const tiltY = Math.max(-30, Math.min(30, (e.beta || 0) - 45)); // front-back (assuming holding at 45deg)
+                    cards[0].style.transform = `scale(1.05) rotateY(${tiltX/2}deg) rotateX(${-tiltY/2}deg)`;
+                });
+            }
+        }
+
+        // ==========================================
+        // CORE UI & DOM LOGIC
+        // ==========================================
+        const DOM = {
+            track: document.getElementById('carouselTrack'), name: document.getElementById('nodeName'),
+            laqab: document.getElementById('nodeLaqab'), text: document.getElementById('nodeText'),
+            book: document.getElementById('nodeBook'), origin: document.getElementById('nodeOrigin'),
+            era: document.getElementById('nodeEra'), radar: document.getElementById('radarCanvas'),
+            geo: document.getElementById('geoCanvas'), chat: document.getElementById('chatDisplay'),
+            options: document.getElementById('chatOptions')
+        };
+
+        function renderCarousel() {
+            DOM.track.innerHTML = '';
+            database.forEach((item, i) => {
+                const card = document.createElement('div'); card.className = 'tokoh-card';
+                card.innerHTML = `<img src="${item.img}" onerror="this.src='https://ui-avatars.com/api/?name=${item.name}&background=${item.colors[0].replace('#','')}&color=fff&size=140'"><div class="era-badge">${item.era}</div><h2>${item.name}</h2><p style="font-size:0.8rem; font-weight:700;">${item.laqab}</p>`;
+                card.onclick = () => { state.idx = i; updateView(); audio.playBeep(600, 'triangle'); };
+                DOM.track.appendChild(card);
+            });
+            renderTimelineMinimap(); updateView();
+        }
+
+        function updateView() {
+            const data = state.getData(); state.markRead();
+            
+            // Carousel Transform
+            document.querySelectorAll('.tokoh-card').forEach((card, i) => {
+                const offset = i - state.idx; const abs = Math.abs(offset);
+                card.style.transform = `translateX(${offset * 120}px) translateZ(${abs * -150}px) rotateY(${offset * -35}deg) scale(${1 - abs * 0.1})`;
+                card.style.zIndex = 100 - abs; card.style.opacity = abs > 2 ? 0 : 1;
+                card.classList.toggle('active', offset === 0); card.style.borderColor = offset === 0 ? data.colors[0] : 'var(--border-glass)';
+            });
+
+            // Theme Swap
+            document.documentElement.style.setProperty('--dyn-color-1', data.colors[0]);
+            document.documentElement.style.setProperty('--dyn-color-2', data.colors[1]);
+
+            // Text Update with Glossary Integration
+            DOM.name.innerText = data.name; DOM.laqab.innerText = data.laqab;
+            const rawText = state.isEn ? data.en_bio : data.bio;
+            DOM.text.innerHTML = state.isEn ? rawText : GlossarySystem.parseText(rawText);
+            
+            DOM.book.innerHTML = `<i class="fa-solid fa-book"></i> ${data.book}`;
+            DOM.origin.innerHTML = `<i class="fa-solid fa-map-location-dot"></i> ${data.origin}`;
+            DOM.era.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> ${data.eraShort}`;
+
+            animateRadarTo(data.stats); drawGeoMap(data.originCoords, data.colors[0]); initInterview(data);
+            
+            // Minimap Update
+            document.querySelectorAll('.timeline-dot').forEach((dot, i) => dot.classList.toggle('active', i === state.idx));
+            document.getElementById('timelineProgress').style.width = `${(state.idx / (database.length - 1)) * 100}%`;
+
+            // Trigger CSS Entrance Animations
+            document.querySelectorAll('.reveal-box').forEach(el => { el.classList.remove('visible'); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('visible'))); });
+            logAction(`Switched View: ${data.name}`);
+        }
+
+        // ==========================================
+        // CANVAS: RADAR CHART
+        // ==========================================
+        const ctxRadar = DOM.radar.getContext('2d');
+        let animatedStats = {}; let radarAnimId;
+        function animateRadarTo(targetStats) {
+            if (radarAnimId) cancelAnimationFrame(radarAnimId);
+            const labels = Object.keys(targetStats); const targets = Object.values(targetStats);
+            const current = labels.map(l => animatedStats[l] || 0);
+            const duration = 600; const start = performance.now();
+
+            function step(now) {
+                const t = Math.min((now - start) / duration, 1); const ease = 1 - Math.pow(1 - t, 3);
+                const vals = targets.map((tgt, i) => current[i] + (tgt - current[i]) * ease);
+                labels.forEach((l, i) => animatedStats[l] = vals[i]);
+                drawRadar(labels, vals); if (t < 1) radarAnimId = requestAnimationFrame(step);
+            }
+            radarAnimId = requestAnimationFrame(step);
+        }
+
+        function drawRadar(labels, values) {
+            const size = DOM.radar.parentElement.clientWidth; const dpr = window.devicePixelRatio || 1;
+            DOM.radar.width = size * dpr; DOM.radar.height = size * dpr; DOM.radar.style.width = size + 'px'; DOM.radar.style.height = size + 'px';
+            ctxRadar.scale(dpr, dpr);
+            const cx = size / 2, cy = size / 2, radius = size * 0.35;
+            ctxRadar.clearRect(0, 0, size, size);
+
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const webColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+            const c1 = database[state.idx].colors[0];
+
+            ctxRadar.strokeStyle = webColor; ctxRadar.lineWidth = 1;
+            for (let j = 1; j <= 4; j++) {
+                ctxRadar.beginPath();
+                for (let i = 0; i < labels.length; i++) {
+                    const angle = (Math.PI * 2 / labels.length) * i - Math.PI / 2;
+                    const x = cx + Math.cos(angle) * (radius * j / 4), y = cy + Math.sin(angle) * (radius * j / 4);
+                    if (i === 0) ctxRadar.moveTo(x, y); else ctxRadar.lineTo(x, y);
+                }
+                ctxRadar.closePath(); ctxRadar.stroke();
+            }
+
+            ctxRadar.beginPath();
+            for (let i = 0; i < values.length; i++) {
+                const angle = (Math.PI * 2 / labels.length) * i - Math.PI / 2;
+                const r = (values[i] / 100) * radius;
+                ctxRadar.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+            }
+            ctxRadar.closePath(); ctxRadar.fillStyle = c1 + '44'; ctxRadar.fill(); ctxRadar.strokeStyle = c1; ctxRadar.lineWidth = 2; ctxRadar.stroke();
+
+            ctxRadar.fillStyle = isDark ? '#fff' : '#000'; ctxRadar.font = `bold ${size * 0.035}px 'Space Mono', monospace`; ctxRadar.textAlign = 'center'; ctxRadar.textBaseline = 'middle';
+            for (let i = 0; i < labels.length; i++) {
+                const angle = (Math.PI * 2 / labels.length) * i - Math.PI / 2;
+                ctxRadar.fillText(labels[i], cx + Math.cos(angle) * (radius + 25), cy + Math.sin(angle) * (radius + 25));
+            }
+        }
+
+        // ==========================================
+        // CANVAS: PROCEDURAL GEO-MAP
+        // ==========================================
+        const ctxGeo = DOM.geo.getContext('2d');
+        let pulseAnimId; let geoStart = performance.now();
+        function drawGeoMap(coords, color) {
+            if(pulseAnimId) cancelAnimationFrame(pulseAnimId);
+            const size = DOM.geo.parentElement.clientWidth; const dpr = window.devicePixelRatio || 1;
+            DOM.geo.width = size * dpr; DOM.geo.height = size * dpr; DOM.geo.style.width = size + 'px'; DOM.geo.style.height = size + 'px';
+            ctxGeo.scale(dpr, dpr);
+
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            
+            // Draw Stylized World Map Background (Dots pattern)
+            const dotSize = size/40;
+            const drawStaticMap = () => {
+                ctxGeo.clearRect(0,0,size,size);
+                ctxGeo.fillStyle = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+                // Rough procedural continents shape based on simple math noise approximation
+                for(let x=0; x<size; x+=dotSize) {
+                    for(let y=0; y<size; y+=dotSize) {
+                        const nx = x/size, ny = y/size;
+                        // Extremely simplified pseudo-map logic
+                        if(Math.sin(nx*10)*Math.cos(ny*10) + Math.sin(nx*5) > 0.5) {
+                            ctxGeo.beginPath(); ctxGeo.arc(x,y,dotSize*0.3,0,Math.PI*2); ctxGeo.fill();
+                        }
+                    }
+                }
+            };
+
+            function animateMap(now) {
+                drawStaticMap();
+                const px = coords.x * size; const py = coords.y * size;
+                const time = (now - geoStart) / 1000;
+                
+                // Draw target point
+                ctxGeo.beginPath(); ctxGeo.arc(px, py, 5, 0, Math.PI*2); ctxGeo.fillStyle = color; ctxGeo.fill();
+                // Draw pulsing rings
+                const r1 = (time % 2) / 2 * (size/4); const a1 = 1 - (time % 2) / 2;
+                ctxGeo.beginPath(); ctxGeo.arc(px, py, r1, 0, Math.PI*2); ctxGeo.strokeStyle = `rgba(${hexToRgb(color)}, ${a1})`; ctxGeo.lineWidth = 2; ctxGeo.stroke();
+                
+                pulseAnimId = requestAnimationFrame(animateMap);
+            }
+            geoStart = performance.now();
+            animateMap(performance.now());
+        }
+        function hexToRgb(hex) { const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16); return `${r},${g},${b}`; }
+
+        // ==========================================
+        // VIRTUAL INTERVIEW & TTS
+        // ==========================================
+        function initInterview(tokoh) {
+            DOM.chat.innerHTML = `<div class="bubble ai">Salam, saya <strong>${tokoh.name}</strong>. Adakah yang ingin didiskusikan?</div>`;
+            DOM.options.innerHTML = ''; DOM.options.style.display = 'none'; document.getElementById('btnQuickAsk').innerText = "Pilih pertanyaan template...";
+            tokoh.qna.forEach(item => {
+                const btn = document.createElement('button'); btn.className = 'btn-query'; btn.innerText = item.q;
+                btn.onclick = () => {
+                    DOM.options.style.display = 'none'; DOM.chat.innerHTML += `<div class="bubble user">${item.q}</div>`; DOM.chat.scrollTop = DOM.chat.scrollHeight;
+                    setTimeout(() => { DOM.chat.innerHTML += `<div class="bubble ai"><em>${tokoh.name}:</em> "${item.a}"</div>`; DOM.chat.scrollTop = DOM.chat.scrollHeight; audio.playBeep(700); }, 1000);
+                };
+                DOM.options.appendChild(btn);
+            });
+        }
+        document.getElementById('btnQuickAsk').onclick = () => { DOM.options.style.display = DOM.options.style.display === 'none' ? 'flex' : 'none'; };
+
+        // Read Bio TTS
+        document.getElementById('readBio').onclick = () => {
+            if (!('speechSynthesis' in window)) return showToast('TTS Tidak didukung');
+            window.speechSynthesis.cancel();
+            const text = state.isEn ? database[state.idx].en_bio : database[state.idx].bio;
+            const utt = new SpeechSynthesisUtterance(text); utt.lang = state.isEn ? 'en-US' : 'id-ID';
+            window.speechSynthesis.speak(utt); showToast('<i class="fa-solid fa-headphones"></i> Memutar Narasi AI...'); logAction('TTS Activated');
+        };
+
+        // Mic Speech Recognition
+        const btnMic = document.getElementById('btnMic');
+        if (window.webkitSpeechRecognition) {
+            const rec = new webkitSpeechRecognition(); rec.lang = 'id-ID';
+            rec.onstart = () => { btnMic.style.animation = 'pulseRed 1s infinite'; showToast('Mendengarkan...'); audio.playBeep(); };
+            rec.onresult = (e) => {
+                const tr = e.results[0][0].transcript.toLowerCase(); const d = state.getData();
+                DOM.chat.innerHTML += `<div class="bubble user">🎙️ ${tr}</div>`; DOM.chat.scrollTop = DOM.chat.scrollHeight;
+                let ans = false;
+                d.qna.forEach(item => { if(item.q.toLowerCase().split(' ').some(kw => kw.length>4 && tr.includes(kw))) { ans=true; setTimeout(()=> { DOM.chat.innerHTML += `<div class="bubble ai"><em>${d.name}:</em> "${item.a}"</div>`; DOM.chat.scrollTop = DOM.chat.scrollHeight; audio.playBeep(); }, 1000); }});
+                if(!ans) setTimeout(()=> { DOM.chat.innerHTML += `<div class="bubble ai">Maaf, saya tidak mengerti.</div>`; DOM.chat.scrollTop = DOM.chat.scrollHeight; }, 1000);
+            };
+            rec.onend = () => { btnMic.style.animation = 'none'; };
+            btnMic.onclick = () => { rec.start(); };
+        } else { btnMic.style.display = 'none'; }
+
+        // ==========================================
+        // FEATURE CONTROLLERS
+        // ==========================================
+        // Smart Notes
+        const notesPanel = document.getElementById('notesPanel'); const notesArea = document.getElementById('notesArea');
+        notesArea.value = localStorage.getItem('nexa_notes') || '';
+        notesArea.addEventListener('input', e => localStorage.setItem('nexa_notes', e.target.value));
+        document.getElementById('btnNotes').onclick = (e) => { notesPanel.classList.toggle('active'); e.currentTarget.classList.toggle('active'); };
+        document.getElementById('btnDownloadNotes').onclick = () => {
+            const a = document.createElement('a'); a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(notesArea.value);
+            a.download = 'Catatan_Filsafat_Nexa.txt'; a.click(); showToast('Catatan Disimpan!'); logAction('Notes Exported');
+        };
+
+        // Focus Timer (Pomodoro)
+        const timerPanel = document.getElementById('focusTimer'); const timerDisplay = document.getElementById('timerDisplay'); const btnTimerToggle = document.getElementById('btnTimerToggle');
+        let timerInt; let timeRem = 25*60; let isTimerOn = false;
+        document.getElementById('btnTimer').onclick = (e) => { timerPanel.classList.toggle('active'); e.currentTarget.classList.toggle('active'); };
+        btnTimerToggle.onclick = () => {
+            if(isTimerOn) { clearInterval(timerInt); btnTimerToggle.innerHTML = '<i class="fa-solid fa-play"></i>'; isTimerOn = false; }
+            else {
+                timerInt = setInterval(() => {
+                    if(timeRem<=0) { clearInterval(timerInt); audio.playBeep(800,'square',1); showToast('Sesi Selesai!'); isTimerOn=false; return; }
+                    timeRem--; const m = Math.floor(timeRem/60).toString().padStart(2,'0'); const s = (timeRem%60).toString().padStart(2,'0');
+                    timerDisplay.innerText = `${m}:${s}`;
+                }, 1000);
+                btnTimerToggle.innerHTML = '<i class="fa-solid fa-pause"></i>'; isTimerOn = true;
             }
         };
 
-        const themeBtn = document.getElementById('themeToggle');
-        const applyTheme = (isDark) => {
-            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-            themeBtn.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        };
+        // Command Palette
+        const cmdOverlay = document.getElementById('cmdOverlay'); const cmdInput = document.getElementById('cmdInput'); const cmdResults = document.getElementById('cmdResults');
+        function openCmd() { cmdOverlay.classList.add('active'); cmdInput.value=''; cmdInput.focus(); renderCmd(''); audio.playBeep(800,'square',0.05); }
+        document.getElementById('btnSearch').onclick = openCmd; cmdOverlay.onclick = e => { if(e.target===cmdOverlay) cmdOverlay.classList.remove('active'); };
+        window.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k') { e.preventDefault(); openCmd(); } if(e.key==='Escape') cmdOverlay.classList.remove('active'); });
+        cmdInput.addEventListener('input', e => renderCmd(e.target.value.toLowerCase()));
+        function renderCmd(q) {
+            cmdResults.innerHTML = ''; const res = database.filter(d => d.name.toLowerCase().includes(q) || d.laqab.toLowerCase().includes(q));
+            if(!res.length) cmdResults.innerHTML = '<div style="padding:15px;text-align:center;">Tidak ditemukan.</div>';
+            res.forEach(item => { const d = document.createElement('div'); d.className='cmd-item'; d.innerHTML=`<span>${item.name}</span><span style="font-size:0.8rem">${item.eraShort}</span>`; d.onclick = () => { state.idx = database.findIndex(x=>x.id===item.id); updateView(); cmdOverlay.classList.remove('active'); }; cmdResults.appendChild(d); });
+        }
+
+        // Quote Generator
+        const quoteModal = document.getElementById('quoteModal'); const qCanvas = document.getElementById('quoteCanvas'); const qCtx = qCanvas.getContext('2d');
+        let quoteColor = '#064e3b';
+        function renderQuoteCanvas() {
+            const d = state.getData();
+            qCtx.fillStyle = quoteColor; qCtx.fillRect(0,0,800,800);
+            qCtx.fillStyle = '#ffffff'; qCtx.font = 'italic bold 40px "Amiri", serif'; qCtx.textAlign = 'center';
+            // Simple text wrap
+            const words = d.quote.split(' '); let line = ''; let y = 350;
+            words.forEach(w => { const test = line + w + ' '; if(qCtx.measureText(test).width > 600) { qCtx.fillText(line, 400, y); line = w + ' '; y += 60; } else { line = test; } });
+            qCtx.fillText(line, 400, y);
+            qCtx.font = '24px "Poppins", sans-serif'; qCtx.fillText(`— ${d.name}`, 400, y + 80);
+        }
+        document.getElementById('btnQuote').onclick = () => { quoteModal.classList.add('active'); quoteColor = state.getData().colors[0]; renderQuoteCanvas(); logAction('Quote Generator Opened'); };
+        document.getElementById('btnCloseQuote').onclick = () => quoteModal.classList.remove('active');
+        document.getElementById('btnChangeQuoteColor').onclick = () => { const cols = ['#0f172a','#7c3aed','#be123c','#047857','#b45309']; quoteColor = cols[Math.floor(Math.random()*cols.length)]; renderQuoteCanvas(); };
+        document.getElementById('btnDownloadQuote').onclick = () => { const a=document.createElement('a'); a.href=qCanvas.toDataURL(); a.download='Philosopher_Quote.png'; a.click(); showToast('Gambar Diunduh!'); };
+
+        // Navigation & Globals
+        document.getElementById('prevTokoh').onclick = () => { state.idx = (state.idx-1+database.length)%database.length; updateView(); audio.playBeep(400); };
+        document.getElementById('nextTokoh').onclick = () => { state.idx = (state.idx+1)%database.length; updateView(); audio.playBeep(600); };
         
-        applyTheme(localStorage.getItem('theme') !== 'light');
-        themeBtn.onclick = () => applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+        let autoPlayInt;
+        document.getElementById('btnAutoPlay').onclick = (e) => {
+            state.isAutoPlay = !state.isAutoPlay; const i = e.currentTarget.querySelector('i');
+            if(state.isAutoPlay) { i.className='fa-solid fa-pause'; e.currentTarget.classList.add('active'); autoPlayInt = setInterval(()=>document.getElementById('nextTokoh').click(), 4000); showToast('Auto-Play On'); }
+            else { i.className='fa-solid fa-play'; e.currentTarget.classList.remove('active'); clearInterval(autoPlayInt); showToast('Auto-Play Off'); }
+        };
 
-        setTimeout(() => document.getElementById('loaderScreen').classList.add('hidden'), 500);
+        function renderTimelineMinimap() {
+            const container = document.getElementById('timelineMinimap');
+            container.querySelectorAll('.timeline-dot').forEach(d => d.remove());
+            database.forEach((item, i) => { const d = document.createElement('div'); d.className='timeline-dot'; d.onclick = () => { state.idx=i; updateView(); audio.playBeep(); }; container.appendChild(d); });
+        }
 
-        new CoreController(Database);
-        new CanvasBG();
+        // Tools Toggles
+        document.getElementById('btnLang').onclick = e => { state.isEn = !state.isEn; e.target.innerText = state.isEn ? 'EN' : 'ID'; updateView(); audio.playBeep(); };
+        document.getElementById('btnZen').onclick = e => { state.isZen = !state.isZen; document.body.classList.toggle('zen-mode'); e.currentTarget.classList.toggle('active'); setTimeout(()=>window.dispatchEvent(new Event('resize')), 500); audio.playBeep(); };
+        document.getElementById('btnAmbient').onclick = e => { audio.toggleAmbient(); e.currentTarget.classList.toggle('active'); };
+        document.getElementById('themeToggle').onclick = e => { const isDark = document.documentElement.getAttribute('data-theme')==='dark'; document.documentElement.setAttribute('data-theme', isDark?'light':'dark'); e.currentTarget.innerHTML = isDark?'<i class="fa-solid fa-moon"></i>':'<i class="fa-solid fa-sun"></i>'; updateView(); audio.playBeep(); };
+        document.getElementById('btnPrint').onclick = () => window.print();
+
+        // Particles System (Constellation Engine)
+        const pCanvas = document.getElementById('particle-canvas'); const pCtx = pCanvas.getContext('2d');
+        let particles = []; let mx = 0, my = 0;
+        function initParticles() {
+            pCanvas.width=window.innerWidth; pCanvas.height=window.innerHeight; particles = [];
+            for(let i=0; i<60; i++) particles.push({x:Math.random()*pCanvas.width, y:Math.random()*pCanvas.height, vx:(Math.random()-0.5)*0.5, vy:(Math.random()-0.5)*0.5});
+        }
+        window.addEventListener('resize', initParticles); document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+        function animateParticles() {
+            pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+            const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+            pCtx.fillStyle = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.1)';
+            particles.forEach(p => {
+                // Mouse interaction (Repel)
+                const dx=p.x-mx, dy=p.y-my, dist=Math.sqrt(dx*dx+dy*dy);
+                if(dist<100 && !state.isZen) { p.x += dx*0.01; p.y += dy*0.01; }
+                p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>pCanvas.width) p.vx*=-1; if(p.y<0||p.y>pCanvas.height) p.vy*=-1;
+                pCtx.beginPath(); pCtx.arc(p.x, p.y, 1.5, 0, Math.PI*2); pCtx.fill();
+            });
+            pCtx.strokeStyle = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)'; pCtx.lineWidth=0.5;
+            for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++) {
+                const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+                if(dist<120) { pCtx.beginPath(); pCtx.moveTo(particles[i].x,particles[i].y); pCtx.lineTo(particles[j].x,particles[j].y); pCtx.stroke(); }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        
+        // Utils
+        let toastTimer; function showToast(h) { const t=document.getElementById('toast'); t.innerHTML=h; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2500); }
+        
+        // Custom Cursor
+        const dot = document.getElementById('curDot'); const ring = document.getElementById('curRing'); let cx=0, cy=0, crx=0, cry=0;
+        document.addEventListener('mousemove', e => { cx=e.clientX; cy=e.clientY; dot.style.left=cx+'px'; dot.style.top=cy+'px'; });
+        (function animCursor() { crx+=(cx-crx)*0.2; cry+=(cy-cry)*0.2; ring.style.left=crx+'px'; ring.style.top=cry+'px'; requestAnimationFrame(animCursor); })();
+        
+        // BOOT
+        window.addEventListener('load', () => {
+            logAction('Omni-Engine Initialized');
+            GyroParallax.init(); initParticles(); animateParticles(); renderCarousel();
+            setTimeout(() => document.getElementById('loaderScreen').classList.add('hidden'), 800);
+        });
     });
     </script>
 </body>

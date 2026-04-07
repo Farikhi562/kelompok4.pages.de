@@ -724,8 +724,33 @@
         }
 
         /* ==========================================================
-           8. MULTIMEDIA (HAIDAR BAGIR VIDEO)
+           8. MULTIMEDIA (HAIDAR BAGIR VIDEO) + CINEMA MODE
            ========================================================== */
+        .cinema-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9990;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        body.cinema-active .cinema-backdrop {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        body.cinema-active .video-mega-container {
+            position: relative;
+            z-index: 9991;
+            transform: scale(1.02);
+            transition: 0.5s;
+            box-shadow: 0 0 50px rgba(16,185,129,0.4);
+            border-color: var(--clr-primary-500);
+        }
+            
         .video-mega-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -737,6 +762,7 @@
             padding: 30px;
             box-shadow: var(--shadow-lg);
             border: 1px solid var(--border-light);
+            transition: 0.5s ease; /* For cinema mode transition */
         }
 
         @media (max-width: 950px) {
@@ -830,76 +856,106 @@
             gap: 10px;
         }
         
+        /* ==========================================================
+           TIMELINE NEXA OVERHAUL (FITUR GILA)
+           ========================================================== */
         .timestamp-list {
             padding: 20px;
             overflow-y: auto;
-            max-height: 400px;
+            max-height: 420px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            scrollbar-width: thin;
+            gap: 12px;
+            scroll-behavior: smooth; /* Penting untuk Auto-Sync Scroll */
         }
 
         .ts-item {
             display: flex;
             gap: 15px;
-            padding: 15px;
+            padding: 16px 20px;
             background: var(--bg-surface);
-            border-radius: 12px;
+            border-radius: 16px;
             border: 1px solid var(--border-light);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
+            align-items: center;
         }
 
         .ts-item:hover {
             border-color: var(--clr-primary-500);
-            transform: translateX(5px);
-            box-shadow: var(--shadow-sm);
+            transform: translateX(6px);
+            box-shadow: 0 10px 20px rgba(16,185,129,0.1);
         }
 
         .ts-item.active {
             border-color: var(--clr-accent-500);
-            background: rgba(217,119,6,0.05);
+            background: linear-gradient(135deg, var(--bg-surface), rgba(217,119,6,0.08));
+            box-shadow: 0 10px 25px rgba(217,119,6,0.15);
+            transform: scale(1.02);
         }
 
-        .ts-item.active::before {
+        /* Garis Indikator Aktif */
+        .ts-item::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--clr-accent-500);
+            left: 0; top: 0; bottom: 0;
+            width: 0px;
+            background: linear-gradient(to bottom, var(--clr-accent-500), #f59e0b);
+            transition: width 0.3s;
         }
-        
+        .ts-item.active::before { width: 5px; }
+
         .ts-time {
             background: var(--clr-primary-900);
             color: white;
             font-family: var(--font-mono);
             font-weight: 800;
-            font-size: 0.8rem;
-            padding: 6px 10px;
-            border-radius: 8px;
-            height: fit-content;
-        }
-
-        .ts-content h4 {
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 5px;
-        }
-
-        .ts-content p {
             font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.5;
+            padding: 8px 12px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            transition: all 0.3s;
         }
+        
+        .ts-item.active .ts-time { 
+            background: var(--clr-accent-500); 
+            color: #000; 
+            box-shadow: 0 0 15px rgba(217,119,6,0.4); 
+        }
+
+        .ts-content { flex-grow: 1; position: relative; }
+        .ts-content h4 { font-size: 1rem; font-weight: 800; color: var(--text-main); margin-bottom: 5px; transition: color 0.3s; }
+        .ts-item.active .ts-content h4 { color: var(--clr-accent-700); }
+        .ts-content p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; }
+
+        /* Fitur 1: Progress Bar Live */
+        .ts-progress-bar { width: 100%; height: 4px; background: var(--border-light); border-radius: 2px; overflow: hidden; display: none; margin-top: 8px; }
+        .ts-item.active .ts-progress-bar { display: block; }
+        .ts-progress-fill { height: 100%; width: 0%; background: var(--clr-accent-500); box-shadow: 0 0 10px var(--clr-accent-500); transition: width 0.5s linear; }
+
+        /* Fitur 2: Acoustic Visualizer */
+        .ts-wave { display: none; gap: 4px; align-items: flex-end; height: 24px; margin-left: auto; margin-right: 10px;}
+        .ts-item.active .ts-wave { display: flex; }
+        .ts-wave span { width: 4px; background: var(--clr-accent-500); border-radius: 2px; animation: wave 1.2s infinite ease-in-out; }
+        .ts-wave span:nth-child(1) { animation-delay: 0.0s; }
+        .ts-wave span:nth-child(2) { animation-delay: 0.1s; }
+        .ts-wave span:nth-child(3) { animation-delay: 0.2s; }
+        .ts-wave span:nth-child(4) { animation-delay: 0.3s; }
+        @keyframes wave { 0%, 100% { height: 6px; } 50% { height: 24px; } }
+
+        /* Fitur 3: Floating Play Button */
+        .ts-play-btn {
+            width: 38px; height: 38px; border-radius: 50%; background: var(--clr-primary-500); color: white; display: flex;
+            align-items: center; justify-content: center; opacity: 0; transform: translateX(20px) scale(0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: absolute; right: 20px; box-shadow: 0 5px 15px rgba(16,185,129,0.4);
+        }
+        .ts-item:hover .ts-play-btn { opacity: 1; transform: translateX(0) scale(1); }
+        .ts-item.active .ts-play-btn { display: none; }
 
         /* ==========================================================
-           9. TOKOH 3D CAROUSEL (UPDATED DGN FOTO ASLI)
+           9. TOKOH 3D CAROUSEL
            ========================================================== */
         .tokoh-container {
             perspective: 2000px;
@@ -956,7 +1012,6 @@
             z-index: 0;
         }
         
-        /* UPDATED AVATAR FOR REAL PHOTOS */
         .tokoh-avatar {
             width: 140px;
             height: 140px;
@@ -988,7 +1043,7 @@
         .tokoh-icon-fallback {
             font-size: 3.5rem;
             color: var(--clr-accent-500);
-            display: none; /* Only shows if image fails */
+            display: none; 
         }
 
         .tokoh-name {
@@ -1060,7 +1115,7 @@
         }
 
         /* ==========================================================
-           10. GLOSSARY SECTION (NEW FEATURE FOR EXTENSION)
+           10. GLOSSARY SECTION
            ========================================================== */
         .glossary-grid {
             display: grid;
@@ -1204,7 +1259,7 @@
         }
 
         /* ==========================================================
-           12. FAQ SECTION (NEW FEATURE FOR EXTENSION)
+           12. FAQ SECTION
            ========================================================== */
         .faq-container {
             max-width: 900px;
@@ -1508,7 +1563,77 @@
         .ai-send:hover { background: var(--clr-accent-500); transform: translateX(3px); }
 
         /* ==========================================================
-           15. TOAST NOTIFICATION
+           15. NEW FEATURES: SCROLL-TO-TOP 
+           ========================================================== */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 2px solid var(--border-strong);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            background: var(--clr-primary-500);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--glow);
+        }
+
+        .scroll-top svg {
+            width: 44px;
+            height: 44px;
+            transform: rotate(-90deg);
+            position: absolute;
+        }
+
+        .scroll-top .prog-ring {
+            fill: none;
+            stroke: var(--clr-primary-500);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s;
+        }
+
+        .scroll-top .bg-ring {
+            fill: none;
+            stroke: var(--border-light);
+            stroke-width: 2.5;
+        }
+
+        .scroll-top i {
+            position: absolute;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .scroll-top:hover i { color: white; }
+
+        @media (max-width: 768px) {
+            .scroll-top { bottom: 100px; } /* Prevent overlapping AI Fab on small screens */
+        }
+
+        /* ==========================================================
+           16. TOAST NOTIFICATION
            ========================================================== */
         #toast-box {
             position: fixed;
@@ -1554,6 +1679,8 @@
 </head>
 <body>
 
+<div class="cinema-backdrop" id="cinemaBackdrop"></div>
+
 <div id="index-preloader">
     <div class="loader-brand"><i class="fa-solid fa-kaaba"></i> KELOMPOK IV</div>
     <div class="loader-bar"><div class="loader-progress" id="loaderProgress"></div></div>
@@ -1569,11 +1696,11 @@
         </a>
         <button class="mobile-toggle" id="mobileToggle"><i class="fa-solid fa-bars-staggered"></i></button>
         <div class="nav-menu" id="navMenu">
-            <a href="index.html" class="nav-link active">Beranda</a>
+            <a href="#beranda" class="nav-link nav-item-scroll active">Beranda</a>
             <a href="tim.html" class="nav-link">Tim Kami</a>
             <a href="timeline.html" class="nav-link">Garis Waktu</a>
             <a href="explore.html" class="nav-link">Baitul Hikmah</a>
-            <a href="tokoh.html" class="nav-link">Peta Tokoh</a>
+            <a href="#tokoh" class="nav-link nav-item-scroll">Peta Tokoh</a>
             <a href="kuis.html" class="nav-link">Uji Pemahaman</a>
         </div>
         <div class="nav-tools">
@@ -1582,7 +1709,7 @@
     </div>
 </nav>
 
-<section id="beranda" class="hero-mega">
+<section id="beranda" class="hero-mega section-scroll">
     <canvas id="hero-canvas"></canvas>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -1601,7 +1728,7 @@
     <a href="#quran" class="scroll-indicator"><i class="fa-solid fa-angles-down"></i></a>
 </section>
 
-<section id="quran" class="section-padding">
+<section id="quran" class="section-padding section-scroll">
     <div class="section-header-mega reveal">
         <span class="section-subtitle"><i class="fa-solid fa-book-quran"></i> Fondasi Teologis</span>
         <h2 class="section-title">Sumber Hakikat Utama</h2>
@@ -1622,7 +1749,7 @@
     </div>
 </section>
 
-<section id="silabus" class="section-padding section-alt">
+<section id="silabus" class="section-padding section-alt section-scroll">
     <div class="section-header-mega reveal">
         <span class="section-subtitle"><i class="fa-solid fa-graduation-cap"></i> Silabus Pembelajaran</span>
         <h2 class="section-title">Materi Agama Islam Semester 2</h2>
@@ -1654,7 +1781,7 @@
     </div>
 </section>
 
-<section id="multimedia" class="section-padding">
+<section id="multimedia" class="section-padding section-scroll">
     <div class="section-header-mega reveal">
         <span class="section-subtitle"><i class="fa-solid fa-film"></i> Kajian Kontemporer</span>
         <h2 class="section-title">Dialektika Cinta & Pemikiran</h2>
@@ -1684,10 +1811,15 @@
         
         <div class="video-interactive-panel">
             <div class="panel-header">
-                <h3><i class="fa-solid fa-list-ul"></i> Transkrip & Poin Penting</h3>
-                <button class="nav-btn" title="NEXA AI Summary" onclick="toast('NEXA AI: Video ini menitikberatkan Tasawuf sebagai solusi krisis modernitas.')" style="width:30px; height:30px; font-size:0.8rem;">
-                    <i class="fa-solid fa-brain"></i>
-                </button>
+                <h3><i class="fa-solid fa-list-ul"></i> Transkrip Poin</h3>
+                <div style="display:flex; gap:8px;">
+                    <button class="nav-btn" id="btnCinemaToggle" title="Mode Sinema Fokus" style="width:auto; padding:0 15px; border-radius:10px; font-size:0.8rem; font-weight:bold; font-family:var(--font-body); color:var(--clr-primary-700);">
+                        <i class="fa-solid fa-expand"></i> Fokus
+                    </button>
+                    <button class="nav-btn" title="NEXA AI Summary" onclick="toast('NEXA AI: Video ini menitikberatkan Tasawuf sebagai solusi krisis modernitas.')" style="width:30px; height:30px; font-size:0.8rem; border-radius:10px;">
+                        <i class="fa-solid fa-brain"></i>
+                    </button>
+                </div>
             </div>
             <div class="timestamp-list" id="tsList">
                 </div>
@@ -1695,7 +1827,7 @@
     </div>
 </section>
 
-<section id="tokoh" class="section-padding section-alt">
+<section id="tokoh" class="section-padding section-alt section-scroll">
     <div class="section-header-mega reveal">
         <span class="section-subtitle"><i class="fa-solid fa-users-viewfinder"></i> Peta Epistemologi</span>
         <h2 class="section-title">Arsitek Peradaban Klasik</h2>
@@ -1716,7 +1848,7 @@
     </div>
 </section>
 
-<section id="glossary" class="section-padding">
+<section id="glossary" class="section-padding section-scroll">
     <div class="section-header-mega reveal">
         <span class="section-subtitle"><i class="fa-solid fa-book-open"></i> Kamus Istilah</span>
         <h2 class="section-title">Glosarium Filsafat</h2>
@@ -1725,7 +1857,7 @@
         </div>
 </section>
 
-<section id="quotes" class="section-padding section-alt">
+<section id="quotes" class="section-padding section-alt section-scroll">
     <div class="section-header-mega reveal">
         <span class="section-subtitle"><i class="fa-solid fa-quote-left"></i> Aforisma & Kebijaksanaan</span>
         <h2 class="section-title">Percikan Hikmah</h2>
@@ -1734,7 +1866,7 @@
         </div>
 </section>
 
-<section id="faq" class="section-padding">
+<section id="faq" class="section-padding section-scroll">
     <div class="section-header-mega reveal">
         <span class="section-subtitle"><i class="fa-solid fa-circle-question"></i> Diskusi & Pertanyaan</span>
         <h2 class="section-title">Frequently Asked Questions</h2>
@@ -1743,7 +1875,7 @@
         </div>
 </section>
 
-<section class="section-padding section-alt" style="padding-top:40px; padding-bottom:40px;">
+<section class="section-padding section-alt section-scroll" style="padding-top:40px; padding-bottom:40px;">
     <div class="team-snippet reveal">
         <h2 style="font-family:var(--font-display); font-size:clamp(2rem, 5vw, 2.8rem); font-weight:900; margin-bottom:15px; text-shadow:0 5px 15px rgba(0,0,0,0.3);">
             Dibalik Mahakarya Kelompok IV
@@ -1792,6 +1924,14 @@
     </p>
 </footer>
 
+<div class="scroll-top" id="btnScrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Kembali ke atas">
+    <svg viewBox="0 0 36 36">
+        <circle class="bg-ring" cx="18" cy="18" r="15.5"/>
+        <circle class="prog-ring" id="scrollTopRing" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/>
+    </svg>
+    <i class="fa-solid fa-jet-fighter-up"></i>
+</div>
+
 <div class="nexa-ai-widget" id="nexaWidget">
     <div class="ai-panel">
         <div class="ai-header">
@@ -1814,7 +1954,7 @@
 <script>
 /**
  * NEXA Core System Logic
- * Versi 4.0 Ultimate Edition (Photo Enabled & 1200+ Lines Config)
+ * Versi 4.0 Ultimate Edition (Photo Enabled + Injeksi Fitur Cinema & Scroll Spy)
  * Dibuat khusus untuk menghindari bottleneck eksekusi.
  */
 
@@ -1828,6 +1968,72 @@ function toast(msg) {
     toastElem.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>`;
     box.appendChild(toastElem);
     setTimeout(() => { toastElem.remove(); }, 3800);
+}
+
+/* =======================================================
+   YOUTUBE API INITIALIZATION (GLOBAL SCOPE)
+   ======================================================= */
+const ytScript = document.createElement('script');
+ytScript.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(ytScript);
+
+let ytPlayer;
+let syncInterval;
+
+window.onYouTubeIframeAPIReady = function() {
+    ytPlayer = new YT.Player('mainVideo', {
+        events: { 'onStateChange': onPlayerStateChange }
+    });
+}
+
+function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+        syncInterval = setInterval(syncTimeline, 1000); 
+    } else {
+        clearInterval(syncInterval);
+    }
+}
+
+const timestampsData = [
+    { time: "00:00", tSec: 0, title: "Faktor Geopolitik", desc: "Masuknya dana dan konflik proksi dari Timur Tengah yang mereduksi pemahaman ketuhanan menjadi sektarian semata." },
+    { time: "04:16", tSec: 256, title: "Islam Nusantara & Toleransi", desc: "Kecenderungan asli bangsa Indonesia yang inklusif dan menghendaki kedamaian, sesuai kodrat keragaman dalam Al-Quran." },
+    { time: "07:12", tSec: 432, title: "Low Islam vs High Islam", desc: "Low Islam: agama menyatu organik, mengayomi musafir. High Islam: arogan, simbolik, dan memisahkan identitas." },
+    { time: "09:32", tSec: 572, title: "Konsep Rahmat (Welas Asih)", desc: "Agama harus berlandaskan cinta kasih bahkan kepada mereka yang berbuat buruk. Tuhan dipahami sebagai 'Maha Perindu'." },
+    { time: "18:46", tSec: 1126, title: "Sufisme: Solusi Krisis Modern", desc: "Kerinduan mencari koneksi spiritual makrokosmos akibat kehampaan atau kecenderungan depresif pada manusia modern." },
+    { time: "25:18", tSec: 1518, title: "Nabi Isa dalam Sufisme", desc: "Nabi Isa (Yesus) dijadikan sebagai teladan Sufi tertinggi karena ajaran cinta kasihnya yang tanpa pamrih." },
+    { time: "30:53", tSec: 1853, title: "Manifesto Islam Cinta", desc: "Menyaring ajaran agama dengan 'Prisma Cinta'. Jika suatu tafsir bertentangan dengan kasih sayang, maka itu batal." },
+    { time: "45:51", tSec: 2751, title: "Filantropi & Penyembuhan", desc: "Berbuat baik/menolong orang adalah tindakan yang menyembuhkan jiwa sendiri dari jeratan depresi dan kecemasan." }
+];
+
+function syncTimeline() {
+    if (!ytPlayer || !ytPlayer.getCurrentTime) return;
+    let currentTime = ytPlayer.getCurrentTime();
+    let activeIndex = 0;
+
+    for (let i = 0; i < timestampsData.length; i++) {
+        if (currentTime >= timestampsData[i].tSec) activeIndex = i;
+        else break;
+    }
+
+    document.querySelectorAll('.ts-item').forEach((el, index) => {
+        let progBar = el.querySelector('.ts-progress-fill');
+        if (index === activeIndex) {
+            if (!el.classList.contains('active')) {
+                el.classList.add('active');
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            let nextTime = timestampsData[index+1] ? timestampsData[index+1].tSec : ytPlayer.getDuration();
+            if (!nextTime) nextTime = timestampsData[index].tSec + 120; 
+            let chapDur = nextTime - timestampsData[index].tSec;
+            let curChapTime = currentTime - timestampsData[index].tSec;
+            
+            if(progBar) progBar.style.width = Math.min((curChapTime / chapDur) * 100, 100) + '%';
+        } else {
+            el.classList.remove('active');
+            if(progBar) progBar.style.width = '0%';
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1975,40 +2181,60 @@ document.addEventListener('DOMContentLoaded', () => {
     initCanvas(); drawCanvas();
 
     /* =======================================================
-       4. DATA INJECTION: TIMESTAMPS
+       4. DATA INJECTION: TIMESTAMPS & CINEMA MODE
        ======================================================= */
-    const timestampsData = [
-        { time: "00:00", tSec: 0, title: "Faktor Geopolitik", desc: "Masuknya dana dan konflik proksi dari Timur Tengah yang mereduksi pemahaman ketuhanan menjadi sektarian semata." },
-        { time: "04:16", tSec: 256, title: "Islam Nusantara & Toleransi", desc: "Kecenderungan asli bangsa Indonesia yang inklusif dan menghendaki kedamaian, sesuai kodrat keragaman dalam Al-Quran." },
-        { time: "07:12", tSec: 432, title: "Low Islam vs High Islam", desc: "Low Islam: agama menyatu organik, mengayomi musafir. High Islam: arogan, simbolik, dan memisahkan identitas." },
-        { time: "09:32", tSec: 572, title: "Konsep Rahmat (Welas Asih)", desc: "Agama harus berlandaskan cinta kasih bahkan kepada mereka yang berbuat buruk. Tuhan dipahami sebagai 'Maha Perindu'." },
-        { time: "18:46", tSec: 1126, title: "Sufisme: Solusi Krisis Modern", desc: "Kerinduan mencari koneksi spiritual makrokosmos akibat kehampaan atau kecenderungan depresif pada manusia modern." },
-        { time: "25:18", tSec: 1518, title: "Nabi Isa dalam Sufisme", desc: "Nabi Isa (Yesus) dijadikan sebagai teladan Sufi tertinggi karena ajaran cinta kasihnya yang tanpa pamrih." },
-        { time: "30:53", tSec: 1853, title: "Manifesto Islam Cinta", desc: "Menyaring ajaran agama dengan 'Prisma Cinta'. Jika suatu tafsir bertentangan dengan kasih sayang, maka itu batal." },
-        { time: "45:51", tSec: 2751, title: "Filantropi & Penyembuhan", desc: "Berbuat baik/menolong orang adalah tindakan yang menyembuhkan jiwa sendiri dari jeratan depresi dan kecemasan." }
-    ];
-    
     const timestampContainer = document.getElementById('tsList');
+    timestampContainer.innerHTML = ''; 
+
     timestampsData.forEach((ts, index) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = `ts-item reveal ${index === 0 ? 'active' : ''}`;
         itemDiv.style.transitionDelay = `${index * 0.05}s`;
+
         itemDiv.innerHTML = `
             <div class="ts-time">${ts.time}</div>
             <div class="ts-content">
                 <h4>${ts.title}</h4>
                 <p>${ts.desc}</p>
+                <div class="ts-progress-bar"><div class="ts-progress-fill"></div></div>
             </div>
+            <div class="ts-wave"><span></span><span></span><span></span><span></span></div>
+            <div class="ts-play-btn"><i class="fa-solid fa-play"></i></div>
         `;
+
         itemDiv.onclick = () => {
-            document.querySelectorAll('.ts-item').forEach(el => el.classList.remove('active'));
-            itemDiv.classList.add('active');
-            const iframe = document.getElementById('mainVideo');
-            let baseSrc = iframe.src.split('?')[0];
-            iframe.src = `${baseSrc}?enablejsapi=1&rel=0&autoplay=1&start=${ts.tSec}`;
-            toast(`Melompat ke materi: ${ts.title}`);
+            if (ytPlayer && ytPlayer.seekTo) {
+                ytPlayer.seekTo(ts.tSec, true);
+                ytPlayer.playVideo();
+            } else {
+                const iframe = document.getElementById('mainVideo');
+                let baseSrc = iframe.src.split('?')[0];
+                iframe.src = `${baseSrc}?enablejsapi=1&rel=0&autoplay=1&start=${ts.tSec}`;
+            }
+            toast(`Memutar: ${ts.title}`);
         };
         timestampContainer.appendChild(itemDiv);
+    });
+
+    const btnCinemaToggle = document.getElementById('btnCinemaToggle');
+    const cinemaBackdrop = document.getElementById('cinemaBackdrop');
+    
+    function toggleCinemaMode() {
+        document.body.classList.toggle('cinema-active');
+        if (document.body.classList.contains('cinema-active')) {
+            btnCinemaToggle.innerHTML = '<i class="fa-solid fa-compress"></i> Normal';
+            toast("Mode Sinema Diaktifkan. Fokus pada video.");
+        } else {
+            btnCinemaToggle.innerHTML = '<i class="fa-solid fa-expand"></i> Fokus';
+        }
+    }
+    
+    btnCinemaToggle.addEventListener('click', toggleCinemaMode);
+    cinemaBackdrop.addEventListener('click', toggleCinemaMode); 
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.body.classList.contains('cinema-active')) {
+            toggleCinemaMode();
+        }
     });
 
     /* =======================================================
@@ -2063,7 +2289,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cardElement.className = 'tokoh-card reveal';
         cardElement.style.transitionDelay = `${(index % 4) * 0.1}s`;
         
-        // Perhatikan bagian avatar, menggunakan 'onerror' untuk menampilkan icon jika gambar gagal dimuat
         cardElement.innerHTML = `
             <div class="tokoh-face tokoh-front">
                 <div class="tokoh-avatar">
@@ -2226,11 +2451,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollProgressBar = document.getElementById('scrollProg');
     const themeToggleButton = document.getElementById('themeToggle');
     
+    const btnScrollTop = document.getElementById('btnScrollTop');
+    const scrollTopRing = document.getElementById('scrollTopRing');
+    const sections = document.querySelectorAll('.section-scroll');
+    const navLinks = document.querySelectorAll('.nav-item-scroll');
+    
     window.addEventListener('scroll', () => {
         const scrollYPos = window.scrollY;
+        
         navbar.classList.toggle('scrolled', scrollYPos > 50);
+        
         const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-        scrollProgressBar.style.width = (scrollYPos / totalHeight * 100) + '%';
+        const scrollPercent = (scrollYPos / totalHeight);
+        
+        scrollProgressBar.style.width = (scrollPercent * 100) + '%';
+
+        if(scrollYPos > 300) {
+            btnScrollTop.classList.add('visible');
+            const circ = 97.4;
+            scrollTopRing.style.strokeDashoffset = circ - (circ * scrollPercent);
+        } else {
+            btnScrollTop.classList.remove('visible');
+        }
+
+        let currentSectionId = '';
+        sections.forEach(sec => {
+            const sectionTop = sec.offsetTop;
+            if (scrollYPos >= (sectionTop - 150)) {
+                currentSectionId = sec.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${currentSectionId}`) {
+                link.classList.add('active');
+            }
+        });
     });
     
     themeToggleButton.addEventListener('click', () => {
@@ -2251,7 +2508,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     console.log("%cNEXA Tech Labs - System Initialized.", "color: #10b981; font-weight: bold; font-size: 14px;");
-    console.log("Version: 4.0 Ultimate Edition (Real Photo Engine)");
+    console.log("Version: 4.0 Ultimate Edition (Real Photo Engine + UX Features Injected)");
 });
 </script>
 </body>

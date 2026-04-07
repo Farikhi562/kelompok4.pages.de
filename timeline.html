@@ -1,526 +1,1741 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garis Waktu | Historiografi Filsafat Islam</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Garis Waktu | Historiografi Filsafat Islam NEXA</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* ========================================== */
+        /* 1. CORE VARIABLES & NEXA ENGINE V6.5       */
+        /* ========================================== */
         :root {
-            --primary: #064e3b;
-            --primary-light: #059669;
-            --secondary: #047857;
+            /* Primary Colors */
+            --primary: #047857;
+            --primary-light: #10b981;
+            --secondary: #064e3b;
+            
+            /* Accent Colors */
             --accent: #d97706;
             --accent-glow: #f59e0b;
-            --bg: #faf9f6;
-            --bg-deep: #f0ede6;
-            --text: #1e293b;
+            
+            /* Background System */
+            --bg-base: #f8fafc;
+            --bg-ambient: #f8fafc;
+            --bg-deep: #f1f5f9;
+            
+            /* Typography Colors */
+            --text: #0f172a;
             --text-muted: #64748b;
-            --card: rgba(255,255,255,0.88);
-            --border: rgba(6,78,59,0.1);
-            --line-color: rgba(6,78,59,0.25);
-            --shadow: rgba(6,78,59,0.08);
-            --glow: rgba(6,78,59,0.15);
+            
+            /* Component Colors */
+            --card: rgba(255, 255, 255, 0.85);
+            --card-solid: #ffffff;
+            
+            /* UI Elements */
+            --border: rgba(4, 120, 87, 0.15);
+            --line-color: rgba(4, 120, 87, 0.3);
+            --shadow: 0 10px 30px -5px rgba(4, 120, 87, 0.1);
+            --glow: rgba(16, 185, 129, 0.2);
+            
+            /* Typography */
+            --font-mono: 'Space Mono', monospace;
         }
+
+        /* Dark Mode Protocol */
         [data-theme="dark"] {
             --primary: #10b981;
             --primary-light: #34d399;
-            --bg: #0c1220;
-            --bg-deep: #0a0f1a;
-            --text: #f1f5f9;
+            --secondary: #047857;
+            --bg-base: #020617;
+            --bg-ambient: #020617;
+            --bg-deep: #0f172a;
+            --text: #f8fafc;
             --text-muted: #94a3b8;
-            --card: rgba(15,23,42,0.9);
-            --border: rgba(255,255,255,0.08);
-            --line-color: rgba(255,255,255,0.15);
-            --shadow: rgba(0,0,0,0.3);
-            --glow: rgba(16,185,129,0.15);
+            --card: rgba(15, 23, 42, 0.85);
+            --card-solid: #1e293b;
+            --border: rgba(255, 255, 255, 0.1);
+            --line-color: rgba(255, 255, 255, 0.2);
+            --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+            --glow: rgba(16, 185, 129, 0.15);
         }
-        ::selection{background:var(--accent);color:#fff}
-        *{margin:0;padding:0;box-sizing:border-box;cursor:none}
-        body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background .5s,color .5s}
-        a,button,input,.btn-filter,.action-btn,.btn-icon,.content{cursor:none}
-        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--primary);border-radius:6px}
-        @media(hover:none)and(pointer:coarse){*{cursor:auto!important}.cursor-dot,.cursor-outline{display:none!important}}
-
-        /* ===== PRELOADER (ENHANCED) ===== */
-        #preloader{position:fixed;inset:0;background:var(--bg-deep);z-index:999999;display:flex;justify-content:center;align-items:center;flex-direction:column;transition:opacity .8s cubic-bezier(.4,0,.2,1),visibility .8s}
-        #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-        .pre-calligraphy{font-family:'Amiri',serif;font-size:clamp(2rem,6vw,3.5rem);color:var(--primary);animation:calliPulse 2.5s ease-in-out infinite;text-align:center;line-height:1.4}
-        @keyframes calliPulse{0%,100%{transform:scale(1);opacity:1;filter:blur(0)}50%{transform:scale(1.03);opacity:.6;filter:blur(.5px)}}
-        .pre-ornament{width:120px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:20px auto;border-radius:2px}
-        .pre-bar{width:240px;height:3px;background:rgba(0,0,0,.06);border-radius:3px;overflow:hidden;margin-top:16px}
-        [data-theme="dark"] .pre-bar{background:rgba(255,255,255,.06)}
-        .pre-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;box-shadow:0 0 15px var(--glow);transition:width .3s}
-        .pre-status{font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);margin-top:14px;font-weight:600}
-
-        /* ===== CURSOR ===== */
-        .cursor-dot{width:8px;height:8px;background:var(--accent);position:fixed;border-radius:50%;pointer-events:none;z-index:999998;transform:translate(-50%,-50%);box-shadow:0 0 12px rgba(217,119,6,.6);mix-blend-mode:normal}
-        .cursor-outline{width:40px;height:40px;border:2px solid var(--primary);position:fixed;border-radius:50%;pointer-events:none;z-index:999997;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s,background .25s}
-        .cursor-outline.hover{width:60px;height:60px;border-color:var(--accent);background:rgba(217,119,6,.06)}
-
-        /* ===== SCROLL PROGRESS ===== */
-        #reading-progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--primary-light));z-index:999990;box-shadow:0 0 10px var(--glow)}
-
-        /* ===== GEOMETRIC CANVAS ===== */
-        #geo-canvas{position:fixed;inset:0;z-index:-1;opacity:.25;pointer-events:none}
-
-        /* ===== NOISE ===== */
-        .noise-ov{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");background-repeat:repeat;background-size:200px}
-
-        /* ===== TOOLBAR ===== */
-        .toolbar-top{background:linear-gradient(135deg,var(--primary),#065f46);color:white;padding:10px 5%;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;z-index:100;position:relative;font-weight:500}
-        .toolbar-top i{margin-right:5px}
-
-        /* ===== HEADER ===== */
-        header{padding:12px 5%;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px) saturate(1.5);background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:0 4px 20px var(--shadow)}
-        .brand{font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;color:var(--primary);display:flex;align-items:center;gap:10px}
-        .brand img{height:36px;object-fit:contain;opacity:.9}
-        .nav-controls{display:flex;gap:8px}
-        .btn-icon{width:40px;height:40px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:center;font-size:.9rem;transition:all .3s}
-        .btn-icon:hover,.btn-icon.active{background:var(--primary);color:white;border-color:var(--primary);box-shadow:0 4px 15px var(--glow);transform:translateY(-2px)}
-
-        /* ===== HERO ===== */
-        .hero{text-align:center;padding:3.5rem 5% 1.5rem;position:relative}
-        .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:30px;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.2);color:var(--accent);font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;margin-bottom:18px}
-        .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--primary);margin-bottom:10px;font-weight:900;line-height:1.15}
-        .hero p{color:var(--text-muted);font-weight:500;max-width:620px;margin:0 auto 24px;font-size:.95rem;line-height:1.7}
-
-        /* ===== STATS ROW ===== */
-        .stats-row{display:flex;justify-content:center;gap:clamp(20px,5vw,60px);flex-wrap:wrap;padding:0 5% 2rem}
-        .stat-item{text-align:center}
-        .stat-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--primary);line-height:1}
-        .stat-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--text-muted);font-weight:600;margin-top:4px}
-
-        /* ===== FILTER ===== */
-        .filter-panel{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:2.5rem;padding:0 5%}
-        .btn-filter{padding:10px 22px;border-radius:30px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-weight:600;font-size:.85rem;transition:all .3s;position:relative;overflow:hidden}
-        .btn-filter::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--primary),var(--secondary));opacity:0;transition:opacity .3s}
-        .btn-filter.active::before,.btn-filter:hover::before{opacity:1}
-        .btn-filter.active,.btn-filter:hover{color:white;border-color:var(--primary);box-shadow:0 4px 20px var(--glow)}
-        .btn-filter span{position:relative;z-index:1}
-
-        /* ===== MINIMAP SIDEBAR ===== */
-        .minimap{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;align-items:center}
-        .minimap-dot{width:10px;height:10px;border-radius:50%;background:var(--border);border:2px solid transparent;transition:all .3s;position:relative}
-        .minimap-dot.active{background:var(--accent);border-color:var(--accent);box-shadow:0 0 10px rgba(217,119,6,.4);transform:scale(1.3)}
-        .minimap-dot::after{content:attr(data-label);position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:9px;font-weight:700;color:var(--text-muted);white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none;text-transform:uppercase;letter-spacing:.1em}
-        .minimap-dot:hover::after{opacity:1}
-        .minimap-line{width:1px;height:12px;background:var(--border)}
-        @media(max-width:768px){.minimap{display:none}}
-
-        /* ===== TIMELINE ===== */
-        #timeline-container{position:relative;max-width:1100px;margin:0 auto;padding:2rem 5%;transition:transform .3s}
-        #timeline-container::after{content:'';position:absolute;width:4px;background:linear-gradient(to bottom,var(--primary),var(--accent),var(--primary-light));top:0;bottom:0;left:50%;margin-left:-2px;border-radius:4px;box-shadow:0 0 15px var(--glow)}
-        .timeline-item{padding:10px 40px;position:relative;width:50%;margin-bottom:50px;opacity:0;transform:translateY(60px) scale(.97);transition:all .9s cubic-bezier(.175,.885,.32,1.275)}
-        .timeline-item.show{opacity:1;transform:translateY(0) scale(1)}
-        .left{left:0;text-align:right}.right{left:50%;text-align:left}
-        .timeline-item::after{content:'';position:absolute;width:20px;height:20px;right:-10px;background:var(--bg);border:4px solid var(--accent);top:22px;border-radius:50%;z-index:1;box-shadow:0 0 0 4px var(--bg),0 0 20px rgba(217,119,6,.2);transition:all .4s cubic-bezier(.175,.885,.32,1.275)}
-        .right::after{left:-10px}
-        .timeline-item:hover::after{background:var(--accent);transform:scale(1.4);box-shadow:0 0 0 4px var(--bg),0 0 25px rgba(217,119,6,.5)}
-        .timeline-item.show .connector-line{transform:scaleX(1)}
-        .connector-line{position:absolute;top:30px;height:2px;background:linear-gradient(90deg,var(--accent),transparent);width:40px;transform:scaleX(0);transition:transform .6s .3s;transform-origin:right}
-        .left .connector-line{right:0}.right .connector-line{left:0;transform-origin:left;background:linear-gradient(270deg,var(--accent),transparent)}
-
-        /* ===== CONTENT CARD ===== */
-        .content{padding:28px;background:var(--card);backdrop-filter:blur(15px) saturate(1.3);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 30px var(--shadow);position:relative;transform-style:preserve-3d;transition:all .4s cubic-bezier(.23,1,.32,1);overflow:hidden}
-        .content::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:20px 20px 0 0}
-        .content::after{content:'';position:absolute;inset:0;border-radius:20px;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),var(--glow),transparent 50%);opacity:0;transition:opacity .4s;pointer-events:none}
-        .content:hover::after{opacity:1}
-        .content:hover{box-shadow:0 15px 50px var(--shadow);border-color:rgba(217,119,6,.2)}
-        .era-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(217,119,6,.08);color:var(--accent);border-radius:20px;font-weight:800;font-size:.8rem;margin-bottom:14px;border:1px solid rgba(217,119,6,.15)}
-        .content h2{font-family:'Playfair Display',serif;color:var(--primary);font-size:1.5rem;margin-bottom:8px;font-weight:900;line-height:1.2}
-        .content p{color:var(--text-muted);font-size:.9rem;line-height:1.75;margin-bottom:16px}
-        .content-actions{display:flex;gap:8px;justify-content:flex-end;border-top:1px dashed var(--border);padding-top:14px}
-        .left .content-actions{justify-content:flex-start}
-        .action-btn{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:10px;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:5px;transition:all .3s}
-        .action-btn:hover{background:var(--primary);color:white;border-color:var(--primary);transform:translateY(-2px);box-shadow:0 4px 12px var(--glow)}
-
-        @media(max-width:768px){
-            #timeline-container::after{left:25px}
-            .timeline-item{width:100%;padding-left:60px;padding-right:20px;text-align:left}
-            .left,.right{left:0}
-            .timeline-item::after{left:15px}
-            .left .content-actions{justify-content:flex-end}
-            .connector-line{display:none}
+        
+        /* ========================================== */
+        /* 2. GLOBAL RESETS & BASE TYPOGRAPHY         */
+        /* ========================================== */
+        ::selection {
+            background: var(--accent);
+            color: #ffffff;
         }
 
-        /* ===== PLAY CONTROL ===== */
-        .play-control-panel{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card);backdrop-filter:blur(15px) saturate(1.3);padding:10px 20px;border-radius:20px;border:1px solid var(--border);box-shadow:0 10px 40px var(--shadow);display:flex;gap:12px;align-items:center;z-index:999}
-        .play-sep{width:1px;height:24px;background:var(--border)}
-        .play-btn-main{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--glow);transition:all .3s}
-        .play-btn-main:hover{transform:scale(1.1);box-shadow:0 6px 25px var(--glow)}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
 
-        /* ===== KEYBOARD SHORTCUTS PANEL ===== */
-        .kbd-panel{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:999999;display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:all .3s}
-        .kbd-panel.active{opacity:1;visibility:visible}
-        .kbd-content{background:var(--bg);border-radius:20px;padding:36px;max-width:500px;width:90%;border:1px solid var(--border);transform:scale(.9);transition:transform .3s}
-        .kbd-panel.active .kbd-content{transform:scale(1)}
-        .kbd-content h3{font-family:'Playfair Display',serif;color:var(--primary);font-size:1.5rem;margin-bottom:20px;font-weight:900}
-        .kbd-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
-        .kbd-row:last-child{border:none}
-        .kbd-key{background:var(--bg-deep);border:1px solid var(--border);padding:4px 12px;border-radius:6px;font-family:monospace;font-weight:700;font-size:.85rem;color:var(--primary);box-shadow:0 2px 4px var(--shadow)}
-        .kbd-desc{color:var(--text-muted);font-size:.85rem;font-weight:500}
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-ambient);
+            color: var(--text);
+            overflow-x: hidden;
+            transition: background 1.5s ease, color 0.5s ease;
+        }
 
-        /* ===== TOAST ===== */
-        #toast-box{position:fixed;bottom:90px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:100000}
-        .toast{background:linear-gradient(135deg,var(--primary),#065f46);color:white;padding:14px 22px;border-radius:14px;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:8px;animation:toastIn .4s forwards,toastOut .4s 2.6s forwards;box-shadow:0 10px 30px rgba(0,0,0,.15)}
-        [data-theme="dark"] .toast{background:linear-gradient(135deg,#064e3b,#047857)}
-        @keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
-        @keyframes toastOut{to{transform:translateX(120%);opacity:0}}
+        a, 
+        button, 
+        input, 
+        .btn-filter, 
+        .action-btn, 
+        .btn-icon, 
+        .content, 
+        .modal-tab {
+            cursor: none;
+        }
 
-        /* ===== MODAL (ENHANCED WITH TABS) ===== */
-        .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:100000;display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:all .4s}
-        .modal.active{opacity:1;visibility:visible}
-        .modal-content{background:var(--bg);width:92%;max-width:720px;border-radius:24px;padding:0;position:relative;transform:scale(.9) translateY(20px);transition:all .4s cubic-bezier(.16,1,.3,1);border:1px solid var(--border);overflow:hidden;max-height:85vh;overflow-y:auto}
-        .modal.active .modal-content{transform:scale(1) translateY(0)}
-        .modal-header{background:linear-gradient(135deg,var(--primary),#065f46);padding:28px 32px;color:white;position:relative}
-        .modal-header .era-badge{background:rgba(255,255,255,.15);color:white;border-color:rgba(255,255,255,.2)}
-        .modal-header h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;margin-top:8px;line-height:1.2}
-        .close-btn{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.15);border:none;width:36px;height:36px;border-radius:50%;font-size:1.1rem;color:white;display:flex;align-items:center;justify-content:center;transition:all .3s}
-        .close-btn:hover{background:rgba(255,255,255,.3);transform:rotate(90deg)}
-        .modal-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--card)}
-        .modal-tab{flex:1;padding:14px;text-align:center;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);border:none;background:transparent;transition:all .3s;position:relative}
-        .modal-tab.active{color:var(--primary)}
-        .modal-tab.active::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:3px;background:var(--primary);border-radius:3px 3px 0 0}
-        .modal-body{padding:28px 32px}
-        .modal-tab-content{display:none}.modal-tab-content.active{display:block}
-        .modal-quote{font-family:'Amiri',serif;font-size:1.35rem;color:var(--primary);border-left:4px solid var(--accent);padding:16px 20px;margin:16px 0;line-height:1.8;background:rgba(217,119,6,.04);border-radius:0 12px 12px 0}
-        .modal-impact{font-weight:600;color:var(--text);background:rgba(6,78,59,.05);padding:16px;border-radius:12px;border:1px solid var(--border);line-height:1.7}
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
 
-        /* ===== FOOTER ===== */
-        .site-footer{text-align:center;padding:3rem 5%;border-top:1px solid var(--border);margin-top:4rem;color:var(--text-muted);font-size:.8rem}
-        .site-footer .footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
-        .site-footer img{height:32px;opacity:.7}
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-        /* ===== PAGE TRANSITION ===== */
-        .page-wrap{animation:pgFadeIn .8s cubic-bezier(.16,1,.3,1) both;animation-delay:.1s}
-        @keyframes pgFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary-light), var(--primary));
+            border-radius: 10px;
+        }
 
-        /* ===== READING TIME BADGE ===== */
-        .reading-time{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;color:var(--text-muted);font-weight:600;background:var(--bg-deep);padding:5px 14px;border-radius:20px;border:1px solid var(--border)}
+        /* Accessibility: Restore cursor for touch devices */
+        @media(hover:none) and (pointer:coarse) {
+            * {
+                cursor: auto !important;
+            }
+            .cursor-dot, 
+            .cursor-outline {
+                display: none !important;
+            }
+        }
+
+        /* ========================================== */
+        /* 3. UI TRANSITIONS & ZEN MODE               */
+        /* ========================================== */
+        .ui-element {
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        body.zen-mode .ui-element {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-20px);
+        }
+
+        body.zen-mode #timeline-container {
+            padding-top: 5vh;
+        }
+        
+        /* Smart Highlighter Style */
+        .hl-word {
+            background: rgba(217, 119, 6, 0.2);
+            border-bottom: 2px solid var(--accent);
+            color: var(--text);
+            padding: 0 2px;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .hl-word:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* ========================================== */
+        /* 4. NAVBAR & SYSTEM TOOLBAR                 */
+        /* ========================================== */
+        .toolbar-top {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 8px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            z-index: 100;
+            position: relative;
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        header {
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px) saturate(1.5);
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand img {
+            height: 35px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-base);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            transition: all .3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .btn-icon:hover, 
+        .btn-icon.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px var(--glow);
+            transform: translateY(-3px);
+        }
+
+        /* ========================================== */
+        /* 5. HERO SECTION & STATS                    */
+        /* ========================================== */
+        .hero {
+            text-align: center;
+            padding: 4rem 5% 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 15px;
+            border-radius: 30px;
+            background: rgba(217, 119, 6, 0.1);
+            border: 1px solid rgba(217, 119, 6, 0.2);
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-family: var(--font-mono);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            color: var(--text);
+            margin-bottom: 15px;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        /* THE FIX IS HERE: Added standard background-clip */
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text; 
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-weight: 500;
+            max-width: 650px;
+            margin: 0 auto 30px;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .filter-panel {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+            padding: 0 5%;
+        }
+
+        .btn-filter {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 2px solid var(--border);
+            background: var(--card-solid);
+            color: var(--text);
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all .3s;
+        }
+
+        .btn-filter.active, 
+        .btn-filter:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px var(--glow);
+            transform: translateY(-2px);
+        }
+
+        /* ========================================== */
+        /* 6. TIMELINE CORE (VERTICAL & HORIZONTAL)   */
+        /* ========================================== */
+        #timeline-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 5% 6rem;
+            transition: transform .3s;
+        }
+
+        #timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent), var(--primary));
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 4px;
+            box-shadow: 0 0 15px var(--glow);
+            transition: 0.5s;
+        }
+        
+        .timeline-item {
+            padding: 10px 50px;
+            position: relative;
+            width: 50%;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .timeline-item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .left {
+            left: 0;
+            text-align: right;
+        }
+
+        .right {
+            left: 50%;
+            text-align: left;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            right: -12px;
+            background: var(--bg-ambient);
+            border: 4px solid var(--primary);
+            top: 30px;
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 0 4px var(--bg-base), 0 0 20px var(--glow);
+            transition: all .4s ease;
+        }
+
+        .right::after {
+            left: -12px;
+        }
+
+        .timeline-item:hover::after {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: scale(1.3);
+        }
+
+        .connector-line {
+            position: absolute;
+            top: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            width: 50px;
+            transform: scaleX(0);
+            transition: transform .6s .3s;
+            transform-origin: right;
+        }
+
+        .timeline-item.show .connector-line {
+            transform: scaleX(1);
+        }
+
+        .left .connector-line {
+            right: 0;
+        }
+
+        .right .connector-line {
+            left: 0;
+            transform-origin: left;
+            background: linear-gradient(270deg, var(--primary), transparent);
+        }
+
+        /* ------------------------------------------ */
+        /* Horizontal Swipe Mode Styles               */
+        /* ------------------------------------------ */
+        body.is-horizontal #timeline-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 2rem 0 4rem;
+            scroll-behavior: smooth;
+            max-width: 100vw;
+        }
+
+        body.is-horizontal #timeline-container::after {
+            width: 100%;
+            height: 4px;
+            top: 50px;
+            left: 0;
+            bottom: auto;
+            margin: 0;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+        }
+
+        body.is-horizontal .timeline-item {
+            width: 85vw;
+            min-width: 300px;
+            max-width: 450px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            left: 0 !important;
+            margin: 0 15px;
+            padding: 80px 10px 10px;
+            text-align: left;
+            opacity: 1;
+            transform: none;
+        }
+
+        body.is-horizontal .timeline-item::after {
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            right: auto;
+            box-shadow: 0 0 0 4px var(--bg-ambient);
+        }
+
+        body.is-horizontal .timeline-item:hover::after {
+            transform: translateX(-50%) scale(1.3);
+        }
+
+        body.is-horizontal .connector-line {
+            top: 50px;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
+            width: 30px;
+            transform-origin: center;
+            display: none;
+        }
+
+        body.is-horizontal .left .content-actions {
+            justify-content: flex-start;
+        }
+
+        /* ------------------------------------------ */
+        /* Timeline Content Card                      */
+        /* ------------------------------------------ */
+        .content {
+            padding: 30px;
+            background: var(--card);
+            backdrop-filter: blur(15px) saturate(1.5);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all .4s ease;
+        }
+
+        .content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .content:hover {
+            box-shadow: 0 20px 40px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .era-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 15px;
+            background: var(--bg-deep);
+            color: var(--primary);
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+            font-family: var(--font-mono);
+        }
+
+        .content h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text);
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            font-weight: 900;
+            line-height: 1.3;
+        }
+
+        .content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            border-top: 1px dashed var(--border);
+            padding-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .left .content-actions {
+            justify-content: flex-start;
+        }
+
+        .action-btn {
+            background: var(--bg-deep);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 15px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all .3s;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--glow);
+        }
+
+        /* ------------------------------------------ */
+        /* Adaptive Mobile Breakdown                  */
+        /* ------------------------------------------ */
+        @media (max-width: 900px) {
+            body:not(.is-horizontal) #timeline-container::after {
+                left: 40px;
+            }
+            body:not(.is-horizontal) .timeline-item {
+                width: 100%;
+                padding-left: 80px;
+                padding-right: 0;
+                text-align: left;
+            }
+            body:not(.is-horizontal) .left, 
+            body:not(.is-horizontal) .right {
+                left: 0;
+            }
+            body:not(.is-horizontal) .timeline-item::after {
+                left: 28px;
+                right: auto;
+            }
+            body:not(.is-horizontal) .connector-line {
+                display: none;
+            }
+            body:not(.is-horizontal) .left .content-actions {
+                justify-content: flex-start;
+            }
+        }
+
+        /* ========================================== */
+        /* 7. SMART TOC, CONTEXT MENU, QUIZ UI        */
+        /* ========================================== */
+        .toc-overlay {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 320px;
+            height: 100vh;
+            background: var(--card-solid);
+            border-left: 1px solid var(--border);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            z-index: 100001;
+            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .toc-overlay.active {
+            right: 0;
+        }
+
+        .toc-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toc-item:hover {
+            color: var(--primary);
+            background: rgba(16, 185, 129, 0.05);
+            padding-left: 15px;
+        }
+
+        /* Custom Context Menu */
+        .nexa-context-menu {
+            position: absolute;
+            background: var(--card-solid);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 999999;
+            padding: 8px 0;
+            min-width: 200px;
+            display: none;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .nexa-context-menu.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .cm-item {
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cm-item:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .cm-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 5px 0;
+        }
+
+        /* Minimap */
+        .minimap {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 80;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .minimap-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--card-solid);
+            border: 2px solid var(--border);
+            transition: all .3s;
+            position: relative;
+        }
+
+        .minimap-dot.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--glow);
+            transform: scale(1.3);
+        }
+
+        @media(max-width: 1024px) {
+            .minimap {
+                display: none;
+            }
+        }
+
+        /* Play Control Panel */
+        .play-control-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card);
+            backdrop-filter: blur(20px) saturate(1.5);
+            padding: 12px 25px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 40px var(--shadow);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 999;
+            width: max-content;
+            max-width: 90vw;
+            overflow-x: auto;
+        }
+
+        .play-btn-main {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px var(--glow);
+            transition: all .3s;
+            flex-shrink: 0;
+        }
+
+        .btn-voice {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+            flex-shrink: 0;
+        }
+
+        .btn-voice.recording {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+            animation: pulseRed 1.5s infinite;
+        }
+
+        @keyframes pulseRed {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+        }
+
+        /* Notifications */
+        #toast-box {
+            position: fixed;
+            top: 90px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100000;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--card-solid);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px var(--shadow);
+            animation: toastIn .4s forwards;
+            pointer-events: auto;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ========================================== */
+        /* 8. SYSTEM MODALS (DETAIL & QUIZ)           */
+        /* ========================================== */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            z-index: 100000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all .4s;
+            padding: 20px;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-base);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 24px;
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            transition: all .4s;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            padding: 40px 30px;
+            color: white;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .3s;
+        }
+
+        .close-btn:hover {
+            background: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        /* Quiz Specifics */
+        .quiz-opt {
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .quiz-opt:hover {
+            border-color: var(--primary);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .quiz-opt.correct {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .quiz-opt.wrong {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        /* Cursor & Utilities */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999998;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--primary);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999997;
+            transform: translate(-50%, -50%);
+            transition: width .2s, height .2s, border-color .2s;
+        }
+
+        #reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 999990;
+            width: 0%;
+            transition: width 0.1s;
+        }
     </style>
 </head>
 <body>
+
 <div id="reading-progress"></div>
-
-<!-- PRELOADER -->
-<div id="preloader">
-    <div class="pre-calligraphy">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
-    <div class="pre-ornament"></div>
-    <p style="color:var(--primary);font-weight:600;font-size:.9rem;font-family:'Playfair Display',serif;font-style:italic">Mempersiapkan Mesin Waktu...</p>
-    <div class="pre-bar"><div class="pre-fill" id="preFill"></div></div>
-    <div class="pre-status" id="preStatus">LOADING MANUSCRIPTS...</div>
-</div>
-
-<!-- CURSOR -->
 <div class="cursor-dot" id="curDot"></div>
 <div class="cursor-outline" id="curRing"></div>
+<audio id="sfx-pop" src="https://actions.google.com/sounds/v1/ui/pop_click.ogg"></audio>
 
-<!-- CANVAS & NOISE -->
-<canvas id="geo-canvas"></canvas>
-<div class="noise-ov"></div>
-
-<!-- SFX -->
-<audio id="sfx-whoosh" src="https://actions.google.com/sounds/v1/foley/whoosh_short.ogg"></audio>
-
-<div class="page-wrap">
-
-<!-- TOOLBAR -->
-<div class="toolbar-top">
-    <div id="hijri-date"><i class="fa-solid fa-moon"></i> --</div>
-    <div style="display:flex;align-items:center;gap:16px">
-        <span class="reading-time" id="readTime"><i class="fa-regular fa-clock"></i> -- mnt baca</span>
-        <div id="local-time"><i class="fa-regular fa-clock"></i> --:-- WIB</div>
+<div class="nexa-context-menu" id="ctxMenu">
+    <div class="cm-item" id="ctxCopy">
+        <i class="fa-solid fa-copy"></i> Salin Teks
+    </div>
+    <div class="cm-item" id="ctxRead">
+        <i class="fa-solid fa-volume-high"></i> Baca Suara (AI)
+    </div>
+    <div class="cm-divider"></div>
+    <div class="cm-item" id="ctxExport">
+        <i class="fa-solid fa-download"></i> Export Data (JSON)
+    </div>
+    <div class="cm-item" id="ctxPrint">
+        <i class="fa-solid fa-print"></i> Cetak Laporan
     </div>
 </div>
 
-<!-- HEADER -->
-<header>
+<div class="toc-overlay" id="tocOverlay">
+    <h3 style="font-family:'Playfair Display',serif; color:var(--primary); margin-bottom: 20px; font-size:1.5rem;">
+        Daftar Isi
+    </h3>
+    <div id="tocList"></div>
+</div>
+
+<div class="toolbar-top ui-element">
+    <div id="hijri-date"><i class="fa-solid fa-moon"></i> --</div>
+    <div id="local-time"><i class="fa-solid fa-clock"></i> --:-- WIB</div>
+</div>
+
+<header class="ui-element">
     <div class="brand">
-        <img src="assets/img/brand/gunadarma-logo.png" alt="Gunadarma" onerror="this.style.display='none'">
-        <span><i class="fa-solid fa-hourglass-half" style="color:var(--accent);margin-right:6px"></i>Historiografi</span>
+        <img src="assets/images/brand/gunadarma-logo.png" alt="UG" onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/e/e4/Logo_Universitas_Gunadarma.svg/300px-Logo_Universitas_Gunadarma.svg.png'">
+        <span>Historiografi</span>
     </div>
     <div class="nav-controls">
-        <button class="btn-icon" id="zoomOut" title="Perkecil"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
-        <button class="btn-icon" id="zoomIn" title="Perbesar"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
-        <button class="btn-icon" id="btnKbd" title="Pintasan Keyboard"><i class="fa-solid fa-keyboard"></i></button>
-        <button class="btn-icon" id="themeToggle" title="Mode Gelap/Terang"><i class="fa-solid fa-moon"></i></button>
-        <a href="tim.html" class="btn-icon" title="Kembali ke Tim"><i class="fa-solid fa-users"></i></a>
+        <button class="btn-icon" id="btnToc" title="Daftar Isi">
+            <i class="fa-solid fa-list-ul"></i>
+        </button>
+        <button class="btn-icon" id="btnHighlight" title="Sorot Kata Kunci">
+            <i class="fa-solid fa-highlighter"></i>
+        </button>
+        <button class="btn-icon" id="btnQuiz" title="Test Pengetahuan">
+            <i class="fa-solid fa-gamepad"></i>
+        </button>
+        <button class="btn-icon" id="themeToggle" title="Tema">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+        <a href="tim.html" class="btn-icon" title="Profil Tim">
+            <i class="fa-solid fa-users"></i>
+        </a>
     </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-badge"><i class="fa-solid fa-scroll"></i> Kelompok 4 — Filsafat Islam</div>
-    <h1>Jejak Intelektual Islam</h1>
-    <p>Evolusi pemikiran filosofis "Tanpa Celah" (Without Any Gaps) dari era Klasik hingga Kontemporer, merujuk pada literatur Peter Adamson dan Haidar Bagir.</p>
+<section class="hero ui-element">
+    <div class="hero-badge">
+        <i class="fa-solid fa-bolt"></i> God-Mode V6.5 Active
+    </div>
+    <h1>Jejak Intelektual <span>Islam</span></h1>
+    <p>Evolusi pemikiran filosofis "Tanpa Celah" (Without Any Gaps) dari era Klasik hingga Kontemporer.</p>
     <div class="filter-panel">
-        <button class="btn-filter active" data-filter="all"><span>Semua Era</span></button>
-        <button class="btn-filter" data-filter="formatif"><span>Formatif (9-10)</span></button>
-        <button class="btn-filter" data-filter="klasik"><span>Klasik & Kritik (11-12)</span></button>
-        <button class="btn-filter" data-filter="pasca"><span>Pasca-Klasik (13+)</span></button>
+        <button class="btn-filter active" data-filter="all">Semua Era</button>
+        <button class="btn-filter" data-filter="formatif">Formatif (9-10 M)</button>
+        <button class="btn-filter" data-filter="klasik">Klasik & Kritik (11-12 M)</button>
+        <button class="btn-filter" data-filter="pasca">Pasca-Klasik (13+ M)</button>
     </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-row" id="statsRow">
-    <div class="stat-item"><div class="stat-num counter" data-target="7">0</div><div class="stat-label">Tokoh Filsuf</div></div>
-    <div class="stat-item"><div class="stat-num counter" data-target="9">0</div><div class="stat-label">Abad Rentang</div></div>
-    <div class="stat-item"><div class="stat-num counter" data-target="3">0</div><div class="stat-label">Era Utama</div></div>
-    <div class="stat-item"><div class="stat-num counter" data-target="2">0</div><div class="stat-label">Sumber Utama</div></div>
-</div>
-
-<!-- TIMELINE -->
 <div id="timeline-container"></div>
+<div class="minimap ui-element" id="minimap"></div>
 
-<!-- MINIMAP -->
-<div class="minimap" id="minimap"></div>
-
-<!-- PLAY CONTROLS -->
-<div class="play-control-panel">
-    <button class="btn-icon" id="btnSfx" title="SFX"><i class="fa-solid fa-volume-high"></i></button>
-    <div class="play-sep"></div>
-    <button class="btn-icon" id="btnPrev" title="Sebelumnya (↑)"><i class="fa-solid fa-backward-step"></i></button>
-    <button class="play-btn-main" id="btnPlay" title="Auto Time-Travel"><i class="fa-solid fa-play"></i></button>
-    <button class="btn-icon" id="btnNext" title="Selanjutnya (↓)"><i class="fa-solid fa-forward-step"></i></button>
-    <div class="play-sep"></div>
-    <button class="btn-icon" id="btnShare" title="Bagikan"><i class="fa-solid fa-share-nodes"></i></button>
+<div class="play-control-panel ui-element">
+    <button class="btn-voice" id="btnVoiceCmd" title="Voice Command">
+        <i class="fa-solid fa-microphone"></i>
+    </button>
+    <div style="width:2px; height:24px; background:var(--border);"></div>
+    <button class="btn-icon" id="btnZen" title="Zen Mode">
+        <i class="fa-solid fa-eye-slash"></i>
+    </button>
+    <button class="btn-icon" id="btnLayout" title="Ubah Layout">
+        <i class="fa-solid fa-arrows-left-right"></i>
+    </button>
+    <button class="btn-icon" id="btnPrev" title="Era Sebelumnya (↑)">
+        <i class="fa-solid fa-backward-step"></i>
+    </button>
+    <button class="play-btn-main" id="btnPlay" title="Auto Time-Travel">
+        <i class="fa-solid fa-play"></i>
+    </button>
+    <button class="btn-icon" id="btnNext" title="Era Selanjutnya (↓)">
+        <i class="fa-solid fa-forward-step"></i>
+    </button>
 </div>
 
 <div id="toast-box"></div>
 
-<!-- MODAL -->
 <div class="modal" id="eventModal">
     <div class="modal-content">
         <div class="modal-header">
-            <button class="close-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
-            <span class="era-badge" id="modalEra"></span>
-            <h2 id="modalTitle"></h2>
-        </div>
-        <div class="modal-tabs">
-            <button class="modal-tab active" data-tab="desc"><i class="fa-solid fa-book"></i> Narasi</button>
-            <button class="modal-tab" data-tab="quote"><i class="fa-solid fa-quote-left"></i> Kutipan</button>
-            <button class="modal-tab" data-tab="impact"><i class="fa-solid fa-bolt"></i> Dampak</button>
+            <button class="close-btn" onclick="document.getElementById('eventModal').classList.remove('active')">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 id="modalTitle" style="font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; margin-top:10px;">
+                Judul
+            </h2>
         </div>
         <div class="modal-body">
-            <div class="modal-tab-content active" data-tab="desc"><p id="modalDesc" style="color:var(--text-muted);line-height:1.85"></p></div>
-            <div class="modal-tab-content" data-tab="quote"><div class="modal-quote" id="modalQuote"></div></div>
-            <div class="modal-tab-content" data-tab="impact"><div class="modal-impact" id="modalImpact"></div></div>
+            <p id="modalDesc" style="color:var(--text-muted); font-size:1.05rem; line-height:1.8; margin-bottom:20px;"></p>
+            <div style="padding:20px; background:rgba(217,119,6,0.1); border-left:4px solid var(--accent); border-radius:0 12px 12px 0; margin-bottom:20px;">
+                <i class="fa-solid fa-quote-left" style="color:var(--accent); margin-bottom:10px;"></i>
+                <p id="modalQuote" style="font-family:'Amiri',serif; font-size:1.3rem; font-style:italic; color:var(--text);"></p>
+            </div>
+            <div style="padding:15px; background:var(--bg-deep); border:1px solid var(--border); border-radius:12px;">
+                <i class="fa-solid fa-bolt" style="color:var(--primary);"></i> 
+                <strong style="color:var(--text);">Dampak:</strong> 
+                <span id="modalImpact" style="color:var(--text-muted);"></span>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- KBD PANEL -->
-<div class="kbd-panel" id="kbdPanel">
-    <div class="kbd-content">
-        <h3><i class="fa-solid fa-keyboard" style="color:var(--accent)"></i> Pintasan Keyboard</h3>
-        <div class="kbd-row"><span class="kbd-key">↑ ↓</span><span class="kbd-desc">Navigasi antar era</span></div>
-        <div class="kbd-row"><span class="kbd-key">Space</span><span class="kbd-desc">Auto Time-Travel</span></div>
-        <div class="kbd-row"><span class="kbd-key">D</span><span class="kbd-desc">Mode Gelap/Terang</span></div>
-        <div class="kbd-row"><span class="kbd-key">M</span><span class="kbd-desc">Mute/Unmute SFX</span></div>
-        <div class="kbd-row"><span class="kbd-key">?</span><span class="kbd-desc">Panel ini</span></div>
-        <div class="kbd-row"><span class="kbd-key">Esc</span><span class="kbd-desc">Tutup panel/modal</span></div>
-        <div style="text-align:center;margin-top:16px"><button class="action-btn" onclick="document.getElementById('kbdPanel').classList.remove('active')" style="margin:0 auto"><i class="fa-solid fa-xmark"></i> Tutup</button></div>
+<div class="modal" id="quizModal">
+    <div class="modal-content" style="max-width:500px;">
+        <div class="modal-header" style="padding:30px;">
+            <button class="close-btn" onclick="document.getElementById('quizModal').classList.remove('active')">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:900;">
+                <i class="fa-solid fa-gamepad"></i> NEXA Mini-Quiz
+            </h2>
+        </div>
+        <div class="modal-body" id="quizBody">
+            <p id="qText" style="font-size:1.1rem; font-weight:600; margin-bottom:20px; color:var(--text);"></p>
+            <div id="qOpts"></div>
+        </div>
     </div>
 </div>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-    <div class="footer-brand">
-        <img src="assets/img/brand/gunadarma-logo.png" alt="Gunadarma" onerror="this.style.display='none'">
-        <span style="font-family:'Playfair Display',serif;font-weight:700;color:var(--primary)">Universitas Gunadarma</span>
-    </div>
-    <p>Tugas Kelompok 4 — Historiografi Filsafat Islam</p>
-    <p style="margin-top:4px;font-size:.7rem;color:var(--border)">© 2026. Dibangun dengan ❤️ dan rasa ingin tahu.</p>
-</footer>
-
-</div><!-- end .page-wrap -->
-
 <script>
-const timelineData=[
-{id:"alkindi",period:"formatif",era:"Abad 9 M",title:"Al-Kindi & Gerakan Penerjemahan",short:"Filsuf Arab pertama yang menyelaraskan filsafat Yunani dengan fondasi tauhid Islam.",desc:"Berakar di Baitul Hikmah Baghdad, Al-Kindi meletakkan dasar bahwa kebenaran filosofis (Yunani) tidak bertentangan dengan wahyu. Ia mendefinisikan filsafat sebagai 'pengetahuan tentang realitas segala sesuatu sejauh kemampuan manusia'.",quote:"Kita tidak boleh malu untuk mengakui kebenaran dari manapun asalnya, sekalipun dari bangsa yang jauh.",impact:"Membuka gerbang rasionalitas dalam dunia Islam tanpa kehilangan identitas keagamaan."},
-{id:"alfarabi",period:"formatif",era:"Abad 10 M",title:"Al-Farabi: Sang Guru Kedua",short:"Menyempurnakan logika Aristoteles dan merumuskan konsep filsafat politik Islam.",desc:"Dikenal sebagai Al-Mu'allim Ats-Tsani (Guru Kedua setelah Aristoteles). Ia merumuskan hierarki kecerdasan dan konsep 'Al-Madinah Al-Fadhilah' (Kota Utama), di mana seorang pemimpin haruslah setara dengan seorang Nabi atau Filsuf yang menerima pancaran intelek aktif.",quote:"Masyarakat yang baik adalah masyarakat yang warganya bekerjasama untuk mencapai kebahagiaan sejati.",impact:"Menciptakan sistem Neoplatonisme Islam yang sistematis pertama."},
-{id:"ibnusina",period:"klasik",era:"Abad 11 M",title:"Puncak Klasik: Ibnu Sina",short:"Mensintesis pemikiran Aristotelian-Platonik menjadi sebuah sistem filsafat dan medis yang mendominasi dunia.",desc:"Ibnu Sina (Avicenna) membuktikan eksistensi Tuhan melalui konsep Wajib al-Wujud (Wujud yang Niscaya). Sistem filosofisnya sangat komprehensif hingga memicu reaksi keras dari para teolog di abad berikutnya.",quote:"Waktu adalah alat ukur pergerakan yang tak kasat mata.",impact:"Karyanya menjadi rujukan utama universitas Eropa dan dunia Islam selama ratusan tahun."},
-{id:"alghazali",period:"klasik",era:"Abad 11 M",title:"Kritik Al-Ghazali (Tahafut)",short:"Membongkar kerancuan para filsuf neoplatonik demi menyelamatkan akidah umat.",desc:"Melalui 'Tahafut al-Falasifah' (Kerancuan Para Filsuf), Al-Ghazali menyerang tiga poin utama filsafat Ibnu Sina yang dianggap keluar dari Islam (alam qadim, Tuhan tidak tahu rincian, dan kebangkitan hanya ruhani). Ia mempopulerkan pendekatan Tasawuf (sejalan dengan buku Haidar Bagir).",quote:"Pengetahuan tanpa amal adalah gila, dan amal tanpa pengetahuan adalah sia-sia.",impact:"Menggeser tren intelektual dari rasionalisme murni menuju intuisi spiritual (Irfan/Tasawuf)."},
-{id:"ibnurusyd",period:"klasik",era:"Abad 12 M",title:"Pembelaan Ibnu Rusyd di Andalusia",short:"Membalas kritik Al-Ghazali dan mengembalikan filsafat pada kemurnian Aristoteles.",desc:"Ibnu Rusyd (Averroes) menulis 'Tahafut al-Tahafut' untuk membantah Al-Ghazali. Ia berargumen melalui ayat (Fasl al-Maqal) bahwa syariat mewajibkan penggunaan penalaran demonstratif (burhani) untuk merenungkan Tuhan.",quote:"Kebenaran tidak mungkin bertentangan dengan kebenaran; melainkan ia harus selaras dengannya.",impact:"Sangat berpengaruh di Eropa (Averroisme) meski akhirnya pudar di dunia Islam Barat."},
-{id:"suhrawardi",period:"pasca",era:"Abad 12 M",title:"Filsafat Iluminasi (Isyraq)",short:"Menyatukan nalar rasional diskursif dengan pengalaman mistik pencerahan (intuisi).",desc:"Suhrawardi mendirikan mazhab Iluminasi. Ia menolak beberapa dasar logika Ibnu Sina dan menggantinya dengan 'Metafisika Cahaya'. Realitas tertinggi adalah Cahaya Segala Cahaya (Nur al-Anwar) yaitu Allah.",quote:"Barangsiapa yang tidak pernah merasakan intuisi (dzawq), ia tidak mengerti apa itu pengetahuan sejati.",impact:"Membuktikan bahwa filsafat Islam TIDAK MATI setelah Ibnu Rusyd, sesuai argumen Peter Adamson."},
-{id:"mullasadra",period:"pasca",era:"Abad 17 M",title:"Teosofi Transenden Mulla Sadra",short:"Puncak sintesis filsafat, kalam, dan tasawuf di era Dinasti Safawiyah.",desc:"Merumuskan 'Al-Hikmah Al-Muta'aliyah'. Konsep utamanya adalah 'Wahdatul Wujud' (Kesatuan Wujud) dan 'Harakah Jauhariyah' (Gerak Substantif) yang menyatakan bahwa alam semesta selalu berevolusi menuju kesempurnaan kembali kepada Tuhan.",quote:"Wujud adalah realitas tunggal yang bergradasi dari materi paling rendah hingga Tuhan.",impact:"Menjadi fondasi kurikulum filsafat Islam di pesantren dan universitas (terutama Iran) hingga hari ini."}
-];
+    /**
+     * @constant timelineData
+     * @description Core dictionary containing historiographical events.
+     * Contains deep metadata including ambient colors for the background shifting system.
+     */
+    const timelineData = [
+        {
+            id: "alkindi", 
+            period: "formatif", 
+            era: "Abad 9 M", 
+            ambient: "#e0f2fe", 
+            darkAmbient: "#082f49", 
+            title: "Al-Kindi", 
+            short: "Filsuf Arab pertama, menyelaraskan Yunani dan Islam.", 
+            desc: "Berakar di Baitul Hikmah Baghdad, Al-Kindi meletakkan dasar bahwa kebenaran filosofis (Yunani) tidak bertentangan dengan wahyu tauhid.", 
+            quote: "Kita tidak boleh malu mengakui kebenaran dari manapun asalnya.", 
+            impact: "Membuka gerbang rasionalitas dalam dunia Islam."
+        },
+        {
+            id: "alfarabi", 
+            period: "formatif", 
+            era: "Abad 10 M", 
+            ambient: "#fef3c7", 
+            darkAmbient: "#451a03", 
+            title: "Al-Farabi", 
+            short: "Sang Guru Kedua, merumuskan filsafat politik Islam.", 
+            desc: "Dikenal sebagai Al-Mu'allim Ats-Tsani. Ia merumuskan konsep 'Al-Madinah Al-Fadhilah' (Kota Utama) di mana pemimpin harus setara Nabi atau Filsuf.", 
+            quote: "Masyarakat yang baik bekerjasama mencapai kebahagiaan sejati.", 
+            impact: "Menciptakan sistem Neoplatonisme Islam pertama."
+        },
+        {
+            id: "ibnusina", 
+            period: "klasik", 
+            era: "Abad 11 M", 
+            ambient: "#dcfce7", 
+            darkAmbient: "#052e16", 
+            title: "Ibnu Sina", 
+            short: "Mensintesis filsafat & medis yang mendominasi dunia.", 
+            desc: "Membuktikan eksistensi Tuhan melalui Wajib al-Wujud (Wujud Niscaya). Sistem Avicenna sangat komprehensif hingga memicu reaksi teolog.", 
+            quote: "Waktu adalah alat ukur pergerakan yang tak kasat mata.", 
+            impact: "Rujukan utama universitas Eropa selama ratusan tahun."
+        },
+        {
+            id: "alghazali", 
+            period: "klasik", 
+            era: "Abad 11 M", 
+            ambient: "#fee2e2", 
+            darkAmbient: "#450a0a", 
+            title: "Al-Ghazali", 
+            short: "Membongkar kerancuan filsuf lewat Tahafut al-Falasifah.", 
+            desc: "Menyerang rasionalisme murni neoplatonik yang dianggap keluar akidah. Mempopulerkan pendekatan Tasawuf (Irfan) sebagai jalan kebenaran.", 
+            quote: "Pengetahuan tanpa amal gila, amal tanpa pengetahuan sia-sia.", 
+            impact: "Menggeser tren menuju intuisi spiritual."
+        },
+        {
+            id: "ibnurusyd", 
+            period: "klasik", 
+            era: "Abad 12 M", 
+            ambient: "#ffedd5", 
+            darkAmbient: "#431407", 
+            title: "Ibnu Rusyd", 
+            short: "Pembelaan rasionalitas Andalusia melalui Tahafut al-Tahafut.", 
+            desc: "Berargumen bahwa syariat mewajibkan penalaran demonstratif (burhani). Berusaha mengembalikan filsafat pada kemurnian Aristoteles.", 
+            quote: "Kebenaran tidak mungkin bertentangan dengan kebenaran.", 
+            impact: "Sangat berpengaruh di renaisans Eropa (Averroisme)."
+        },
+        {
+            id: "suhrawardi", 
+            period: "pasca", 
+            era: "Abad 12 M", 
+            ambient: "#f3e8ff", 
+            darkAmbient: "#3b0764", 
+            title: "Suhrawardi", 
+            short: "Mendirikan Mazhab Iluminasi (Isyraq).", 
+            desc: "Menyatukan nalar rasional dengan pengalaman mistik pencerahan (Cahaya Segala Cahaya/Nur al-Anwar).", 
+            quote: "Tanpa intuisi (dzawq), manusia tak mengerti pengetahuan sejati.", 
+            impact: "Filsafat berlanjut pasca-Ibnu Rusyd di Timur."
+        },
+        {
+            id: "mullasadra", 
+            period: "pasca", 
+            era: "Abad 17 M", 
+            ambient: "#ccfbf1", 
+            darkAmbient: "#042f2e", 
+            title: "Mulla Sadra", 
+            short: "Teosofi Transenden di era Safawiyah.", 
+            desc: "Merumuskan Wahdatul Wujud (Kesatuan Wujud) dan Gerak Substantif, mensintesis kalam, filsafat, dan tasawuf.", 
+            quote: "Wujud adalah realitas tunggal yang bergradasi.", 
+            impact: "Fondasi kurikulum filsafat Islam masa kini."
+        }
+    ];
 
-const tlContainer=document.getElementById('timeline-container');
-let playInterval=null,isPlaying=false,sfxEnabled=true,currentFocusIndex=-1;
-const sfxWhoosh=document.getElementById('sfx-whoosh');
+    /**
+     * @constant keywords
+     * @description Target terms for the Smart Keyword Highlighter system.
+     */
+    const keywords = [
+        'Baitul Hikmah', 'tauhid', 'Al-Mu\'allim Ats-Tsani', 
+        'Al-Madinah Al-Fadhilah', 'Wajib al-Wujud', 'Avicenna', 
+        'Tahafut al-Falasifah', 'Tasawuf', 'Irfan', 'Tahafut al-Tahafut', 
+        'burhani', 'Aristoteles', 'Iluminasi', 'Nur al-Anwar', 
+        'Wahdatul Wujud', 'Gerak Substantif'
+    ];
 
-function toast(msg){const b=document.getElementById('toast-box'),t=document.createElement('div');t.className='toast';t.innerHTML=`<i class="fa-solid fa-circle-info"></i> ${msg}`;b.appendChild(t);setTimeout(()=>t.remove(),3100)}
+    /**
+     * @constant quizData
+     * @description Data array for the interactive gamification module.
+     */
+    const quizData = [
+        {
+            q: "Siapa yang dikenal sebagai 'Guru Kedua' (Al-Mu'allim Ats-Tsani)?", 
+            opts: ["Al-Kindi", "Al-Farabi", "Ibnu Sina", "Al-Ghazali"], 
+            ans: 1
+        },
+        {
+            q: "Kitab apa yang ditulis Al-Ghazali untuk mengkritik filsuf?", 
+            opts: ["Al-Madinah Al-Fadhilah", "Wahdatul Wujud", "Tahafut al-Falasifah", "Tahafut al-Tahafut"], 
+            ans: 2
+        },
+        {
+            q: "Siapa tokoh utama Mazhab Iluminasi (Isyraq)?", 
+            opts: ["Ibnu Rusyd", "Mulla Sadra", "Suhrawardi", "Al-Kindi"], 
+            ans: 2
+        }
+    ];
 
-// ===== RENDER TIMELINE =====
-function renderTimeline(filter='all'){
-    tlContainer.innerHTML='';
-    const data=filter==='all'?timelineData:timelineData.filter(d=>d.period===filter);
-    if(!data.length){tlContainer.innerHTML='<p style="text-align:center;color:var(--text-muted);padding:40px">Tidak ada data pada era ini.</p>';buildMinimap([]);return}
-    data.forEach((item,i)=>{
-        const align=i%2===0?'left':'right';
-        const div=document.createElement('div');
-        div.className=`timeline-item ${align}`;div.id=`evt-${item.id}`;
-        const bm=localStorage.getItem(`bm_${item.id}`)==='true';
-        div.innerHTML=`
-            <div class="connector-line"></div>
-            <div class="content">
-                <span class="era-badge"><i class="fa-solid fa-hourglass-half"></i> ${item.era}</span>
-                <h2>${item.title}</h2>
-                <p>${item.short}</p>
-                <div class="content-actions">
-                    <button class="action-btn" onclick="openModal('${item.id}')" title="Baca Lengkap"><i class="fa-solid fa-book-open"></i> Detail</button>
-                    <button class="action-btn" onclick="readAloud('${item.short}')" title="Dengarkan"><i class="fa-solid fa-volume-high"></i></button>
-                    <button class="action-btn bm-btn" onclick="toggleBM('${item.id}',this)" title="Bookmark" style="color:${bm?'var(--accent)':'inherit'}"><i class="fa-solid fa-bookmark"></i></button>
+    /**
+     * @constant DOM
+     * @description Centralized DOM references for efficiency.
+     */
+    const DOM = {
+        tlContainer: document.getElementById('timeline-container'), 
+        minimap: document.getElementById('minimap'),
+        toastBox: document.getElementById('toast-box'), 
+        tocList: document.getElementById('tocList')
+    };
+
+    // System States
+    let currentFocusIndex = -1;
+    let isPlaying = false;
+    let playInterval;
+    let isHighlight = false;
+    let isZen = false;
+    let isHorizontal = false;
+
+    /**
+     * @function toast
+     * @description Triggers a toast notification with automated dismissal.
+     * @param {string} msg - The message to display.
+     * @param {string} type - 'info', 'success', or 'error' styling.
+     */
+    function toast(msg, type='info') {
+        const t = document.createElement('div'); 
+        t.className = 'toast';
+        
+        let icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+        let color = type === 'success' ? 'var(--primary-light)' : type === 'error' ? '#ef4444' : 'var(--accent)';
+        
+        t.innerHTML = `<i class="fa-solid ${icon}" style="color:${color}; font-size:1.1rem;"></i> <span>${msg}</span>`;
+        DOM.toastBox.appendChild(t); 
+        
+        setTimeout(() => {
+            t.remove();
+        }, 3500);
+    }
+
+    /**
+     * @function playSfx
+     * @description Audio trigger for UI interactions.
+     */
+    function playSfx() { 
+        document.getElementById('sfx-pop').currentTime = 0; 
+        document.getElementById('sfx-pop').play().catch(()=>{}); 
+    }
+
+    /**
+     * @function highlightText
+     * @description Parses and injects markup into text for the Smart Highlighter.
+     * @param {string} text - The raw string to parse.
+     */
+    function highlightText(text) {
+        if (!isHighlight) return text;
+        let res = text;
+        keywords.forEach(kw => { 
+            const re = new RegExp(`(${kw})`, 'gi'); 
+            res = res.replace(re, '<span class="hl-word">$1</span>'); 
+        });
+        return res;
+    }
+
+    // Toggle Smart Highlighter
+    document.getElementById('btnHighlight').addEventListener('click', function() {
+        playSfx(); 
+        isHighlight = !isHighlight; 
+        this.classList.toggle('active');
+        toast(isHighlight ? "Smart Highlight Aktif" : "Highlight Dimatikan"); 
+        renderTimeline();
+    });
+
+    /**
+     * @function renderTimeline
+     * @description The core rendering engine for injecting data into the DOM.
+     * @param {string} filter - Filter category, defaults to 'all'.
+     */
+    function renderTimeline(filter='all') {
+        // Purge existing elements
+        DOM.tlContainer.innerHTML = ''; 
+        DOM.tocList.innerHTML = '';
+        
+        // Apply filter protocol
+        const data = filter === 'all' ? timelineData : timelineData.filter(d => d.period === filter);
+        
+        data.forEach((item, i) => {
+            // Determine alignment parity
+            const align = i % 2 === 0 ? 'left' : 'right';
+            const div = document.createElement('div');
+            
+            div.className = `timeline-item ${align}`; 
+            div.id = `evt-${item.id}`; 
+            div.dataset.ambient = item.ambient; 
+            div.dataset.darkAmbient = item.darkAmbient;
+            
+            // Construct Component
+            div.innerHTML = `
+                <div class="connector-line"></div>
+                <div class="content">
+                    <span class="era-badge"><i class="fa-solid fa-hourglass-half"></i> ${item.era}</span>
+                    <h2>${item.title}</h2>
+                    <p>${highlightText(item.short)}</p>
+                    <div class="content-actions">
+                        <button class="action-btn" onclick="openModal('${item.id}')">
+                            <i class="fa-solid fa-book-open"></i> Detail
+                        </button>
+                        <button class="action-btn" onclick="readAloud('${item.short}')">
+                            <i class="fa-solid fa-volume-high"></i> AI
+                        </button>
+                    </div>
                 </div>
-            </div>`;
-        // 3D tilt + glow track
-        const c=div.querySelector('.content');
-        c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;c.style.transform=`perspective(1000px) rotateX(${-(y-r.height/2)/25}deg) rotateY(${(x-r.width/2)/25}deg) scale3d(1.02,1.02,1.02)`;c.style.setProperty('--mx',x+'px');c.style.setProperty('--my',y+'px')});
-        c.addEventListener('mouseleave',()=>{c.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale3d(1,1,1)'});
-        tlContainer.appendChild(div);
+            `;
+            
+            // Initialize 3D Perspective Tilt on Hover
+            const c = div.querySelector('.content');
+            c.addEventListener('mousemove', e => { 
+                if (isHorizontal) return; // Disable tilt in horizontal swipe mode for better UX
+                const r = c.getBoundingClientRect();
+                const x = e.clientX - r.left;
+                const y = e.clientY - r.top;
+                c.style.transform = `perspective(1000px) rotateX(${-(y-r.height/2)/30}deg) rotateY(${(x-r.width/2)/30}deg) scale3d(1.02,1.02,1.02)`; 
+            });
+            c.addEventListener('mouseleave', () => c.style.transform = 'none');
+            
+            DOM.tlContainer.appendChild(div);
+
+            // Construct Dynamic TOC Item
+            const tocItem = document.createElement('div'); 
+            tocItem.className = 'toc-item';
+            tocItem.innerHTML = `<i class="fa-solid fa-caret-right"></i> ${item.title}`;
+            tocItem.addEventListener('click', () => { 
+                document.getElementById('tocOverlay').classList.remove('active'); 
+                div.scrollIntoView({behavior: 'smooth', block: 'center'}); 
+            });
+            DOM.tocList.appendChild(tocItem);
+        });
+        
+        // Re-initialize tracking sub-systems
+        buildMinimap(data); 
+        setTimeout(checkReveal, 100);
+    }
+
+    /**
+     * @function buildMinimap
+     * @description Constructs the side navigational minimap structure.
+     * @param {Array} data - Filtered timeline payload.
+     */
+    function buildMinimap(data) {
+        DOM.minimap.innerHTML = '';
+        data.forEach((item, i) => {
+            const d = document.createElement('div'); 
+            d.className = 'minimap-dot'; 
+            d.setAttribute('data-label', item.title.substring(0,15));
+            d.addEventListener('click', () => { 
+                playSfx(); 
+                document.getElementById(`evt-${item.id}`).scrollIntoView({behavior: 'smooth', block: 'center'}); 
+            });
+            DOM.minimap.appendChild(d);
+        });
+    }
+
+    /**
+     * @function checkReveal
+     * @description Engine for triggering scroll animations and adaptive ambient color shifting.
+     */
+    function checkReveal() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        let visibleItems = [];
+        
+        document.querySelectorAll('.timeline-item').forEach((item, i) => {
+            const rect = item.getBoundingClientRect();
+            // Trigger Entrance Animation
+            if (rect.top < window.innerHeight * 0.85 && !item.classList.contains('show')) {
+                item.classList.add('show');
+            }
+            
+            // Log items in central view boundary
+            if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
+                visibleItems.push({item, i});
+            }
+        });
+
+        // Resolve ambient background color based on active central item
+        if (visibleItems.length > 0) {
+            const active = visibleItems[0];
+            document.querySelectorAll('.minimap-dot').forEach((d,idx) => {
+                d.classList.toggle('active', idx === active.i);
+            });
+            document.documentElement.style.setProperty('--bg-ambient', isDark ? active.item.dataset.darkAmbient : active.item.dataset.ambient);
+        } else {
+            document.documentElement.style.setProperty('--bg-ambient', 'var(--bg-base)');
+        }
+    }
+    
+    // Bind Scroll Listeners
+    window.addEventListener('scroll', checkReveal);
+    DOM.tlContainer.addEventListener('scroll', checkReveal); 
+
+    // Era Filtering Controls
+    document.querySelectorAll('.btn-filter').forEach(btn => {
+        btn.addEventListener('click', e => {
+            playSfx(); 
+            document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+            e.currentTarget.classList.add('active'); 
+            renderTimeline(e.currentTarget.getAttribute('data-filter'));
+        });
     });
-    buildMinimap(data);
-    setTimeout(checkReveal,100);
-}
 
-// ===== MINIMAP =====
-function buildMinimap(data){
-    const mm=document.getElementById('minimap');mm.innerHTML='';
-    data.forEach((item,i)=>{
-        if(i>0){const l=document.createElement('div');l.className='minimap-line';mm.appendChild(l)}
-        const d=document.createElement('div');d.className='minimap-dot';d.setAttribute('data-label',item.title.substring(0,18));d.setAttribute('data-index',i);
-        d.addEventListener('click',()=>{const el=document.getElementById(`evt-${item.id}`);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})});
-        mm.appendChild(d);
+    /**
+     * @function readAloud
+     * @description Web Speech API wrapper for Text-To-Speech execution.
+     * @param {string} t - Text to vocalize.
+     */
+    function readAloud(t) {
+        if ('speechSynthesis' in window) { 
+            window.speechSynthesis.cancel(); 
+            playSfx(); 
+            const u = new SpeechSynthesisUtterance(t); 
+            u.lang = 'id-ID'; 
+            window.speechSynthesis.speak(u); 
+            toast("Memutar AI Voice...", "info"); 
+        } else {
+            toast("Browser tidak dukung TTS.", "error");
+        }
+    }
+
+    /**
+     * @function openModal
+     * @description Triggers the deep-dive detail modal logic.
+     * @param {string} id - Identity key of target payload.
+     */
+    function openModal(id) {
+        playSfx(); 
+        const d = timelineData.find(x => x.id === id);
+        document.getElementById('modalTitle').innerText = d.title;
+        document.getElementById('modalDesc').innerHTML = highlightText(d.desc);
+        document.getElementById('modalQuote').innerText = d.quote;
+        document.getElementById('modalImpact').innerText = d.impact;
+        document.getElementById('eventModal').classList.add('active');
+    }
+
+    // Toggle Zen Mode Protocol
+    document.getElementById('btnZen').addEventListener('click', function() {
+        playSfx(); 
+        isZen = !isZen; 
+        document.body.classList.toggle('zen-mode', isZen);
+        this.innerHTML = isZen ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+        toast(isZen ? "Zen Mode Aktif" : "Zen Mode Nonaktif");
     });
-}
 
-function updateMinimap(idx){document.querySelectorAll('.minimap-dot').forEach((d,i)=>{d.classList.toggle('active',i===idx)})}
-
-// ===== SCROLL REVEAL =====
-function checkReveal(){
-    const tb=window.innerHeight*.85;
-    document.querySelectorAll('.timeline-item').forEach((item,i)=>{
-        const top=item.getBoundingClientRect().top;
-        if(top<tb&&!item.classList.contains('show')){item.classList.add('show');if(sfxEnabled){sfxWhoosh.currentTime=0;sfxWhoosh.volume=.15;sfxWhoosh.play().catch(()=>{})}}
-        if(top>0&&top<window.innerHeight/2){const id=item.id.replace('evt-','');if(history.state!==id){history.pushState(id,null,`#${id}`);currentFocusIndex=i;updateMinimap(i)}}
+    // Toggle Swipe/Layout Architecture
+    document.getElementById('btnLayout').addEventListener('click', function() {
+        playSfx(); 
+        isHorizontal = !isHorizontal; 
+        document.body.classList.toggle('is-horizontal', isHorizontal);
+        this.innerHTML = isHorizontal ? '<i class="fa-solid fa-arrows-up-down"></i>' : '<i class="fa-solid fa-arrows-left-right"></i>';
+        toast(isHorizontal ? "Layout Swipe Aktif" : "Layout Vertikal Aktif");
     });
-}
-window.addEventListener('scroll',checkReveal);
 
-// ===== FILTER =====
-document.querySelectorAll('.btn-filter').forEach(btn=>{btn.addEventListener('click',e=>{document.querySelectorAll('.btn-filter').forEach(b=>b.classList.remove('active'));e.currentTarget.classList.add('active');renderTimeline(e.currentTarget.getAttribute('data-filter'));toast(`Filter: ${e.currentTarget.textContent.trim()}`)})});
+    // Auto-Play Sequence Protocol
+    const btnPlay = document.getElementById('btnPlay');
+    btnPlay.addEventListener('click', () => {
+        playSfx(); 
+        isPlaying = !isPlaying;
+        btnPlay.innerHTML = isPlaying ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+        
+        if (isPlaying) {
+            toast("Auto Time-Travel Aktif", "success");
+            playInterval = setInterval(() => {
+                if (isHorizontal) {
+                    DOM.tlContainer.scrollBy({left: 300, behavior: 'smooth'});
+                } else {
+                    window.scrollBy({top: 250, behavior: 'smooth'});
+                }
+            }, 2000);
+        } else {
+            clearInterval(playInterval);
+        }
+    });
 
-function toggleBM(id,btn){const is=localStorage.getItem(`bm_${id}`)==='true';if(is){localStorage.removeItem(`bm_${id}`);btn.style.color='inherit';toast("Dihapus dari Bookmark")}else{localStorage.setItem(`bm_${id}`,'true');btn.style.color='var(--accent)';toast("Disimpan ke Bookmark!")}}
-function readAloud(t){if('speechSynthesis'in window){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='id-ID';window.speechSynthesis.speak(u);toast("Memutar narasi...")}}
+    // Manual Era Navigation Steps
+    document.getElementById('btnNext').addEventListener('click', () => { 
+        playSfx(); 
+        if (isHorizontal) {
+            DOM.tlContainer.scrollBy({left: window.innerWidth * 0.8, behavior: 'smooth'}); 
+        } else {
+            window.scrollBy({top: window.innerHeight * 0.8, behavior: 'smooth'}); 
+        }
+    });
+    
+    document.getElementById('btnPrev').addEventListener('click', () => { 
+        playSfx(); 
+        if (isHorizontal) {
+            DOM.tlContainer.scrollBy({left: -window.innerWidth * 0.8, behavior: 'smooth'}); 
+        } else {
+            window.scrollBy({top: -window.innerHeight * 0.8, behavior: 'smooth'}); 
+        }
+    });
 
-// ===== AUTO-PLAY =====
-const btnPlay=document.getElementById('btnPlay');
-function togglePlay(){isPlaying=!isPlaying;btnPlay.innerHTML=isPlaying?'<i class="fa-solid fa-pause"></i>':'<i class="fa-solid fa-play"></i>';if(isPlaying){toast("Mesin Waktu Aktif!");playInterval=setInterval(()=>{window.scrollBy({top:180,behavior:'smooth'});if((window.innerHeight+window.scrollY)>=document.body.offsetHeight)togglePlay()},2200)}else{clearInterval(playInterval);toast("Mesin Waktu Dihentikan.")}}
-btnPlay.addEventListener('click',togglePlay);
+    // Voice Command API System
+    const btnVoice = document.getElementById('btnVoiceCmd');
+    if ('webkitSpeechRecognition' in window) {
+        const rec = new webkitSpeechRecognition(); 
+        rec.lang = 'id-ID'; 
+        rec.continuous = false;
+        
+        rec.onstart = () => { 
+            btnVoice.classList.add('recording'); 
+            playSfx(); 
+            toast("Mendengarkan ('lanjut', 'kembali', 'zen', 'play')", "info"); 
+        };
+        
+        rec.onresult = (e) => { 
+            const txt = e.results[0][0].transcript.toLowerCase(); 
+            toast(`Suara: "${txt}"`);
+            
+            if (txt.includes('lanjut') || txt.includes('next')) {
+                document.getElementById('btnNext').click();
+            } else if (txt.includes('kembali') || txt.includes('prev')) {
+                document.getElementById('btnPrev').click();
+            } else if (txt.includes('play') || txt.includes('putar')) {
+                btnPlay.click();
+            } else if (txt.includes('zen') || txt.includes('fokus')) {
+                document.getElementById('btnZen').click();
+            }
+        };
+        
+        rec.onerror = () => { 
+            btnVoice.classList.remove('recording'); 
+            toast("Suara tidak dikenali.", "error"); 
+        };
+        
+        rec.onend = () => btnVoice.classList.remove('recording');
+        
+        btnVoice.addEventListener('click', () => { 
+            if (btnVoice.classList.contains('recording')) {
+                rec.stop(); 
+            } else {
+                rec.start(); 
+            }
+        });
+    } else {
+        btnVoice.style.display = 'none';
+    }
 
-function jumpTo(dir){const items=document.querySelectorAll('.timeline-item');if(!items.length)return;if(dir==='next'&&currentFocusIndex<items.length-1)currentFocusIndex++;else if(dir==='prev'&&currentFocusIndex>0)currentFocusIndex--;else return;items[currentFocusIndex].scrollIntoView({behavior:'smooth',block:'center'})}
-document.getElementById('btnNext').addEventListener('click',()=>jumpTo('next'));
-document.getElementById('btnPrev').addEventListener('click',()=>jumpTo('prev'));
+    // Custom Context Menu Override Logic
+    const ctxMenu = document.getElementById('ctxMenu');
+    window.addEventListener('contextmenu', e => {
+        e.preventDefault(); 
+        ctxMenu.style.left = `${e.pageX}px`; 
+        ctxMenu.style.top = `${e.pageY}px`; 
+        ctxMenu.classList.add('active');
+    });
+    
+    window.addEventListener('click', () => {
+        ctxMenu.classList.remove('active');
+    });
 
-// ===== KEYBOARD SHORTCUTS =====
-document.addEventListener('keydown',e=>{
-    if(e.key==='ArrowDown'){e.preventDefault();jumpTo('next')}
-    if(e.key==='ArrowUp'){e.preventDefault();jumpTo('prev')}
-    if(e.key===' '&&!e.target.closest('input,textarea')){e.preventDefault();togglePlay()}
-    if(e.key==='d'||e.key==='D')document.getElementById('themeToggle').click();
-    if(e.key==='m'||e.key==='M')document.getElementById('btnSfx').click();
-    if(e.key==='?')document.getElementById('kbdPanel').classList.toggle('active');
-    if(e.key==='Escape'){document.getElementById('kbdPanel').classList.remove('active');document.getElementById('eventModal').classList.remove('active')}
-});
-document.getElementById('btnKbd').addEventListener('click',()=>document.getElementById('kbdPanel').classList.toggle('active'));
+    // Context Menu Sub-Routines
+    document.getElementById('ctxCopy').addEventListener('click', () => { 
+        navigator.clipboard.writeText(window.getSelection().toString() || "Tidak ada teks yang dipilih").then(() => {
+            toast("Teks disalin!");
+        }); 
+    });
+    
+    document.getElementById('ctxRead').addEventListener('click', () => {
+        readAloud(window.getSelection().toString() || "Pilih teks terlebih dahulu untuk dibaca.");
+    });
+    
+    document.getElementById('ctxPrint').addEventListener('click', () => {
+        window.print();
+    });
+    
+    document.getElementById('ctxExport').addEventListener('click', () => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(timelineData, null, 2));
+        const a = document.createElement('a'); 
+        a.href = dataStr; 
+        a.download = "Nexa_Historiografi.json"; 
+        a.click(); 
+        toast("Data JSON Berhasil Diekspor!", "success");
+    });
 
-// ===== MODAL (TABBED) =====
-const modal=document.getElementById('eventModal');
-function openModal(id){
-    const d=timelineData.find(x=>x.id===id);
-    document.getElementById('modalEra').innerHTML=`<i class="fa-solid fa-hourglass-half"></i> ${d.era}`;
-    document.getElementById('modalTitle').innerText=d.title;
-    document.getElementById('modalDesc').innerText=d.desc;
-    document.getElementById('modalQuote').innerText=`"${d.quote}"`;
-    document.getElementById('modalImpact').innerHTML=`<i class="fa-solid fa-bolt" style="color:var(--accent)"></i> <strong>Dampak:</strong> ${d.impact}`;
-    // Reset tabs
-    document.querySelectorAll('.modal-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
-    document.querySelectorAll('.modal-tab-content').forEach((c,i)=>c.classList.toggle('active',i===0));
-    modal.classList.add('active');
-}
-document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('active'));
-modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('active')});
-document.querySelectorAll('.modal-tab').forEach(tab=>{tab.addEventListener('click',()=>{const t=tab.dataset.tab;document.querySelectorAll('.modal-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));document.querySelectorAll('.modal-tab-content').forEach(x=>x.classList.toggle('active',x.dataset.tab===t))})});
+    // Gamification Quiz Module Event
+    document.getElementById('btnQuiz').addEventListener('click', () => {
+        playSfx(); 
+        document.getElementById('quizModal').classList.add('active');
+        
+        // Randomize Question Logic
+        const q = quizData[Math.floor(Math.random() * quizData.length)];
+        document.getElementById('qText').innerText = q.q;
+        
+        const optsBox = document.getElementById('qOpts'); 
+        optsBox.innerHTML = '';
+        
+        q.opts.forEach((opt, idx) => {
+            const btn = document.createElement('div'); 
+            btn.className = 'quiz-opt'; 
+            btn.innerText = opt;
+            
+            btn.onclick = function() {
+                if (idx === q.ans) { 
+                    this.classList.add('correct'); 
+                    toast("Jawaban Benar! Mantap.", "success"); 
+                    playSfx(); 
+                } else { 
+                    this.classList.add('wrong'); 
+                    toast("Salah, coba lagi.", "error"); 
+                }
+                
+                // Prevent double clicking
+                document.querySelectorAll('.quiz-opt').forEach(b => {
+                    b.style.pointerEvents = 'none';
+                });
+                
+                // Auto dismiss logic
+                setTimeout(() => {
+                    document.getElementById('quizModal').classList.remove('active');
+                }, 1500);
+            };
+            optsBox.appendChild(btn);
+        });
+    });
 
-// ===== ZOOM =====
-let zoomLevel=1;
-document.getElementById('zoomIn').addEventListener('click',()=>{if(zoomLevel<1.15){zoomLevel+=.05;tlContainer.style.transform=`scale(${zoomLevel})`;toast(`Zoom: ${Math.round(zoomLevel*100)}%`)}});
-document.getElementById('zoomOut').addEventListener('click',()=>{if(zoomLevel>.85){zoomLevel-=.05;tlContainer.style.transform=`scale(${zoomLevel})`;toast(`Zoom: ${Math.round(zoomLevel*100)}%`)}});
+    // Overlay Listeners
+    document.getElementById('btnToc').addEventListener('click', () => { 
+        playSfx(); 
+        document.getElementById('tocOverlay').classList.toggle('active'); 
+    });
 
-// ===== SHARE =====
-document.getElementById('btnShare').addEventListener('click',()=>{if(navigator.share){navigator.share({title:'Historiografi Filsafat Islam',text:'Jejak Intelektual Islam — Timeline Interaktif',url:window.location.href}).catch(()=>{})}else{navigator.clipboard.writeText(window.location.href).then(()=>toast("Link disalin ke clipboard!"))}});
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        playSfx(); 
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        checkReveal(); 
+    });
 
-// ===== THEME =====
-document.getElementById('themeToggle').addEventListener('click',()=>{const c=document.documentElement.getAttribute('data-theme');const isDark=c==='dark';document.documentElement.setAttribute('data-theme',isDark?'light':'dark');document.getElementById('themeToggle').innerHTML=isDark?'<i class="fa-solid fa-moon"></i>':'<i class="fa-solid fa-sun"></i>';toast(isDark?"Mode Terang":"Mode Gelap")});
+    // Local Storage Preservation Protocol
+    window.addEventListener('beforeunload', () => { 
+        localStorage.setItem('nexa_scroll', window.scrollY); 
+    });
 
-// ===== SFX =====
-document.getElementById('btnSfx').addEventListener('click',e=>{sfxEnabled=!sfxEnabled;e.currentTarget.innerHTML=sfxEnabled?'<i class="fa-solid fa-volume-high"></i>':'<i class="fa-solid fa-volume-xmark"></i>';toast(sfxEnabled?"SFX Aktif":"SFX Bisu")});
+    // System Boot Loader Process
+    window.addEventListener('load', () => {
+        renderTimeline();
+        
+        // Restore session geometry
+        const savedScroll = localStorage.getItem('nexa_scroll');
+        if (savedScroll && !window.location.hash) { 
+            setTimeout(() => {
+                window.scrollTo({top: parseFloat(savedScroll), behavior: 'smooth'});
+            }, 500); 
+            toast("Memulihkan posisi terakhir..."); 
+        }
+    });
 
-// ===== CLOCK & HIJRI =====
-setInterval(()=>{document.getElementById('local-time').innerHTML=`<i class="fa-regular fa-clock"></i> ${new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})} WIB`},1000);
-try{document.getElementById('hijri-date').innerHTML=`<i class="fa-solid fa-moon"></i> ${new Intl.DateTimeFormat('id-ID-u-ca-islamic',{day:'numeric',month:'long',year:'numeric'}).format(new Date())}`}catch(e){}
+    // Fluid Custom Cursor Core Physics
+    const dot = document.getElementById('curDot');
+    const ring = document.getElementById('curRing'); 
+    let cmx = 0;
+    let cmy = 0;
+    let crx = 0;
+    let cry = 0;
+    
+    document.addEventListener('mousemove', e => { 
+        cmx = e.clientX; 
+        cmy = e.clientY; 
+        dot.style.left = cmx + 'px'; 
+        dot.style.top = cmy + 'px'; 
+    });
+    
+    (function animateRing() { 
+        crx += (cmx - crx) * 0.2; 
+        cry += (cmy - cry) * 0.2; 
+        ring.style.left = crx + 'px'; 
+        ring.style.top = cry + 'px'; 
+        requestAnimationFrame(animateRing); 
+    })();
+    
+    // Cursor Interactivity Listeners
+    document.querySelectorAll('button, .action-btn, .btn-filter, .toc-item, .cm-item').forEach(el => { 
+        el.addEventListener('mouseenter', () => ring.classList.add('hover')); 
+        el.addEventListener('mouseleave', () => ring.classList.remove('hover')); 
+    });
 
-// ===== READING PROGRESS =====
-window.addEventListener('scroll',()=>{const p=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100;document.getElementById('reading-progress').style.width=p+'%'});
+    // Time Tracking & Reading Progress Monitors
+    setInterval(() => {
+        document.getElementById('local-time').innerHTML = `<i class="fa-solid fa-clock"></i> ${new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})} WIB`;
+    }, 1000);
+    
+    window.addEventListener('scroll', () => { 
+        document.getElementById('reading-progress').style.width = ((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100) + '%'; 
+    });
 
-// ===== READING TIME =====
-function calcReadTime(){const words=timelineData.reduce((a,d)=>a+d.desc.split(' ').length+d.short.split(' ').length+d.impact.split(' ').length,0);const min=Math.ceil(words/200);document.getElementById('readTime').innerHTML=`<i class="fa-regular fa-clock"></i> ${min} mnt baca`}
-
-// ===== CURSOR =====
-const dot=document.getElementById('curDot'),ring=document.getElementById('curRing');
-let cmx=0,cmy=0,crx=0,cry=0;
-document.addEventListener('mousemove',e=>{cmx=e.clientX;cmy=e.clientY;dot.style.left=cmx+'px';dot.style.top=cmy+'px'});
-(function aR(){crx+=(cmx-crx)*.12;cry+=(cmy-cry)*.12;ring.style.left=crx+'px';ring.style.top=cry+'px';requestAnimationFrame(aR)})();
-document.querySelectorAll('a,button,.content,.action-btn,.btn-filter,.btn-icon').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hover'));el.addEventListener('mouseleave',()=>ring.classList.remove('hover'))});
-
-// ===== GEOMETRIC CANVAS =====
-const cv=document.getElementById('geo-canvas'),cx=cv.getContext('2d');
-function rCV(){cv.width=window.innerWidth;cv.height=window.innerHeight}rCV();window.addEventListener('resize',rCV);
-const pts=Array.from({length:35},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
-function drawCV(){
-    cx.clearRect(0,0,cv.width,cv.height);
-    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cv.width)p.vx*=-1;if(p.y<0||p.y>cv.height)p.vy*=-1;cx.beginPath();cx.arc(p.x,p.y,1.5,0,Math.PI*2);cx.fillStyle=isDark?'rgba(16,185,129,.35)':'rgba(217,119,6,.3)';cx.fill()});
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<140){cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.strokeStyle=isDark?`rgba(16,185,129,${.06*(1-d/140)})`:`rgba(6,78,59,${.04*(1-d/140)})`;cx.lineWidth=.5;cx.stroke()}}
-    requestAnimationFrame(drawCV);
-}
-
-// ===== COUNTER ANIMATION =====
-function animCounters(){
-    const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const c=e.target,t=+c.dataset.target;let v=0;const s=t/30;(function u(){v+=s;if(v<t){c.innerText=Math.ceil(v);requestAnimationFrame(u)}else c.innerText=t})();obs.unobserve(c)}})},{threshold:.5});
-    document.querySelectorAll('.counter').forEach(c=>obs.observe(c));
-}
-
-// ===== PRELOADER =====
-function initPreloader(){
-    const pre=document.getElementById('preloader'),fill=document.getElementById('preFill'),status=document.getElementById('preStatus');
-    const steps=['LOADING MANUSCRIPTS...','DECODING ARABIC TEXTS...','ASSEMBLING TIMELINE...','BISMILLAH, SIAP!'];
-    let pg=0;
-    const iv=setInterval(()=>{pg+=Math.random()*25+8;if(pg>100)pg=100;fill.style.width=pg+'%';status.textContent=steps[Math.min(Math.floor(pg/25),3)];if(pg>=100){clearInterval(iv);setTimeout(()=>{pre.classList.add('hidden')},600)}},320);
-}
-
-// ===== INIT =====
-window.addEventListener('load',()=>{
-    initPreloader();
-    renderTimeline();
-    drawCV();
-    calcReadTime();
-    animCounters();
-    if(window.location.hash){const el=document.querySelector(window.location.hash.replace('#','#evt-'));if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center'}),1200)}
-});
 </script>
 </body>
 </html>
